@@ -10,8 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../cubit/auth_cubit_test.dart';
 
 void main() {
-  testWidgets('FlashScreen renders logo, title, and loading progress bar',
-      (WidgetTester tester) async {
+  testWidgets('FlashScreen renders logo, title, and loading progress bar', (
+    WidgetTester tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     final prefs = await AppPreferences.init();
     final fakeRepo = FakeAuthRepository();
@@ -20,13 +21,11 @@ void main() {
     final router = GoRouter(
       initialLocation: '/',
       routes: [
-        GoRoute(
-          path: '/',
-          builder: (context, state) => const FlashScreen(),
-        ),
+        GoRoute(path: '/', builder: (context, state) => const FlashScreen()),
         GoRoute(
           path: '/auth',
-          builder: (context, state) => const Scaffold(body: Text('Auth Screen')),
+          builder: (context, state) =>
+              const Scaffold(body: Text('Auth Screen')),
         ),
         GoRoute(
           path: '/onboarding',
@@ -49,9 +48,7 @@ void main() {
         ],
         child: BlocProvider<AuthCubit>.value(
           value: authCubit,
-          child: MaterialApp.router(
-            routerConfig: router,
-          ),
+          child: MaterialApp.router(routerConfig: router),
         ),
       ),
     );
@@ -72,8 +69,9 @@ void main() {
 
     // Check intermediate progress
     await tester.pump(const Duration(milliseconds: 600));
-    final FractionallySizedBox sizedBox =
-        tester.widget<FractionallySizedBox>(fractionallySizedBoxFinder);
+    final FractionallySizedBox sizedBox = tester.widget<FractionallySizedBox>(
+      fractionallySizedBoxFinder,
+    );
     expect(sizedBox.widthFactor, isNotNull);
     expect(sizedBox.widthFactor!, greaterThan(0.0));
     expect(sizedBox.heightFactor, 1.0);

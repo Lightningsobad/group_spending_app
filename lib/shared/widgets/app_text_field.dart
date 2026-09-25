@@ -74,10 +74,7 @@ class _AppTextFieldState extends State<AppTextField> {
           obscureText: widget.isPassword && _obscureText,
           autofocus: widget.autofocus,
           onChanged: widget.onChanged,
-          style: AppTextStyle.semiBold(
-            fontSize: 14,
-            color: AppColors.textDark,
-          ),
+          style: AppTextStyle.semiBold(fontSize: 14, color: AppColors.textDark),
           decoration: InputDecoration(
             hintText: widget.hintText,
             hintStyle: AppTextStyle.regular(
@@ -97,9 +94,7 @@ class _AppTextFieldState extends State<AppTextField> {
             suffixIcon: widget.isPassword
                 ? IconButton(
                     icon: Icon(
-                      _obscureText
-                          ? LucideIcons.eye
-                          : LucideIcons.eyeOff,
+                      _obscureText ? LucideIcons.eye : LucideIcons.eyeOff,
                       size: 19,
                       color: AppColors.textMuted,
                     ),
@@ -132,17 +127,11 @@ class _AppTextFieldState extends State<AppTextField> {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(
-                color: AppColors.error,
-                width: 1.2,
-              ),
+              borderSide: const BorderSide(color: AppColors.error, width: 1.2),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
-              borderSide: const BorderSide(
-                color: AppColors.error,
-                width: 1.5,
-              ),
+              borderSide: const BorderSide(color: AppColors.error, width: 1.5),
             ),
           ),
         ),

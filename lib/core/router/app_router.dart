@@ -1,42 +1,43 @@
 import 'package:go_router/go_router.dart';
-import '../../features/auth/presentation/screens/auth_screen.dart';
-import '../../features/auth/presentation/screens/flash_screen.dart';
-import '../../features/auth/presentation/screens/verify_otp_screen.dart';
-import '../../features/dashboard/presentation/screens/dashboard_placeholder_screen.dart';
-import '../../features/onboarding/presentation/screens/onboarding_screen.dart';
+import '../session/session_coordinator.dart';
 
 class AppRouter {
   AppRouter._();
 
-  static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
-    routes: [
-      GoRoute(
-        path: '/splash',
-        builder: (context, state) => const FlashScreen(),
-      ),
-      GoRoute(
-        path: '/auth',
-        builder: (context, state) {
-          final mode = state.uri.queryParameters['mode'] ?? 'login';
-          return AuthScreen(initialMode: mode);
-        },
-      ),
-      GoRoute(
-        path: '/verify-otp',
-        builder: (context, state) {
-          final email = state.uri.queryParameters['email'] ?? '';
-          return VerifyOtpScreen(email: email);
-        },
-      ),
-      GoRoute(
-        path: '/onboarding',
-        builder: (context, state) => const OnboardingScreen(),
-      ),
-      GoRoute(
-        path: '/dashboard',
-        builder: (context, state) => const DashboardPlaceholderScreen(),
-      ),
-    ],
-  );
+  static GoRouter createRouter({
+    required List<RouteBase> routes,
+    SessionCoordinator? sessionCoordinator,
+    String initialLocation = '/splash',
+  }) {
+    return GoRouter(
+      initialLocation: initialLocation,
+      refreshListenable: sessionCoordinator,
+      redirect: (context, state) {
+        if (sessionCoordinator == null) return null;
+
+        final isAuthenticated = sessionCoordinator.isAuthenticated;
+        final matchedLoc = state.matchedLocation;
+        final isAuthPath = matchedLoc == '/auth';
+        final isProtectedPath = matchedLoc == '/dashboard';
+
+        // Người dùng chưa xác thực không được vào route riêng tư
+        if (!isAuthenticated && isProtectedPath) {
+          return '/auth';
+        }
+
+        // Người dùng đã xác thực tự động đưa về dashboard nếu đang ở auth
+        if (isAuthenticated && isAuthPath) {
+          return '/dashboard';
+        }
+
+        return null;
+      },
+      routes: routes,
+    );
+  }
+
+  static GoRouter? _router;
+
+  static GoRouter get router => _router ?? createRouter(routes: const []);
+  static set router(GoRouter router) => _router = router;
 }

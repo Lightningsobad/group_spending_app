@@ -30,7 +30,10 @@ class AppPreferences {
     return _prefs.getString(_userEmailKey);
   }
 
-  Future<void> saveUserInfo({required String fullName, required String email}) async {
+  Future<void> saveUserInfo({
+    required String fullName,
+    required String email,
+  }) async {
     await Future.wait([
       _prefs.setString(_userFullNameKey, fullName),
       _prefs.setString(_userEmailKey, email),

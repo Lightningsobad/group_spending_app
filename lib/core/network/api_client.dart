@@ -4,17 +4,23 @@ import '../errors/app_exception.dart';
 import '../storage/token_storage.dart';
 import 'auth_interceptor.dart';
 
+import '../session/session_coordinator.dart';
+
 class ApiClient {
   late final Dio dio;
   final TokenStorage tokenStorage;
+  final SessionCoordinator? sessionCoordinator;
   final void Function()? onSessionExpired;
 
   ApiClient({
     required this.tokenStorage,
+    this.sessionCoordinator,
     this.onSessionExpired,
     Dio? customDio,
+    Dio? refreshDio,
   }) {
-    dio = customDio ??
+    dio =
+        customDio ??
         Dio(
           BaseOptions(
             baseUrl: AppConfig.baseUrl,
@@ -31,7 +37,9 @@ class ApiClient {
       AuthInterceptor(
         dio: dio,
         tokenStorage: tokenStorage,
+        sessionCoordinator: sessionCoordinator,
         onSessionExpired: onSessionExpired,
+        refreshDio: refreshDio,
       ),
     );
   }
@@ -75,20 +83,23 @@ class ApiClient {
         error.type == DioExceptionType.sendTimeout ||
         error.type == DioExceptionType.receiveTimeout) {
       return const AppException(
-        message: 'Kết nối mạng quá hạn. Vui lòng kiểm tra đường truyền và thử lại.',
+        message:
+            'Kết nối mạng quá hạn. Vui lòng kiểm tra đường truyền và thử lại.',
       );
     }
 
     if (error.type == DioExceptionType.connectionError) {
       return const AppException(
-        message: 'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng.',
+        message:
+            'Không thể kết nối đến máy chủ. Vui lòng kiểm tra kết nối mạng.',
       );
     }
 
     final response = error.response;
     if (response != null && response.data is Map<String, dynamic>) {
       final data = response.data as Map<String, dynamic>;
-      final message = (data['message'] as String?) ?? 'Đã xảy ra lỗi không xác định.';
+      final message =
+          (data['message'] as String?) ?? 'Đã xảy ra lỗi không xác định.';
       final errorCode = data['errorCode'] as String?;
 
       Map<String, String>? fieldErrors;
@@ -107,7 +118,8 @@ class ApiClient {
     }
 
     return AppException(
-      message: error.message ?? 'Đã xảy ra sự cố trong quá trình giao tiếp máy chủ.',
+      message:
+          error.message ?? 'Đã xảy ra sự cố trong quá trình giao tiếp máy chủ.',
       statusCode: response?.statusCode,
     );
   }

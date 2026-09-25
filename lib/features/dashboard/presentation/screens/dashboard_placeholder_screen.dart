@@ -20,12 +20,11 @@ class DashboardPlaceholderScreen extends StatelessWidget {
       },
       builder: (context, state) {
         final prefs = context.read<AppPreferences>();
-        final name = state.currentUser?.fullName ??
+        final name =
+            state.currentUser?.fullName ??
             prefs.getUserFullName() ??
             'Người dùng FairShare';
-        final email = state.currentUser?.email ??
-            prefs.getUserEmail() ??
-            '';
+        final email = state.currentUser?.email ?? prefs.getUserEmail() ?? '';
 
         return Scaffold(
           backgroundColor: AppColors.backgroundLight,
@@ -246,9 +245,7 @@ class DashboardPlaceholderScreen extends StatelessWidget {
                       icon: const Icon(Icons.logout, size: 18),
                       label: Text(
                         'Đăng xuất khỏi tài khoản',
-                        style: AppTextStyle.bold(
-                          fontSize: 13,
-                        ),
+                        style: AppTextStyle.bold(fontSize: 13),
                       ),
                     ),
                   ),
