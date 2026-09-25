@@ -1,30 +1,55 @@
+import 'dart:async';
 import 'package:dio/dio.dart';
-import '../config/app_config.dart';
+import '../session/session_coordinator.dart';
 import '../storage/token_storage.dart';
 
-class AuthInterceptor extends QueuedInterceptor {
+class AuthInterceptor extends Interceptor {
   final Dio dio;
   final TokenStorage tokenStorage;
+  final SessionCoordinator? sessionCoordinator;
   final void Function()? onSessionExpired;
+  final Dio _refreshDio;
+
+  static const _publicPaths = {
+    '/auth/login',
+    '/auth/register',
+    '/auth/verify-email',
+    '/auth/resend-verification',
+    '/auth/refresh-token',
+  };
+
+  Future<String?>? _refreshFuture;
 
   AuthInterceptor({
     required this.dio,
     required this.tokenStorage,
+    this.sessionCoordinator,
     this.onSessionExpired,
-  });
+    Dio? refreshDio,
+  }) : _refreshDio =
+           refreshDio ??
+           Dio(
+             BaseOptions(
+               baseUrl: dio.options.baseUrl,
+               connectTimeout: dio.options.connectTimeout,
+               receiveTimeout: dio.options.receiveTimeout,
+               headers: {
+                 'Content-Type': 'application/json; charset=UTF-8',
+                 'Accept': 'application/json',
+               },
+             ),
+           );
+
+  bool _isPublic(String path) {
+    return _publicPaths.any((p) => path.endsWith(p) || path == p);
+  }
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    final publicPaths = [
-      '/auth/login',
-      '/auth/register',
-      '/auth/verify-email',
-      '/auth/resend-verification',
-      '/auth/refresh-token',
-    ];
-
-    final isPublic = publicPaths.any((path) => options.path.contains(path));
-    if (!isPublic) {
+  void onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
+    if (!_isPublic(options.path)) {
       final token = await tokenStorage.getAccessToken();
       if (token != null && token.isNotEmpty) {
         options.headers['Authorization'] = 'Bearer $token';
@@ -39,60 +64,83 @@ class AuthInterceptor extends QueuedInterceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    final isAuthError = err.response?.statusCode == 401;
-    final isRefreshRequest = err.requestOptions.path.contains('/auth/refresh-token');
-    final isLoginRequest = err.requestOptions.path.contains('/auth/login');
+    final statusCode = err.response?.statusCode;
+    final isAuthError = statusCode == 401;
+    final isPublic = _isPublic(err.requestOptions.path);
+    final isAlreadyRetried = err.requestOptions.extra['is_retry'] == true;
 
-    if (isAuthError && !isRefreshRequest && !isLoginRequest) {
-      final refreshToken = await tokenStorage.getRefreshToken();
-      if (refreshToken != null && refreshToken.isNotEmpty) {
-        try {
-          // Call refresh token with a plain Dio instance to prevent infinite loop
-          final refreshDio = Dio(
-            BaseOptions(
-              baseUrl: AppConfig.baseUrl,
-              connectTimeout: AppConfig.connectTimeout,
-              receiveTimeout: AppConfig.receiveTimeout,
-              headers: {
-                'Content-Type': 'application/json; charset=UTF-8',
-                'Accept': 'application/json',
-              },
-            ),
-          );
+    // Không retry nếu là request public, hoặc đã retry 1 lần, hoặc không phải lỗi 401
+    if (!isAuthError || isPublic || isAlreadyRetried) {
+      return handler.next(err);
+    }
 
-          final response = await refreshDio.post(
-            '/auth/refresh-token',
-            data: {'refreshToken': refreshToken},
-          );
+    final refreshToken = await tokenStorage.getRefreshToken();
+    if (refreshToken == null || refreshToken.isEmpty) {
+      await _expireSession();
+      return handler.next(err);
+    }
 
-          if (response.statusCode == 200 && response.data['success'] == true) {
-            final data = response.data['data'];
-            final newAccessToken = data['accessToken'] as String;
-            final newRefreshToken = (data['refreshToken'] ?? refreshToken) as String;
+    try {
+      // Single-flight refresh token: nhiều request 401 cùng await 1 Future duy nhất
+      _refreshFuture ??= _executeRefreshToken(refreshToken);
+      final newAccessToken = await _refreshFuture;
 
-            await tokenStorage.saveTokens(
-              accessToken: newAccessToken,
-              refreshToken: newRefreshToken,
-            );
+      if (newAccessToken != null && newAccessToken.isNotEmpty) {
+        final options = err.requestOptions;
+        options.headers['Authorization'] = 'Bearer $newAccessToken';
+        options.extra['is_retry'] = true;
 
-            // Retry original request with new token
-            final options = err.requestOptions;
-            options.headers['Authorization'] = 'Bearer $newAccessToken';
-
-            final retryResponse = await dio.fetch(options);
-            return handler.resolve(retryResponse);
-          }
-        } catch (_) {
-          // Refresh failed, clear tokens and notify
-          await tokenStorage.clearTokens();
-          onSessionExpired?.call();
-        }
-      } else {
-        await tokenStorage.clearTokens();
-        onSessionExpired?.call();
+        final retryResponse = await dio.fetch(options);
+        return handler.resolve(retryResponse);
       }
+    } on DioException catch (refreshErr) {
+      final refreshStatus = refreshErr.response?.statusCode;
+      // Chỉ hủy phiên khi server xác nhận token không hợp lệ (401/403)
+      if (refreshStatus == 401 || refreshStatus == 403) {
+        await _expireSession();
+      }
+      // Với lỗi timeout/mạng/5xx, giữ nguyên token trong storage (AUTH-07)
+    } catch (_) {
+      // Lỗi parse hoặc ngoại lệ khác, không xóa token
+    } finally {
+      _refreshFuture = null;
     }
 
     return handler.next(err);
+  }
+
+  Future<String?> _executeRefreshToken(String refreshToken) async {
+    final response = await _refreshDio.post(
+      '/auth/refresh-token',
+      data: {'refreshToken': refreshToken},
+    );
+
+    if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
+      final body = response.data as Map<String, dynamic>;
+      if (body['success'] == true && body['data'] is Map<String, dynamic>) {
+        final data = body['data'] as Map<String, dynamic>;
+        final newAccessToken = data['accessToken'] as String?;
+        final newRefreshToken =
+            (data['refreshToken'] as String?) ?? refreshToken;
+
+        if (newAccessToken != null && newAccessToken.isNotEmpty) {
+          await tokenStorage.saveTokens(
+            accessToken: newAccessToken,
+            refreshToken: newRefreshToken,
+          );
+          return newAccessToken;
+        }
+      }
+    }
+    return null;
+  }
+
+  Future<void> _expireSession() async {
+    if (sessionCoordinator != null) {
+      await sessionCoordinator!.clearSession(isExpired: true);
+    } else {
+      await tokenStorage.clearTokens();
+    }
+    onSessionExpired?.call();
   }
 }

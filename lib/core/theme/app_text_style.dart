@@ -46,20 +46,19 @@ class AppTextStyle {
     TextBaseline? textBaseline,
     List<Shadow>? shadows,
     TextOverflow? overflow,
-  }) =>
-      style(
-        fontSize: fontSize,
-        fontWeight: fontWeight,
-        color: color,
-        height: height,
-        letterSpacing: letterSpacing,
-        decoration: decoration,
-        decorationColor: decorationColor,
-        fontStyle: fontStyle,
-        textBaseline: textBaseline,
-        shadows: shadows,
-        overflow: overflow,
-      );
+  }) => style(
+    fontSize: fontSize,
+    fontWeight: fontWeight,
+    color: color,
+    height: height,
+    letterSpacing: letterSpacing,
+    decoration: decoration,
+    decorationColor: decorationColor,
+    fontStyle: fontStyle,
+    textBaseline: textBaseline,
+    shadows: shadows,
+    overflow: overflow,
+  );
 
   // Các helper tiện ích theo độ đậm (FontWeight)
   static TextStyle regular({
@@ -68,15 +67,14 @@ class AppTextStyle {
     double? height,
     double? letterSpacing,
     TextDecoration? decoration,
-  }) =>
-      style(
-        fontSize: fontSize,
-        fontWeight: FontWeight.w400,
-        color: color,
-        height: height,
-        letterSpacing: letterSpacing,
-        decoration: decoration,
-      );
+  }) => style(
+    fontSize: fontSize,
+    fontWeight: FontWeight.w400,
+    color: color,
+    height: height,
+    letterSpacing: letterSpacing,
+    decoration: decoration,
+  );
 
   static TextStyle medium({
     double? fontSize,
@@ -84,15 +82,14 @@ class AppTextStyle {
     double? height,
     double? letterSpacing,
     TextDecoration? decoration,
-  }) =>
-      style(
-        fontSize: fontSize,
-        fontWeight: FontWeight.w500,
-        color: color,
-        height: height,
-        letterSpacing: letterSpacing,
-        decoration: decoration,
-      );
+  }) => style(
+    fontSize: fontSize,
+    fontWeight: FontWeight.w500,
+    color: color,
+    height: height,
+    letterSpacing: letterSpacing,
+    decoration: decoration,
+  );
 
   static TextStyle semiBold({
     double? fontSize,
@@ -100,15 +97,14 @@ class AppTextStyle {
     double? height,
     double? letterSpacing,
     TextDecoration? decoration,
-  }) =>
-      style(
-        fontSize: fontSize,
-        fontWeight: FontWeight.w600,
-        color: color,
-        height: height,
-        letterSpacing: letterSpacing,
-        decoration: decoration,
-      );
+  }) => style(
+    fontSize: fontSize,
+    fontWeight: FontWeight.w600,
+    color: color,
+    height: height,
+    letterSpacing: letterSpacing,
+    decoration: decoration,
+  );
 
   static TextStyle bold({
     double? fontSize,
@@ -116,15 +112,14 @@ class AppTextStyle {
     double? height,
     double? letterSpacing,
     TextDecoration? decoration,
-  }) =>
-      style(
-        fontSize: fontSize,
-        fontWeight: FontWeight.w700,
-        color: color,
-        height: height,
-        letterSpacing: letterSpacing,
-        decoration: decoration,
-      );
+  }) => style(
+    fontSize: fontSize,
+    fontWeight: FontWeight.w700,
+    color: color,
+    height: height,
+    letterSpacing: letterSpacing,
+    decoration: decoration,
+  );
 
   static TextStyle extraBold({
     double? fontSize,
@@ -132,15 +127,14 @@ class AppTextStyle {
     double? height,
     double? letterSpacing,
     TextDecoration? decoration,
-  }) =>
-      style(
-        fontSize: fontSize,
-        fontWeight: FontWeight.w800,
-        color: color,
-        height: height,
-        letterSpacing: letterSpacing,
-        decoration: decoration,
-      );
+  }) => style(
+    fontSize: fontSize,
+    fontWeight: FontWeight.w800,
+    color: color,
+    height: height,
+    letterSpacing: letterSpacing,
+    decoration: decoration,
+  );
 
   static TextStyle black({
     double? fontSize,
@@ -148,15 +142,14 @@ class AppTextStyle {
     double? height,
     double? letterSpacing,
     TextDecoration? decoration,
-  }) =>
-      style(
-        fontSize: fontSize,
-        fontWeight: FontWeight.w900,
-        color: color,
-        height: height,
-        letterSpacing: letterSpacing,
-        decoration: decoration,
-      );
+  }) => style(
+    fontSize: fontSize,
+    fontWeight: FontWeight.w900,
+    color: color,
+    height: height,
+    letterSpacing: letterSpacing,
+    decoration: decoration,
+  );
 }
 
 typedef AppTextStyles = AppTextStyle;

@@ -23,16 +23,10 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> login({
-    required String email,
-    required String password,
-  }) async {
+  Future<void> login({required String email, required String password}) async {
     emit(state.copyWith(status: AuthStatus.loading, clearErrors: true));
     try {
-      final result = await _repository.login(
-        email: email,
-        password: password,
-      );
+      final result = await _repository.login(email: email, password: password);
       emit(
         state.copyWith(
           status: AuthStatus.authenticated,
@@ -41,7 +35,10 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
     } on AppException catch (e) {
-      if (e.errorCode == 'ACCOUNT_NOT_VERIFIED' || e.statusCode == 403) {
+      if (e.errorCode == 'ACCOUNT_NOT_VERIFIED' ||
+          (e.statusCode == 403 &&
+              (e.message.contains('chưa được xác thực') ||
+                  e.message.toLowerCase().contains('not verified')))) {
         startResendCountdown(60);
         emit(
           state.copyWith(
@@ -110,16 +107,10 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> verifyOtp({
-    required String email,
-    required String otp,
-  }) async {
+  Future<void> verifyOtp({required String email, required String otp}) async {
     emit(state.copyWith(status: AuthStatus.loading, clearErrors: true));
     try {
-      final result = await _repository.verifyEmailOtp(
-        email: email,
-        otp: otp,
-      );
+      final result = await _repository.verifyEmailOtp(email: email, otp: otp);
       cancelCountdown();
       emit(
         state.copyWith(
@@ -129,12 +120,7 @@ class AuthCubit extends Cubit<AuthState> {
         ),
       );
     } on AppException catch (e) {
-      emit(
-        state.copyWith(
-          status: AuthStatus.error,
-          errorMessage: e.message,
-        ),
-      );
+      emit(state.copyWith(status: AuthStatus.error, errorMessage: e.message));
     } catch (e) {
       emit(
         state.copyWith(
@@ -148,15 +134,12 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> resendOtp({required String email}) async {
     if (state.resendCountdown > 0) return;
 
+    emit(state.copyWith(clearErrors: true));
     try {
       await _repository.resendVerificationOtp(email: email);
       startResendCountdown(60);
     } on AppException catch (e) {
-      emit(
-        state.copyWith(
-          errorMessage: e.message,
-        ),
-      );
+      emit(state.copyWith(errorMessage: e.message));
     } catch (e) {
       emit(
         state.copyWith(
@@ -168,15 +151,15 @@ class AuthCubit extends Cubit<AuthState> {
 
   void startResendCountdown(int seconds) {
     _countdownTimer?.cancel();
-    emit(state.copyWith(resendCountdown: seconds));
+    emit(state.copyWith(resendCountdown: seconds, clearErrors: true));
 
     _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       final current = state.resendCountdown;
       if (current <= 1) {
         timer.cancel();
-        emit(state.copyWith(resendCountdown: 0));
+        emit(state.copyWith(resendCountdown: 0, clearErrors: true));
       } else {
-        emit(state.copyWith(resendCountdown: current - 1));
+        emit(state.copyWith(resendCountdown: current - 1, clearErrors: true));
       }
     });
   }
@@ -191,11 +174,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(state.copyWith(status: AuthStatus.loading));
     cancelCountdown();
     await _repository.logout();
-    emit(
-      const AuthState(
-        status: AuthStatus.unauthenticated,
-      ),
-    );
+    emit(const AuthState(status: AuthStatus.unauthenticated));
   }
 
   void setPendingEmail(String email) {

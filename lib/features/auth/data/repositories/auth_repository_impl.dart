@@ -1,3 +1,4 @@
+import '../../../../core/session/session_coordinator.dart';
 import '../../../../core/storage/app_preferences.dart';
 import '../../../../core/storage/token_storage.dart';
 import '../../domain/entities/auth_tokens_entity.dart';
@@ -9,11 +10,13 @@ class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
   final TokenStorage tokenStorage;
   final AppPreferences appPreferences;
+  final SessionCoordinator? sessionCoordinator;
 
   AuthRepositoryImpl({
     required this.remoteDataSource,
     required this.tokenStorage,
     required this.appPreferences,
+    this.sessionCoordinator,
   });
 
   @override
@@ -43,10 +46,18 @@ class AuthRepositoryImpl implements AuthRepository {
     );
 
     if (response.accessToken != null && response.refreshToken != null) {
-      await tokenStorage.saveTokens(
-        accessToken: response.accessToken!,
-        refreshToken: response.refreshToken!,
-      );
+      if (sessionCoordinator != null) {
+        await sessionCoordinator!.commitTokens(
+          accessToken: response.accessToken!,
+          refreshToken: response.refreshToken!,
+          forEpoch: sessionCoordinator!.sessionEpoch,
+        );
+      } else {
+        await tokenStorage.saveTokens(
+          accessToken: response.accessToken!,
+          refreshToken: response.refreshToken!,
+        );
+      }
 
       if (response.user != null) {
         await appPreferences.saveUserInfo(
@@ -60,9 +71,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> resendVerificationOtp({
-    required String email,
-  }) async {
+  Future<void> resendVerificationOtp({required String email}) async {
     await remoteDataSource.resendVerificationOtp(email: email);
   }
 
@@ -77,10 +86,18 @@ class AuthRepositoryImpl implements AuthRepository {
     );
 
     if (response.accessToken != null && response.refreshToken != null) {
-      await tokenStorage.saveTokens(
-        accessToken: response.accessToken!,
-        refreshToken: response.refreshToken!,
-      );
+      if (sessionCoordinator != null) {
+        await sessionCoordinator!.commitTokens(
+          accessToken: response.accessToken!,
+          refreshToken: response.refreshToken!,
+          forEpoch: sessionCoordinator!.sessionEpoch,
+        );
+      } else {
+        await tokenStorage.saveTokens(
+          accessToken: response.accessToken!,
+          refreshToken: response.refreshToken!,
+        );
+      }
 
       if (response.user != null) {
         await appPreferences.saveUserInfo(
@@ -94,18 +111,24 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<AuthTokensEntity> refreshToken({
-    required String refreshToken,
-  }) async {
+  Future<AuthTokensEntity> refreshToken({required String refreshToken}) async {
     final response = await remoteDataSource.refreshToken(
       refreshToken: refreshToken,
     );
 
     if (response.accessToken != null) {
-      await tokenStorage.saveTokens(
-        accessToken: response.accessToken!,
-        refreshToken: response.refreshToken ?? refreshToken,
-      );
+      if (sessionCoordinator != null) {
+        await sessionCoordinator!.commitTokens(
+          accessToken: response.accessToken!,
+          refreshToken: response.refreshToken ?? refreshToken,
+          forEpoch: sessionCoordinator!.sessionEpoch,
+        );
+      } else {
+        await tokenStorage.saveTokens(
+          accessToken: response.accessToken!,
+          refreshToken: response.refreshToken ?? refreshToken,
+        );
+      }
     }
 
     return response.toEntity();
@@ -114,8 +137,14 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> logout() async {
     final refreshToken = await tokenStorage.getRefreshToken();
-    await remoteDataSource.logout(refreshToken: refreshToken);
-    await tokenStorage.clearTokens();
+    try {
+      await remoteDataSource.logout(refreshToken: refreshToken);
+    } catch (_) {}
+    if (sessionCoordinator != null) {
+      await sessionCoordinator!.clearSession();
+    } else {
+      await tokenStorage.clearTokens();
+    }
     await appPreferences.clearUserInfo();
   }
 

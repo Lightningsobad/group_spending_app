@@ -9,6 +9,9 @@ import 'package:group_spending_app/features/auth/presentation/cubit/auth_state.d
 class FakeAuthRepository implements AuthRepository {
   bool isAuth = false;
   AppException? exceptionToThrow;
+  final dynamic sessionCoordinator;
+
+  FakeAuthRepository({this.sessionCoordinator});
 
   final sampleUser = const UserEntity(
     id: 1,
@@ -30,6 +33,13 @@ class FakeAuthRepository implements AuthRepository {
     required String password,
   }) async {
     if (exceptionToThrow != null) throw exceptionToThrow!;
+    if (sessionCoordinator != null) {
+      await sessionCoordinator.commitTokens(
+        accessToken: 'access_123',
+        refreshToken: 'refresh_123',
+        forEpoch: sessionCoordinator.sessionEpoch,
+      );
+    }
     return AuthTokensEntity(
       accessToken: 'access_123',
       refreshToken: 'refresh_123',
@@ -120,19 +130,25 @@ void main() {
       expect(cubit.state.currentUser?.email, 'test@example.com');
     });
 
-    test('login with ACCOUNT_NOT_VERIFIED error emits needsVerification', () async {
-      fakeRepo.exceptionToThrow = const AppException(
-        message: 'Tài khoản chưa được xác thực email.',
-        statusCode: 403,
-        errorCode: 'ACCOUNT_NOT_VERIFIED',
-      );
+    test(
+      'login with ACCOUNT_NOT_VERIFIED error emits needsVerification',
+      () async {
+        fakeRepo.exceptionToThrow = const AppException(
+          message: 'Tài khoản chưa được xác thực email.',
+          statusCode: 403,
+          errorCode: 'ACCOUNT_NOT_VERIFIED',
+        );
 
-      await cubit.login(email: 'unverified@example.com', password: 'password123');
+        await cubit.login(
+          email: 'unverified@example.com',
+          password: 'password123',
+        );
 
-      expect(cubit.state.status, AuthStatus.needsVerification);
-      expect(cubit.state.pendingEmail, 'unverified@example.com');
-      expect(cubit.state.resendCountdown, 60);
-    });
+        expect(cubit.state.status, AuthStatus.needsVerification);
+        expect(cubit.state.pendingEmail, 'unverified@example.com');
+        expect(cubit.state.resendCountdown, 60);
+      },
+    );
 
     test('login with invalid credentials emits error', () async {
       fakeRepo.exceptionToThrow = const AppException(
@@ -146,6 +162,22 @@ void main() {
       expect(cubit.state.status, AuthStatus.error);
       expect(cubit.state.errorMessage, 'Email hoặc mật khẩu không chính xác');
     });
+
+    test(
+      'AUTH-03: 403 forbidden/account locked error emits error and does NOT route to verification',
+      () async {
+        fakeRepo.exceptionToThrow = const AppException(
+          message: 'Tài khoản của bạn đã bị khóa.',
+          statusCode: 403,
+          errorCode: 'ACCOUNT_LOCKED',
+        );
+
+        await cubit.login(email: 'locked@example.com', password: 'password123');
+
+        expect(cubit.state.status, AuthStatus.error);
+        expect(cubit.state.errorMessage, 'Tài khoản của bạn đã bị khóa.');
+      },
+    );
 
     test('register success emits needsVerification and sets email', () async {
       await cubit.register(

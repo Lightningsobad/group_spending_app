@@ -70,5 +70,20 @@ void main() {
       expect(authResponse.user!.fullName, 'Nguyễn Văn A');
       expect(authResponse.user!.isEmailVerified, isTrue);
     });
+
+    test(
+      'ARCH-03: throws AppException when requireTokens is true and accessToken is missing',
+      () {
+        final json = <String, dynamic>{
+          'accessToken': null,
+          'refreshToken': null,
+        };
+
+        expect(
+          () => AuthResponseModel.fromJson(json, requireTokens: true),
+          throwsA(isA<Exception>()),
+        );
+      },
+    );
   });
 }

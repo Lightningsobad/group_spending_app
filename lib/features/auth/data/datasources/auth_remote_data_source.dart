@@ -15,18 +15,14 @@ abstract class AuthRemoteDataSource {
     required String otp,
   });
 
-  Future<void> resendVerificationOtp({
-    required String email,
-  });
+  Future<void> resendVerificationOtp({required String email});
 
   Future<AuthResponseModel> login({
     required String email,
     required String password,
   });
 
-  Future<AuthResponseModel> refreshToken({
-    required String refreshToken,
-  });
+  Future<AuthResponseModel> refreshToken({required String refreshToken});
 
   Future<void> logout({String? refreshToken});
 }
@@ -64,25 +60,18 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }) async {
     final response = await _client.post(
       '/auth/verify-email',
-      data: {
-        'email': email.trim().toLowerCase(),
-        'otp': otp.trim(),
-      },
+      data: {'email': email.trim().toLowerCase(), 'otp': otp.trim()},
     );
 
     final data = response.data['data'] as Map<String, dynamic>;
-    return AuthResponseModel.fromJson(data);
+    return AuthResponseModel.fromJson(data, requireTokens: true);
   }
 
   @override
-  Future<void> resendVerificationOtp({
-    required String email,
-  }) async {
+  Future<void> resendVerificationOtp({required String email}) async {
     await _client.post(
       '/auth/resend-verification',
-      data: {
-        'email': email.trim().toLowerCase(),
-      },
+      data: {'email': email.trim().toLowerCase()},
     );
   }
 
@@ -93,29 +82,22 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   }) async {
     final response = await _client.post(
       '/auth/login',
-      data: {
-        'email': email.trim().toLowerCase(),
-        'password': password,
-      },
+      data: {'email': email.trim().toLowerCase(), 'password': password},
     );
 
     final data = response.data['data'] as Map<String, dynamic>;
-    return AuthResponseModel.fromJson(data);
+    return AuthResponseModel.fromJson(data, requireTokens: true);
   }
 
   @override
-  Future<AuthResponseModel> refreshToken({
-    required String refreshToken,
-  }) async {
+  Future<AuthResponseModel> refreshToken({required String refreshToken}) async {
     final response = await _client.post(
       '/auth/refresh-token',
-      data: {
-        'refreshToken': refreshToken,
-      },
+      data: {'refreshToken': refreshToken},
     );
 
     final data = response.data['data'] as Map<String, dynamic>;
-    return AuthResponseModel.fromJson(data);
+    return AuthResponseModel.fromJson(data, requireTokens: true);
   }
 
   @override

@@ -12,5 +12,6 @@ class AppException implements Exception {
   });
 
   @override
-  String toString() => 'AppException: $message (code: $errorCode, status: $statusCode)';
+  String toString() =>
+      'AppException: $message (code: $errorCode, status: $statusCode)';
 }

@@ -7,17 +7,16 @@ import 'package:group_spending_app/features/onboarding/presentation/screens/onbo
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  testWidgets('OnboardingScreen renders slides with corresponding SVG assets',
-      (WidgetTester tester) async {
+  testWidgets('OnboardingScreen renders slides with corresponding SVG assets', (
+    WidgetTester tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     final prefs = await AppPreferences.init();
 
     await tester.pumpWidget(
       RepositoryProvider<AppPreferences>.value(
         value: prefs,
-        child: const MaterialApp(
-          home: OnboardingScreen(),
-        ),
+        child: const MaterialApp(home: OnboardingScreen()),
       ),
     );
 

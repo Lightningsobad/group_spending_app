@@ -16,9 +16,7 @@ class OrganicWavyDivider extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       height: height,
-      child: CustomPaint(
-        painter: _WavyDividerPainter(fillColor),
-      ),
+      child: CustomPaint(painter: _WavyDividerPainter(fillColor)),
     );
   }
 }
@@ -39,16 +37,8 @@ class _WavyDividerPainter extends CustomPainter {
     final sy = size.height / 72.0;
 
     path.moveTo(0 * sx, 32 * sy);
-    path.cubicTo(
-      95 * sx, 68 * sy,
-      185 * sx, 12 * sy,
-      285 * sx, 38 * sy,
-    );
-    path.cubicTo(
-      335 * sx, 48 * sy,
-      368 * sx, 32 * sy,
-      393 * sx, 20 * sy,
-    );
+    path.cubicTo(95 * sx, 68 * sy, 185 * sx, 12 * sy, 285 * sx, 38 * sy);
+    path.cubicTo(335 * sx, 48 * sy, 368 * sx, 32 * sy, 393 * sx, 20 * sy);
     path.lineTo(393 * sx, 72 * sy);
     path.lineTo(0 * sx, 72 * sy);
     path.close();

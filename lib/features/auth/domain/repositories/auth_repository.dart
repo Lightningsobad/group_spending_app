@@ -14,18 +14,14 @@ abstract class AuthRepository {
     required String otp,
   });
 
-  Future<void> resendVerificationOtp({
-    required String email,
-  });
+  Future<void> resendVerificationOtp({required String email});
 
   Future<AuthTokensEntity> login({
     required String email,
     required String password,
   });
 
-  Future<AuthTokensEntity> refreshToken({
-    required String refreshToken,
-  });
+  Future<AuthTokensEntity> refreshToken({required String refreshToken});
 
   Future<void> logout();
 
