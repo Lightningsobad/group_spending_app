@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../l10n/l10n.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
 import '../widgets/auth_header.dart';
@@ -49,19 +50,20 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void _onLogin() {
+    final tr = context.l10n;
     final email = _loginEmailController.text.trim();
     final password = _loginPasswordController.text;
 
     if (email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Vui lòng nhập địa chỉ email.')),
+        SnackBar(content: Text(tr.enterEmailPrompt)),
       );
       return;
     }
     if (password.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Vui lòng nhập mật khẩu.')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr.enterPasswordPrompt)),
+      );
       return;
     }
 
@@ -69,26 +71,27 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void _onRegister() {
+    final tr = context.l10n;
     final name = _regNameController.text.trim();
     final email = _regEmailController.text.trim();
     final phone = _regPhoneController.text.trim();
     final password = _regPasswordController.text;
 
     if (name.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Vui lòng nhập họ và tên.')));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(tr.enterFullNamePrompt)),
+      );
       return;
     }
     if (email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Vui lòng nhập địa chỉ email.')),
+        SnackBar(content: Text(tr.enterEmailPrompt)),
       );
       return;
     }
     if (password.length < 6) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Mật khẩu phải có ít nhất 6 ký tự.')),
+        SnackBar(content: Text(tr.passwordMinLengthPrompt)),
       );
       return;
     }
@@ -102,18 +105,20 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void _onGoogleAuth() {
+    final tr = context.l10n;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Tính năng đăng nhập Google đang được phát triển.'),
-        duration: Duration(seconds: 2),
+      SnackBar(
+        content: Text(tr.googleAuthNotice),
+        duration: const Duration(seconds: 2),
       ),
     );
   }
 
   void _onForgotPassword() {
+    final tr = context.l10n;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Chức năng Quên mật khẩu đang được hỗ trợ.'),
+      SnackBar(
+        content: Text(tr.forgotPasswordNotice),
       ),
     );
   }
@@ -219,8 +224,8 @@ class _AuthScreenState extends State<AuthScreen> {
                     children: [
                       Text(
                         _isLoginMode
-                            ? 'Chưa có tài khoản? '
-                            : 'Đã có tài khoản? ',
+                            ? context.l10n.noAccountPrompt
+                            : context.l10n.hasAccountPrompt,
                         style: AppTextStyle.medium(
                           fontSize: 13,
                           color: AppColors.textSecondary,
@@ -233,7 +238,9 @@ class _AuthScreenState extends State<AuthScreen> {
                           });
                         },
                         child: Text(
-                          _isLoginMode ? 'Đăng ký ngay' : 'Đăng nhập',
+                          _isLoginMode
+                              ? context.l10n.registerNow
+                              : context.l10n.loginNow,
                           style: AppTextStyle.bold(
                             fontSize: 13,
                             color: AppColors.emeraldForest,

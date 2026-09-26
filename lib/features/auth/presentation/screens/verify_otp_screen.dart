@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../../shared/widgets/app_primary_button.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
@@ -54,11 +55,12 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
   }
 
   void _onVerify() {
+    final tr = context.l10n;
     final otp = _otpController.text.trim();
     if (otp.length < 6) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Vui lòng nhập đủ 6 chữ số mã xác thực OTP.'),
+        SnackBar(
+          content: Text(tr.enterFullOtpPrompt),
         ),
       );
       return;
@@ -73,6 +75,8 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = context.l10n;
+
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (didPop, result) {
@@ -182,7 +186,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                         ),
                         const SizedBox(height: 16),
                         Text(
-                          'Xác thực địa chỉ Email',
+                          tr.otpTitle,
                           style: AppTextStyle.black(
                             fontSize: 22,
                             color: AppColors.textDark,
@@ -191,7 +195,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          'Mã OTP 6 số bảo mật đã được gửi đến hòm thư của bạn',
+                          tr.otpSubtitle,
                           textAlign: TextAlign.center,
                           style: AppTextStyle.medium(
                             fontSize: 13,
@@ -241,7 +245,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     children: [
                       Flexible(
                         child: Text(
-                          'Mã xác thực OTP',
+                          tr.otpInputLabel,
                           style: AppTextStyle.bold(
                             fontSize: 12,
                             color: AppColors.textSlate800,
@@ -250,7 +254,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        '6 chữ số bảo mật',
+                        tr.otpDigitsHint,
                         style: AppTextStyle.medium(
                           fontSize: 12,
                           color: AppColors.textSecondary,
@@ -271,7 +275,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                         previous.isLoading != current.isLoading,
                     builder: (context, state) {
                       return AppPrimaryButton(
-                        text: 'Xác thực & Kích hoạt',
+                        text: tr.verifyAndActivate,
                         isLoading: state.isLoading,
                         onPressed: _onVerify,
                         trailingIcon: const Icon(

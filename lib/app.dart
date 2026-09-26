@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'app_routes.dart';
-import 'core/constants/app_colors.dart';
+import 'l10n/app_localizations.dart';
+import 'core/l10n/locale_cubit.dart';
 import 'core/network/api_client.dart';
 import 'core/router/app_router.dart';
 import 'core/session/session_coordinator.dart';
 import 'core/storage/app_preferences.dart';
 import 'core/storage/token_storage.dart';
+import 'core/theme/app_theme.dart';
+import 'core/theme/theme_cubit.dart';
 import 'features/auth/data/datasources/auth_remote_data_source.dart';
 import 'features/auth/data/repositories/auth_repository_impl.dart';
 import 'features/auth/domain/repositories/auth_repository.dart';
@@ -20,6 +22,8 @@ class FairShareApp extends StatefulWidget {
   final ApiClient? apiClient;
   final AuthRepository? authRepository;
   final SessionCoordinator? sessionCoordinator;
+  final ThemeCubit? themeCubit;
+  final LocaleCubit? localeCubit;
 
   const FairShareApp({
     super.key,
@@ -28,6 +32,8 @@ class FairShareApp extends StatefulWidget {
     this.apiClient,
     this.authRepository,
     this.sessionCoordinator,
+    this.themeCubit,
+    this.localeCubit,
   });
 
   @override
@@ -39,6 +45,8 @@ class _FairShareAppState extends State<FairShareApp> {
   late final ApiClient _apiClient;
   late final AuthRepository _authRepository;
   late final AuthCubit _authCubit;
+  late final ThemeCubit _themeCubit;
+  late final LocaleCubit _localeCubit;
   late final GoRouter _router;
   bool _isDisposed = false;
 
@@ -49,6 +57,9 @@ class _FairShareAppState extends State<FairShareApp> {
         widget.sessionCoordinator ??
         SessionCoordinator(tokenStorage: widget.tokenStorage);
     _sessionCoordinator.init();
+
+    _themeCubit = widget.themeCubit ?? ThemeCubit(widget.appPreferences);
+    _localeCubit = widget.localeCubit ?? LocaleCubit(widget.appPreferences);
 
     _apiClient =
         widget.apiClient ??
@@ -84,6 +95,8 @@ class _FairShareAppState extends State<FairShareApp> {
   void dispose() {
     _isDisposed = true;
     _authCubit.close();
+    _themeCubit.close();
+    _localeCubit.close();
     super.dispose();
   }
 
@@ -95,23 +108,30 @@ class _FairShareAppState extends State<FairShareApp> {
         RepositoryProvider<TokenStorage>.value(value: widget.tokenStorage),
         RepositoryProvider<AuthRepository>.value(value: _authRepository),
       ],
-      child: BlocProvider<AuthCubit>.value(
-        value: _authCubit,
-        child: MaterialApp.router(
-          title: 'FairShare',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: AppColors.primaryGreen,
-              primary: AppColors.primaryGreen,
-              secondary: AppColors.emerald,
-              surface: AppColors.backgroundLight,
-            ),
-            scaffoldBackgroundColor: AppColors.backgroundLight,
-            textTheme: GoogleFonts.nunitoTextTheme(Theme.of(context).textTheme),
-          ),
-          routerConfig: _router,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthCubit>.value(value: _authCubit),
+          BlocProvider<ThemeCubit>.value(value: _themeCubit),
+          BlocProvider<LocaleCubit>.value(value: _localeCubit),
+        ],
+        child: BlocBuilder<ThemeCubit, ThemeMode>(
+          builder: (context, themeMode) {
+            return BlocBuilder<LocaleCubit, Locale>(
+              builder: (context, locale) {
+                return MaterialApp.router(
+                  title: 'FairShare',
+                  debugShowCheckedModeBanner: false,
+                  theme: AppTheme.lightTheme,
+                  darkTheme: AppTheme.darkTheme,
+                  themeMode: themeMode,
+                  locale: locale,
+                  localizationsDelegates: AppLocalizations.localizationsDelegates,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  routerConfig: _router,
+                );
+              },
+            );
+          },
         ),
       ),
     );

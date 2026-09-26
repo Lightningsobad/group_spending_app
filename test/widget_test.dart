@@ -60,6 +60,11 @@ void main() {
     await tester.tap(loginBtn);
     await tester.pumpAndSettle();
 
+    // Verify arrived on Main Shell and tap Settings tab to access logout
+    expect(find.text('Tổng quan'), findsAtLeastNWidgets(1));
+    await tester.tap(find.text('Cài đặt'));
+    await tester.pumpAndSettle();
+
     expect(find.byTooltip('Đăng xuất'), findsOneWidget);
   });
 }

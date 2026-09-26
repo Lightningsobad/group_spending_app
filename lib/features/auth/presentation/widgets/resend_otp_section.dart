@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../l10n/l10n.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
 
@@ -18,7 +19,8 @@ class ResendOtpSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Chỉ lắng nghe trường resendCountdown, tránh rebuild toàn bộ màn hình mỗi giây (UI-02)
+    final tr = context.l10n;
+
     return BlocSelector<AuthCubit, AuthState, int>(
       selector: (state) => state.resendCountdown,
       builder: (context, countdown) {
@@ -33,7 +35,7 @@ class ResendOtpSection extends StatelessWidget {
               ),
               const SizedBox(width: 6),
               Text(
-                'Gửi lại mã sau ',
+                tr.localeName == 'en' ? 'Resend code in ' : 'Gửi lại mã sau ',
                 style: AppTextStyle.medium(
                   fontSize: 13,
                   color: AppColors.textSecondary,
@@ -69,7 +71,7 @@ class ResendOtpSection extends StatelessWidget {
               const Icon(Icons.refresh, size: 16, color: AppColors.emeraldDark),
               const SizedBox(width: 6),
               Text(
-                'Gửi lại mã xác thực',
+                tr.resendOtpNow,
                 style: AppTextStyle.bold(
                   fontSize: 13,
                   color: AppColors.emeraldDark,

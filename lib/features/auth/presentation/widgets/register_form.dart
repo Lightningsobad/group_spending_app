@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../../shared/widgets/app_primary_button.dart';
 import '../../../../shared/widgets/app_text_field.dart';
 
@@ -26,11 +27,13 @@ class RegisterForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = context.l10n;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AppTextField(
-          label: 'Họ và tên',
+          label: tr.fullNameLabel,
           controller: nameController,
           hintText: 'Nguyễn Nhật Minh',
           prefixIcon: const Icon(
@@ -42,7 +45,7 @@ class RegisterForm extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         AppTextField(
-          label: 'Địa chỉ Email',
+          label: tr.emailLabel,
           controller: emailController,
           hintText: 'minh.nguyen@example.com',
           keyboardType: TextInputType.emailAddress,
@@ -55,8 +58,8 @@ class RegisterForm extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         AppTextField(
-          label: 'Số điện thoại',
-          optionalTag: '(Không bắt buộc / Tùy chọn)',
+          label: tr.phoneLabel,
+          optionalTag: tr.phoneOptionalTag,
           controller: phoneController,
           hintText: 'VD: 0912 345 678',
           keyboardType: TextInputType.phone,
@@ -69,7 +72,7 @@ class RegisterForm extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         AppTextField(
-          label: 'Mật khẩu',
+          label: tr.passwordLabel,
           controller: passwordController,
           hintText: '••••••••',
           isPassword: true,
@@ -82,7 +85,7 @@ class RegisterForm extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         AppPrimaryButton(
-          text: 'Tạo tài khoản mới',
+          text: tr.registerButton,
           isLoading: isLoading,
           onPressed: onRegister,
           trailingIcon: const Icon(
