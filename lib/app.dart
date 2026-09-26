@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'app_routes.dart';
 import 'l10n/app_localizations.dart';
 import 'core/l10n/locale_cubit.dart';
@@ -9,12 +10,21 @@ import 'core/router/app_router.dart';
 import 'core/session/session_coordinator.dart';
 import 'core/storage/app_preferences.dart';
 import 'core/storage/token_storage.dart';
+import 'core/sync/data_sync_coordinator.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_cubit.dart';
 import 'features/auth/data/datasources/auth_remote_data_source.dart';
 import 'features/auth/data/repositories/auth_repository_impl.dart';
 import 'features/auth/domain/repositories/auth_repository.dart';
 import 'features/auth/presentation/cubit/auth_cubit.dart';
+import 'features/dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'features/debts/data/datasources/debts_remote_data_source.dart';
+import 'features/debts/data/repositories/debts_repository_impl.dart';
+import 'features/debts/domain/repositories/debts_repository.dart';
+import 'features/groups/data/datasources/groups_remote_data_source.dart';
+import 'features/groups/data/repositories/groups_repository_impl.dart';
+import 'features/groups/domain/repositories/groups_repository.dart';
+import 'features/groups/presentation/cubit/groups_cubit.dart';
 
 class FairShareApp extends StatefulWidget {
   final AppPreferences appPreferences;
@@ -22,8 +32,13 @@ class FairShareApp extends StatefulWidget {
   final ApiClient? apiClient;
   final AuthRepository? authRepository;
   final SessionCoordinator? sessionCoordinator;
+  final DataSyncCoordinator? dataSyncCoordinator;
   final ThemeCubit? themeCubit;
   final LocaleCubit? localeCubit;
+  final DebtsRepository? debtsRepository;
+  final GroupsRepository? groupsRepository;
+  final DashboardCubit? dashboardCubit;
+  final GroupsCubit? groupsCubit;
 
   const FairShareApp({
     super.key,
@@ -32,8 +47,13 @@ class FairShareApp extends StatefulWidget {
     this.apiClient,
     this.authRepository,
     this.sessionCoordinator,
+    this.dataSyncCoordinator,
     this.themeCubit,
     this.localeCubit,
+    this.debtsRepository,
+    this.groupsRepository,
+    this.dashboardCubit,
+    this.groupsCubit,
   });
 
   @override
@@ -42,11 +62,14 @@ class FairShareApp extends StatefulWidget {
 
 class _FairShareAppState extends State<FairShareApp> {
   late final SessionCoordinator _sessionCoordinator;
+  late final DataSyncCoordinator _dataSyncCoordinator;
   late final ApiClient _apiClient;
   late final AuthRepository _authRepository;
   late final AuthCubit _authCubit;
   late final ThemeCubit _themeCubit;
   late final LocaleCubit _localeCubit;
+  late final DebtsRepository _debtsRepository;
+  late final GroupsRepository _groupsRepository;
   late final GoRouter _router;
   bool _isDisposed = false;
 
@@ -57,6 +80,9 @@ class _FairShareAppState extends State<FairShareApp> {
         widget.sessionCoordinator ??
         SessionCoordinator(tokenStorage: widget.tokenStorage);
     _sessionCoordinator.init();
+
+    _dataSyncCoordinator =
+        widget.dataSyncCoordinator ?? DataSyncCoordinator();
 
     _themeCubit = widget.themeCubit ?? ThemeCubit(widget.appPreferences);
     _localeCubit = widget.localeCubit ?? LocaleCubit(widget.appPreferences);
@@ -85,8 +111,21 @@ class _FairShareAppState extends State<FairShareApp> {
 
     _authCubit = AuthCubit(_authRepository);
 
+    final debtsRemoteDataSource = DebtsRemoteDataSourceImpl(_apiClient);
+    _debtsRepository =
+        widget.debtsRepository ??
+        DebtsRepositoryImpl(remoteDataSource: debtsRemoteDataSource);
+
+    final groupsRemoteDataSource = GroupsRemoteDataSourceImpl(_apiClient);
+    _groupsRepository =
+        widget.groupsRepository ??
+        GroupsRepositoryImpl(remoteDataSource: groupsRemoteDataSource);
+
     _router = AppRouter.createRouter(
-      routes: buildAppRoutes(),
+      routes: buildAppRoutes(
+        dashboardCubit: widget.dashboardCubit,
+        groupsCubit: widget.groupsCubit,
+      ),
       sessionCoordinator: _sessionCoordinator,
     );
   }
@@ -106,7 +145,11 @@ class _FairShareAppState extends State<FairShareApp> {
       providers: [
         RepositoryProvider<AppPreferences>.value(value: widget.appPreferences),
         RepositoryProvider<TokenStorage>.value(value: widget.tokenStorage),
+        ChangeNotifierProvider<SessionCoordinator>.value(value: _sessionCoordinator),
+        ChangeNotifierProvider<DataSyncCoordinator>.value(value: _dataSyncCoordinator),
         RepositoryProvider<AuthRepository>.value(value: _authRepository),
+        RepositoryProvider<DebtsRepository>.value(value: _debtsRepository),
+        RepositoryProvider<GroupsRepository>.value(value: _groupsRepository),
       ],
       child: MultiBlocProvider(
         providers: [

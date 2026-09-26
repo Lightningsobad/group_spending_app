@@ -294,4 +294,243 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get logoutConfirmTitle => 'Bạn có chắc chắn muốn đăng xuất?';
+
+  @override
+  String get financialOverviewTitle => 'TỔNG QUAN SỐ DƯ TÀI CHÍNH';
+
+  @override
+  String get youOwe => 'Bạn đang nợ';
+
+  @override
+  String get paySoonSubtitle => 'Cần thanh toán sớm';
+
+  @override
+  String get youAreOwed => 'Bạn nhận';
+
+  @override
+  String get friendsOweYouSubtitle => 'Bạn bè đang nợ bạn';
+
+  @override
+  String get addExpense => 'Thêm chi tiêu';
+
+  @override
+  String get addExpenseFeatureNotice =>
+      'Tính năng Thêm chi tiêu đang được tích hợp.';
+
+  @override
+  String get createGroupAction => 'Tạo nhóm';
+
+  @override
+  String get codeOrQrAction => 'Mã / QR';
+
+  @override
+  String get yourGroupsSection => 'CÁC NHÓM CỦA BẠN';
+
+  @override
+  String seeAllGroupsCount(int count) {
+    return 'Xem tất cả ($count)';
+  }
+
+  @override
+  String get noGroupsJoinedTitle => 'Bạn chưa tham gia nhóm nào';
+
+  @override
+  String get noGroupsJoinedSubtitle =>
+      'Hãy tạo nhóm mới hoặc gia nhập nhóm qua mã mời để bắt đầu chia tiền cùng bạn bè!';
+
+  @override
+  String get createGroupNow => 'Tạo nhóm ngay';
+
+  @override
+  String notificationsToggledForGroup(String name) {
+    return 'Đã thay đổi thông báo cho \"$name\".';
+  }
+
+  @override
+  String get groupListHeaderTitle => 'Danh sách nhóm của bạn';
+
+  @override
+  String get searchGroupPlaceholder => 'Tìm kiếm theo tên nhóm, thể loại...';
+
+  @override
+  String filterAllCount(int count) {
+    return 'Tất cả ($count)';
+  }
+
+  @override
+  String filterActiveCount(int count) {
+    return 'Đang hoạt động ($count)';
+  }
+
+  @override
+  String filterArchivedCount(int count) {
+    return 'Đã lưu trữ ($count)';
+  }
+
+  @override
+  String filterAdminCount(int count) {
+    return 'Tôi quản lý ($count)';
+  }
+
+  @override
+  String get noMatchingGroupsTitle => 'Không tìm thấy nhóm phù hợp';
+
+  @override
+  String get noMatchingGroupsSubtitle =>
+      'Thử tìm kiếm với từ khóa khác hoặc đổi bộ lọc.';
+
+  @override
+  String get noGroupsInTabTitle => 'Chưa có nhóm trong mục này';
+
+  @override
+  String get noGroupsInTabSubtitle =>
+      'Nhấn \"+ Tạo nhóm mới\" để tạo nhóm đầu tiên của bạn!';
+
+  @override
+  String get createGroupTitle => 'Tạo nhóm chi tiêu mới';
+
+  @override
+  String get createGroupSubtitle =>
+      'Đặt tên nhóm và chọn danh mục để bắt đầu quản lý chi tiêu chung.';
+
+  @override
+  String get groupNameLabel => 'Tên nhóm chi tiêu *';
+
+  @override
+  String get groupNameHint =>
+      'Nhập tên nhóm (VD: Chuyến đi Đà Lạt, Chung cư 402...)';
+
+  @override
+  String get groupDescLabel => 'Mô tả nhóm (Tùy chọn)';
+
+  @override
+  String get groupDescHint =>
+      'Nhập mô tả ngắn về mục đích chi tiêu của nhóm...';
+
+  @override
+  String get groupCategoryLabel => 'Danh mục nhóm';
+
+  @override
+  String get defaultCurrencyLabel => 'Tiền tệ mặc định';
+
+  @override
+  String get groupNameRequired => 'Vui lòng nhập tên nhóm.';
+
+  @override
+  String get joinGroupTitle => 'Gia nhập nhóm bằng mã mời';
+
+  @override
+  String get joinGroupSubtitle =>
+      'Nhập mã mời gồm 6-12 ký tự để tham gia nhóm chi tiêu của bạn bè.';
+
+  @override
+  String get inviteCodeLabel => 'Mã mời nhóm *';
+
+  @override
+  String get inviteCodeHint => 'VD: DALAT2024, ROOM402...';
+
+  @override
+  String get inviteCodeRequired => 'Vui lòng nhập mã mời.';
+
+  @override
+  String get joinGroupButton => 'Tham gia nhóm';
+
+  @override
+  String get groupDetailTitle => 'Chi tiết nhóm';
+
+  @override
+  String get groupInviteCodePrefix => 'Mã mời nhóm:';
+
+  @override
+  String get codeCopiedToClipboard => 'Đã sao chép mã mời vào khay nhớ tạm';
+
+  @override
+  String get copyCodeTooltip => 'Sao chép mã';
+
+  @override
+  String get archiveGroupAction => 'Lưu trữ nhóm';
+
+  @override
+  String get archiveGroupConfirmTitle => 'Xác nhận lưu trữ nhóm?';
+
+  @override
+  String get archiveGroupConfirmMessage =>
+      'Nhóm sẽ được chuyển vào mục lưu trữ và chỉ cho phép xem thông tin.';
+
+  @override
+  String get archiveConfirmButton => 'Lưu trữ';
+
+  @override
+  String get deleteGroupAction => 'Xóa nhóm';
+
+  @override
+  String get deleteGroupConfirmTitle => 'Xác nhận xóa vĩnh viễn nhóm?';
+
+  @override
+  String get deleteGroupConfirmMessage =>
+      'Hành động này sẽ xóa toàn bộ chi tiêu, công nợ, quỹ chung và danh sách thành viên của nhóm. Không thể khôi phục!';
+
+  @override
+  String get deleteConfirmButton => 'Xóa nhóm';
+
+  @override
+  String get editGroupTitle => 'Sửa thông tin nhóm';
+
+  @override
+  String get saveChanges => 'Lưu thay đổi';
+
+  @override
+  String get groupMembersTitle => 'Thành viên nhóm';
+
+  @override
+  String get loadDashboardFailed => 'Không thể tải dữ liệu tổng quan';
+
+  @override
+  String get loadGroupsFailed => 'Không thể tải danh sách nhóm';
+
+  @override
+  String get createGroupSuccess => 'Tạo nhóm thành công!';
+
+  @override
+  String get updateGroupSuccess => 'Cập nhật nhóm thành công!';
+
+  @override
+  String get archiveGroupSuccess => 'Nhóm đã được chuyển sang chế độ lưu trữ.';
+
+  @override
+  String get deleteGroupSuccess => 'Xóa nhóm thành công.';
+
+  @override
+  String get joinGroupSuccess => 'Tham gia nhóm thành công!';
+
+  @override
+  String get editGroupAction => 'Sửa nhóm';
+
+  @override
+  String get inviteCodeCardTitle => 'MÃ MỜI THAM GIA';
+
+  @override
+  String get groupFinancialOverviewTitle => 'TỔNG QUAN TÀI CHÍNH NHÓM';
+
+  @override
+  String get yourBalanceLabel => 'Số dư của bạn:';
+
+  @override
+  String get totalGroupSpendingLabel => 'Tổng chi tiêu nhóm:';
+
+  @override
+  String get totalFundCollectedLabel => 'Tổng quỹ đã thu:';
+
+  @override
+  String groupMembersCountTitle(int count) {
+    return 'THÀNH VIÊN ($count)';
+  }
+
+  @override
+  String groupMemberCountSimple(int count) {
+    return 'Nhóm có $count thành viên';
+  }
+
+  @override
+  String get deleteGroupPermanently => 'Xóa nhóm vĩnh viễn';
 }

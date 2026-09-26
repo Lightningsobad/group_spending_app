@@ -107,5 +107,133 @@
   "privacyPolicySubtitle": "Cam kết mã hóa thông tin & bảo vệ tài khoản (Xem chi tiết)",
   "logoutButton": "Đăng xuất tài khoản",
   "logoutTooltip": "Đăng xuất",
-  "logoutConfirmTitle": "Bạn có chắc chắn muốn đăng xuất?"
+  "logoutConfirmTitle": "Bạn có chắc chắn muốn đăng xuất?",
+  "financialOverviewTitle": "TỔNG QUAN SỐ DƯ TÀI CHÍNH",
+  "youOwe": "Bạn đang nợ",
+  "paySoonSubtitle": "Cần thanh toán sớm",
+  "youAreOwed": "Bạn nhận",
+  "friendsOweYouSubtitle": "Bạn bè đang nợ bạn",
+  "addExpense": "Thêm chi tiêu",
+  "addExpenseFeatureNotice": "Tính năng Thêm chi tiêu đang được tích hợp.",
+  "createGroupAction": "Tạo nhóm",
+  "codeOrQrAction": "Mã / QR",
+  "yourGroupsSection": "CÁC NHÓM CỦA BẠN",
+  "seeAllGroupsCount": "Xem tất cả ({count})",
+  "@seeAllGroupsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noGroupsJoinedTitle": "Bạn chưa tham gia nhóm nào",
+  "noGroupsJoinedSubtitle": "Hãy tạo nhóm mới hoặc gia nhập nhóm qua mã mời để bắt đầu chia tiền cùng bạn bè!",
+  "createGroupNow": "Tạo nhóm ngay",
+  "notificationsToggledForGroup": "Đã thay đổi thông báo cho \"{name}\".",
+  "@notificationsToggledForGroup": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupListHeaderTitle": "Danh sách nhóm của bạn",
+  "searchGroupPlaceholder": "Tìm kiếm theo tên nhóm, thể loại...",
+  "filterAllCount": "Tất cả ({count})",
+  "@filterAllCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterActiveCount": "Đang hoạt động ({count})",
+  "@filterActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterArchivedCount": "Đã lưu trữ ({count})",
+  "@filterArchivedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterAdminCount": "Tôi quản lý ({count})",
+  "@filterAdminCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noMatchingGroupsTitle": "Không tìm thấy nhóm phù hợp",
+  "noMatchingGroupsSubtitle": "Thử tìm kiếm với từ khóa khác hoặc đổi bộ lọc.",
+  "noGroupsInTabTitle": "Chưa có nhóm trong mục này",
+  "noGroupsInTabSubtitle": "Nhấn \"+ Tạo nhóm mới\" để tạo nhóm đầu tiên của bạn!",
+  "createGroupTitle": "Tạo nhóm chi tiêu mới",
+  "createGroupSubtitle": "Đặt tên nhóm và chọn danh mục để bắt đầu quản lý chi tiêu chung.",
+  "groupNameLabel": "Tên nhóm chi tiêu *",
+  "groupNameHint": "Nhập tên nhóm (VD: Chuyến đi Đà Lạt, Chung cư 402...)",
+  "groupDescLabel": "Mô tả nhóm (Tùy chọn)",
+  "groupDescHint": "Nhập mô tả ngắn về mục đích chi tiêu của nhóm...",
+  "groupCategoryLabel": "Danh mục nhóm",
+  "defaultCurrencyLabel": "Tiền tệ mặc định",
+  "groupNameRequired": "Vui lòng nhập tên nhóm.",
+  "joinGroupTitle": "Gia nhập nhóm bằng mã mời",
+  "joinGroupSubtitle": "Nhập mã mời gồm 6-12 ký tự để tham gia nhóm chi tiêu của bạn bè.",
+  "inviteCodeLabel": "Mã mời nhóm *",
+  "inviteCodeHint": "VD: DALAT2024, ROOM402...",
+  "inviteCodeRequired": "Vui lòng nhập mã mời.",
+  "joinGroupButton": "Tham gia nhóm",
+  "groupDetailTitle": "Chi tiết nhóm",
+  "groupInviteCodePrefix": "Mã mời nhóm:",
+  "codeCopiedToClipboard": "Đã sao chép mã mời vào khay nhớ tạm",
+  "copyCodeTooltip": "Sao chép mã",
+  "archiveGroupAction": "Lưu trữ nhóm",
+  "archiveGroupConfirmTitle": "Xác nhận lưu trữ nhóm?",
+  "archiveGroupConfirmMessage": "Nhóm sẽ được chuyển vào mục lưu trữ và chỉ cho phép xem thông tin.",
+  "archiveConfirmButton": "Lưu trữ",
+  "deleteGroupAction": "Xóa nhóm",
+  "deleteGroupConfirmTitle": "Xác nhận xóa vĩnh viễn nhóm?",
+  "deleteGroupConfirmMessage": "Hành động này sẽ xóa toàn bộ chi tiêu, công nợ, quỹ chung và danh sách thành viên của nhóm. Không thể khôi phục!",
+  "deleteConfirmButton": "Xóa nhóm",
+  "editGroupTitle": "Sửa thông tin nhóm",
+  "saveChanges": "Lưu thay đổi",
+  "groupMembersTitle": "Thành viên nhóm",
+  "loadDashboardFailed": "Không thể tải dữ liệu tổng quan",
+  "loadGroupsFailed": "Không thể tải danh sách nhóm",
+  "createGroupSuccess": "Tạo nhóm thành công!",
+  "updateGroupSuccess": "Cập nhật nhóm thành công!",
+  "archiveGroupSuccess": "Nhóm đã được chuyển sang chế độ lưu trữ.",
+  "deleteGroupSuccess": "Xóa nhóm thành công.",
+  "joinGroupSuccess": "Tham gia nhóm thành công!",
+  "cancel": "Hủy",
+  "editGroupAction": "Sửa nhóm",
+  "inviteCodeCardTitle": "MÃ MỜI THAM GIA",
+  "groupFinancialOverviewTitle": "TỔNG QUAN TÀI CHÍNH NHÓM",
+  "yourBalanceLabel": "Số dư của bạn:",
+  "totalGroupSpendingLabel": "Tổng chi tiêu nhóm:",
+  "totalFundCollectedLabel": "Tổng quỹ đã thu:",
+  "groupMembersCountTitle": "THÀNH VIÊN ({count})",
+  "@groupMembersCountTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupMemberCountSimple": "Nhóm có {count} thành viên",
+  "@groupMemberCountSimple": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteGroupPermanently": "Xóa nhóm vĩnh viễn"
 }

@@ -296,4 +296,242 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logoutConfirmTitle => 'Are you sure you want to log out?';
+
+  @override
+  String get financialOverviewTitle => 'FINANCIAL BALANCE OVERVIEW';
+
+  @override
+  String get youOwe => 'You owe';
+
+  @override
+  String get paySoonSubtitle => 'Due soon';
+
+  @override
+  String get youAreOwed => 'You receive';
+
+  @override
+  String get friendsOweYouSubtitle => 'Friends owe you';
+
+  @override
+  String get addExpense => 'Add expense';
+
+  @override
+  String get addExpenseFeatureNotice =>
+      'Add expense feature is being integrated.';
+
+  @override
+  String get createGroupAction => 'Create group';
+
+  @override
+  String get codeOrQrAction => 'Code / QR';
+
+  @override
+  String get yourGroupsSection => 'YOUR GROUPS';
+
+  @override
+  String seeAllGroupsCount(int count) {
+    return 'See all ($count)';
+  }
+
+  @override
+  String get noGroupsJoinedTitle => 'You haven\'t joined any groups yet';
+
+  @override
+  String get noGroupsJoinedSubtitle =>
+      'Create a new group or join with an invite code to start splitting expenses with friends!';
+
+  @override
+  String get createGroupNow => 'Create a group now';
+
+  @override
+  String notificationsToggledForGroup(String name) {
+    return 'Notifications updated for \"$name\".';
+  }
+
+  @override
+  String get groupListHeaderTitle => 'Your group list';
+
+  @override
+  String get searchGroupPlaceholder => 'Search by group name, category...';
+
+  @override
+  String filterAllCount(int count) {
+    return 'All ($count)';
+  }
+
+  @override
+  String filterActiveCount(int count) {
+    return 'Active ($count)';
+  }
+
+  @override
+  String filterArchivedCount(int count) {
+    return 'Archived ($count)';
+  }
+
+  @override
+  String filterAdminCount(int count) {
+    return 'Managed by me ($count)';
+  }
+
+  @override
+  String get noMatchingGroupsTitle => 'No matching groups found';
+
+  @override
+  String get noMatchingGroupsSubtitle =>
+      'Try searching with a different keyword or change filter.';
+
+  @override
+  String get noGroupsInTabTitle => 'No groups in this section';
+
+  @override
+  String get noGroupsInTabSubtitle =>
+      'Tap \"+ Create new group\" to start your first group!';
+
+  @override
+  String get createGroupTitle => 'Create new expense group';
+
+  @override
+  String get createGroupSubtitle =>
+      'Enter group name and category to manage shared expenses.';
+
+  @override
+  String get groupNameLabel => 'Expense group name *';
+
+  @override
+  String get groupNameHint => 'Enter group name (e.g., Dalat Trip, Apt 402...)';
+
+  @override
+  String get groupDescLabel => 'Group description (Optional)';
+
+  @override
+  String get groupDescHint =>
+      'Enter a brief note about this group\'s expenses...';
+
+  @override
+  String get groupCategoryLabel => 'Group category';
+
+  @override
+  String get defaultCurrencyLabel => 'Default currency';
+
+  @override
+  String get groupNameRequired => 'Please enter a group name.';
+
+  @override
+  String get joinGroupTitle => 'Join group via invite code';
+
+  @override
+  String get joinGroupSubtitle =>
+      'Enter a 6-12 character code to join your friends\' group.';
+
+  @override
+  String get inviteCodeLabel => 'Group invite code *';
+
+  @override
+  String get inviteCodeHint => 'E.g., DALAT2024, ROOM402...';
+
+  @override
+  String get inviteCodeRequired => 'Please enter an invite code.';
+
+  @override
+  String get joinGroupButton => 'Join group';
+
+  @override
+  String get groupDetailTitle => 'Group details';
+
+  @override
+  String get groupInviteCodePrefix => 'Group code:';
+
+  @override
+  String get codeCopiedToClipboard => 'Invite code copied to clipboard';
+
+  @override
+  String get copyCodeTooltip => 'Copy code';
+
+  @override
+  String get archiveGroupAction => 'Archive group';
+
+  @override
+  String get archiveGroupConfirmTitle => 'Confirm archiving group?';
+
+  @override
+  String get archiveGroupConfirmMessage =>
+      'Group will be moved to archives and become read-only.';
+
+  @override
+  String get archiveConfirmButton => 'Archive';
+
+  @override
+  String get deleteGroupAction => 'Delete group';
+
+  @override
+  String get deleteGroupConfirmTitle => 'Confirm permanent deletion?';
+
+  @override
+  String get deleteGroupConfirmMessage =>
+      'This action will permanently remove all expenses, debts, funds, and member records. Cannot be undone!';
+
+  @override
+  String get deleteConfirmButton => 'Delete group';
+
+  @override
+  String get editGroupTitle => 'Edit group information';
+
+  @override
+  String get saveChanges => 'Save changes';
+
+  @override
+  String get groupMembersTitle => 'Group members';
+
+  @override
+  String get loadDashboardFailed => 'Failed to load dashboard overview';
+
+  @override
+  String get loadGroupsFailed => 'Failed to load group list';
+
+  @override
+  String get createGroupSuccess => 'Group created successfully!';
+
+  @override
+  String get updateGroupSuccess => 'Group updated successfully!';
+
+  @override
+  String get archiveGroupSuccess => 'Group has been moved to archives.';
+
+  @override
+  String get deleteGroupSuccess => 'Group deleted successfully.';
+
+  @override
+  String get joinGroupSuccess => 'Joined group successfully!';
+
+  @override
+  String get editGroupAction => 'Edit group';
+
+  @override
+  String get inviteCodeCardTitle => 'INVITE CODE';
+
+  @override
+  String get groupFinancialOverviewTitle => 'GROUP FINANCIAL OVERVIEW';
+
+  @override
+  String get yourBalanceLabel => 'Your balance:';
+
+  @override
+  String get totalGroupSpendingLabel => 'Total group spending:';
+
+  @override
+  String get totalFundCollectedLabel => 'Total fund collected:';
+
+  @override
+  String groupMembersCountTitle(int count) {
+    return 'MEMBERS ($count)';
+  }
+
+  @override
+  String groupMemberCountSimple(int count) {
+    return 'Group has $count members';
+  }
+
+  @override
+  String get deleteGroupPermanently => 'Delete group permanently';
 }

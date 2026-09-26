@@ -107,5 +107,133 @@
   "privacyPolicySubtitle": "Commitment to encryption and account protection (Details)",
   "logoutButton": "Log out account",
   "logoutTooltip": "Log out",
-  "logoutConfirmTitle": "Are you sure you want to log out?"
+  "logoutConfirmTitle": "Are you sure you want to log out?",
+  "financialOverviewTitle": "FINANCIAL BALANCE OVERVIEW",
+  "youOwe": "You owe",
+  "paySoonSubtitle": "Due soon",
+  "youAreOwed": "You receive",
+  "friendsOweYouSubtitle": "Friends owe you",
+  "addExpense": "Add expense",
+  "addExpenseFeatureNotice": "Add expense feature is being integrated.",
+  "createGroupAction": "Create group",
+  "codeOrQrAction": "Code / QR",
+  "yourGroupsSection": "YOUR GROUPS",
+  "seeAllGroupsCount": "See all ({count})",
+  "@seeAllGroupsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noGroupsJoinedTitle": "You haven't joined any groups yet",
+  "noGroupsJoinedSubtitle": "Create a new group or join with an invite code to start splitting expenses with friends!",
+  "createGroupNow": "Create a group now",
+  "notificationsToggledForGroup": "Notifications updated for \"{name}\".",
+  "@notificationsToggledForGroup": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupListHeaderTitle": "Your group list",
+  "searchGroupPlaceholder": "Search by group name, category...",
+  "filterAllCount": "All ({count})",
+  "@filterAllCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterActiveCount": "Active ({count})",
+  "@filterActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterArchivedCount": "Archived ({count})",
+  "@filterArchivedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterAdminCount": "Managed by me ({count})",
+  "@filterAdminCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noMatchingGroupsTitle": "No matching groups found",
+  "noMatchingGroupsSubtitle": "Try searching with a different keyword or change filter.",
+  "noGroupsInTabTitle": "No groups in this section",
+  "noGroupsInTabSubtitle": "Tap \"+ Create new group\" to start your first group!",
+  "createGroupTitle": "Create new expense group",
+  "createGroupSubtitle": "Enter group name and category to manage shared expenses.",
+  "groupNameLabel": "Expense group name *",
+  "groupNameHint": "Enter group name (e.g., Dalat Trip, Apt 402...)",
+  "groupDescLabel": "Group description (Optional)",
+  "groupDescHint": "Enter a brief note about this group's expenses...",
+  "groupCategoryLabel": "Group category",
+  "defaultCurrencyLabel": "Default currency",
+  "groupNameRequired": "Please enter a group name.",
+  "joinGroupTitle": "Join group via invite code",
+  "joinGroupSubtitle": "Enter a 6-12 character code to join your friends' group.",
+  "inviteCodeLabel": "Group invite code *",
+  "inviteCodeHint": "E.g., DALAT2024, ROOM402...",
+  "inviteCodeRequired": "Please enter an invite code.",
+  "joinGroupButton": "Join group",
+  "groupDetailTitle": "Group details",
+  "groupInviteCodePrefix": "Group code:",
+  "codeCopiedToClipboard": "Invite code copied to clipboard",
+  "copyCodeTooltip": "Copy code",
+  "archiveGroupAction": "Archive group",
+  "archiveGroupConfirmTitle": "Confirm archiving group?",
+  "archiveGroupConfirmMessage": "Group will be moved to archives and become read-only.",
+  "archiveConfirmButton": "Archive",
+  "deleteGroupAction": "Delete group",
+  "deleteGroupConfirmTitle": "Confirm permanent deletion?",
+  "deleteGroupConfirmMessage": "This action will permanently remove all expenses, debts, funds, and member records. Cannot be undone!",
+  "deleteConfirmButton": "Delete group",
+  "editGroupTitle": "Edit group information",
+  "saveChanges": "Save changes",
+  "groupMembersTitle": "Group members",
+  "loadDashboardFailed": "Failed to load dashboard overview",
+  "loadGroupsFailed": "Failed to load group list",
+  "createGroupSuccess": "Group created successfully!",
+  "updateGroupSuccess": "Group updated successfully!",
+  "archiveGroupSuccess": "Group has been moved to archives.",
+  "deleteGroupSuccess": "Group deleted successfully.",
+  "joinGroupSuccess": "Joined group successfully!",
+  "cancel": "Cancel",
+  "editGroupAction": "Edit group",
+  "inviteCodeCardTitle": "INVITE CODE",
+  "groupFinancialOverviewTitle": "GROUP FINANCIAL OVERVIEW",
+  "yourBalanceLabel": "Your balance:",
+  "totalGroupSpendingLabel": "Total group spending:",
+  "totalFundCollectedLabel": "Total fund collected:",
+  "groupMembersCountTitle": "MEMBERS ({count})",
+  "@groupMembersCountTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupMemberCountSimple": "Group has {count} members",
+  "@groupMemberCountSimple": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteGroupPermanently": "Delete group permanently"
 }
