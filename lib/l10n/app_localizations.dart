@@ -643,6 +643,432 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Bạn có chắc chắn muốn đăng xuất?'**
   String get logoutConfirmTitle;
+
+  /// No description provided for @financialOverviewTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'TỔNG QUAN SỐ DƯ TÀI CHÍNH'**
+  String get financialOverviewTitle;
+
+  /// No description provided for @youOwe.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang nợ'**
+  String get youOwe;
+
+  /// No description provided for @paySoonSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cần thanh toán sớm'**
+  String get paySoonSubtitle;
+
+  /// No description provided for @youAreOwed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn nhận'**
+  String get youAreOwed;
+
+  /// No description provided for @friendsOweYouSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn bè đang nợ bạn'**
+  String get friendsOweYouSubtitle;
+
+  /// No description provided for @addExpense.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm chi tiêu'**
+  String get addExpense;
+
+  /// No description provided for @addExpenseFeatureNotice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tính năng Thêm chi tiêu đang được tích hợp.'**
+  String get addExpenseFeatureNotice;
+
+  /// No description provided for @createGroupAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo nhóm'**
+  String get createGroupAction;
+
+  /// No description provided for @codeOrQrAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã / QR'**
+  String get codeOrQrAction;
+
+  /// No description provided for @yourGroupsSection.
+  ///
+  /// In vi, this message translates to:
+  /// **'CÁC NHÓM CỦA BẠN'**
+  String get yourGroupsSection;
+
+  /// No description provided for @seeAllGroupsCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem tất cả ({count})'**
+  String seeAllGroupsCount(int count);
+
+  /// No description provided for @noGroupsJoinedTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa tham gia nhóm nào'**
+  String get noGroupsJoinedTitle;
+
+  /// No description provided for @noGroupsJoinedSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hãy tạo nhóm mới hoặc gia nhập nhóm qua mã mời để bắt đầu chia tiền cùng bạn bè!'**
+  String get noGroupsJoinedSubtitle;
+
+  /// No description provided for @createGroupNow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo nhóm ngay'**
+  String get createGroupNow;
+
+  /// No description provided for @notificationsToggledForGroup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã thay đổi thông báo cho \"{name}\".'**
+  String notificationsToggledForGroup(String name);
+
+  /// No description provided for @groupListHeaderTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh sách nhóm của bạn'**
+  String get groupListHeaderTitle;
+
+  /// No description provided for @searchGroupPlaceholder.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm kiếm theo tên nhóm, thể loại...'**
+  String get searchGroupPlaceholder;
+
+  /// No description provided for @filterAllCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả ({count})'**
+  String filterAllCount(int count);
+
+  /// No description provided for @filterActiveCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang hoạt động ({count})'**
+  String filterActiveCount(int count);
+
+  /// No description provided for @filterArchivedCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã lưu trữ ({count})'**
+  String filterArchivedCount(int count);
+
+  /// No description provided for @filterAdminCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tôi quản lý ({count})'**
+  String filterAdminCount(int count);
+
+  /// No description provided for @noMatchingGroupsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy nhóm phù hợp'**
+  String get noMatchingGroupsTitle;
+
+  /// No description provided for @noMatchingGroupsSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử tìm kiếm với từ khóa khác hoặc đổi bộ lọc.'**
+  String get noMatchingGroupsSubtitle;
+
+  /// No description provided for @noGroupsInTabTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có nhóm trong mục này'**
+  String get noGroupsInTabTitle;
+
+  /// No description provided for @noGroupsInTabSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhấn \"+ Tạo nhóm mới\" để tạo nhóm đầu tiên của bạn!'**
+  String get noGroupsInTabSubtitle;
+
+  /// No description provided for @createGroupTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo nhóm chi tiêu mới'**
+  String get createGroupTitle;
+
+  /// No description provided for @createGroupSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt tên nhóm và chọn danh mục để bắt đầu quản lý chi tiêu chung.'**
+  String get createGroupSubtitle;
+
+  /// No description provided for @groupNameLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên nhóm chi tiêu *'**
+  String get groupNameLabel;
+
+  /// No description provided for @groupNameHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập tên nhóm (VD: Chuyến đi Đà Lạt, Chung cư 402...)'**
+  String get groupNameHint;
+
+  /// No description provided for @groupDescLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mô tả nhóm (Tùy chọn)'**
+  String get groupDescLabel;
+
+  /// No description provided for @groupDescHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập mô tả ngắn về mục đích chi tiêu của nhóm...'**
+  String get groupDescHint;
+
+  /// No description provided for @groupCategoryLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh mục nhóm'**
+  String get groupCategoryLabel;
+
+  /// No description provided for @defaultCurrencyLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiền tệ mặc định'**
+  String get defaultCurrencyLabel;
+
+  /// No description provided for @groupNameRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng nhập tên nhóm.'**
+  String get groupNameRequired;
+
+  /// No description provided for @joinGroupTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gia nhập nhóm bằng mã mời'**
+  String get joinGroupTitle;
+
+  /// No description provided for @joinGroupSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập mã mời gồm 6-12 ký tự để tham gia nhóm chi tiêu của bạn bè.'**
+  String get joinGroupSubtitle;
+
+  /// No description provided for @inviteCodeLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã mời nhóm *'**
+  String get inviteCodeLabel;
+
+  /// No description provided for @inviteCodeHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'VD: DALAT2024, ROOM402...'**
+  String get inviteCodeHint;
+
+  /// No description provided for @inviteCodeRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng nhập mã mời.'**
+  String get inviteCodeRequired;
+
+  /// No description provided for @joinGroupButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tham gia nhóm'**
+  String get joinGroupButton;
+
+  /// No description provided for @groupDetailTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi tiết nhóm'**
+  String get groupDetailTitle;
+
+  /// No description provided for @groupInviteCodePrefix.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã mời nhóm:'**
+  String get groupInviteCodePrefix;
+
+  /// No description provided for @codeCopiedToClipboard.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã sao chép mã mời vào khay nhớ tạm'**
+  String get codeCopiedToClipboard;
+
+  /// No description provided for @copyCodeTooltip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao chép mã'**
+  String get copyCodeTooltip;
+
+  /// No description provided for @archiveGroupAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu trữ nhóm'**
+  String get archiveGroupAction;
+
+  /// No description provided for @archiveGroupConfirmTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận lưu trữ nhóm?'**
+  String get archiveGroupConfirmTitle;
+
+  /// No description provided for @archiveGroupConfirmMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhóm sẽ được chuyển vào mục lưu trữ và chỉ cho phép xem thông tin.'**
+  String get archiveGroupConfirmMessage;
+
+  /// No description provided for @archiveConfirmButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu trữ'**
+  String get archiveConfirmButton;
+
+  /// No description provided for @deleteGroupAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa nhóm'**
+  String get deleteGroupAction;
+
+  /// No description provided for @deleteGroupConfirmTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận xóa vĩnh viễn nhóm?'**
+  String get deleteGroupConfirmTitle;
+
+  /// No description provided for @deleteGroupConfirmMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hành động này sẽ xóa toàn bộ chi tiêu, công nợ, quỹ chung và danh sách thành viên của nhóm. Không thể khôi phục!'**
+  String get deleteGroupConfirmMessage;
+
+  /// No description provided for @deleteConfirmButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa nhóm'**
+  String get deleteConfirmButton;
+
+  /// No description provided for @editGroupTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa thông tin nhóm'**
+  String get editGroupTitle;
+
+  /// No description provided for @saveChanges.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu thay đổi'**
+  String get saveChanges;
+
+  /// No description provided for @groupMembersTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thành viên nhóm'**
+  String get groupMembersTitle;
+
+  /// No description provided for @loadDashboardFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể tải dữ liệu tổng quan'**
+  String get loadDashboardFailed;
+
+  /// No description provided for @loadGroupsFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể tải danh sách nhóm'**
+  String get loadGroupsFailed;
+
+  /// No description provided for @createGroupSuccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo nhóm thành công!'**
+  String get createGroupSuccess;
+
+  /// No description provided for @updateGroupSuccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cập nhật nhóm thành công!'**
+  String get updateGroupSuccess;
+
+  /// No description provided for @archiveGroupSuccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhóm đã được chuyển sang chế độ lưu trữ.'**
+  String get archiveGroupSuccess;
+
+  /// No description provided for @deleteGroupSuccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa nhóm thành công.'**
+  String get deleteGroupSuccess;
+
+  /// No description provided for @joinGroupSuccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tham gia nhóm thành công!'**
+  String get joinGroupSuccess;
+
+  /// No description provided for @editGroupAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa nhóm'**
+  String get editGroupAction;
+
+  /// No description provided for @inviteCodeCardTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'MÃ MỜI THAM GIA'**
+  String get inviteCodeCardTitle;
+
+  /// No description provided for @groupFinancialOverviewTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'TỔNG QUAN TÀI CHÍNH NHÓM'**
+  String get groupFinancialOverviewTitle;
+
+  /// No description provided for @yourBalanceLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư của bạn:'**
+  String get yourBalanceLabel;
+
+  /// No description provided for @totalGroupSpendingLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng chi tiêu nhóm:'**
+  String get totalGroupSpendingLabel;
+
+  /// No description provided for @totalFundCollectedLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng quỹ đã thu:'**
+  String get totalFundCollectedLabel;
+
+  /// No description provided for @groupMembersCountTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'THÀNH VIÊN ({count})'**
+  String groupMembersCountTitle(int count);
+
+  /// No description provided for @groupMemberCountSimple.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhóm có {count} thành viên'**
+  String groupMemberCountSimple(int count);
+
+  /// No description provided for @deleteGroupPermanently.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa nhóm vĩnh viễn'**
+  String get deleteGroupPermanently;
 }
 
 class _AppLocalizationsDelegate

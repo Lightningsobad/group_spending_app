@@ -13,6 +13,10 @@ import 'package:group_spending_app/features/main_shell/presentation/widgets/noti
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../auth/presentation/cubit/auth_cubit_test.dart';
+import '../../../dashboard/dashboard_cubit_test.dart';
+import '../../../groups/groups_cubit_test.dart';
+import 'package:group_spending_app/features/dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'package:group_spending_app/features/groups/presentation/cubit/groups_cubit.dart';
 
 void main() {
   group('MainShellScreen Tests', () {
@@ -21,6 +25,10 @@ void main() {
     late LocaleCubit localeCubit;
     late FakeAuthRepository fakeRepo;
     late AuthCubit authCubit;
+    late FakeDebtsRepository debtsRepo;
+    late FakeGroupsRepo groupsRepo;
+    late DashboardCubit dashboardCubit;
+    late GroupsCubit groupsCubit;
 
     setUp(() async {
       SharedPreferences.setMockInitialValues({
@@ -32,6 +40,13 @@ void main() {
       localeCubit = LocaleCubit(prefs);
       fakeRepo = FakeAuthRepository();
       authCubit = AuthCubit(fakeRepo);
+      debtsRepo = FakeDebtsRepository();
+      groupsRepo = FakeGroupsRepo();
+      dashboardCubit = DashboardCubit(
+        debtsRepository: debtsRepo,
+        groupsRepository: groupsRepo,
+      );
+      groupsCubit = GroupsCubit(groupsRepo);
     });
 
     Widget createWidgetUnderTest({int initialTabIndex = 0}) {
@@ -44,6 +59,8 @@ void main() {
             BlocProvider<AuthCubit>.value(value: authCubit),
             BlocProvider<ThemeCubit>.value(value: themeCubit),
             BlocProvider<LocaleCubit>.value(value: localeCubit),
+            BlocProvider<DashboardCubit>.value(value: dashboardCubit),
+            BlocProvider<GroupsCubit>.value(value: groupsCubit),
           ],
           child: BlocBuilder<ThemeCubit, ThemeMode>(
             builder: (context, themeMode) {
@@ -130,7 +147,10 @@ void main() {
       expect(find.text('Hello,'), findsOneWidget);
 
       // Open Notifications modal from bell icon
-      final bellBtn = find.byIcon(LucideIcons.bell);
+      final bellBtn = find.descendant(
+        of: find.byType(AppHeader),
+        matching: find.byIcon(LucideIcons.bell),
+      );
       await tester.tap(bellBtn);
       await tester.pumpAndSettle();
       expect(find.byType(NotificationModal), findsOneWidget);
