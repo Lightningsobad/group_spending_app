@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/storage/app_preferences.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../../shared/widgets/wallet_logo.dart';
 import '../cubit/auth_cubit.dart';
 
@@ -140,7 +141,7 @@ class _FlashScreenState extends State<FlashScreen>
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Chia tiền minh bạch & nhắc nợ thông minh',
+                    context.l10n.splashSlogan,
                     textAlign: TextAlign.center,
                     style: AppTextStyle.style(
                       fontSize: 13,

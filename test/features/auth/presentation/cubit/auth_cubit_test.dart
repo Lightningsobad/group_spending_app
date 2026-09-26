@@ -91,6 +91,11 @@ class FakeAuthRepository implements AuthRepository {
   Future<void> logout() async {
     isAuth = false;
   }
+
+  @override
+  Future<UserEntity> getCurrentUser() async {
+    return sampleUser;
+  }
 }
 
 void main() {
@@ -201,6 +206,11 @@ void main() {
     test('logout emits unauthenticated', () async {
       await cubit.logout();
       expect(cubit.state.status, AuthStatus.unauthenticated);
+    });
+
+    test('loadUserProfile updates currentUser', () async {
+      await cubit.loadUserProfile();
+      expect(cubit.state.currentUser, equals(fakeRepo.sampleUser));
     });
   });
 }

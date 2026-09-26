@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../../shared/widgets/app_primary_button.dart';
 import '../../../../shared/widgets/app_text_field.dart';
 
@@ -25,11 +26,13 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = context.l10n;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AppTextField(
-          label: 'Địa chỉ Email',
+          label: tr.emailLabel,
           controller: emailController,
           hintText: 'minh.nguyen@example.com',
           keyboardType: TextInputType.emailAddress,
@@ -42,11 +45,11 @@ class LoginForm extends StatelessWidget {
         ),
         const SizedBox(height: 14),
         AppTextField(
-          label: 'Mật khẩu',
+          label: tr.passwordLabel,
           labelTrailing: GestureDetector(
             onTap: onForgotPassword,
             child: Text(
-              'Quên mật khẩu?',
+              tr.forgotPassword,
               style: AppTextStyle.semiBold(
                 fontSize: 12.5,
                 color: AppColors.emeraldForest,
@@ -65,7 +68,7 @@ class LoginForm extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         AppPrimaryButton(
-          text: 'Đăng nhập vào ứng dụng',
+          text: tr.loginButton,
           isLoading: isLoading,
           onPressed: onLogin,
           trailingIcon: const Icon(

@@ -158,4 +158,14 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<String?> getSavedAccessToken() async {
     return tokenStorage.getAccessToken();
   }
+
+  @override
+  Future<UserEntity> getCurrentUser() async {
+    final userModel = await remoteDataSource.getCurrentUser();
+    await appPreferences.saveUserInfo(
+      fullName: userModel.fullName,
+      email: userModel.email,
+    );
+    return userModel.toEntity();
+  }
 }

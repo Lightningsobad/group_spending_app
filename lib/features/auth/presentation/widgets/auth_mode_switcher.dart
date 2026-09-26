@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../l10n/l10n.dart';
 
 class AuthModeSwitcher extends StatelessWidget {
   final bool isLoginMode;
@@ -14,6 +15,8 @@ class AuthModeSwitcher extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = context.l10n;
+
     return Container(
       height: 48,
       padding: const EdgeInsets.all(4),
@@ -63,7 +66,7 @@ class AuthModeSwitcher extends StatelessWidget {
                             ? AppColors.emeraldForest
                             : AppColors.textSecondary,
                       ),
-                      child: const Text('Đăng nhập'),
+                      child: Text(tr.loginTab),
                     ),
                   ),
                 ),
@@ -81,7 +84,7 @@ class AuthModeSwitcher extends StatelessWidget {
                             ? AppColors.emeraldForest
                             : AppColors.textSecondary,
                       ),
-                      child: const Text('Đăng ký'),
+                      child: Text(tr.registerTab),
                     ),
                   ),
                 ),

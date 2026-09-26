@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'features/auth/presentation/screens/auth_screen.dart';
 import 'features/auth/presentation/screens/flash_screen.dart';
 import 'features/auth/presentation/screens/verify_otp_screen.dart';
-import 'features/dashboard/presentation/screens/dashboard_placeholder_screen.dart';
+import 'features/main_shell/presentation/screens/main_shell_screen.dart';
 import 'features/onboarding/presentation/screens/onboarding_screen.dart';
 
 List<RouteBase> buildAppRoutes() {
@@ -28,7 +28,10 @@ List<RouteBase> buildAppRoutes() {
     ),
     GoRoute(
       path: '/dashboard',
-      builder: (context, state) => const DashboardPlaceholderScreen(),
+      builder: (context, state) {
+        final tab = int.tryParse(state.uri.queryParameters['tab'] ?? '') ?? 0;
+        return MainShellScreen(initialTabIndex: tab);
+      },
     ),
   ];
 }

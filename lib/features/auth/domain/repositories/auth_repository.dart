@@ -28,4 +28,6 @@ abstract class AuthRepository {
   Future<bool> isAuthenticated();
 
   Future<String?> getSavedAccessToken();
+
+  Future<UserEntity> getCurrentUser();
 }

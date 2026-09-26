@@ -25,6 +25,8 @@ abstract class AuthRemoteDataSource {
   Future<AuthResponseModel> refreshToken({required String refreshToken});
 
   Future<void> logout({String? refreshToken});
+
+  Future<UserModel> getCurrentUser();
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -110,5 +112,12 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } catch (_) {
       // Best-effort logout; ignore network errors on server logout
     }
+  }
+
+  @override
+  Future<UserModel> getCurrentUser() async {
+    final response = await _client.get('/users/me');
+    final data = response.data['data'] as Map<String, dynamic>;
+    return UserModel.fromJson(data);
   }
 }

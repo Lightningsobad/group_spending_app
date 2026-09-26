@@ -5,15 +5,16 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/storage/app_preferences.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../../shared/widgets/organic_wavy_divider.dart';
 
-class OnboardingItem {
+class _OnboardingSlide {
   final String pill;
   final String title;
   final String description;
   final String svgAsset;
 
-  const OnboardingItem({
+  const _OnboardingSlide({
     required this.pill,
     required this.title,
     required this.description,
@@ -32,43 +33,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentIndex = 0;
 
-  late final List<OnboardingItem> _items;
-
-  @override
-  void initState() {
-    super.initState();
-    _items = [
-      const OnboardingItem(
-        pill: 'Quản lý nhóm',
-        title: 'KẾT NỐI & QUẢN LÝ NHÓM',
-        description:
-            'Quản lý nhóm bạn bè, chuyến du lịch và chia sẻ mọi chi phí sinh hoạt chung một cách dễ dàng, trực quan và công bằng.',
-        svgAsset: 'assets/onbroading/onboarding_1_group_management.svg',
-      ),
-      const OnboardingItem(
-        pill: 'Quản lý chi tiêu',
-        title: 'QUẢN LÝ CHI TIÊU THÔNG MINH',
-        description:
-            'Ghi nhận chi tiêu nhanh chóng, phân tích biểu đồ trực quan, chia đều hóa đơn và tự động rút gọn công nợ tối ưu.',
-        svgAsset: 'assets/onbroading/onboarding_2_expense_management.svg',
-      ),
-      const OnboardingItem(
-        pill: 'Quản lý quỹ chung',
-        title: 'QUẢN LÝ QUỸ CHUNG MINH BẠCH',
-        description:
-            'Thu quỹ nhóm tiện lợi, theo dõi tiến độ đóng góp theo thời gian thực và quản lý ngân sách an toàn, minh bạch 100%.',
-        svgAsset: 'assets/onbroading/onboarding_3_fund_management.svg',
-      ),
-      const OnboardingItem(
-        pill: 'Nhắc nợ & Thanh toán',
-        title: 'NHẮC NỢ & THANH TOÁN TỐC ĐỘ',
-        description:
-            'Gửi thông báo nhắc nợ tinh tế, quét mã VietQR tự động điền tài khoản và hoàn tất quyết toán chỉ trong tích tắc.',
-        svgAsset: 'assets/onbroading/onboarding_4_reminder_feature.svg',
-      ),
-    ];
-  }
-
   @override
   void dispose() {
     _pageController.dispose();
@@ -82,8 +46,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     context.go('/dashboard');
   }
 
-  void _onNext() {
-    if (_currentIndex < _items.length - 1) {
+  void _onNext(int total) {
+    if (_currentIndex < total - 1) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 350),
         curve: Curves.easeInOut,
@@ -95,7 +59,34 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final item = _items[_currentIndex];
+    final tr = context.l10n;
+    final items = [
+      _OnboardingSlide(
+        pill: tr.onboardingSlide1Pill,
+        title: tr.onboardingSlide1Title,
+        description: tr.onboardingSlide1Desc,
+        svgAsset: 'assets/onbroading/onboarding_1_group_management.svg',
+      ),
+      _OnboardingSlide(
+        pill: tr.onboardingSlide2Pill,
+        title: tr.onboardingSlide2Title,
+        description: tr.onboardingSlide2Desc,
+        svgAsset: 'assets/onbroading/onboarding_2_expense_management.svg',
+      ),
+      _OnboardingSlide(
+        pill: tr.onboardingSlide3Pill,
+        title: tr.onboardingSlide3Title,
+        description: tr.onboardingSlide3Desc,
+        svgAsset: 'assets/onbroading/onboarding_3_fund_management.svg',
+      ),
+      _OnboardingSlide(
+        pill: tr.onboardingSlide4Pill,
+        title: tr.onboardingSlide4Title,
+        description: tr.onboardingSlide4Desc,
+        svgAsset: 'assets/onbroading/onboarding_4_reminder_feature.svg',
+      ),
+    ];
+    final item = items[_currentIndex];
 
     return Scaffold(
       backgroundColor: AppColors.canvasLight,
@@ -122,7 +113,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        'Bước ${_currentIndex + 1}/4',
+                        tr.onboardingStep(_currentIndex + 1, items.length),
                         style: AppTextStyle.bold(
                           fontSize: 12,
                           color: AppColors.primaryGreen,
@@ -139,7 +130,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ),
                     child: Text(
-                      'Bỏ qua',
+                      tr.skip,
                       style: AppTextStyle.extraBold(
                         fontSize: 13,
                         color: AppColors.primaryGreen,
@@ -155,14 +146,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               flex: 11,
               child: PageView.builder(
                 controller: _pageController,
-                itemCount: _items.length,
+                itemCount: items.length,
                 onPageChanged: (index) {
                   setState(() {
                     _currentIndex = index;
                   });
                 },
                 itemBuilder: (context, index) {
-                  final currentItem = _items[index];
+                  final currentItem = items[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16.0,
@@ -273,7 +264,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   // Indicator Dots
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(_items.length, (index) {
+                    children: List.generate(items.length, (index) {
                       final isActive = index == _currentIndex;
                       return AnimatedContainer(
                         duration: const Duration(milliseconds: 250),
@@ -303,7 +294,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                   // Circular White Next Button with Green Arrow
                   GestureDetector(
-                    onTap: _onNext,
+                    onTap: () => _onNext(items.length),
                     child: Container(
                       width: 56,
                       height: 56,

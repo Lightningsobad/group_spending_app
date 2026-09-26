@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+export '../theme/app_theme_colors.dart';
 
 class AppColors {
   AppColors._();
@@ -27,8 +28,21 @@ class AppColors {
 
   static const Color error = Color(0xFFEF4444);
   static const Color errorBg = Color(0xFFFEF2F2);
+  static const Color errorBorder = Color(0xFFFECACA);
   static const Color success = Color(0xFF10B981);
   static const Color successBg = Color(0xFFEFFDF5);
+
+  // Settings & Status colors
+  static const Color roleAdminBg = Color(0xFFFEF3C7);
+  static const Color roleAdminText = Color(0xFFB45309);
+  static const Color badgeDotOrange = Color(0xFFF59E0B);
+
+  // Dark mode colors
+  static const Color backgroundDark = Color(0xFF090D16);
+  static const Color cardDark = Color(0xFF1E293B);
+  static const Color borderDark = Color(0xFF334155);
+  static const Color textLight = Color(0xFFF8FAFC);
+  static const Color textLightSecondary = Color(0xFF94A3B8);
 
   // Gradient for Flash screen luxury background
   static const List<Color> luxuryGradient = [

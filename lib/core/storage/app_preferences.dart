@@ -5,6 +5,9 @@ class AppPreferences {
   static const String _userFullNameKey = 'user_full_name';
   static const String _userEmailKey = 'user_email';
 
+  static const String _themeModeKey = 'theme_mode';
+  static const String _appLocaleKey = 'app_locale';
+
   final SharedPreferences _prefs;
 
   AppPreferences(this._prefs);
@@ -45,5 +48,21 @@ class AppPreferences {
       _prefs.remove(_userFullNameKey),
       _prefs.remove(_userEmailKey),
     ]);
+  }
+
+  String getThemeMode() {
+    return _prefs.getString(_themeModeKey) ?? 'light';
+  }
+
+  Future<bool> setThemeMode(String mode) {
+    return _prefs.setString(_themeModeKey, mode);
+  }
+
+  String getAppLocale() {
+    return _prefs.getString(_appLocaleKey) ?? 'vi';
+  }
+
+  Future<bool> setAppLocale(String localeCode) {
+    return _prefs.setString(_appLocaleKey, localeCode);
   }
 }

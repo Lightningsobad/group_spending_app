@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../l10n/l10n.dart';
 
 class SocialAuthButtons extends StatelessWidget {
   final VoidCallback onGoogleAuth;
@@ -10,6 +11,8 @@ class SocialAuthButtons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = context.l10n;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -31,7 +34,7 @@ class SocialAuthButtons extends StatelessWidget {
               SvgPicture.asset('assets/auth/google.svg', width: 20, height: 20),
               const SizedBox(width: 10),
               Text(
-                'Đăng nhập bằng Google',
+                tr.continueWithGoogle,
                 style: AppTextStyle.semiBold(
                   fontSize: 14,
                   color: AppColors.textDark,
@@ -49,7 +52,7 @@ class SocialAuthButtons extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
-                'HOẶC ĐĂNG NHẬP BẰNG EMAIL',
+                tr.orLoginWithEmail,
                 style: AppTextStyle.bold(
                   fontSize: 10.5,
                   color: AppColors.textSecondary,

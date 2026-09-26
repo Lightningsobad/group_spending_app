@@ -15,11 +15,21 @@ class AuthCubit extends Cubit<AuthState> {
       final isAuth = await _repository.isAuthenticated();
       if (isAuth) {
         emit(state.copyWith(status: AuthStatus.authenticated));
+        await loadUserProfile();
       } else {
         emit(state.copyWith(status: AuthStatus.unauthenticated));
       }
     } catch (_) {
       emit(state.copyWith(status: AuthStatus.unauthenticated));
+    }
+  }
+
+  Future<void> loadUserProfile() async {
+    try {
+      final user = await _repository.getCurrentUser();
+      emit(state.copyWith(currentUser: user));
+    } catch (_) {
+      // Ignore network errors or unauthenticated errors gracefully
     }
   }
 
