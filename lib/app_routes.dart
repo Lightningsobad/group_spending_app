@@ -12,6 +12,7 @@ import 'features/debts/presentation/cubit/debts_cubit.dart';
 import 'features/groups/presentation/cubit/groups_cubit.dart';
 import 'features/main_shell/presentation/screens/main_shell_screen.dart';
 import 'features/onboarding/presentation/screens/onboarding_screen.dart';
+import 'features/settings/presentation/screens/privacy_policy_screen.dart';
 
 List<RouteBase> buildAppRoutes({
   DashboardCubit? dashboardCubit,
@@ -76,6 +77,10 @@ List<RouteBase> buildAppRoutes({
           cubit: groupAnalyticsCubit,
         );
       },
+    ),
+    GoRoute(
+      path: '/settings/privacy-policy',
+      builder: (context, state) => const PrivacyPolicyScreen(),
     ),
   ];
 }

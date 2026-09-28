@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:group_spending_app/core/theme/app_theme.dart';
 import 'package:group_spending_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:group_spending_app/features/dashboard/presentation/cubit/dashboard_cubit.dart';
@@ -141,6 +142,25 @@ void main() {
       // Groups list is visible again
       expect(find.text('Danh sách nhóm của bạn'), findsOneWidget);
       expect(find.text('Chung cư Sunrise Room'), findsOneWidget);
+    });
+
+    testWidgets('tapping a group card opens GroupDetailView and tapping back returns to list', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Chung cư Sunrise Room'));
+      await tester.pumpAndSettle();
+
+      // GroupDetailView is displayed
+      expect(find.text('THÔNG TIN NHÓM'), findsOneWidget);
+      expect(find.text('TỔNG QUAN TÀI CHÍNH NHÓM'), findsOneWidget);
+
+      // Tap back button
+      await tester.tap(find.byIcon(LucideIcons.arrowLeft));
+      await tester.pumpAndSettle();
+
+      // Groups list is visible again
+      expect(find.text('Danh sách nhóm của bạn'), findsOneWidget);
     });
   });
 }

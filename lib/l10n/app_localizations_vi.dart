@@ -287,6 +287,92 @@ class AppLocalizationsVi extends AppLocalizations {
       'Cam kết mã hóa thông tin & bảo vệ tài khoản (Xem chi tiết)';
 
   @override
+  String get privacyPolicyCommitmentSubtitle =>
+      'Cam kết bảo vệ dữ liệu cá nhân & an toàn tài chính';
+
+  @override
+  String get privacyStandardBadge => 'BẢO MẬT TIÊU CHUẨN';
+
+  @override
+  String get privacyUpdatedDate => 'Cập nhật: Tháng 09/2026';
+
+  @override
+  String get privacyHeroTitle =>
+      'Minh bạch thu chi • Bảo mật dữ liệu người dùng';
+
+  @override
+  String get privacyHeroDescription =>
+      'FairShare tôn trọng quyền riêng tư của bạn. Mọi khoản chi, thông tin hóa đơn và số tài khoản ngân hàng chỉ phục vụ mục đích phân chia công nợ và đóng quỹ nhóm của các thành viên.';
+
+  @override
+  String get privacyDataCollectedTitle => '1. DỮ LIỆU ỨNG DỤNG THU THẬP';
+
+  @override
+  String get privacyDataCollectedDesc =>
+      'Chúng tôi chỉ thu thập các trường thông tin tối thiểu cần thiết để vận hành các tính năng chia tiền nhóm:';
+
+  @override
+  String get privacyIdentityTitle => 'Thông tin định danh: ';
+
+  @override
+  String get privacyIdentityDesc =>
+      'Họ và tên hiển thị, ảnh đại diện và địa chỉ Email để xác thực tài khoản và gửi mã OTP.';
+
+  @override
+  String get privacyBankTitle => 'Tài khoản nhận tiền (VietQR): ';
+
+  @override
+  String get privacyBankDesc =>
+      'Tên ngân hàng, số tài khoản và tên chủ sở hữu nhằm tạo mã VietQR chuẩn 1-chạm giúp thành viên khác chuyển khoản trả nợ.';
+
+  @override
+  String get privacyTransactionTitle => 'Dữ liệu giao dịch nhóm: ';
+
+  @override
+  String get privacyTransactionDesc =>
+      'Danh sách hóa đơn, số tiền chi, người trả hộ, tỷ lệ phân bổ và các chiến dịch đóng quỹ chung.';
+
+  @override
+  String get privacySecurityTitle => '2. AN TOÀN MẬT KHẨU & MÃ HÓA ĐẦU CUỐI';
+
+  @override
+  String get privacySecurityDesc =>
+      'Mật khẩu tài khoản của người dùng được băm một chiều (one-way hashing) kèm salt an toàn, hoàn toàn không thể dịch ngược hay đọc dưới dạng văn bản thô.';
+
+  @override
+  String get privacyChangePasswordTip =>
+      'Bạn có thể tự chủ động thay đổi mật khẩu bất kỳ lúc nào tại màn hình Cài đặt bằng tính năng \"Đổi mật khẩu\".';
+
+  @override
+  String get privacyNoShareTitle => '3. CAM KẾT KHÔNG CHIA SẺ DỮ LIỆU';
+
+  @override
+  String get privacyNoShareDesc =>
+      'FairShare cam kết không bán, chia sẻ hoặc thương mại hóa bất kỳ thông tin cá nhân, lịch sử chuyển nợ hay số tiền đóng quỹ của bạn cho bất kỳ đối tác quảng cáo nào.';
+
+  @override
+  String get privacyUserRightsTitle => '4. QUYỀN LÀM CHỦ DỮ LIỆU CỦA BẠN';
+
+  @override
+  String get privacyRightEditProfile =>
+      'Xem và chỉnh sửa họ tên, thông tin tài khoản ngân hàng bất kỳ lúc nào.';
+
+  @override
+  String get privacyRightTransferAdmin =>
+      'Chuyển quyền Quản trị viên (Admin) cho thành viên khác trong nhóm.';
+
+  @override
+  String get privacyRightArchiveGroup =>
+      'Yêu cầu xóa nhóm hoặc đóng băng lịch sử chi tiêu bằng cách đưa vào Lưu trữ.';
+
+  @override
+  String get privacyRightLogoutSafe =>
+      'Đăng xuất an toàn khỏi thiết bị bất cứ khi nào bạn muốn.';
+
+  @override
+  String get privacyBackToSettings => 'Quay lại Cài đặt';
+
+  @override
   String get logoutButton => 'Đăng xuất tài khoản';
 
   @override
@@ -507,7 +593,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get editGroupAction => 'Sửa nhóm';
 
   @override
-  String get inviteCodeCardTitle => 'MÃ MỜI THAM GIA';
+  String get inviteCodeCardTitle => 'MÃ MỜI THAM GIA NHÓM';
 
   @override
   String get groupFinancialOverviewTitle => 'TỔNG QUAN TÀI CHÍNH NHÓM';
@@ -937,4 +1023,120 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get newPasswordSameAsCurrentPrompt =>
       'Mật khẩu mới không được trùng với mật khẩu hiện tại.';
+  String get groupInfoSectionTitle => 'THÔNG TIN NHÓM';
+
+  @override
+  String get tabExpenses => 'Chi tiêu';
+
+  @override
+  String get tabFunds => 'Quỹ';
+
+  @override
+  String get tabMembers => 'Thành viên';
+
+  @override
+  String get categoryLabel => 'THỂ LOẠI';
+
+  @override
+  String get createdDateLabel => 'NGÀY TẠO';
+
+  @override
+  String get membersCountLabel => 'THÀNH VIÊN';
+
+  @override
+  String get copyInviteCodeAction => 'Sao chép mã mời';
+
+  @override
+  String get viewQrCodeTooltip => 'Xem mã QR';
+
+  @override
+  String get inviteMembersTitle => 'Mời thành viên vào nhóm';
+
+  @override
+  String get tabQrCode => 'Mã QR Code';
+
+  @override
+  String get tabQrCodeSubtitle => 'Quét trực tiếp khi ở cạnh nhau';
+
+  @override
+  String get tabCopyCode => 'Sao chép mã mời';
+
+  @override
+  String get tabCopyCodeSubtitle => 'Gửi mã văn bản qua tin nhắn, Zalo';
+
+  @override
+  String get scanToJoinInstruction =>
+      'Thành viên quét mã này bằng điện thoại để gửi yêu cầu gia nhập';
+
+  @override
+  String get downloadQrAction => 'Tải ảnh mã QR';
+
+  @override
+  String get downloadQrSuccess => 'Đã lưu ảnh mã QR thành công!';
+
+  @override
+  String get downloadQrFailed => 'Không thể lưu ảnh mã QR';
+
+  @override
+  String get shareViaOtherAppsAction => 'Chia sẻ qua ứng dụng khác';
+
+  @override
+  String get closeButton => 'Đóng';
+
+  @override
+  String get yourBalanceInGroupLabel => 'Số dư của bạn trong nhóm';
+
+  @override
+  String get youReceiveBadge => 'Bạn nhận';
+
+  @override
+  String get youOweBadge => 'Bạn nợ';
+
+  @override
+  String get settledBadge => 'Cân bằng';
+
+  @override
+  String get totalSpendingCard => 'Tổng chi tiêu';
+
+  @override
+  String get viewReportAction => 'Xem báo cáo';
+
+  @override
+  String get fundCollectedCard => 'Quỹ đã thu';
+
+  @override
+  String get fundGeneralSubtitle => 'Quỹ chung';
+
+  @override
+  String get quickActionsTitle => 'LỐI TẮT & THAO TÁC NHANH';
+
+  @override
+  String get viewDebtsAction => 'Xem công nợ';
+
+  @override
+  String get settleDebtsSubtitle => 'Tất toán nợ';
+
+  @override
+  String get generalFundAction => 'Quỹ chung';
+
+  @override
+  String get collectFundSubtitle => 'Thu quỹ chung';
+
+  @override
+  String get addExpenseAction => 'Thêm khoản chi';
+
+  @override
+  String get splitBillSubtitle => 'Chia hóa đơn';
+
+  @override
+  String get groupSettingsAction => 'Cài đặt';
+
+  @override
+  String get accountAndInterfaceSubtitle => 'Tài khoản & thiết lập';
+
+  @override
+  String get groupAdminSectionTitle => 'QUẢN TRỊ NHÓM';
+
+  @override
+  String get editGroupInfo => 'Sửa thông tin';
 }

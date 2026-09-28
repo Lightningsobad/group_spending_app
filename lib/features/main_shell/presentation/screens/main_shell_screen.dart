@@ -93,8 +93,21 @@ class _MainShellScreenState extends State<MainShellScreen> {
                         });
                         _groupsKey.currentState?.openJoinGroup();
                       },
+                      onNavigateToGroupDetail: (group) {
+                        setState(() {
+                          _currentIndex = 1;
+                        });
+                        _groupsKey.currentState?.openGroupDetail(group);
+                      },
                     ),
-                    GroupsScreen(key: _groupsKey),
+                    GroupsScreen(
+                      key: _groupsKey,
+                      onNavigateToDebts: () {
+                        setState(() {
+                          _currentIndex = 2;
+                        });
+                      },
+                    ),
                     const DebtsScreen(),
                     const AnalyticsTabScreen(),
                     const SettingsScreen(),

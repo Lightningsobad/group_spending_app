@@ -289,6 +289,92 @@ class AppLocalizationsEn extends AppLocalizations {
       'Commitment to encryption and account protection (Details)';
 
   @override
+  String get privacyPolicyCommitmentSubtitle =>
+      'Commitment to personal data protection & financial safety';
+
+  @override
+  String get privacyStandardBadge => 'STANDARD SECURITY';
+
+  @override
+  String get privacyUpdatedDate => 'Updated: September 2026';
+
+  @override
+  String get privacyHeroTitle => 'Expense Transparency • User Data Protection';
+
+  @override
+  String get privacyHeroDescription =>
+      'FairShare respects your privacy. All expenses, invoice information, and bank account details only serve group debt splitting and fund collection among members.';
+
+  @override
+  String get privacyDataCollectedTitle => '1. DATA COLLECTED BY APP';
+
+  @override
+  String get privacyDataCollectedDesc =>
+      'We only collect minimal information necessary to operate group expense splitting features:';
+
+  @override
+  String get privacyIdentityTitle => 'Identity Information: ';
+
+  @override
+  String get privacyIdentityDesc =>
+      'Display name, avatar, and email address to authenticate account and deliver OTP codes.';
+
+  @override
+  String get privacyBankTitle => 'Payout Account (VietQR): ';
+
+  @override
+  String get privacyBankDesc =>
+      'Bank name, account number, and holder name to generate 1-tap standard VietQR code for members to settle debts.';
+
+  @override
+  String get privacyTransactionTitle => 'Group Transaction Data: ';
+
+  @override
+  String get privacyTransactionDesc =>
+      'List of bills, amounts spent, payer, split ratios, and joint funding campaigns.';
+
+  @override
+  String get privacySecurityTitle =>
+      '2. PASSWORD SAFETY & END-TO-END ENCRYPTION';
+
+  @override
+  String get privacySecurityDesc =>
+      'User account passwords are one-way hashed with secure salt, never decipherable or readable as raw plain text.';
+
+  @override
+  String get privacyChangePasswordTip =>
+      'You can proactively change your password anytime in Settings using the \"Change password\" feature.';
+
+  @override
+  String get privacyNoShareTitle => '3. NO DATA SHARING COMMITMENT';
+
+  @override
+  String get privacyNoShareDesc =>
+      'FairShare commits to never selling, sharing, or commercializing any personal information, debt history, or fund amount to any advertising partners.';
+
+  @override
+  String get privacyUserRightsTitle => '4. YOUR DATA OWNERSHIP RIGHTS';
+
+  @override
+  String get privacyRightEditProfile =>
+      'View and update your display name and bank account details anytime.';
+
+  @override
+  String get privacyRightTransferAdmin =>
+      'Transfer Administrator (Admin) role to another member in the group.';
+
+  @override
+  String get privacyRightArchiveGroup =>
+      'Request group deletion or freeze expense history by archiving it.';
+
+  @override
+  String get privacyRightLogoutSafe =>
+      'Safely sign out from devices whenever you wish.';
+
+  @override
+  String get privacyBackToSettings => 'Back to Settings';
+
+  @override
   String get logoutButton => 'Log out account';
 
   @override
@@ -508,7 +594,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editGroupAction => 'Edit group';
 
   @override
-  String get inviteCodeCardTitle => 'INVITE CODE';
+  String get inviteCodeCardTitle => 'GROUP INVITE CODE';
 
   @override
   String get groupFinancialOverviewTitle => 'GROUP FINANCIAL OVERVIEW';
@@ -940,4 +1026,120 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get newPasswordSameAsCurrentPrompt =>
       'New password must be different from current password.';
+  String get groupInfoSectionTitle => 'GROUP INFORMATION';
+
+  @override
+  String get tabExpenses => 'Expenses';
+
+  @override
+  String get tabFunds => 'Funds';
+
+  @override
+  String get tabMembers => 'Members';
+
+  @override
+  String get categoryLabel => 'CATEGORY';
+
+  @override
+  String get createdDateLabel => 'CREATED DATE';
+
+  @override
+  String get membersCountLabel => 'MEMBERS';
+
+  @override
+  String get copyInviteCodeAction => 'Copy invite code';
+
+  @override
+  String get viewQrCodeTooltip => 'View QR Code';
+
+  @override
+  String get inviteMembersTitle => 'Invite members to group';
+
+  @override
+  String get tabQrCode => 'QR Code';
+
+  @override
+  String get tabQrCodeSubtitle => 'Scan directly when together';
+
+  @override
+  String get tabCopyCode => 'Copy invite code';
+
+  @override
+  String get tabCopyCodeSubtitle => 'Send text code via SMS, Zalo';
+
+  @override
+  String get scanToJoinInstruction =>
+      'Members scan this code with their phone to request to join';
+
+  @override
+  String get downloadQrAction => 'Download QR image';
+
+  @override
+  String get downloadQrSuccess => 'QR code image saved successfully!';
+
+  @override
+  String get downloadQrFailed => 'Failed to save QR code image';
+
+  @override
+  String get shareViaOtherAppsAction => 'Share via other apps';
+
+  @override
+  String get closeButton => 'Close';
+
+  @override
+  String get yourBalanceInGroupLabel => 'Your balance in group';
+
+  @override
+  String get youReceiveBadge => 'You receive';
+
+  @override
+  String get youOweBadge => 'You owe';
+
+  @override
+  String get settledBadge => 'Settled';
+
+  @override
+  String get totalSpendingCard => 'Total spending';
+
+  @override
+  String get viewReportAction => 'View report';
+
+  @override
+  String get fundCollectedCard => 'Fund collected';
+
+  @override
+  String get fundGeneralSubtitle => 'General fund';
+
+  @override
+  String get quickActionsTitle => 'SHORTCUTS & QUICK ACTIONS';
+
+  @override
+  String get viewDebtsAction => 'View debts';
+
+  @override
+  String get settleDebtsSubtitle => 'Settle debts';
+
+  @override
+  String get generalFundAction => 'General fund';
+
+  @override
+  String get collectFundSubtitle => 'Collect fund';
+
+  @override
+  String get addExpenseAction => 'Add expense';
+
+  @override
+  String get splitBillSubtitle => 'Split bill';
+
+  @override
+  String get groupSettingsAction => 'Settings';
+
+  @override
+  String get accountAndInterfaceSubtitle => 'Account & settings';
+
+  @override
+  String get groupAdminSectionTitle => 'GROUP MANAGEMENT';
+
+  @override
+  String get editGroupInfo => 'Edit info';
 }
