@@ -27,6 +27,11 @@ abstract class AuthRemoteDataSource {
   Future<void> logout({String? refreshToken});
 
   Future<UserModel> getCurrentUser();
+
+  Future<void> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  });
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -119,5 +124,19 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final response = await _client.get('/users/me');
     final data = response.data['data'] as Map<String, dynamic>;
     return UserModel.fromJson(data);
+  }
+
+  @override
+  Future<void> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    await _client.post(
+      '/users/me/change-password',
+      data: {
+        'oldPassword': oldPassword,
+        'newPassword': newPassword,
+      },
+    );
   }
 }

@@ -30,4 +30,9 @@ abstract class AuthRepository {
   Future<String?> getSavedAccessToken();
 
   Future<UserEntity> getCurrentUser();
+
+  Future<void> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  });
 }

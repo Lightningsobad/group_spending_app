@@ -168,4 +168,15 @@ class AuthRepositoryImpl implements AuthRepository {
     );
     return userModel.toEntity();
   }
+
+  @override
+  Future<void> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    await remoteDataSource.changePassword(
+      oldPassword: oldPassword,
+      newPassword: newPassword,
+    );
+  }
 }

@@ -890,4 +890,54 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get noDebtsInGroupSubtitle =>
       'All expenses in this group are balanced or no debts have incurred.';
+
+  @override
+  String get changePasswordTitle => 'Change Account Password';
+
+  @override
+  String get changePasswordSubtitle =>
+      'Update password to keep your account secure';
+
+  @override
+  String get currentPasswordLabel => 'Current password';
+
+  @override
+  String get currentPasswordHint => 'Enter current password';
+
+  @override
+  String get newPasswordLabel => 'New password';
+
+  @override
+  String get newPasswordHint => 'At least 6 characters';
+
+  @override
+  String get confirmNewPasswordLabel => 'Confirm new password';
+
+  @override
+  String get confirmNewPasswordHint => 'Re-enter new password';
+
+  @override
+  String get passwordSafetyTip =>
+      'Tip: Use a mix of uppercase, lowercase letters and numbers for better security.';
+
+  @override
+  String get changePasswordSubmitButton => 'Change password';
+
+  @override
+  String get changePasswordSuccess => 'Password changed successfully!';
+
+  @override
+  String get enterCurrentPasswordPrompt =>
+      'Please enter your current password.';
+
+  @override
+  String get enterNewPasswordPrompt => 'Please enter a new password.';
+
+  @override
+  String get confirmPasswordMismatchPrompt =>
+      'Confirm password does not match.';
+
+  @override
+  String get newPasswordSameAsCurrentPrompt =>
+      'New password must be different from current password.';
 }

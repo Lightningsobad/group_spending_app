@@ -461,5 +461,20 @@
     }
   },
   "noDebtsInGroupTitle": "Nhóm chưa có khoản nợ nào",
-  "noDebtsInGroupSubtitle": "Mọi khoản chi tiêu trong nhóm đã được cân bằng hoặc chưa phát sinh nợ."
+  "noDebtsInGroupSubtitle": "Mọi khoản chi tiêu trong nhóm đã được cân bằng hoặc chưa phát sinh nợ.",
+  "changePasswordTitle": "Đổi mật khẩu tài khoản",
+  "changePasswordSubtitle": "Cập nhật mật khẩu để bảo vệ an toàn cho tài khoản",
+  "currentPasswordLabel": "Mật khẩu hiện tại",
+  "currentPasswordHint": "Nhập mật khẩu đang dùng",
+  "newPasswordLabel": "Mật khẩu mới",
+  "newPasswordHint": "Tối thiểu 6 ký tự",
+  "confirmNewPasswordLabel": "Xác nhận mật khẩu mới",
+  "confirmNewPasswordHint": "Nhập lại mật khẩu mới",
+  "passwordSafetyTip": "Gợi ý: Sử dụng mật khẩu kết hợp chữ hoa, chữ thường và chữ số để tăng độ an toàn.",
+  "changePasswordSubmitButton": "Đổi mật khẩu",
+  "changePasswordSuccess": "Đổi mật khẩu thành công!",
+  "enterCurrentPasswordPrompt": "Vui lòng nhập mật khẩu hiện tại.",
+  "enterNewPasswordPrompt": "Vui lòng nhập mật khẩu mới.",
+  "confirmPasswordMismatchPrompt": "Mật khẩu xác nhận không khớp.",
+  "newPasswordSameAsCurrentPrompt": "Mật khẩu mới không được trùng với mật khẩu hiện tại."
 }

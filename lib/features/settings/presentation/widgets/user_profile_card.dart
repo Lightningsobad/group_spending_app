@@ -7,6 +7,7 @@ import '../../../../core/utils/name_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../../core/storage/app_preferences.dart';
+import 'change_password_dialog.dart';
 
 class UserProfileCard extends StatelessWidget {
   final VoidCallback? onEditProfile;
@@ -171,11 +172,8 @@ class UserProfileCard extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: onChangePassword ?? () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(tr.underDevelopment)),
-                    );
-                  },
+                  onPressed: onChangePassword ??
+                      () => ChangePasswordDialog.show(context),
                   icon: Icon(
                     LucideIcons.keyRound,
                     size: 16,

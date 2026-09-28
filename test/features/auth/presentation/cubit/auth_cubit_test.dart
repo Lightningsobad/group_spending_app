@@ -96,6 +96,14 @@ class FakeAuthRepository implements AuthRepository {
   Future<UserEntity> getCurrentUser() async {
     return sampleUser;
   }
+
+  @override
+  Future<void> changePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    if (exceptionToThrow != null) throw exceptionToThrow!;
+  }
 }
 
 void main() {

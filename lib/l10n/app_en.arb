@@ -461,5 +461,20 @@
     }
   },
   "noDebtsInGroupTitle": "No debts in this group",
-  "noDebtsInGroupSubtitle": "All expenses in this group are balanced or no debts have incurred."
+  "noDebtsInGroupSubtitle": "All expenses in this group are balanced or no debts have incurred.",
+  "changePasswordTitle": "Change Account Password",
+  "changePasswordSubtitle": "Update password to keep your account secure",
+  "currentPasswordLabel": "Current password",
+  "currentPasswordHint": "Enter current password",
+  "newPasswordLabel": "New password",
+  "newPasswordHint": "At least 6 characters",
+  "confirmNewPasswordLabel": "Confirm new password",
+  "confirmNewPasswordHint": "Re-enter new password",
+  "passwordSafetyTip": "Tip: Use a mix of uppercase, lowercase letters and numbers for better security.",
+  "changePasswordSubmitButton": "Change password",
+  "changePasswordSuccess": "Password changed successfully!",
+  "enterCurrentPasswordPrompt": "Please enter your current password.",
+  "enterNewPasswordPrompt": "Please enter a new password.",
+  "confirmPasswordMismatchPrompt": "Confirm password does not match.",
+  "newPasswordSameAsCurrentPrompt": "New password must be different from current password."
 }
