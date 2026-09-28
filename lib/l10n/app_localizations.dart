@@ -626,6 +626,150 @@ abstract class AppLocalizations {
   /// **'Cam kết mã hóa thông tin & bảo vệ tài khoản (Xem chi tiết)'**
   String get privacyPolicySubtitle;
 
+  /// No description provided for @privacyPolicyCommitmentSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cam kết bảo vệ dữ liệu cá nhân & an toàn tài chính'**
+  String get privacyPolicyCommitmentSubtitle;
+
+  /// No description provided for @privacyStandardBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'BẢO MẬT TIÊU CHUẨN'**
+  String get privacyStandardBadge;
+
+  /// No description provided for @privacyUpdatedDate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cập nhật: Tháng 09/2026'**
+  String get privacyUpdatedDate;
+
+  /// No description provided for @privacyHeroTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Minh bạch thu chi • Bảo mật dữ liệu người dùng'**
+  String get privacyHeroTitle;
+
+  /// No description provided for @privacyHeroDescription.
+  ///
+  /// In vi, this message translates to:
+  /// **'FairShare tôn trọng quyền riêng tư của bạn. Mọi khoản chi, thông tin hóa đơn và số tài khoản ngân hàng chỉ phục vụ mục đích phân chia công nợ và đóng quỹ nhóm của các thành viên.'**
+  String get privacyHeroDescription;
+
+  /// No description provided for @privacyDataCollectedTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'1. DỮ LIỆU ỨNG DỤNG THU THẬP'**
+  String get privacyDataCollectedTitle;
+
+  /// No description provided for @privacyDataCollectedDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chúng tôi chỉ thu thập các trường thông tin tối thiểu cần thiết để vận hành các tính năng chia tiền nhóm:'**
+  String get privacyDataCollectedDesc;
+
+  /// No description provided for @privacyIdentityTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông tin định danh: '**
+  String get privacyIdentityTitle;
+
+  /// No description provided for @privacyIdentityDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Họ và tên hiển thị, ảnh đại diện và địa chỉ Email để xác thực tài khoản và gửi mã OTP.'**
+  String get privacyIdentityDesc;
+
+  /// No description provided for @privacyBankTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản nhận tiền (VietQR): '**
+  String get privacyBankTitle;
+
+  /// No description provided for @privacyBankDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên ngân hàng, số tài khoản và tên chủ sở hữu nhằm tạo mã VietQR chuẩn 1-chạm giúp thành viên khác chuyển khoản trả nợ.'**
+  String get privacyBankDesc;
+
+  /// No description provided for @privacyTransactionTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Dữ liệu giao dịch nhóm: '**
+  String get privacyTransactionTitle;
+
+  /// No description provided for @privacyTransactionDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh sách hóa đơn, số tiền chi, người trả hộ, tỷ lệ phân bổ và các chiến dịch đóng quỹ chung.'**
+  String get privacyTransactionDesc;
+
+  /// No description provided for @privacySecurityTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'2. AN TOÀN MẬT KHẨU & MÃ HÓA ĐẦU CUỐI'**
+  String get privacySecurityTitle;
+
+  /// No description provided for @privacySecurityDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mật khẩu tài khoản của người dùng được băm một chiều (one-way hashing) kèm salt an toàn, hoàn toàn không thể dịch ngược hay đọc dưới dạng văn bản thô.'**
+  String get privacySecurityDesc;
+
+  /// No description provided for @privacyChangePasswordTip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn có thể tự chủ động thay đổi mật khẩu bất kỳ lúc nào tại màn hình Cài đặt bằng tính năng \"Đổi mật khẩu\".'**
+  String get privacyChangePasswordTip;
+
+  /// No description provided for @privacyNoShareTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'3. CAM KẾT KHÔNG CHIA SẺ DỮ LIỆU'**
+  String get privacyNoShareTitle;
+
+  /// No description provided for @privacyNoShareDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'FairShare cam kết không bán, chia sẻ hoặc thương mại hóa bất kỳ thông tin cá nhân, lịch sử chuyển nợ hay số tiền đóng quỹ của bạn cho bất kỳ đối tác quảng cáo nào.'**
+  String get privacyNoShareDesc;
+
+  /// No description provided for @privacyUserRightsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'4. QUYỀN LÀM CHỦ DỮ LIỆU CỦA BẠN'**
+  String get privacyUserRightsTitle;
+
+  /// No description provided for @privacyRightEditProfile.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem và chỉnh sửa họ tên, thông tin tài khoản ngân hàng bất kỳ lúc nào.'**
+  String get privacyRightEditProfile;
+
+  /// No description provided for @privacyRightTransferAdmin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chuyển quyền Quản trị viên (Admin) cho thành viên khác trong nhóm.'**
+  String get privacyRightTransferAdmin;
+
+  /// No description provided for @privacyRightArchiveGroup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Yêu cầu xóa nhóm hoặc đóng băng lịch sử chi tiêu bằng cách đưa vào Lưu trữ.'**
+  String get privacyRightArchiveGroup;
+
+  /// No description provided for @privacyRightLogoutSafe.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đăng xuất an toàn khỏi thiết bị bất cứ khi nào bạn muốn.'**
+  String get privacyRightLogoutSafe;
+
+  /// No description provided for @privacyBackToSettings.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay lại Cài đặt'**
+  String get privacyBackToSettings;
+
   /// No description provided for @logoutButton.
   ///
   /// In vi, this message translates to:

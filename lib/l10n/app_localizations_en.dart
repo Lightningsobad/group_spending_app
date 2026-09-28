@@ -289,6 +289,92 @@ class AppLocalizationsEn extends AppLocalizations {
       'Commitment to encryption and account protection (Details)';
 
   @override
+  String get privacyPolicyCommitmentSubtitle =>
+      'Commitment to personal data protection & financial safety';
+
+  @override
+  String get privacyStandardBadge => 'STANDARD SECURITY';
+
+  @override
+  String get privacyUpdatedDate => 'Updated: September 2026';
+
+  @override
+  String get privacyHeroTitle => 'Expense Transparency • User Data Protection';
+
+  @override
+  String get privacyHeroDescription =>
+      'FairShare respects your privacy. All expenses, invoice information, and bank account details only serve group debt splitting and fund collection among members.';
+
+  @override
+  String get privacyDataCollectedTitle => '1. DATA COLLECTED BY APP';
+
+  @override
+  String get privacyDataCollectedDesc =>
+      'We only collect minimal information necessary to operate group expense splitting features:';
+
+  @override
+  String get privacyIdentityTitle => 'Identity Information: ';
+
+  @override
+  String get privacyIdentityDesc =>
+      'Display name, avatar, and email address to authenticate account and deliver OTP codes.';
+
+  @override
+  String get privacyBankTitle => 'Payout Account (VietQR): ';
+
+  @override
+  String get privacyBankDesc =>
+      'Bank name, account number, and holder name to generate 1-tap standard VietQR code for members to settle debts.';
+
+  @override
+  String get privacyTransactionTitle => 'Group Transaction Data: ';
+
+  @override
+  String get privacyTransactionDesc =>
+      'List of bills, amounts spent, payer, split ratios, and joint funding campaigns.';
+
+  @override
+  String get privacySecurityTitle =>
+      '2. PASSWORD SAFETY & END-TO-END ENCRYPTION';
+
+  @override
+  String get privacySecurityDesc =>
+      'User account passwords are one-way hashed with secure salt, never decipherable or readable as raw plain text.';
+
+  @override
+  String get privacyChangePasswordTip =>
+      'You can proactively change your password anytime in Settings using the \"Change password\" feature.';
+
+  @override
+  String get privacyNoShareTitle => '3. NO DATA SHARING COMMITMENT';
+
+  @override
+  String get privacyNoShareDesc =>
+      'FairShare commits to never selling, sharing, or commercializing any personal information, debt history, or fund amount to any advertising partners.';
+
+  @override
+  String get privacyUserRightsTitle => '4. YOUR DATA OWNERSHIP RIGHTS';
+
+  @override
+  String get privacyRightEditProfile =>
+      'View and update your display name and bank account details anytime.';
+
+  @override
+  String get privacyRightTransferAdmin =>
+      'Transfer Administrator (Admin) role to another member in the group.';
+
+  @override
+  String get privacyRightArchiveGroup =>
+      'Request group deletion or freeze expense history by archiving it.';
+
+  @override
+  String get privacyRightLogoutSafe =>
+      'Safely sign out from devices whenever you wish.';
+
+  @override
+  String get privacyBackToSettings => 'Back to Settings';
+
+  @override
   String get logoutButton => 'Log out account';
 
   @override

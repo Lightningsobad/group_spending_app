@@ -6,7 +6,12 @@ import '../../../../core/theme/app_text_style.dart';
 import '../../../../l10n/l10n.dart';
 
 class SupportInfoCard extends StatelessWidget {
-  const SupportInfoCard({super.key});
+  final VoidCallback? onOpenPrivacyPolicy;
+
+  const SupportInfoCard({
+    super.key,
+    this.onOpenPrivacyPolicy,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +67,11 @@ class SupportInfoCard extends StatelessWidget {
             subtitle: tr.privacyPolicySubtitle,
             textColor: colors.textPrimary,
             onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(tr.underDevelopment)),
-              );
+              if (onOpenPrivacyPolicy != null) {
+                onOpenPrivacyPolicy!();
+              } else {
+                context.push('/settings/privacy-policy');
+              }
             },
           ),
         ],

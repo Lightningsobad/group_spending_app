@@ -287,6 +287,92 @@ class AppLocalizationsVi extends AppLocalizations {
       'Cam kết mã hóa thông tin & bảo vệ tài khoản (Xem chi tiết)';
 
   @override
+  String get privacyPolicyCommitmentSubtitle =>
+      'Cam kết bảo vệ dữ liệu cá nhân & an toàn tài chính';
+
+  @override
+  String get privacyStandardBadge => 'BẢO MẬT TIÊU CHUẨN';
+
+  @override
+  String get privacyUpdatedDate => 'Cập nhật: Tháng 09/2026';
+
+  @override
+  String get privacyHeroTitle =>
+      'Minh bạch thu chi • Bảo mật dữ liệu người dùng';
+
+  @override
+  String get privacyHeroDescription =>
+      'FairShare tôn trọng quyền riêng tư của bạn. Mọi khoản chi, thông tin hóa đơn và số tài khoản ngân hàng chỉ phục vụ mục đích phân chia công nợ và đóng quỹ nhóm của các thành viên.';
+
+  @override
+  String get privacyDataCollectedTitle => '1. DỮ LIỆU ỨNG DỤNG THU THẬP';
+
+  @override
+  String get privacyDataCollectedDesc =>
+      'Chúng tôi chỉ thu thập các trường thông tin tối thiểu cần thiết để vận hành các tính năng chia tiền nhóm:';
+
+  @override
+  String get privacyIdentityTitle => 'Thông tin định danh: ';
+
+  @override
+  String get privacyIdentityDesc =>
+      'Họ và tên hiển thị, ảnh đại diện và địa chỉ Email để xác thực tài khoản và gửi mã OTP.';
+
+  @override
+  String get privacyBankTitle => 'Tài khoản nhận tiền (VietQR): ';
+
+  @override
+  String get privacyBankDesc =>
+      'Tên ngân hàng, số tài khoản và tên chủ sở hữu nhằm tạo mã VietQR chuẩn 1-chạm giúp thành viên khác chuyển khoản trả nợ.';
+
+  @override
+  String get privacyTransactionTitle => 'Dữ liệu giao dịch nhóm: ';
+
+  @override
+  String get privacyTransactionDesc =>
+      'Danh sách hóa đơn, số tiền chi, người trả hộ, tỷ lệ phân bổ và các chiến dịch đóng quỹ chung.';
+
+  @override
+  String get privacySecurityTitle => '2. AN TOÀN MẬT KHẨU & MÃ HÓA ĐẦU CUỐI';
+
+  @override
+  String get privacySecurityDesc =>
+      'Mật khẩu tài khoản của người dùng được băm một chiều (one-way hashing) kèm salt an toàn, hoàn toàn không thể dịch ngược hay đọc dưới dạng văn bản thô.';
+
+  @override
+  String get privacyChangePasswordTip =>
+      'Bạn có thể tự chủ động thay đổi mật khẩu bất kỳ lúc nào tại màn hình Cài đặt bằng tính năng \"Đổi mật khẩu\".';
+
+  @override
+  String get privacyNoShareTitle => '3. CAM KẾT KHÔNG CHIA SẺ DỮ LIỆU';
+
+  @override
+  String get privacyNoShareDesc =>
+      'FairShare cam kết không bán, chia sẻ hoặc thương mại hóa bất kỳ thông tin cá nhân, lịch sử chuyển nợ hay số tiền đóng quỹ của bạn cho bất kỳ đối tác quảng cáo nào.';
+
+  @override
+  String get privacyUserRightsTitle => '4. QUYỀN LÀM CHỦ DỮ LIỆU CỦA BẠN';
+
+  @override
+  String get privacyRightEditProfile =>
+      'Xem và chỉnh sửa họ tên, thông tin tài khoản ngân hàng bất kỳ lúc nào.';
+
+  @override
+  String get privacyRightTransferAdmin =>
+      'Chuyển quyền Quản trị viên (Admin) cho thành viên khác trong nhóm.';
+
+  @override
+  String get privacyRightArchiveGroup =>
+      'Yêu cầu xóa nhóm hoặc đóng băng lịch sử chi tiêu bằng cách đưa vào Lưu trữ.';
+
+  @override
+  String get privacyRightLogoutSafe =>
+      'Đăng xuất an toàn khỏi thiết bị bất cứ khi nào bạn muốn.';
+
+  @override
+  String get privacyBackToSettings => 'Quay lại Cài đặt';
+
+  @override
   String get logoutButton => 'Đăng xuất tài khoản';
 
   @override
