@@ -1025,7 +1025,7 @@ abstract class AppLocalizations {
   /// No description provided for @inviteCodeCardTitle.
   ///
   /// In vi, this message translates to:
-  /// **'MÃ MỜI THAM GIA'**
+  /// **'MÃ MỜI THAM GIA NHÓM'**
   String get inviteCodeCardTitle;
 
   /// No description provided for @groupFinancialOverviewTitle.
@@ -1699,6 +1699,240 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Mọi khoản chi tiêu trong nhóm đã được cân bằng hoặc chưa phát sinh nợ.'**
   String get noDebtsInGroupSubtitle;
+
+  /// No description provided for @groupInfoSectionTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'THÔNG TIN NHÓM'**
+  String get groupInfoSectionTitle;
+
+  /// No description provided for @tabExpenses.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi tiêu'**
+  String get tabExpenses;
+
+  /// No description provided for @tabFunds.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quỹ'**
+  String get tabFunds;
+
+  /// No description provided for @tabMembers.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thành viên'**
+  String get tabMembers;
+
+  /// No description provided for @categoryLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'THỂ LOẠI'**
+  String get categoryLabel;
+
+  /// No description provided for @createdDateLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'NGÀY TẠO'**
+  String get createdDateLabel;
+
+  /// No description provided for @membersCountLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'THÀNH VIÊN'**
+  String get membersCountLabel;
+
+  /// No description provided for @copyInviteCodeAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao chép mã mời'**
+  String get copyInviteCodeAction;
+
+  /// No description provided for @viewQrCodeTooltip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem mã QR'**
+  String get viewQrCodeTooltip;
+
+  /// No description provided for @inviteMembersTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mời thành viên vào nhóm'**
+  String get inviteMembersTitle;
+
+  /// No description provided for @tabQrCode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã QR Code'**
+  String get tabQrCode;
+
+  /// No description provided for @tabQrCodeSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quét trực tiếp khi ở cạnh nhau'**
+  String get tabQrCodeSubtitle;
+
+  /// No description provided for @tabCopyCode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao chép mã mời'**
+  String get tabCopyCode;
+
+  /// No description provided for @tabCopyCodeSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi mã văn bản qua tin nhắn, Zalo'**
+  String get tabCopyCodeSubtitle;
+
+  /// No description provided for @scanToJoinInstruction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thành viên quét mã này bằng điện thoại để gửi yêu cầu gia nhập'**
+  String get scanToJoinInstruction;
+
+  /// No description provided for @downloadQrAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tải ảnh mã QR'**
+  String get downloadQrAction;
+
+  /// No description provided for @downloadQrSuccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã lưu ảnh mã QR thành công!'**
+  String get downloadQrSuccess;
+
+  /// No description provided for @downloadQrFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể lưu ảnh mã QR'**
+  String get downloadQrFailed;
+
+  /// No description provided for @shareViaOtherAppsAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia sẻ qua ứng dụng khác'**
+  String get shareViaOtherAppsAction;
+
+  /// No description provided for @closeButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng'**
+  String get closeButton;
+
+  /// No description provided for @yourBalanceInGroupLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư của bạn trong nhóm'**
+  String get yourBalanceInGroupLabel;
+
+  /// No description provided for @youReceiveBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn nhận'**
+  String get youReceiveBadge;
+
+  /// No description provided for @youOweBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn nợ'**
+  String get youOweBadge;
+
+  /// No description provided for @settledBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cân bằng'**
+  String get settledBadge;
+
+  /// No description provided for @totalSpendingCard.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng chi tiêu'**
+  String get totalSpendingCard;
+
+  /// No description provided for @viewReportAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem báo cáo'**
+  String get viewReportAction;
+
+  /// No description provided for @fundCollectedCard.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quỹ đã thu'**
+  String get fundCollectedCard;
+
+  /// No description provided for @fundGeneralSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quỹ chung'**
+  String get fundGeneralSubtitle;
+
+  /// No description provided for @quickActionsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'LỐI TẮT & THAO TÁC NHANH'**
+  String get quickActionsTitle;
+
+  /// No description provided for @viewDebtsAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem công nợ'**
+  String get viewDebtsAction;
+
+  /// No description provided for @settleDebtsSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất toán nợ'**
+  String get settleDebtsSubtitle;
+
+  /// No description provided for @generalFundAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quỹ chung'**
+  String get generalFundAction;
+
+  /// No description provided for @collectFundSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thu quỹ chung'**
+  String get collectFundSubtitle;
+
+  /// No description provided for @addExpenseAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm khoản chi'**
+  String get addExpenseAction;
+
+  /// No description provided for @splitBillSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia hóa đơn'**
+  String get splitBillSubtitle;
+
+  /// No description provided for @groupSettingsAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cài đặt'**
+  String get groupSettingsAction;
+
+  /// No description provided for @accountAndInterfaceSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản & thiết lập'**
+  String get accountAndInterfaceSubtitle;
+
+  /// No description provided for @groupAdminSectionTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'QUẢN TRỊ NHÓM'**
+  String get groupAdminSectionTitle;
+
+  /// No description provided for @editGroupInfo.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa thông tin'**
+  String get editGroupInfo;
 }
 
 class _AppLocalizationsDelegate

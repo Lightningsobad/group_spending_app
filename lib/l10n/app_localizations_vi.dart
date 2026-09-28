@@ -507,7 +507,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get editGroupAction => 'Sửa nhóm';
 
   @override
-  String get inviteCodeCardTitle => 'MÃ MỜI THAM GIA';
+  String get inviteCodeCardTitle => 'MÃ MỜI THAM GIA NHÓM';
 
   @override
   String get groupFinancialOverviewTitle => 'TỔNG QUAN TÀI CHÍNH NHÓM';
@@ -889,4 +889,122 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get noDebtsInGroupSubtitle =>
       'Mọi khoản chi tiêu trong nhóm đã được cân bằng hoặc chưa phát sinh nợ.';
+
+  @override
+  String get groupInfoSectionTitle => 'THÔNG TIN NHÓM';
+
+  @override
+  String get tabExpenses => 'Chi tiêu';
+
+  @override
+  String get tabFunds => 'Quỹ';
+
+  @override
+  String get tabMembers => 'Thành viên';
+
+  @override
+  String get categoryLabel => 'THỂ LOẠI';
+
+  @override
+  String get createdDateLabel => 'NGÀY TẠO';
+
+  @override
+  String get membersCountLabel => 'THÀNH VIÊN';
+
+  @override
+  String get copyInviteCodeAction => 'Sao chép mã mời';
+
+  @override
+  String get viewQrCodeTooltip => 'Xem mã QR';
+
+  @override
+  String get inviteMembersTitle => 'Mời thành viên vào nhóm';
+
+  @override
+  String get tabQrCode => 'Mã QR Code';
+
+  @override
+  String get tabQrCodeSubtitle => 'Quét trực tiếp khi ở cạnh nhau';
+
+  @override
+  String get tabCopyCode => 'Sao chép mã mời';
+
+  @override
+  String get tabCopyCodeSubtitle => 'Gửi mã văn bản qua tin nhắn, Zalo';
+
+  @override
+  String get scanToJoinInstruction =>
+      'Thành viên quét mã này bằng điện thoại để gửi yêu cầu gia nhập';
+
+  @override
+  String get downloadQrAction => 'Tải ảnh mã QR';
+
+  @override
+  String get downloadQrSuccess => 'Đã lưu ảnh mã QR thành công!';
+
+  @override
+  String get downloadQrFailed => 'Không thể lưu ảnh mã QR';
+
+  @override
+  String get shareViaOtherAppsAction => 'Chia sẻ qua ứng dụng khác';
+
+  @override
+  String get closeButton => 'Đóng';
+
+  @override
+  String get yourBalanceInGroupLabel => 'Số dư của bạn trong nhóm';
+
+  @override
+  String get youReceiveBadge => 'Bạn nhận';
+
+  @override
+  String get youOweBadge => 'Bạn nợ';
+
+  @override
+  String get settledBadge => 'Cân bằng';
+
+  @override
+  String get totalSpendingCard => 'Tổng chi tiêu';
+
+  @override
+  String get viewReportAction => 'Xem báo cáo';
+
+  @override
+  String get fundCollectedCard => 'Quỹ đã thu';
+
+  @override
+  String get fundGeneralSubtitle => 'Quỹ chung';
+
+  @override
+  String get quickActionsTitle => 'LỐI TẮT & THAO TÁC NHANH';
+
+  @override
+  String get viewDebtsAction => 'Xem công nợ';
+
+  @override
+  String get settleDebtsSubtitle => 'Tất toán nợ';
+
+  @override
+  String get generalFundAction => 'Quỹ chung';
+
+  @override
+  String get collectFundSubtitle => 'Thu quỹ chung';
+
+  @override
+  String get addExpenseAction => 'Thêm khoản chi';
+
+  @override
+  String get splitBillSubtitle => 'Chia hóa đơn';
+
+  @override
+  String get groupSettingsAction => 'Cài đặt';
+
+  @override
+  String get accountAndInterfaceSubtitle => 'Tài khoản & thiết lập';
+
+  @override
+  String get groupAdminSectionTitle => 'QUẢN TRỊ NHÓM';
+
+  @override
+  String get editGroupInfo => 'Sửa thông tin';
 }
