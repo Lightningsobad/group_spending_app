@@ -235,5 +235,16 @@
       }
     }
   },
-  "deleteGroupPermanently": "Delete group permanently"
+  "deleteGroupPermanently": "Delete group permanently",
+  "backAction": "Back",
+  "joinGroupQrTitle": "Join via Code / QR",
+  "joinGroupQrSubtitle": "Quickly join a group by scanning a QR code or entering an invite code",
+  "scanQrTab": "Scan QR Code",
+  "enterCodeTab": "Enter Invite Code",
+  "scanQrInstruction": "Point your camera at the group's QR code to send a join request",
+  "testScanQrAction": "Test Scan QR",
+  "uploadQrImageAction": "Upload QR Image",
+  "invalidQrCodeError": "No valid invite code found in this QR code.",
+  "noQrFoundInImage": "No QR code found in the selected image.",
+  "cameraPermissionRequired": "Please grant camera permission to scan QR codes."
 }

@@ -1069,6 +1069,72 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Xóa nhóm vĩnh viễn'**
   String get deleteGroupPermanently;
+
+  /// No description provided for @backAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay lại'**
+  String get backAction;
+
+  /// No description provided for @joinGroupQrTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gia nhập bằng mã / QR'**
+  String get joinGroupQrTitle;
+
+  /// No description provided for @joinGroupQrSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tham gia nhóm chi tiêu nhanh chóng bằng cách quét mã QR hoặc nhập mã mời'**
+  String get joinGroupQrSubtitle;
+
+  /// No description provided for @scanQrTab.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quét mã QR'**
+  String get scanQrTab;
+
+  /// No description provided for @enterCodeTab.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập mã mời'**
+  String get enterCodeTab;
+
+  /// No description provided for @scanQrInstruction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hướng camera vào mã QR của nhóm để gửi yêu cầu gia nhập'**
+  String get scanQrInstruction;
+
+  /// No description provided for @testScanQrAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quét thử mã QR'**
+  String get testScanQrAction;
+
+  /// No description provided for @uploadQrImageAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tải ảnh mã QR'**
+  String get uploadQrImageAction;
+
+  /// No description provided for @invalidQrCodeError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy mã mời hợp lệ trong mã QR.'**
+  String get invalidQrCodeError;
+
+  /// No description provided for @noQrFoundInImage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy mã QR trong ảnh đã chọn.'**
+  String get noQrFoundInImage;
+
+  /// No description provided for @cameraPermissionRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng cấp quyền truy cập Camera để quét mã QR.'**
+  String get cameraPermissionRequired;
 }
 
 class _AppLocalizationsDelegate

@@ -66,9 +66,9 @@
 			<string>UIInterfaceOrientationLandscapeLeft</string>
 			<string>UIInterfaceOrientationLandscapeRight</string>
 		</array>
-		<key>UIStatusBarHidden</key>
-		<true/>
-		<key>UIViewControllerBasedStatusBarAppearance</key>
-		<false/>
+		<key>NSCameraUsageDescription</key>
+		<string>FairShare cần quyền truy cập Camera để quét mã QR tham gia nhóm chi tiêu.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>FairShare cần quyền truy cập Thư viện ảnh để chọn ảnh chứa mã QR tham gia nhóm.</string>
 	</dict>
 </plist>

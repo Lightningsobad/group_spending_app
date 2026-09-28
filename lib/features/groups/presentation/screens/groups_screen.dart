@@ -13,23 +13,39 @@ import '../widgets/group_detail_sheet.dart';
 import '../widgets/groups_empty_view.dart';
 import '../widgets/groups_filter_bar.dart';
 import '../widgets/groups_search_bar.dart';
-import '../widgets/join_group_sheet.dart';
+import '../widgets/join_group_view.dart';
 
 class GroupsScreen extends StatefulWidget {
-  const GroupsScreen({super.key});
+  final bool initialShowJoin;
+
+  const GroupsScreen({super.key, this.initialShowJoin = false});
 
   @override
-  State<GroupsScreen> createState() => _GroupsScreenState();
+  State<GroupsScreen> createState() => GroupsScreenState();
 }
 
-class _GroupsScreenState extends State<GroupsScreen> {
+class GroupsScreenState extends State<GroupsScreen> {
   final _searchController = TextEditingController();
+  late bool _isJoiningGroup;
 
   @override
   void initState() {
     super.initState();
+    _isJoiningGroup = widget.initialShowJoin;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<GroupsCubit>().loadGroups();
+    });
+  }
+
+  void openJoinGroup() {
+    setState(() {
+      _isJoiningGroup = true;
+    });
+  }
+
+  void closeJoinGroup() {
+    setState(() {
+      _isJoiningGroup = false;
     });
   }
 
@@ -69,6 +85,13 @@ class _GroupsScreenState extends State<GroupsScreen> {
         }
       },
       builder: (context, state) {
+        if (_isJoiningGroup) {
+          return JoinGroupView(
+            onBack: closeJoinGroup,
+            onSuccess: closeJoinGroup,
+          );
+        }
+
         final filteredGroups = state.filteredGroups;
 
         return RefreshIndicator(
@@ -155,7 +178,7 @@ class _GroupsScreenState extends State<GroupsScreen> {
                           ),
                           side: BorderSide(color: colors.cardBorder),
                         ),
-                        onPressed: () => JoinGroupSheet.show(context),
+                        onPressed: openJoinGroup,
                         icon: const Icon(
                           LucideIcons.qrCode,
                           size: 18,

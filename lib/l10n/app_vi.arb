@@ -235,5 +235,16 @@
       }
     }
   },
-  "deleteGroupPermanently": "Xóa nhóm vĩnh viễn"
+  "deleteGroupPermanently": "Xóa nhóm vĩnh viễn",
+  "backAction": "Quay lại",
+  "joinGroupQrTitle": "Gia nhập bằng mã / QR",
+  "joinGroupQrSubtitle": "Tham gia nhóm chi tiêu nhanh chóng bằng cách quét mã QR hoặc nhập mã mời",
+  "scanQrTab": "Quét mã QR",
+  "enterCodeTab": "Nhập mã mời",
+  "scanQrInstruction": "Hướng camera vào mã QR của nhóm để gửi yêu cầu gia nhập",
+  "testScanQrAction": "Quét thử mã QR",
+  "uploadQrImageAction": "Tải ảnh mã QR",
+  "invalidQrCodeError": "Không tìm thấy mã mời hợp lệ trong mã QR.",
+  "noQrFoundInImage": "Không tìm thấy mã QR trong ảnh đã chọn.",
+  "cameraPermissionRequired": "Vui lòng cấp quyền truy cập Camera để quét mã QR."
 }

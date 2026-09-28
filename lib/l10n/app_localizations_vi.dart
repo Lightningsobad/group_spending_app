@@ -533,4 +533,40 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get deleteGroupPermanently => 'Xóa nhóm vĩnh viễn';
+
+  @override
+  String get backAction => 'Quay lại';
+
+  @override
+  String get joinGroupQrTitle => 'Gia nhập bằng mã / QR';
+
+  @override
+  String get joinGroupQrSubtitle =>
+      'Tham gia nhóm chi tiêu nhanh chóng bằng cách quét mã QR hoặc nhập mã mời';
+
+  @override
+  String get scanQrTab => 'Quét mã QR';
+
+  @override
+  String get enterCodeTab => 'Nhập mã mời';
+
+  @override
+  String get scanQrInstruction =>
+      'Hướng camera vào mã QR của nhóm để gửi yêu cầu gia nhập';
+
+  @override
+  String get testScanQrAction => 'Quét thử mã QR';
+
+  @override
+  String get uploadQrImageAction => 'Tải ảnh mã QR';
+
+  @override
+  String get invalidQrCodeError => 'Không tìm thấy mã mời hợp lệ trong mã QR.';
+
+  @override
+  String get noQrFoundInImage => 'Không tìm thấy mã QR trong ảnh đã chọn.';
+
+  @override
+  String get cameraPermissionRequired =>
+      'Vui lòng cấp quyền truy cập Camera để quét mã QR.';
 }

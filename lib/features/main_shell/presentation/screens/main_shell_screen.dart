@@ -37,6 +37,7 @@ class MainShellScreen extends StatefulWidget {
 
 class _MainShellScreenState extends State<MainShellScreen> {
   late int _currentIndex;
+  final GlobalKey<GroupsScreenState> _groupsKey = GlobalKey<GroupsScreenState>();
 
   @override
   void initState() {
@@ -81,8 +82,14 @@ class _MainShellScreenState extends State<MainShellScreen> {
                           _currentIndex = 1;
                         });
                       },
+                      onNavigateToJoinGroup: () {
+                        setState(() {
+                          _currentIndex = 1;
+                        });
+                        _groupsKey.currentState?.openJoinGroup();
+                      },
                     ),
-                    const GroupsScreen(),
+                    GroupsScreen(key: _groupsKey),
                     TabPlaceholderView(
                       title: tr.tabDebts,
                       icon: LucideIcons.arrowLeftRight,
