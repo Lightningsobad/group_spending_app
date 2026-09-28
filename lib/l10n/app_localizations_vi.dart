@@ -535,6 +535,162 @@ class AppLocalizationsVi extends AppLocalizations {
   String get deleteGroupPermanently => 'Xóa nhóm vĩnh viễn';
 
   @override
+  String get tabAnalyticsTitle => 'Báo cáo & Thống kê';
+
+  @override
+  String get totalSpendingAllGroups => 'Tổng chi tất cả nhóm';
+
+  @override
+  String get activeGroupsJoinedCount => 'Số nhóm tham gia';
+
+  @override
+  String get groupsUnit => 'nhóm';
+
+  @override
+  String get totalInvoicesRecorded => 'Số hóa đơn đã ghi';
+
+  @override
+  String get invoicesUnit => 'hóa đơn';
+
+  @override
+  String get overallReportBannerTitle => 'Báo cáo tổng quan';
+
+  @override
+  String get viewOverallReportAction => 'Xem toàn cảnh';
+
+  @override
+  String get searchGroupByHint => 'Tìm kiếm nhóm theo tên, danh mục...';
+
+  @override
+  String filterAllTab(int count) {
+    return 'Tất cả ($count)';
+  }
+
+  @override
+  String get filterActiveTab => 'Đang hoạt động';
+
+  @override
+  String get filterArchivedTab => 'Đã lưu trữ';
+
+  @override
+  String get groupSpendingListTitle => 'DANH SÁCH NHÓM CHI TIÊU';
+
+  @override
+  String get totalSpendingLabel => 'Tổng chi tiêu';
+
+  @override
+  String get overallReportTitle => 'Báo cáo tổng quan';
+
+  @override
+  String get overallReportSubtitle => 'Tổng hợp tất cả nhóm đang tham gia';
+
+  @override
+  String get financialMetricsTitle => 'CHỈ SỐ TÀI CHÍNH NHÓM';
+
+  @override
+  String get totalSpendingMetric => 'Tổng tiền chi tiêu';
+
+  @override
+  String get commonGroupSpendingSubtitle => 'Chi tiêu chung cả nhóm';
+
+  @override
+  String get averagePerPersonMetric => 'Bình quân đầu người';
+
+  @override
+  String get splitEquallySubtitle => 'Mỗi thành viên chia đều';
+
+  @override
+  String friendsCountBadge(int count) {
+    return '÷ $count bạn';
+  }
+
+  @override
+  String get expenseCountMetric => 'Số khoản chi';
+
+  @override
+  String get invoicesBadge => 'Hóa đơn';
+
+  @override
+  String get expensesUnit => 'khoản chi';
+
+  @override
+  String get recordedAndAuditedSubtitle => 'Đã ghi nhận & đối soát';
+
+  @override
+  String get settlementRateMetric => 'Tỷ lệ tất toán';
+
+  @override
+  String get paidRateSuffix => 'đã trả';
+
+  @override
+  String get groupDebtLabel => 'Công nợ nhóm';
+
+  @override
+  String remainingDebtRate(String percent) {
+    return 'Còn $percent% tồn';
+  }
+
+  @override
+  String get categoryDistributionTitle => 'PHÂN BỐ THEO DANH MỤC CHI TIÊU';
+
+  @override
+  String get memberContributionTitle => 'ĐÓNG GÓP & CHI TIÊU THÀNH VIÊN';
+
+  @override
+  String contributionPercent(String percent) {
+    return 'Đóng góp $percent% tổng chi';
+  }
+
+  @override
+  String get recentExpensesTitle => 'HÓA ĐƠN CHI TIÊU GẦN ĐÂY';
+
+  @override
+  String expensesCountBadge(int count) {
+    return '$count khoản';
+  }
+
+  @override
+  String paidByPrefix(String name) {
+    return 'Người trả: $name';
+  }
+
+  @override
+  String get viewExpenseDetailAction => 'Chi tiết →';
+
+  @override
+  String get periodThisMonth => 'Tháng này';
+
+  @override
+  String get periodLastMonth => 'Tháng trước';
+
+  @override
+  String get periodCurrentQuarter => 'Quý này';
+
+  @override
+  String get periodByYear => 'Cả năm';
+
+  @override
+  String membersCountSubtitle(int memberCount) {
+    return '$memberCount thành viên';
+  }
+
+  @override
+  String get noExpensesRecorded => 'Chưa có khoản chi tiêu nào.';
+
+  @override
+  String get noCategoriesRecorded => 'Chưa có dữ liệu danh mục.';
+
+  @override
+  String get noLeaderboardData => 'Chưa có dữ liệu đóng góp.';
+
+  @override
+  String get loadAnalyticsFailed => 'Không thể tải dữ liệu thống kê';
+
+  @override
+  String get retryAction => 'Thử lại';
+
+  @override
+  String get youLabel => '(Tôi)';
   String get debtsGroupTitle => 'Công nợ theo nhóm';
 
   @override

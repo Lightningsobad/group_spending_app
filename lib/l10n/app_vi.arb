@@ -236,6 +236,17 @@
     }
   },
   "deleteGroupPermanently": "Xóa nhóm vĩnh viễn",
+  "tabAnalyticsTitle": "Báo cáo & Thống kê",
+  "totalSpendingAllGroups": "Tổng chi tất cả nhóm",
+  "activeGroupsJoinedCount": "Số nhóm tham gia",
+  "groupsUnit": "nhóm",
+  "totalInvoicesRecorded": "Số hóa đơn đã ghi",
+  "invoicesUnit": "hóa đơn",
+  "overallReportBannerTitle": "Báo cáo tổng quan",
+  "viewOverallReportAction": "Xem toàn cảnh",
+  "searchGroupByHint": "Tìm kiếm nhóm theo tên, danh mục...",
+  "filterAllTab": "Tất cả ({count})",
+  "@filterAllTab": {
   "debtsGroupTitle": "Công nợ theo nhóm",
   "debtsYouOwe": "Bạn đang nợ",
   "debtsYouOweSubtitle": "Tổng tiền bạn cần thanh toán",
@@ -250,6 +261,19 @@
       }
     }
   },
+  "filterActiveTab": "Đang hoạt động",
+  "filterArchivedTab": "Đã lưu trữ",
+  "groupSpendingListTitle": "DANH SÁCH NHÓM CHI TIÊU",
+  "totalSpendingLabel": "Tổng chi tiêu",
+  "overallReportTitle": "Báo cáo tổng quan",
+  "overallReportSubtitle": "Tổng hợp tất cả nhóm đang tham gia",
+  "financialMetricsTitle": "CHỈ SỐ TÀI CHÍNH NHÓM",
+  "totalSpendingMetric": "Tổng tiền chi tiêu",
+  "commonGroupSpendingSubtitle": "Chi tiêu chung cả nhóm",
+  "averagePerPersonMetric": "Bình quân đầu người",
+  "splitEquallySubtitle": "Mỗi thành viên chia đều",
+  "friendsCountBadge": "÷ {count} bạn",
+  "@friendsCountBadge": {
   "filterDebtHasDebtCount": "Có công nợ ({count})",
   "@filterDebtHasDebtCount": {
     "placeholders": {
@@ -258,6 +282,34 @@
       }
     }
   },
+  "expenseCountMetric": "Số khoản chi",
+  "invoicesBadge": "Hóa đơn",
+  "expensesUnit": "khoản chi",
+  "recordedAndAuditedSubtitle": "Đã ghi nhận & đối soát",
+  "settlementRateMetric": "Tỷ lệ tất toán",
+  "paidRateSuffix": "đã trả",
+  "groupDebtLabel": "Công nợ nhóm",
+  "remainingDebtRate": "Còn {percent}% tồn",
+  "@remainingDebtRate": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryDistributionTitle": "PHÂN BỐ THEO DANH MỤC CHI TIÊU",
+  "memberContributionTitle": "ĐÓNG GÓP & CHI TIÊU THÀNH VIÊN",
+  "contributionPercent": "Đóng góp {percent}% tổng chi",
+  "@contributionPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "recentExpensesTitle": "HÓA ĐƠN CHI TIÊU GẦN ĐÂY",
+  "expensesCountBadge": "{count} khoản",
+  "@expensesCountBadge": {
   "filterDebtSettledCount": "Đã tất toán ({count})",
   "@filterDebtSettledCount": {
     "placeholders": {
@@ -291,6 +343,10 @@
       }
     }
   },
+  "paidByPrefix": "Người trả: {name}",
+  "@paidByPrefix": {
+    "placeholders": {
+      "name": {
   "simplifiedDebtAlgorithm": "Thuật toán gộp nợ tối giản",
   "payNowAction": "Thanh toán ngay (100%)",
   "confirmReceivedAction": "Xác nhận nhận tiền",
@@ -320,6 +376,25 @@
       }
     }
   },
+  "viewExpenseDetailAction": "Chi tiết →",
+  "periodThisMonth": "Tháng này",
+  "periodLastMonth": "Tháng trước",
+  "periodCurrentQuarter": "Quý này",
+  "periodByYear": "Cả năm",
+  "membersCountSubtitle": "{memberCount} thành viên",
+  "@membersCountSubtitle": {
+    "placeholders": {
+      "memberCount": {
+        "type": "int"
+      }
+    }
+  },
+  "noExpensesRecorded": "Chưa có khoản chi tiêu nào.",
+  "noCategoriesRecorded": "Chưa có dữ liệu danh mục.",
+  "noLeaderboardData": "Chưa có dữ liệu đóng góp.",
+  "loadAnalyticsFailed": "Không thể tải dữ liệu thống kê",
+  "retryAction": "Thử lại",
+  "youLabel": "(Tôi)"
   "confirmReceiveDebtTitle": "Xác nhận nhận tiền",
   "confirmReceiveDebtMessage": "Bạn đã nhận được số tiền {amount} từ {debtor}?",
   "@confirmReceiveDebtMessage": {

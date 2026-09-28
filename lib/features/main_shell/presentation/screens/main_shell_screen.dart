@@ -6,6 +6,9 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/session/session_coordinator.dart';
 import '../../../../core/sync/data_sync_coordinator.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../analytics/domain/repositories/analytics_repository.dart';
+import '../../../analytics/presentation/cubit/analytics_tab_cubit.dart';
+import '../../../analytics/presentation/screens/analytics_tab_screen.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../auth/presentation/cubit/auth_state.dart';
 import '../../../dashboard/presentation/cubit/dashboard_cubit.dart';
@@ -25,6 +28,7 @@ class MainShellScreen extends StatefulWidget {
   final int initialTabIndex;
   final DashboardCubit? dashboardCubit;
   final GroupsCubit? groupsCubit;
+  final AnalyticsTabCubit? analyticsTabCubit;
   final DebtsCubit? debtsCubit;
 
   const MainShellScreen({
@@ -32,6 +36,7 @@ class MainShellScreen extends StatefulWidget {
     this.initialTabIndex = 0,
     this.dashboardCubit,
     this.groupsCubit,
+    this.analyticsTabCubit,
     this.debtsCubit,
   });
 
@@ -87,6 +92,12 @@ class _MainShellScreenState extends State<MainShellScreen> {
                       },
                     ),
                     const GroupsScreen(),
+                    TabPlaceholderView(
+                      title: tr.tabDebts,
+                      icon: LucideIcons.arrowLeftRight,
+                      tabIndex: 2,
+                    ),
+                    const AnalyticsTabScreen(),
                     const DebtsScreen(),
                     TabPlaceholderView(
                       title: tr.tabAnalytics,
@@ -129,6 +140,10 @@ class _MainShellScreenState extends State<MainShellScreen> {
       }
     }
 
+    AnalyticsTabCubit? effectiveAnalyticsTabCubit = widget.analyticsTabCubit;
+    if (effectiveAnalyticsTabCubit == null) {
+      try {
+        effectiveAnalyticsTabCubit = context.read<AnalyticsTabCubit>();
     DebtsCubit? effectiveDebtsCubit = widget.debtsCubit;
     if (effectiveDebtsCubit == null) {
       try {
@@ -161,6 +176,13 @@ class _MainShellScreenState extends State<MainShellScreen> {
               dataSyncCoordinator: context.read<DataSyncCoordinator>(),
             ),
           ),
+        if (effectiveAnalyticsTabCubit != null)
+          BlocProvider<AnalyticsTabCubit>.value(value: effectiveAnalyticsTabCubit)
+        else
+          BlocProvider<AnalyticsTabCubit>(
+            create: (context) => AnalyticsTabCubit(
+              analyticsRepository: context.read<AnalyticsRepository>(),
+              groupsRepository: context.read<GroupsRepository>(),
         if (effectiveDebtsCubit != null)
           BlocProvider<DebtsCubit>.value(value: effectiveDebtsCubit)
         else
