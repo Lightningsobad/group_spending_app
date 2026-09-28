@@ -1,18 +1,18 @@
-import '../../../debts/data/models/debt_overview_model.dart';
+import '../../../debts/domain/entities/debt_overview_entity.dart';
 import '../../../groups/data/models/group_model.dart';
 
 enum DashboardStatus { initial, loading, success, failure }
 
 class DashboardState {
   final DashboardStatus status;
-  final DebtOverviewModel debtOverview;
+  final DebtOverviewEntity debtOverview;
   final List<GroupModel> groups;
   final String? errorMessage;
   final bool isRefreshing;
 
   const DashboardState({
     this.status = DashboardStatus.initial,
-    this.debtOverview = const DebtOverviewModel(),
+    this.debtOverview = const DebtOverviewEntity(),
     this.groups = const [],
     this.errorMessage,
     this.isRefreshing = false,
@@ -23,7 +23,7 @@ class DashboardState {
 
   DashboardState copyWith({
     DashboardStatus? status,
-    DebtOverviewModel? debtOverview,
+    DebtOverviewEntity? debtOverview,
     List<GroupModel>? groups,
     String? errorMessage,
     bool? isRefreshing,

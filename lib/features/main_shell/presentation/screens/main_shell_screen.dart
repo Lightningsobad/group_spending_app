@@ -11,6 +11,8 @@ import '../../../auth/presentation/cubit/auth_state.dart';
 import '../../../dashboard/presentation/cubit/dashboard_cubit.dart';
 import '../../../dashboard/presentation/screens/dashboard_screen.dart';
 import '../../../debts/domain/repositories/debts_repository.dart';
+import '../../../debts/presentation/cubit/debts_cubit.dart';
+import '../../../debts/presentation/screens/debts_screen.dart';
 import '../../../groups/domain/repositories/groups_repository.dart';
 import '../../../groups/presentation/cubit/groups_cubit.dart';
 import '../../../groups/presentation/screens/groups_screen.dart';
@@ -23,12 +25,14 @@ class MainShellScreen extends StatefulWidget {
   final int initialTabIndex;
   final DashboardCubit? dashboardCubit;
   final GroupsCubit? groupsCubit;
+  final DebtsCubit? debtsCubit;
 
   const MainShellScreen({
     super.key,
     this.initialTabIndex = 0,
     this.dashboardCubit,
     this.groupsCubit,
+    this.debtsCubit,
   });
 
   @override
@@ -83,11 +87,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
                       },
                     ),
                     const GroupsScreen(),
-                    TabPlaceholderView(
-                      title: tr.tabDebts,
-                      icon: LucideIcons.arrowLeftRight,
-                      tabIndex: 2,
-                    ),
+                    const DebtsScreen(),
                     TabPlaceholderView(
                       title: tr.tabAnalytics,
                       icon: LucideIcons.barChart3,
@@ -129,6 +129,15 @@ class _MainShellScreenState extends State<MainShellScreen> {
       }
     }
 
+    DebtsCubit? effectiveDebtsCubit = widget.debtsCubit;
+    if (effectiveDebtsCubit == null) {
+      try {
+        effectiveDebtsCubit = context.read<DebtsCubit>();
+      } catch (_) {
+        // Not in ancestor context, will be created via repository provider below
+      }
+    }
+
     return MultiBlocProvider(
       providers: [
         if (effectiveDashboardCubit != null)
@@ -148,6 +157,16 @@ class _MainShellScreenState extends State<MainShellScreen> {
           BlocProvider<GroupsCubit>(
             create: (context) => GroupsCubit(
               context.read<GroupsRepository>(),
+              sessionCoordinator: context.read<SessionCoordinator>(),
+              dataSyncCoordinator: context.read<DataSyncCoordinator>(),
+            ),
+          ),
+        if (effectiveDebtsCubit != null)
+          BlocProvider<DebtsCubit>.value(value: effectiveDebtsCubit)
+        else
+          BlocProvider<DebtsCubit>(
+            create: (context) => DebtsCubit(
+              context.read<DebtsRepository>(),
               sessionCoordinator: context.read<SessionCoordinator>(),
               dataSyncCoordinator: context.read<DataSyncCoordinator>(),
             ),

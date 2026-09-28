@@ -534,4 +534,168 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteGroupPermanently => 'Delete group permanently';
+
+  @override
+  String get debtsGroupTitle => 'Debts by Group';
+
+  @override
+  String get debtsYouOwe => 'You owe';
+
+  @override
+  String get debtsYouOweSubtitle => 'Total amount you need to pay';
+
+  @override
+  String get debtsYouReceive => 'You receive';
+
+  @override
+  String get debtsYouReceiveSubtitle => 'Friends owe you';
+
+  @override
+  String get searchDebtGroupPlaceholder => 'Search group by name, category...';
+
+  @override
+  String filterDebtAllCount(int count) {
+    return 'All groups ($count)';
+  }
+
+  @override
+  String filterDebtHasDebtCount(int count) {
+    return 'Has debt ($count)';
+  }
+
+  @override
+  String filterDebtSettledCount(int count) {
+    return 'Settled ($count)';
+  }
+
+  @override
+  String debtsPendingCount(int count) {
+    return '$count debts need settlement';
+  }
+
+  @override
+  String get debtsSettledAll => 'All settled';
+
+  @override
+  String get debtsBalanced => 'Balanced (0 đ)';
+
+  @override
+  String get badgeYouReceive => 'You receive';
+
+  @override
+  String get badgeYouMustPay => 'You need to pay';
+
+  @override
+  String get badgeBalanced => 'Balanced';
+
+  @override
+  String get simplifiedDebtsTab => 'Simplified Debts';
+
+  @override
+  String get actualDebtsTab => 'Actual Debts';
+
+  @override
+  String get simplifiedDebtsBanner =>
+      'Optimize cash flow transactions for fastest settlement.';
+
+  @override
+  String get actualDebtsBanner =>
+      'Detailed debts arising from each bill and spending item.';
+
+  @override
+  String debtsToHandleCount(int count) {
+    return '$count DEBTS NEED SETTLEMENT';
+  }
+
+  @override
+  String get simplifiedDebtAlgorithm => 'Simplified debt algorithm';
+
+  @override
+  String get payNowAction => 'Pay now (100%)';
+
+  @override
+  String get confirmReceivedAction => 'Confirm received';
+
+  @override
+  String get rejectReceivedAction => 'Decline';
+
+  @override
+  String get remindDebtAction => 'Remind';
+
+  @override
+  String get debtStatusPending => 'Unpaid';
+
+  @override
+  String get debtStatusWaiting => 'Awaiting confirmation';
+
+  @override
+  String get debtStatusSettled => 'Settled';
+
+  @override
+  String get debtorLabel => 'Debtor';
+
+  @override
+  String get creditorLabel => 'Creditor';
+
+  @override
+  String get youTag => 'You';
+
+  @override
+  String get backAction => 'Back';
+
+  @override
+  String get yourBalanceInGroup => 'Your balance in group:';
+
+  @override
+  String get noDebtGroupsTitle => 'No debt groups';
+
+  @override
+  String get noDebtGroupsSubtitle =>
+      'You currently have no pending debts to handle.';
+
+  @override
+  String get noMatchingDebtGroupsTitle => 'No matching groups found';
+
+  @override
+  String get noMatchingDebtGroupsSubtitle =>
+      'Try searching with other keywords or change filter.';
+
+  @override
+  String get confirmPayDebtTitle => 'Confirm payment sent';
+
+  @override
+  String confirmPayDebtMessage(String creditor, String amount) {
+    return 'Have you transferred or paid in cash to $creditor the amount of $amount?';
+  }
+
+  @override
+  String get confirmReceiveDebtTitle => 'Confirm money received';
+
+  @override
+  String confirmReceiveDebtMessage(String debtor, String amount) {
+    return 'Have you received $amount from $debtor?';
+  }
+
+  @override
+  String get rejectReceiveDebtTitle => 'Decline payment confirmation';
+
+  @override
+  String rejectReceiveDebtMessage(String debtor) {
+    return 'You have not received this payment and want to ask $debtor to check again?';
+  }
+
+  @override
+  String get confirmRemindDebtTitle => 'Send debt reminder';
+
+  @override
+  String confirmRemindDebtMessage(String debtor, String amount) {
+    return 'Send a reminder notification for debt of $amount to $debtor?';
+  }
+
+  @override
+  String get noDebtsInGroupTitle => 'No debts in this group';
+
+  @override
+  String get noDebtsInGroupSubtitle =>
+      'All expenses in this group are balanced or no debts have incurred.';
 }

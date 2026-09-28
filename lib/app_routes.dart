@@ -3,6 +3,7 @@ import 'features/auth/presentation/screens/auth_screen.dart';
 import 'features/auth/presentation/screens/flash_screen.dart';
 import 'features/auth/presentation/screens/verify_otp_screen.dart';
 import 'features/dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'features/debts/presentation/cubit/debts_cubit.dart';
 import 'features/groups/presentation/cubit/groups_cubit.dart';
 import 'features/main_shell/presentation/screens/main_shell_screen.dart';
 import 'features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -10,6 +11,7 @@ import 'features/onboarding/presentation/screens/onboarding_screen.dart';
 List<RouteBase> buildAppRoutes({
   DashboardCubit? dashboardCubit,
   GroupsCubit? groupsCubit,
+  DebtsCubit? debtsCubit,
 }) {
   return [
     GoRoute(path: '/splash', builder: (context, state) => const FlashScreen()),
@@ -39,6 +41,7 @@ List<RouteBase> buildAppRoutes({
           initialTabIndex: tab,
           dashboardCubit: dashboardCubit,
           groupsCubit: groupsCubit,
+          debtsCubit: debtsCubit,
         );
       },
     ),
