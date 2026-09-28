@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/session/session_coordinator.dart';
 import '../../../../core/sync/data_sync_coordinator.dart';
-import '../../../../l10n/l10n.dart';
 import '../../../analytics/domain/repositories/analytics_repository.dart';
 import '../../../analytics/presentation/cubit/analytics_tab_cubit.dart';
 import '../../../analytics/presentation/screens/analytics_tab_screen.dart';
@@ -22,7 +20,6 @@ import '../../../groups/presentation/screens/groups_screen.dart';
 import '../../../settings/presentation/screens/settings_screen.dart';
 import '../widgets/app_header.dart';
 import '../widgets/main_bottom_nav_bar.dart';
-import '../widgets/tab_placeholder_view.dart';
 
 class MainShellScreen extends StatefulWidget {
   final int initialTabIndex;
@@ -62,7 +59,6 @@ class _MainShellScreenState extends State<MainShellScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final tr = context.l10n;
     final bg = context.colors.background;
 
     final shellScaffold = BlocListener<AuthCubit, AuthState>(
@@ -99,18 +95,8 @@ class _MainShellScreenState extends State<MainShellScreen> {
                       },
                     ),
                     GroupsScreen(key: _groupsKey),
-                    TabPlaceholderView(
-                      title: tr.tabDebts,
-                      icon: LucideIcons.arrowLeftRight,
-                      tabIndex: 2,
-                    ),
-                    const AnalyticsTabScreen(),
                     const DebtsScreen(),
-                    TabPlaceholderView(
-                      title: tr.tabAnalytics,
-                      icon: LucideIcons.barChart3,
-                      tabIndex: 3,
-                    ),
+                    const AnalyticsTabScreen(),
                     const SettingsScreen(),
                   ],
                 ),
@@ -147,14 +133,19 @@ class _MainShellScreenState extends State<MainShellScreen> {
       }
     }
 
-    AnalyticsTabCubit? effectiveAnalyticsTabCubit = widget.analyticsTabCubit;
-    if (effectiveAnalyticsTabCubit == null) {
-      try {
-        effectiveAnalyticsTabCubit = context.read<AnalyticsTabCubit>();
     DebtsCubit? effectiveDebtsCubit = widget.debtsCubit;
     if (effectiveDebtsCubit == null) {
       try {
         effectiveDebtsCubit = context.read<DebtsCubit>();
+      } catch (_) {
+        // Not in ancestor context, will be created via repository provider below
+      }
+    }
+
+    AnalyticsTabCubit? effectiveAnalyticsTabCubit = widget.analyticsTabCubit;
+    if (effectiveAnalyticsTabCubit == null) {
+      try {
+        effectiveAnalyticsTabCubit = context.read<AnalyticsTabCubit>();
       } catch (_) {
         // Not in ancestor context, will be created via repository provider below
       }
@@ -183,6 +174,16 @@ class _MainShellScreenState extends State<MainShellScreen> {
               dataSyncCoordinator: context.read<DataSyncCoordinator>(),
             ),
           ),
+        if (effectiveDebtsCubit != null)
+          BlocProvider<DebtsCubit>.value(value: effectiveDebtsCubit)
+        else
+          BlocProvider<DebtsCubit>(
+            create: (context) => DebtsCubit(
+              context.read<DebtsRepository>(),
+              sessionCoordinator: context.read<SessionCoordinator>(),
+              dataSyncCoordinator: context.read<DataSyncCoordinator>(),
+            ),
+          ),
         if (effectiveAnalyticsTabCubit != null)
           BlocProvider<AnalyticsTabCubit>.value(value: effectiveAnalyticsTabCubit)
         else
@@ -190,12 +191,6 @@ class _MainShellScreenState extends State<MainShellScreen> {
             create: (context) => AnalyticsTabCubit(
               analyticsRepository: context.read<AnalyticsRepository>(),
               groupsRepository: context.read<GroupsRepository>(),
-        if (effectiveDebtsCubit != null)
-          BlocProvider<DebtsCubit>.value(value: effectiveDebtsCubit)
-        else
-          BlocProvider<DebtsCubit>(
-            create: (context) => DebtsCubit(
-              context.read<DebtsRepository>(),
               sessionCoordinator: context.read<SessionCoordinator>(),
               dataSyncCoordinator: context.read<DataSyncCoordinator>(),
             ),

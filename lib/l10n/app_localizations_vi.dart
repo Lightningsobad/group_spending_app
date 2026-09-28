@@ -569,6 +569,8 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get cameraPermissionRequired =>
       'Vui lòng cấp quyền truy cập Camera để quét mã QR.';
+
+  @override
   String get tabAnalyticsTitle => 'Báo cáo & Thống kê';
 
   @override
@@ -725,6 +727,8 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get youLabel => '(Tôi)';
+
+  @override
   String get debtsGroupTitle => 'Công nợ theo nhóm';
 
   @override
@@ -829,9 +833,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get youTag => 'Bạn';
-
-  @override
-  String get backAction => 'Quay lại';
 
   @override
   String get yourBalanceInGroup => 'Số dư của bạn trong nhóm:';

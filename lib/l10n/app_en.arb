@@ -246,7 +246,7 @@
   "uploadQrImageAction": "Upload QR Image",
   "invalidQrCodeError": "No valid invite code found in this QR code.",
   "noQrFoundInImage": "No QR code found in the selected image.",
-  "cameraPermissionRequired": "Please grant camera permission to scan QR codes."
+  "cameraPermissionRequired": "Please grant camera permission to scan QR codes.",
   "tabAnalyticsTitle": "Reports & Statistics",
   "totalSpendingAllGroups": "Total spending all groups",
   "activeGroupsJoinedCount": "Active groups joined",
@@ -258,14 +258,6 @@
   "searchGroupByHint": "Search group by name, category...",
   "filterAllTab": "All ({count})",
   "@filterAllTab": {
-  "debtsGroupTitle": "Debts by Group",
-  "debtsYouOwe": "You owe",
-  "debtsYouOweSubtitle": "Total amount you need to pay",
-  "debtsYouReceive": "You receive",
-  "debtsYouReceiveSubtitle": "Friends owe you",
-  "searchDebtGroupPlaceholder": "Search group by name, category...",
-  "filterDebtAllCount": "All groups ({count})",
-  "@filterDebtAllCount": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -285,8 +277,6 @@
   "splitEquallySubtitle": "Split equally per member",
   "friendsCountBadge": "÷ {count} friends",
   "@friendsCountBadge": {
-  "filterDebtHasDebtCount": "Has debt ({count})",
-  "@filterDebtHasDebtCount": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -321,6 +311,61 @@
   "recentExpensesTitle": "RECENT EXPENSES",
   "expensesCountBadge": "{count} items",
   "@expensesCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paidByPrefix": "Paid by: {name}",
+  "@paidByPrefix": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "viewExpenseDetailAction": "Details →",
+  "periodThisMonth": "This month",
+  "periodLastMonth": "Last month",
+  "periodCurrentQuarter": "This quarter",
+  "periodByYear": "Full year",
+  "membersCountSubtitle": "{memberCount} members",
+  "@membersCountSubtitle": {
+    "placeholders": {
+      "memberCount": {
+        "type": "int"
+      }
+    }
+  },
+  "noExpensesRecorded": "No expenses recorded yet.",
+  "noCategoriesRecorded": "No category data available.",
+  "noLeaderboardData": "No contribution data available.",
+  "loadAnalyticsFailed": "Failed to load analytics data",
+  "retryAction": "Retry",
+  "youLabel": "(Me)",
+  "debtsGroupTitle": "Debts by Group",
+  "debtsYouOwe": "You owe",
+  "debtsYouOweSubtitle": "Total amount you need to pay",
+  "debtsYouReceive": "You receive",
+  "debtsYouReceiveSubtitle": "Friends owe you",
+  "searchDebtGroupPlaceholder": "Search group by name, category...",
+  "filterDebtAllCount": "All groups ({count})",
+  "@filterDebtAllCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterDebtHasDebtCount": "Has debt ({count})",
+  "@filterDebtHasDebtCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "filterDebtSettledCount": "Settled ({count})",
   "@filterDebtSettledCount": {
     "placeholders": {
@@ -354,10 +399,6 @@
       }
     }
   },
-  "paidByPrefix": "Paid by: {name}",
-  "@paidByPrefix": {
-    "placeholders": {
-      "name": {
   "simplifiedDebtAlgorithm": "Simplified debt algorithm",
   "payNowAction": "Pay now (100%)",
   "confirmReceivedAction": "Confirm received",
@@ -369,7 +410,6 @@
   "debtorLabel": "Debtor",
   "creditorLabel": "Creditor",
   "youTag": "You",
-  "backAction": "Back",
   "yourBalanceInGroup": "Your balance in group:",
   "noDebtGroupsTitle": "No debt groups",
   "noDebtGroupsSubtitle": "You currently have no pending debts to handle.",
@@ -387,25 +427,6 @@
       }
     }
   },
-  "viewExpenseDetailAction": "Details →",
-  "periodThisMonth": "This month",
-  "periodLastMonth": "Last month",
-  "periodCurrentQuarter": "This quarter",
-  "periodByYear": "Full year",
-  "membersCountSubtitle": "{memberCount} members",
-  "@membersCountSubtitle": {
-    "placeholders": {
-      "memberCount": {
-        "type": "int"
-      }
-    }
-  },
-  "noExpensesRecorded": "No expenses recorded yet.",
-  "noCategoriesRecorded": "No category data available.",
-  "noLeaderboardData": "No contribution data available.",
-  "loadAnalyticsFailed": "Failed to load analytics data",
-  "retryAction": "Retry",
-  "youLabel": "(Me)"
   "confirmReceiveDebtTitle": "Confirm money received",
   "confirmReceiveDebtMessage": "Have you received {amount} from {debtor}?",
   "@confirmReceiveDebtMessage": {

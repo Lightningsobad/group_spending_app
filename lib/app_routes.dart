@@ -50,6 +50,7 @@ List<RouteBase> buildAppRoutes({
           dashboardCubit: dashboardCubit,
           groupsCubit: groupsCubit,
           analyticsTabCubit: analyticsTabCubit,
+          debtsCubit: debtsCubit,
         );
       },
     ),
@@ -73,7 +74,6 @@ List<RouteBase> buildAppRoutes({
           groupCategory: category,
           memberCount: memberCount,
           cubit: groupAnalyticsCubit,
-          debtsCubit: debtsCubit,
         );
       },
     ),

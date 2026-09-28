@@ -571,6 +571,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get cameraPermissionRequired =>
       'Please grant camera permission to scan QR codes.';
+
+  @override
   String get tabAnalyticsTitle => 'Reports & Statistics';
 
   @override
@@ -727,6 +729,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get youLabel => '(Me)';
+
+  @override
   String get debtsGroupTitle => 'Debts by Group';
 
   @override
@@ -830,9 +834,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get youTag => 'You';
-
-  @override
-  String get backAction => 'Back';
 
   @override
   String get yourBalanceInGroup => 'Your balance in group:';

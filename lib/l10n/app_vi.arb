@@ -246,7 +246,7 @@
   "uploadQrImageAction": "Tải ảnh mã QR",
   "invalidQrCodeError": "Không tìm thấy mã mời hợp lệ trong mã QR.",
   "noQrFoundInImage": "Không tìm thấy mã QR trong ảnh đã chọn.",
-  "cameraPermissionRequired": "Vui lòng cấp quyền truy cập Camera để quét mã QR."
+  "cameraPermissionRequired": "Vui lòng cấp quyền truy cập Camera để quét mã QR.",
   "tabAnalyticsTitle": "Báo cáo & Thống kê",
   "totalSpendingAllGroups": "Tổng chi tất cả nhóm",
   "activeGroupsJoinedCount": "Số nhóm tham gia",
@@ -258,14 +258,6 @@
   "searchGroupByHint": "Tìm kiếm nhóm theo tên, danh mục...",
   "filterAllTab": "Tất cả ({count})",
   "@filterAllTab": {
-  "debtsGroupTitle": "Công nợ theo nhóm",
-  "debtsYouOwe": "Bạn đang nợ",
-  "debtsYouOweSubtitle": "Tổng tiền bạn cần thanh toán",
-  "debtsYouReceive": "Bạn nhận",
-  "debtsYouReceiveSubtitle": "Bạn bè đang nợ bạn",
-  "searchDebtGroupPlaceholder": "Tìm kiếm nhóm theo tên, danh mục...",
-  "filterDebtAllCount": "Tất cả nhóm ({count})",
-  "@filterDebtAllCount": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -285,8 +277,6 @@
   "splitEquallySubtitle": "Mỗi thành viên chia đều",
   "friendsCountBadge": "÷ {count} bạn",
   "@friendsCountBadge": {
-  "filterDebtHasDebtCount": "Có công nợ ({count})",
-  "@filterDebtHasDebtCount": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -321,6 +311,61 @@
   "recentExpensesTitle": "HÓA ĐƠN CHI TIÊU GẦN ĐÂY",
   "expensesCountBadge": "{count} khoản",
   "@expensesCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paidByPrefix": "Người trả: {name}",
+  "@paidByPrefix": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "viewExpenseDetailAction": "Chi tiết →",
+  "periodThisMonth": "Tháng này",
+  "periodLastMonth": "Tháng trước",
+  "periodCurrentQuarter": "Quý này",
+  "periodByYear": "Cả năm",
+  "membersCountSubtitle": "{memberCount} thành viên",
+  "@membersCountSubtitle": {
+    "placeholders": {
+      "memberCount": {
+        "type": "int"
+      }
+    }
+  },
+  "noExpensesRecorded": "Chưa có khoản chi tiêu nào.",
+  "noCategoriesRecorded": "Chưa có dữ liệu danh mục.",
+  "noLeaderboardData": "Chưa có dữ liệu đóng góp.",
+  "loadAnalyticsFailed": "Không thể tải dữ liệu thống kê",
+  "retryAction": "Thử lại",
+  "youLabel": "(Tôi)",
+  "debtsGroupTitle": "Công nợ theo nhóm",
+  "debtsYouOwe": "Bạn đang nợ",
+  "debtsYouOweSubtitle": "Tổng tiền bạn cần thanh toán",
+  "debtsYouReceive": "Bạn nhận",
+  "debtsYouReceiveSubtitle": "Bạn bè đang nợ bạn",
+  "searchDebtGroupPlaceholder": "Tìm kiếm nhóm theo tên, danh mục...",
+  "filterDebtAllCount": "Tất cả nhóm ({count})",
+  "@filterDebtAllCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterDebtHasDebtCount": "Có công nợ ({count})",
+  "@filterDebtHasDebtCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "filterDebtSettledCount": "Đã tất toán ({count})",
   "@filterDebtSettledCount": {
     "placeholders": {
@@ -354,10 +399,6 @@
       }
     }
   },
-  "paidByPrefix": "Người trả: {name}",
-  "@paidByPrefix": {
-    "placeholders": {
-      "name": {
   "simplifiedDebtAlgorithm": "Thuật toán gộp nợ tối giản",
   "payNowAction": "Thanh toán ngay (100%)",
   "confirmReceivedAction": "Xác nhận nhận tiền",
@@ -369,7 +410,6 @@
   "debtorLabel": "Người nợ",
   "creditorLabel": "Chủ nợ",
   "youTag": "Bạn",
-  "backAction": "Quay lại",
   "yourBalanceInGroup": "Số dư của bạn trong nhóm:",
   "noDebtGroupsTitle": "Không có nhóm công nợ nào",
   "noDebtGroupsSubtitle": "Hiện tại bạn không có khoản công nợ nào cần xử lý.",
@@ -387,25 +427,6 @@
       }
     }
   },
-  "viewExpenseDetailAction": "Chi tiết →",
-  "periodThisMonth": "Tháng này",
-  "periodLastMonth": "Tháng trước",
-  "periodCurrentQuarter": "Quý này",
-  "periodByYear": "Cả năm",
-  "membersCountSubtitle": "{memberCount} thành viên",
-  "@membersCountSubtitle": {
-    "placeholders": {
-      "memberCount": {
-        "type": "int"
-      }
-    }
-  },
-  "noExpensesRecorded": "Chưa có khoản chi tiêu nào.",
-  "noCategoriesRecorded": "Chưa có dữ liệu danh mục.",
-  "noLeaderboardData": "Chưa có dữ liệu đóng góp.",
-  "loadAnalyticsFailed": "Không thể tải dữ liệu thống kê",
-  "retryAction": "Thử lại",
-  "youLabel": "(Tôi)"
   "confirmReceiveDebtTitle": "Xác nhận nhận tiền",
   "confirmReceiveDebtMessage": "Bạn đã nhận được số tiền {amount} từ {debtor}?",
   "@confirmReceiveDebtMessage": {
