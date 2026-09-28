@@ -1069,6 +1069,294 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Xóa nhóm vĩnh viễn'**
   String get deleteGroupPermanently;
+
+  /// No description provided for @tabAnalyticsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo cáo & Thống kê'**
+  String get tabAnalyticsTitle;
+
+  /// No description provided for @totalSpendingAllGroups.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng chi tất cả nhóm'**
+  String get totalSpendingAllGroups;
+
+  /// No description provided for @activeGroupsJoinedCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số nhóm tham gia'**
+  String get activeGroupsJoinedCount;
+
+  /// No description provided for @groupsUnit.
+  ///
+  /// In vi, this message translates to:
+  /// **'nhóm'**
+  String get groupsUnit;
+
+  /// No description provided for @totalInvoicesRecorded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số hóa đơn đã ghi'**
+  String get totalInvoicesRecorded;
+
+  /// No description provided for @invoicesUnit.
+  ///
+  /// In vi, this message translates to:
+  /// **'hóa đơn'**
+  String get invoicesUnit;
+
+  /// No description provided for @overallReportBannerTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo cáo tổng quan'**
+  String get overallReportBannerTitle;
+
+  /// No description provided for @viewOverallReportAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem toàn cảnh'**
+  String get viewOverallReportAction;
+
+  /// No description provided for @searchGroupByHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm kiếm nhóm theo tên, danh mục...'**
+  String get searchGroupByHint;
+
+  /// No description provided for @filterAllTab.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả ({count})'**
+  String filterAllTab(int count);
+
+  /// No description provided for @filterActiveTab.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang hoạt động'**
+  String get filterActiveTab;
+
+  /// No description provided for @filterArchivedTab.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã lưu trữ'**
+  String get filterArchivedTab;
+
+  /// No description provided for @groupSpendingListTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'DANH SÁCH NHÓM CHI TIÊU'**
+  String get groupSpendingListTitle;
+
+  /// No description provided for @totalSpendingLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng chi tiêu'**
+  String get totalSpendingLabel;
+
+  /// No description provided for @overallReportTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo cáo tổng quan'**
+  String get overallReportTitle;
+
+  /// No description provided for @overallReportSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng hợp tất cả nhóm đang tham gia'**
+  String get overallReportSubtitle;
+
+  /// No description provided for @financialMetricsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'CHỈ SỐ TÀI CHÍNH NHÓM'**
+  String get financialMetricsTitle;
+
+  /// No description provided for @totalSpendingMetric.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng tiền chi tiêu'**
+  String get totalSpendingMetric;
+
+  /// No description provided for @commonGroupSpendingSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi tiêu chung cả nhóm'**
+  String get commonGroupSpendingSubtitle;
+
+  /// No description provided for @averagePerPersonMetric.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bình quân đầu người'**
+  String get averagePerPersonMetric;
+
+  /// No description provided for @splitEquallySubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi thành viên chia đều'**
+  String get splitEquallySubtitle;
+
+  /// No description provided for @friendsCountBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'÷ {count} bạn'**
+  String friendsCountBadge(int count);
+
+  /// No description provided for @expenseCountMetric.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số khoản chi'**
+  String get expenseCountMetric;
+
+  /// No description provided for @invoicesBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hóa đơn'**
+  String get invoicesBadge;
+
+  /// No description provided for @expensesUnit.
+  ///
+  /// In vi, this message translates to:
+  /// **'khoản chi'**
+  String get expensesUnit;
+
+  /// No description provided for @recordedAndAuditedSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã ghi nhận & đối soát'**
+  String get recordedAndAuditedSubtitle;
+
+  /// No description provided for @settlementRateMetric.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tỷ lệ tất toán'**
+  String get settlementRateMetric;
+
+  /// No description provided for @paidRateSuffix.
+  ///
+  /// In vi, this message translates to:
+  /// **'đã trả'**
+  String get paidRateSuffix;
+
+  /// No description provided for @groupDebtLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Công nợ nhóm'**
+  String get groupDebtLabel;
+
+  /// No description provided for @remainingDebtRate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn {percent}% tồn'**
+  String remainingDebtRate(String percent);
+
+  /// No description provided for @categoryDistributionTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'PHÂN BỐ THEO DANH MỤC CHI TIÊU'**
+  String get categoryDistributionTitle;
+
+  /// No description provided for @memberContributionTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'ĐÓNG GÓP & CHI TIÊU THÀNH VIÊN'**
+  String get memberContributionTitle;
+
+  /// No description provided for @contributionPercent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng góp {percent}% tổng chi'**
+  String contributionPercent(String percent);
+
+  /// No description provided for @recentExpensesTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'HÓA ĐƠN CHI TIÊU GẦN ĐÂY'**
+  String get recentExpensesTitle;
+
+  /// No description provided for @expensesCountBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} khoản'**
+  String expensesCountBadge(int count);
+
+  /// No description provided for @paidByPrefix.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người trả: {name}'**
+  String paidByPrefix(String name);
+
+  /// No description provided for @viewExpenseDetailAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi tiết →'**
+  String get viewExpenseDetailAction;
+
+  /// No description provided for @periodThisMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháng này'**
+  String get periodThisMonth;
+
+  /// No description provided for @periodLastMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháng trước'**
+  String get periodLastMonth;
+
+  /// No description provided for @periodCurrentQuarter.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quý này'**
+  String get periodCurrentQuarter;
+
+  /// No description provided for @periodByYear.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cả năm'**
+  String get periodByYear;
+
+  /// No description provided for @membersCountSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'{memberCount} thành viên'**
+  String membersCountSubtitle(int memberCount);
+
+  /// No description provided for @noExpensesRecorded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có khoản chi tiêu nào.'**
+  String get noExpensesRecorded;
+
+  /// No description provided for @noCategoriesRecorded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có dữ liệu danh mục.'**
+  String get noCategoriesRecorded;
+
+  /// No description provided for @noLeaderboardData.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có dữ liệu đóng góp.'**
+  String get noLeaderboardData;
+
+  /// No description provided for @loadAnalyticsFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể tải dữ liệu thống kê'**
+  String get loadAnalyticsFailed;
+
+  /// No description provided for @retryAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử lại'**
+  String get retryAction;
+
+  /// No description provided for @youLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'(Tôi)'**
+  String get youLabel;
 }
 
 class _AppLocalizationsDelegate

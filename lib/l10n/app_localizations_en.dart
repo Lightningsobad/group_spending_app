@@ -534,4 +534,162 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteGroupPermanently => 'Delete group permanently';
+
+  @override
+  String get tabAnalyticsTitle => 'Reports & Statistics';
+
+  @override
+  String get totalSpendingAllGroups => 'Total spending all groups';
+
+  @override
+  String get activeGroupsJoinedCount => 'Active groups joined';
+
+  @override
+  String get groupsUnit => 'groups';
+
+  @override
+  String get totalInvoicesRecorded => 'Recorded expenses';
+
+  @override
+  String get invoicesUnit => 'invoices';
+
+  @override
+  String get overallReportBannerTitle => 'Overall Report';
+
+  @override
+  String get viewOverallReportAction => 'View Overview';
+
+  @override
+  String get searchGroupByHint => 'Search group by name, category...';
+
+  @override
+  String filterAllTab(int count) {
+    return 'All ($count)';
+  }
+
+  @override
+  String get filterActiveTab => 'Active';
+
+  @override
+  String get filterArchivedTab => 'Archived';
+
+  @override
+  String get groupSpendingListTitle => 'GROUP SPENDING LIST';
+
+  @override
+  String get totalSpendingLabel => 'Total spending';
+
+  @override
+  String get overallReportTitle => 'Overall Report';
+
+  @override
+  String get overallReportSubtitle => 'Summary of all active groups';
+
+  @override
+  String get financialMetricsTitle => 'GROUP FINANCIAL METRICS';
+
+  @override
+  String get totalSpendingMetric => 'Total spending amount';
+
+  @override
+  String get commonGroupSpendingSubtitle => 'Shared spending across groups';
+
+  @override
+  String get averagePerPersonMetric => 'Average per person';
+
+  @override
+  String get splitEquallySubtitle => 'Split equally per member';
+
+  @override
+  String friendsCountBadge(int count) {
+    return '÷ $count friends';
+  }
+
+  @override
+  String get expenseCountMetric => 'Expense count';
+
+  @override
+  String get invoicesBadge => 'Invoices';
+
+  @override
+  String get expensesUnit => 'expenses';
+
+  @override
+  String get recordedAndAuditedSubtitle => 'Recorded & verified';
+
+  @override
+  String get settlementRateMetric => 'Settlement rate';
+
+  @override
+  String get paidRateSuffix => 'paid';
+
+  @override
+  String get groupDebtLabel => 'Group debt';
+
+  @override
+  String remainingDebtRate(String percent) {
+    return '$percent% remaining';
+  }
+
+  @override
+  String get categoryDistributionTitle => 'CATEGORY DISTRIBUTION';
+
+  @override
+  String get memberContributionTitle => 'MEMBER CONTRIBUTIONS';
+
+  @override
+  String contributionPercent(String percent) {
+    return '$percent% of total spending';
+  }
+
+  @override
+  String get recentExpensesTitle => 'RECENT EXPENSES';
+
+  @override
+  String expensesCountBadge(int count) {
+    return '$count items';
+  }
+
+  @override
+  String paidByPrefix(String name) {
+    return 'Paid by: $name';
+  }
+
+  @override
+  String get viewExpenseDetailAction => 'Details →';
+
+  @override
+  String get periodThisMonth => 'This month';
+
+  @override
+  String get periodLastMonth => 'Last month';
+
+  @override
+  String get periodCurrentQuarter => 'This quarter';
+
+  @override
+  String get periodByYear => 'Full year';
+
+  @override
+  String membersCountSubtitle(int memberCount) {
+    return '$memberCount members';
+  }
+
+  @override
+  String get noExpensesRecorded => 'No expenses recorded yet.';
+
+  @override
+  String get noCategoriesRecorded => 'No category data available.';
+
+  @override
+  String get noLeaderboardData => 'No contribution data available.';
+
+  @override
+  String get loadAnalyticsFailed => 'Failed to load analytics data';
+
+  @override
+  String get retryAction => 'Retry';
+
+  @override
+  String get youLabel => '(Me)';
 }

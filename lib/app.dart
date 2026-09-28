@@ -13,6 +13,10 @@ import 'core/storage/token_storage.dart';
 import 'core/sync/data_sync_coordinator.dart';
 import 'core/theme/app_theme.dart';
 import 'core/theme/theme_cubit.dart';
+import 'features/analytics/data/datasources/analytics_remote_data_source.dart';
+import 'features/analytics/data/repositories/analytics_repository_impl.dart';
+import 'features/analytics/domain/repositories/analytics_repository.dart';
+import 'features/analytics/presentation/cubit/analytics_tab_cubit.dart';
 import 'features/auth/data/datasources/auth_remote_data_source.dart';
 import 'features/auth/data/repositories/auth_repository_impl.dart';
 import 'features/auth/domain/repositories/auth_repository.dart';
@@ -37,8 +41,10 @@ class FairShareApp extends StatefulWidget {
   final LocaleCubit? localeCubit;
   final DebtsRepository? debtsRepository;
   final GroupsRepository? groupsRepository;
+  final AnalyticsRepository? analyticsRepository;
   final DashboardCubit? dashboardCubit;
   final GroupsCubit? groupsCubit;
+  final AnalyticsTabCubit? analyticsTabCubit;
 
   const FairShareApp({
     super.key,
@@ -52,8 +58,10 @@ class FairShareApp extends StatefulWidget {
     this.localeCubit,
     this.debtsRepository,
     this.groupsRepository,
+    this.analyticsRepository,
     this.dashboardCubit,
     this.groupsCubit,
+    this.analyticsTabCubit,
   });
 
   @override
@@ -70,6 +78,7 @@ class _FairShareAppState extends State<FairShareApp> {
   late final LocaleCubit _localeCubit;
   late final DebtsRepository _debtsRepository;
   late final GroupsRepository _groupsRepository;
+  late final AnalyticsRepository _analyticsRepository;
   late final GoRouter _router;
   bool _isDisposed = false;
 
@@ -121,10 +130,16 @@ class _FairShareAppState extends State<FairShareApp> {
         widget.groupsRepository ??
         GroupsRepositoryImpl(remoteDataSource: groupsRemoteDataSource);
 
+    final analyticsRemoteDataSource = AnalyticsRemoteDataSourceImpl(_apiClient);
+    _analyticsRepository =
+        widget.analyticsRepository ??
+        AnalyticsRepositoryImpl(remoteDataSource: analyticsRemoteDataSource);
+
     _router = AppRouter.createRouter(
       routes: buildAppRoutes(
         dashboardCubit: widget.dashboardCubit,
         groupsCubit: widget.groupsCubit,
+        analyticsTabCubit: widget.analyticsTabCubit,
       ),
       sessionCoordinator: _sessionCoordinator,
     );
@@ -150,6 +165,7 @@ class _FairShareAppState extends State<FairShareApp> {
         RepositoryProvider<AuthRepository>.value(value: _authRepository),
         RepositoryProvider<DebtsRepository>.value(value: _debtsRepository),
         RepositoryProvider<GroupsRepository>.value(value: _groupsRepository),
+        RepositoryProvider<AnalyticsRepository>.value(value: _analyticsRepository),
       ],
       child: MultiBlocProvider(
         providers: [

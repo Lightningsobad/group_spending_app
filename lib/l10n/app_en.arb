@@ -235,5 +235,102 @@
       }
     }
   },
-  "deleteGroupPermanently": "Delete group permanently"
+  "deleteGroupPermanently": "Delete group permanently",
+  "tabAnalyticsTitle": "Reports & Statistics",
+  "totalSpendingAllGroups": "Total spending all groups",
+  "activeGroupsJoinedCount": "Active groups joined",
+  "groupsUnit": "groups",
+  "totalInvoicesRecorded": "Recorded expenses",
+  "invoicesUnit": "invoices",
+  "overallReportBannerTitle": "Overall Report",
+  "viewOverallReportAction": "View Overview",
+  "searchGroupByHint": "Search group by name, category...",
+  "filterAllTab": "All ({count})",
+  "@filterAllTab": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterActiveTab": "Active",
+  "filterArchivedTab": "Archived",
+  "groupSpendingListTitle": "GROUP SPENDING LIST",
+  "totalSpendingLabel": "Total spending",
+  "overallReportTitle": "Overall Report",
+  "overallReportSubtitle": "Summary of all active groups",
+  "financialMetricsTitle": "GROUP FINANCIAL METRICS",
+  "totalSpendingMetric": "Total spending amount",
+  "commonGroupSpendingSubtitle": "Shared spending across groups",
+  "averagePerPersonMetric": "Average per person",
+  "splitEquallySubtitle": "Split equally per member",
+  "friendsCountBadge": "÷ {count} friends",
+  "@friendsCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "expenseCountMetric": "Expense count",
+  "invoicesBadge": "Invoices",
+  "expensesUnit": "expenses",
+  "recordedAndAuditedSubtitle": "Recorded & verified",
+  "settlementRateMetric": "Settlement rate",
+  "paidRateSuffix": "paid",
+  "groupDebtLabel": "Group debt",
+  "remainingDebtRate": "{percent}% remaining",
+  "@remainingDebtRate": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryDistributionTitle": "CATEGORY DISTRIBUTION",
+  "memberContributionTitle": "MEMBER CONTRIBUTIONS",
+  "contributionPercent": "{percent}% of total spending",
+  "@contributionPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "recentExpensesTitle": "RECENT EXPENSES",
+  "expensesCountBadge": "{count} items",
+  "@expensesCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paidByPrefix": "Paid by: {name}",
+  "@paidByPrefix": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "viewExpenseDetailAction": "Details →",
+  "periodThisMonth": "This month",
+  "periodLastMonth": "Last month",
+  "periodCurrentQuarter": "This quarter",
+  "periodByYear": "Full year",
+  "membersCountSubtitle": "{memberCount} members",
+  "@membersCountSubtitle": {
+    "placeholders": {
+      "memberCount": {
+        "type": "int"
+      }
+    }
+  },
+  "noExpensesRecorded": "No expenses recorded yet.",
+  "noCategoriesRecorded": "No category data available.",
+  "noLeaderboardData": "No contribution data available.",
+  "loadAnalyticsFailed": "Failed to load analytics data",
+  "retryAction": "Retry",
+  "youLabel": "(Me)"
 }

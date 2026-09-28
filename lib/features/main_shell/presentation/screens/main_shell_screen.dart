@@ -6,6 +6,9 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/session/session_coordinator.dart';
 import '../../../../core/sync/data_sync_coordinator.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../analytics/domain/repositories/analytics_repository.dart';
+import '../../../analytics/presentation/cubit/analytics_tab_cubit.dart';
+import '../../../analytics/presentation/screens/analytics_tab_screen.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../auth/presentation/cubit/auth_state.dart';
 import '../../../dashboard/presentation/cubit/dashboard_cubit.dart';
@@ -23,12 +26,14 @@ class MainShellScreen extends StatefulWidget {
   final int initialTabIndex;
   final DashboardCubit? dashboardCubit;
   final GroupsCubit? groupsCubit;
+  final AnalyticsTabCubit? analyticsTabCubit;
 
   const MainShellScreen({
     super.key,
     this.initialTabIndex = 0,
     this.dashboardCubit,
     this.groupsCubit,
+    this.analyticsTabCubit,
   });
 
   @override
@@ -88,11 +93,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
                       icon: LucideIcons.arrowLeftRight,
                       tabIndex: 2,
                     ),
-                    TabPlaceholderView(
-                      title: tr.tabAnalytics,
-                      icon: LucideIcons.barChart3,
-                      tabIndex: 3,
-                    ),
+                    const AnalyticsTabScreen(),
                     const SettingsScreen(),
                   ],
                 ),
@@ -129,6 +130,15 @@ class _MainShellScreenState extends State<MainShellScreen> {
       }
     }
 
+    AnalyticsTabCubit? effectiveAnalyticsTabCubit = widget.analyticsTabCubit;
+    if (effectiveAnalyticsTabCubit == null) {
+      try {
+        effectiveAnalyticsTabCubit = context.read<AnalyticsTabCubit>();
+      } catch (_) {
+        // Not in ancestor context, will be created via repository provider below
+      }
+    }
+
     return MultiBlocProvider(
       providers: [
         if (effectiveDashboardCubit != null)
@@ -148,6 +158,17 @@ class _MainShellScreenState extends State<MainShellScreen> {
           BlocProvider<GroupsCubit>(
             create: (context) => GroupsCubit(
               context.read<GroupsRepository>(),
+              sessionCoordinator: context.read<SessionCoordinator>(),
+              dataSyncCoordinator: context.read<DataSyncCoordinator>(),
+            ),
+          ),
+        if (effectiveAnalyticsTabCubit != null)
+          BlocProvider<AnalyticsTabCubit>.value(value: effectiveAnalyticsTabCubit)
+        else
+          BlocProvider<AnalyticsTabCubit>(
+            create: (context) => AnalyticsTabCubit(
+              analyticsRepository: context.read<AnalyticsRepository>(),
+              groupsRepository: context.read<GroupsRepository>(),
               sessionCoordinator: context.read<SessionCoordinator>(),
               dataSyncCoordinator: context.read<DataSyncCoordinator>(),
             ),
