@@ -5,10 +5,12 @@ import 'package:group_spending_app/core/l10n/locale_cubit.dart';
 import 'package:group_spending_app/l10n/l10n.dart';
 import 'package:group_spending_app/core/storage/app_preferences.dart';
 import 'package:group_spending_app/core/theme/theme_cubit.dart';
+import 'package:group_spending_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:group_spending_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:group_spending_app/features/auth/presentation/cubit/auth_state.dart';
 import 'package:group_spending_app/features/settings/presentation/screens/settings_screen.dart';
 import 'package:group_spending_app/features/settings/presentation/widgets/appearance_language_card.dart';
+import 'package:group_spending_app/features/settings/presentation/widgets/change_password_dialog.dart';
 import 'package:group_spending_app/features/settings/presentation/widgets/logout_button.dart';
 import 'package:group_spending_app/features/settings/presentation/widgets/payment_account_card.dart';
 import 'package:group_spending_app/features/settings/presentation/widgets/privacy_policy_view.dart';
@@ -42,6 +44,7 @@ void main() {
       return MultiRepositoryProvider(
         providers: [
           RepositoryProvider<AppPreferences>.value(value: prefs),
+          RepositoryProvider<AuthRepository>.value(value: fakeRepo),
         ],
         child: MultiBlocProvider(
           providers: [
@@ -141,6 +144,16 @@ void main() {
       expect(authCubit.state.status, equals(AuthStatus.unauthenticated));
     });
 
+    testWidgets('tapping Đổi mật khẩu opens ChangePasswordDialog', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      final changePasswordBtn = find.text('Đổi mật khẩu');
+      await tester.ensureVisible(changePasswordBtn);
+      await tester.tap(changePasswordBtn);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(ChangePasswordDialog), findsOneWidget);
+      expect(find.text('Đổi mật khẩu tài khoản'), findsOneWidget);
     testWidgets('tapping Privacy Policy opens PrivacyPolicyView, and tapping bottom button returns to settings', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 

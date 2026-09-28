@@ -977,6 +977,52 @@ class AppLocalizationsVi extends AppLocalizations {
       'Mọi khoản chi tiêu trong nhóm đã được cân bằng hoặc chưa phát sinh nợ.';
 
   @override
+  String get changePasswordTitle => 'Đổi mật khẩu tài khoản';
+
+  @override
+  String get changePasswordSubtitle =>
+      'Cập nhật mật khẩu để bảo vệ an toàn cho tài khoản';
+
+  @override
+  String get currentPasswordLabel => 'Mật khẩu hiện tại';
+
+  @override
+  String get currentPasswordHint => 'Nhập mật khẩu đang dùng';
+
+  @override
+  String get newPasswordLabel => 'Mật khẩu mới';
+
+  @override
+  String get newPasswordHint => 'Tối thiểu 6 ký tự';
+
+  @override
+  String get confirmNewPasswordLabel => 'Xác nhận mật khẩu mới';
+
+  @override
+  String get confirmNewPasswordHint => 'Nhập lại mật khẩu mới';
+
+  @override
+  String get passwordSafetyTip =>
+      'Gợi ý: Sử dụng mật khẩu kết hợp chữ hoa, chữ thường và chữ số để tăng độ an toàn.';
+
+  @override
+  String get changePasswordSubmitButton => 'Đổi mật khẩu';
+
+  @override
+  String get changePasswordSuccess => 'Đổi mật khẩu thành công!';
+
+  @override
+  String get enterCurrentPasswordPrompt => 'Vui lòng nhập mật khẩu hiện tại.';
+
+  @override
+  String get enterNewPasswordPrompt => 'Vui lòng nhập mật khẩu mới.';
+
+  @override
+  String get confirmPasswordMismatchPrompt => 'Mật khẩu xác nhận không khớp.';
+
+  @override
+  String get newPasswordSameAsCurrentPrompt =>
+      'Mật khẩu mới không được trùng với mật khẩu hiện tại.';
   String get groupInfoSectionTitle => 'THÔNG TIN NHÓM';
 
   @override

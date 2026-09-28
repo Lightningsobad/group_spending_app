@@ -1844,6 +1844,95 @@ abstract class AppLocalizations {
   /// **'Mọi khoản chi tiêu trong nhóm đã được cân bằng hoặc chưa phát sinh nợ.'**
   String get noDebtsInGroupSubtitle;
 
+  /// No description provided for @changePasswordTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi mật khẩu tài khoản'**
+  String get changePasswordTitle;
+
+  /// No description provided for @changePasswordSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cập nhật mật khẩu để bảo vệ an toàn cho tài khoản'**
+  String get changePasswordSubtitle;
+
+  /// No description provided for @currentPasswordLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mật khẩu hiện tại'**
+  String get currentPasswordLabel;
+
+  /// No description provided for @currentPasswordHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập mật khẩu đang dùng'**
+  String get currentPasswordHint;
+
+  /// No description provided for @newPasswordLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mật khẩu mới'**
+  String get newPasswordLabel;
+
+  /// No description provided for @newPasswordHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối thiểu 6 ký tự'**
+  String get newPasswordHint;
+
+  /// No description provided for @confirmNewPasswordLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận mật khẩu mới'**
+  String get confirmNewPasswordLabel;
+
+  /// No description provided for @confirmNewPasswordHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập lại mật khẩu mới'**
+  String get confirmNewPasswordHint;
+
+  /// No description provided for @passwordSafetyTip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gợi ý: Sử dụng mật khẩu kết hợp chữ hoa, chữ thường và chữ số để tăng độ an toàn.'**
+  String get passwordSafetyTip;
+
+  /// No description provided for @changePasswordSubmitButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi mật khẩu'**
+  String get changePasswordSubmitButton;
+
+  /// No description provided for @changePasswordSuccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi mật khẩu thành công!'**
+  String get changePasswordSuccess;
+
+  /// No description provided for @enterCurrentPasswordPrompt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng nhập mật khẩu hiện tại.'**
+  String get enterCurrentPasswordPrompt;
+
+  /// No description provided for @enterNewPasswordPrompt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng nhập mật khẩu mới.'**
+  String get enterNewPasswordPrompt;
+
+  /// No description provided for @confirmPasswordMismatchPrompt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mật khẩu xác nhận không khớp.'**
+  String get confirmPasswordMismatchPrompt;
+
+  /// No description provided for @newPasswordSameAsCurrentPrompt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mật khẩu mới không được trùng với mật khẩu hiện tại.'**
+  String get newPasswordSameAsCurrentPrompt;
   /// No description provided for @groupInfoSectionTitle.
   ///
   /// In vi, this message translates to:
