@@ -533,4 +533,169 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get deleteGroupPermanently => 'Xóa nhóm vĩnh viễn';
+
+  @override
+  String get debtsGroupTitle => 'Công nợ theo nhóm';
+
+  @override
+  String get debtsYouOwe => 'Bạn đang nợ';
+
+  @override
+  String get debtsYouOweSubtitle => 'Tổng tiền bạn cần thanh toán';
+
+  @override
+  String get debtsYouReceive => 'Bạn nhận';
+
+  @override
+  String get debtsYouReceiveSubtitle => 'Bạn bè đang nợ bạn';
+
+  @override
+  String get searchDebtGroupPlaceholder =>
+      'Tìm kiếm nhóm theo tên, danh mục...';
+
+  @override
+  String filterDebtAllCount(int count) {
+    return 'Tất cả nhóm ($count)';
+  }
+
+  @override
+  String filterDebtHasDebtCount(int count) {
+    return 'Có công nợ ($count)';
+  }
+
+  @override
+  String filterDebtSettledCount(int count) {
+    return 'Đã tất toán ($count)';
+  }
+
+  @override
+  String debtsPendingCount(int count) {
+    return '$count khoản nợ cần xử lý';
+  }
+
+  @override
+  String get debtsSettledAll => 'Đã tất toán toàn bộ';
+
+  @override
+  String get debtsBalanced => 'Cân bằng (0 đ)';
+
+  @override
+  String get badgeYouReceive => 'Bạn nhận';
+
+  @override
+  String get badgeYouMustPay => 'Bạn cần thanh toán';
+
+  @override
+  String get badgeBalanced => 'Đã cân bằng';
+
+  @override
+  String get simplifiedDebtsTab => 'Nợ tối giản';
+
+  @override
+  String get actualDebtsTab => 'Nợ thực tế';
+
+  @override
+  String get simplifiedDebtsBanner =>
+      'Tối ưu hóa số lượng giao dịch gộp thông minh để thanh toán nhanh gọn nhất.';
+
+  @override
+  String get actualDebtsBanner =>
+      'Chi tiết các khoản nợ phát sinh theo từng hóa đơn và mục chi tiêu.';
+
+  @override
+  String debtsToHandleCount(int count) {
+    return '$count KHOẢN NỢ CẦN XỬ LÝ';
+  }
+
+  @override
+  String get simplifiedDebtAlgorithm => 'Thuật toán gộp nợ tối giản';
+
+  @override
+  String get payNowAction => 'Thanh toán ngay (100%)';
+
+  @override
+  String get confirmReceivedAction => 'Xác nhận nhận tiền';
+
+  @override
+  String get rejectReceivedAction => 'Từ chối';
+
+  @override
+  String get remindDebtAction => 'Nhắc nợ';
+
+  @override
+  String get debtStatusPending => 'Chưa thanh toán';
+
+  @override
+  String get debtStatusWaiting => 'Chờ xác nhận';
+
+  @override
+  String get debtStatusSettled => 'Đã tất toán';
+
+  @override
+  String get debtorLabel => 'Người nợ';
+
+  @override
+  String get creditorLabel => 'Chủ nợ';
+
+  @override
+  String get youTag => 'Bạn';
+
+  @override
+  String get backAction => 'Quay lại';
+
+  @override
+  String get yourBalanceInGroup => 'Số dư của bạn trong nhóm:';
+
+  @override
+  String get noDebtGroupsTitle => 'Không có nhóm công nợ nào';
+
+  @override
+  String get noDebtGroupsSubtitle =>
+      'Hiện tại bạn không có khoản công nợ nào cần xử lý.';
+
+  @override
+  String get noMatchingDebtGroupsTitle => 'Không tìm thấy nhóm phù hợp';
+
+  @override
+  String get noMatchingDebtGroupsSubtitle =>
+      'Thử tìm kiếm với từ khóa khác hoặc đổi bộ lọc.';
+
+  @override
+  String get confirmPayDebtTitle => 'Xác nhận đã thanh toán';
+
+  @override
+  String confirmPayDebtMessage(String creditor, String amount) {
+    return 'Bạn đã chuyển khoản hoặc trả tiền mặt cho $creditor số tiền $amount?';
+  }
+
+  @override
+  String get confirmReceiveDebtTitle => 'Xác nhận nhận tiền';
+
+  @override
+  String confirmReceiveDebtMessage(String debtor, String amount) {
+    return 'Bạn đã nhận được số tiền $amount từ $debtor?';
+  }
+
+  @override
+  String get rejectReceiveDebtTitle => 'Từ chối nhận tiền';
+
+  @override
+  String rejectReceiveDebtMessage(String debtor) {
+    return 'Bạn chưa nhận được số tiền này và muốn yêu cầu $debtor kiểm tra lại?';
+  }
+
+  @override
+  String get confirmRemindDebtTitle => 'Gửi thông báo nhắc nợ';
+
+  @override
+  String confirmRemindDebtMessage(String debtor, String amount) {
+    return 'Gửi thông báo nhắc nhở thanh toán khoản nợ $amount đến $debtor?';
+  }
+
+  @override
+  String get noDebtsInGroupTitle => 'Nhóm chưa có khoản nợ nào';
+
+  @override
+  String get noDebtsInGroupSubtitle =>
+      'Mọi khoản chi tiêu trong nhóm đã được cân bằng hoặc chưa phát sinh nợ.';
 }

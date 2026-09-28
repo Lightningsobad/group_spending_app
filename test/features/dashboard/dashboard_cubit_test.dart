@@ -6,13 +6,14 @@ import 'package:group_spending_app/core/storage/token_storage.dart';
 import 'package:group_spending_app/core/sync/data_sync_coordinator.dart';
 import 'package:group_spending_app/features/dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'package:group_spending_app/features/dashboard/presentation/cubit/dashboard_state.dart';
-import 'package:group_spending_app/features/debts/data/models/debt_overview_model.dart';
+import 'package:group_spending_app/features/debts/domain/entities/debt_overview_entity.dart';
+import 'package:group_spending_app/features/debts/domain/entities/group_debt_entity.dart';
 import 'package:group_spending_app/features/debts/domain/repositories/debts_repository.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
 import 'package:group_spending_app/features/groups/domain/repositories/groups_repository.dart';
 
 class FakeDebtsRepository implements DebtsRepository {
-  DebtOverviewModel response = const DebtOverviewModel(
+  DebtOverviewEntity response = const DebtOverviewEntity(
     totalOwedVnd: 450000,
     totalReceivableVnd: 2450000,
   );
@@ -20,11 +21,37 @@ class FakeDebtsRepository implements DebtsRepository {
   Duration delay = Duration.zero;
 
   @override
-  Future<DebtOverviewModel> getDebtOverview() async {
+  Future<DebtOverviewEntity> getDebtOverview() async {
     if (delay > Duration.zero) await Future.delayed(delay);
     if (exception != null) throw exception!;
     return response;
   }
+
+  @override
+  Future<GroupSimplifiedDebtsEntity> getGroupSimplifiedDebts(int groupId) async {
+    return const GroupSimplifiedDebtsEntity(
+      userBalance: DebtUserBalanceEntity(groupId: 0, groupName: ''),
+    );
+  }
+
+  @override
+  Future<GroupActualDebtsEntity> getGroupActualDebts(
+    int groupId, {
+    String? status,
+  }) async {
+    return const GroupActualDebtsEntity(
+      userBalance: DebtUserBalanceEntity(groupId: 0, groupName: ''),
+    );
+  }
+
+  @override
+  Future<void> confirmDebtSettled(int debtId, {required bool confirmed}) async {}
+
+  @override
+  Future<void> markDebtAsPaid(int debtId) async {}
+
+  @override
+  Future<void> sendDebtReminder(int debtId) async {}
 }
 
 class FakeGroupsRepository implements GroupsRepository {
