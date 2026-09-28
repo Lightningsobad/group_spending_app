@@ -1070,6 +1070,479 @@ abstract class AppLocalizations {
   /// **'Xóa nhóm vĩnh viễn'**
   String get deleteGroupPermanently;
 
+  /// No description provided for @tabAnalyticsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo cáo & Thống kê'**
+  String get tabAnalyticsTitle;
+
+  /// No description provided for @totalSpendingAllGroups.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng chi tất cả nhóm'**
+  String get totalSpendingAllGroups;
+
+  /// No description provided for @activeGroupsJoinedCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số nhóm tham gia'**
+  String get activeGroupsJoinedCount;
+
+  /// No description provided for @groupsUnit.
+  ///
+  /// In vi, this message translates to:
+  /// **'nhóm'**
+  String get groupsUnit;
+
+  /// No description provided for @totalInvoicesRecorded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số hóa đơn đã ghi'**
+  String get totalInvoicesRecorded;
+
+  /// No description provided for @invoicesUnit.
+  ///
+  /// In vi, this message translates to:
+  /// **'hóa đơn'**
+  String get invoicesUnit;
+
+  /// No description provided for @overallReportBannerTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo cáo tổng quan'**
+  String get overallReportBannerTitle;
+
+  /// No description provided for @viewOverallReportAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem toàn cảnh'**
+  String get viewOverallReportAction;
+
+  /// No description provided for @searchGroupByHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm kiếm nhóm theo tên, danh mục...'**
+  String get searchGroupByHint;
+
+  /// No description provided for @filterAllTab.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả ({count})'**
+  String filterAllTab(int count);
+
+  /// No description provided for @filterActiveTab.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang hoạt động'**
+  String get filterActiveTab;
+
+  /// No description provided for @filterArchivedTab.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã lưu trữ'**
+  String get filterArchivedTab;
+
+  /// No description provided for @groupSpendingListTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'DANH SÁCH NHÓM CHI TIÊU'**
+  String get groupSpendingListTitle;
+
+  /// No description provided for @totalSpendingLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng chi tiêu'**
+  String get totalSpendingLabel;
+
+  /// No description provided for @overallReportTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo cáo tổng quan'**
+  String get overallReportTitle;
+
+  /// No description provided for @overallReportSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng hợp tất cả nhóm đang tham gia'**
+  String get overallReportSubtitle;
+
+  /// No description provided for @financialMetricsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'CHỈ SỐ TÀI CHÍNH NHÓM'**
+  String get financialMetricsTitle;
+
+  /// No description provided for @totalSpendingMetric.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng tiền chi tiêu'**
+  String get totalSpendingMetric;
+
+  /// No description provided for @commonGroupSpendingSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi tiêu chung cả nhóm'**
+  String get commonGroupSpendingSubtitle;
+
+  /// No description provided for @averagePerPersonMetric.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bình quân đầu người'**
+  String get averagePerPersonMetric;
+
+  /// No description provided for @splitEquallySubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi thành viên chia đều'**
+  String get splitEquallySubtitle;
+
+  /// No description provided for @friendsCountBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'÷ {count} bạn'**
+  String friendsCountBadge(int count);
+
+  /// No description provided for @expenseCountMetric.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số khoản chi'**
+  String get expenseCountMetric;
+
+  /// No description provided for @invoicesBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hóa đơn'**
+  String get invoicesBadge;
+
+  /// No description provided for @expensesUnit.
+  ///
+  /// In vi, this message translates to:
+  /// **'khoản chi'**
+  String get expensesUnit;
+
+  /// No description provided for @recordedAndAuditedSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã ghi nhận & đối soát'**
+  String get recordedAndAuditedSubtitle;
+
+  /// No description provided for @settlementRateMetric.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tỷ lệ tất toán'**
+  String get settlementRateMetric;
+
+  /// No description provided for @paidRateSuffix.
+  ///
+  /// In vi, this message translates to:
+  /// **'đã trả'**
+  String get paidRateSuffix;
+
+  /// No description provided for @groupDebtLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Công nợ nhóm'**
+  String get groupDebtLabel;
+
+  /// No description provided for @remainingDebtRate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Còn {percent}% tồn'**
+  String remainingDebtRate(String percent);
+
+  /// No description provided for @categoryDistributionTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'PHÂN BỐ THEO DANH MỤC CHI TIÊU'**
+  String get categoryDistributionTitle;
+
+  /// No description provided for @memberContributionTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'ĐÓNG GÓP & CHI TIÊU THÀNH VIÊN'**
+  String get memberContributionTitle;
+
+  /// No description provided for @contributionPercent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng góp {percent}% tổng chi'**
+  String contributionPercent(String percent);
+
+  /// No description provided for @recentExpensesTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'HÓA ĐƠN CHI TIÊU GẦN ĐÂY'**
+  String get recentExpensesTitle;
+
+  /// No description provided for @expensesCountBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} khoản'**
+  String expensesCountBadge(int count);
+
+  /// No description provided for @paidByPrefix.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người trả: {name}'**
+  String paidByPrefix(String name);
+
+  /// No description provided for @viewExpenseDetailAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi tiết →'**
+  String get viewExpenseDetailAction;
+
+  /// No description provided for @periodThisMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháng này'**
+  String get periodThisMonth;
+
+  /// No description provided for @periodLastMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháng trước'**
+  String get periodLastMonth;
+
+  /// No description provided for @periodCurrentQuarter.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quý này'**
+  String get periodCurrentQuarter;
+
+  /// No description provided for @periodByYear.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cả năm'**
+  String get periodByYear;
+
+  /// No description provided for @membersCountSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'{memberCount} thành viên'**
+  String membersCountSubtitle(int memberCount);
+
+  /// No description provided for @noExpensesRecorded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có khoản chi tiêu nào.'**
+  String get noExpensesRecorded;
+
+  /// No description provided for @noCategoriesRecorded.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có dữ liệu danh mục.'**
+  String get noCategoriesRecorded;
+
+  /// No description provided for @noLeaderboardData.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có dữ liệu đóng góp.'**
+  String get noLeaderboardData;
+
+  /// No description provided for @loadAnalyticsFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể tải dữ liệu thống kê'**
+  String get loadAnalyticsFailed;
+
+  /// No description provided for @retryAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử lại'**
+  String get retryAction;
+
+  /// No description provided for @youLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'(Tôi)'**
+  String get youLabel;
+  /// No description provided for @debtsGroupTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Công nợ theo nhóm'**
+  String get debtsGroupTitle;
+
+  /// No description provided for @debtsYouOwe.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang nợ'**
+  String get debtsYouOwe;
+
+  /// No description provided for @debtsYouOweSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng tiền bạn cần thanh toán'**
+  String get debtsYouOweSubtitle;
+
+  /// No description provided for @debtsYouReceive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn nhận'**
+  String get debtsYouReceive;
+
+  /// No description provided for @debtsYouReceiveSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn bè đang nợ bạn'**
+  String get debtsYouReceiveSubtitle;
+
+  /// No description provided for @searchDebtGroupPlaceholder.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm kiếm nhóm theo tên, danh mục...'**
+  String get searchDebtGroupPlaceholder;
+
+  /// No description provided for @filterDebtAllCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả nhóm ({count})'**
+  String filterDebtAllCount(int count);
+
+  /// No description provided for @filterDebtHasDebtCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Có công nợ ({count})'**
+  String filterDebtHasDebtCount(int count);
+
+  /// No description provided for @filterDebtSettledCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã tất toán ({count})'**
+  String filterDebtSettledCount(int count);
+
+  /// No description provided for @debtsPendingCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} khoản nợ cần xử lý'**
+  String debtsPendingCount(int count);
+
+  /// No description provided for @debtsSettledAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã tất toán toàn bộ'**
+  String get debtsSettledAll;
+
+  /// No description provided for @debtsBalanced.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cân bằng (0 đ)'**
+  String get debtsBalanced;
+
+  /// No description provided for @badgeYouReceive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn nhận'**
+  String get badgeYouReceive;
+
+  /// No description provided for @badgeYouMustPay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn cần thanh toán'**
+  String get badgeYouMustPay;
+
+  /// No description provided for @badgeBalanced.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã cân bằng'**
+  String get badgeBalanced;
+
+  /// No description provided for @simplifiedDebtsTab.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nợ tối giản'**
+  String get simplifiedDebtsTab;
+
+  /// No description provided for @actualDebtsTab.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nợ thực tế'**
+  String get actualDebtsTab;
+
+  /// No description provided for @simplifiedDebtsBanner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối ưu hóa số lượng giao dịch gộp thông minh để thanh toán nhanh gọn nhất.'**
+  String get simplifiedDebtsBanner;
+
+  /// No description provided for @actualDebtsBanner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi tiết các khoản nợ phát sinh theo từng hóa đơn và mục chi tiêu.'**
+  String get actualDebtsBanner;
+
+  /// No description provided for @debtsToHandleCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} KHOẢN NỢ CẦN XỬ LÝ'**
+  String debtsToHandleCount(int count);
+
+  /// No description provided for @simplifiedDebtAlgorithm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thuật toán gộp nợ tối giản'**
+  String get simplifiedDebtAlgorithm;
+
+  /// No description provided for @payNowAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thanh toán ngay (100%)'**
+  String get payNowAction;
+
+  /// No description provided for @confirmReceivedAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận nhận tiền'**
+  String get confirmReceivedAction;
+
+  /// No description provided for @rejectReceivedAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ chối'**
+  String get rejectReceivedAction;
+
+  /// No description provided for @remindDebtAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhắc nợ'**
+  String get remindDebtAction;
+
+  /// No description provided for @debtStatusPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa thanh toán'**
+  String get debtStatusPending;
+
+  /// No description provided for @debtStatusWaiting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ xác nhận'**
+  String get debtStatusWaiting;
+
+  /// No description provided for @debtStatusSettled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã tất toán'**
+  String get debtStatusSettled;
+
+  /// No description provided for @debtorLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người nợ'**
+  String get debtorLabel;
+
+  /// No description provided for @creditorLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chủ nợ'**
+  String get creditorLabel;
+
+  /// No description provided for @youTag.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn'**
+  String get youTag;
+
   /// No description provided for @backAction.
   ///
   /// In vi, this message translates to:
@@ -1135,6 +1608,95 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Vui lòng cấp quyền truy cập Camera để quét mã QR.'**
   String get cameraPermissionRequired;
+  /// No description provided for @yourBalanceInGroup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư của bạn trong nhóm:'**
+  String get yourBalanceInGroup;
+
+  /// No description provided for @noDebtGroupsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có nhóm công nợ nào'**
+  String get noDebtGroupsTitle;
+
+  /// No description provided for @noDebtGroupsSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hiện tại bạn không có khoản công nợ nào cần xử lý.'**
+  String get noDebtGroupsSubtitle;
+
+  /// No description provided for @noMatchingDebtGroupsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy nhóm phù hợp'**
+  String get noMatchingDebtGroupsTitle;
+
+  /// No description provided for @noMatchingDebtGroupsSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử tìm kiếm với từ khóa khác hoặc đổi bộ lọc.'**
+  String get noMatchingDebtGroupsSubtitle;
+
+  /// No description provided for @confirmPayDebtTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận đã thanh toán'**
+  String get confirmPayDebtTitle;
+
+  /// No description provided for @confirmPayDebtMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã chuyển khoản hoặc trả tiền mặt cho {creditor} số tiền {amount}?'**
+  String confirmPayDebtMessage(String creditor, String amount);
+
+  /// No description provided for @confirmReceiveDebtTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận nhận tiền'**
+  String get confirmReceiveDebtTitle;
+
+  /// No description provided for @confirmReceiveDebtMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã nhận được số tiền {amount} từ {debtor}?'**
+  String confirmReceiveDebtMessage(String debtor, String amount);
+
+  /// No description provided for @rejectReceiveDebtTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ chối nhận tiền'**
+  String get rejectReceiveDebtTitle;
+
+  /// No description provided for @rejectReceiveDebtMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa nhận được số tiền này và muốn yêu cầu {debtor} kiểm tra lại?'**
+  String rejectReceiveDebtMessage(String debtor);
+
+  /// No description provided for @confirmRemindDebtTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi thông báo nhắc nợ'**
+  String get confirmRemindDebtTitle;
+
+  /// No description provided for @confirmRemindDebtMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi thông báo nhắc nhở thanh toán khoản nợ {amount} đến {debtor}?'**
+  String confirmRemindDebtMessage(String debtor, String amount);
+
+  /// No description provided for @noDebtsInGroupTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhóm chưa có khoản nợ nào'**
+  String get noDebtsInGroupTitle;
+
+  /// No description provided for @noDebtsInGroupSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mọi khoản chi tiêu trong nhóm đã được cân bằng hoặc chưa phát sinh nợ.'**
+  String get noDebtsInGroupSubtitle;
 }
 
 class _AppLocalizationsDelegate

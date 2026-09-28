@@ -6,11 +6,16 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/session/session_coordinator.dart';
 import '../../../../core/sync/data_sync_coordinator.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../analytics/domain/repositories/analytics_repository.dart';
+import '../../../analytics/presentation/cubit/analytics_tab_cubit.dart';
+import '../../../analytics/presentation/screens/analytics_tab_screen.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../auth/presentation/cubit/auth_state.dart';
 import '../../../dashboard/presentation/cubit/dashboard_cubit.dart';
 import '../../../dashboard/presentation/screens/dashboard_screen.dart';
 import '../../../debts/domain/repositories/debts_repository.dart';
+import '../../../debts/presentation/cubit/debts_cubit.dart';
+import '../../../debts/presentation/screens/debts_screen.dart';
 import '../../../groups/domain/repositories/groups_repository.dart';
 import '../../../groups/presentation/cubit/groups_cubit.dart';
 import '../../../groups/presentation/screens/groups_screen.dart';
@@ -23,12 +28,16 @@ class MainShellScreen extends StatefulWidget {
   final int initialTabIndex;
   final DashboardCubit? dashboardCubit;
   final GroupsCubit? groupsCubit;
+  final AnalyticsTabCubit? analyticsTabCubit;
+  final DebtsCubit? debtsCubit;
 
   const MainShellScreen({
     super.key,
     this.initialTabIndex = 0,
     this.dashboardCubit,
     this.groupsCubit,
+    this.analyticsTabCubit,
+    this.debtsCubit,
   });
 
   @override
@@ -95,6 +104,8 @@ class _MainShellScreenState extends State<MainShellScreen> {
                       icon: LucideIcons.arrowLeftRight,
                       tabIndex: 2,
                     ),
+                    const AnalyticsTabScreen(),
+                    const DebtsScreen(),
                     TabPlaceholderView(
                       title: tr.tabAnalytics,
                       icon: LucideIcons.barChart3,
@@ -136,6 +147,19 @@ class _MainShellScreenState extends State<MainShellScreen> {
       }
     }
 
+    AnalyticsTabCubit? effectiveAnalyticsTabCubit = widget.analyticsTabCubit;
+    if (effectiveAnalyticsTabCubit == null) {
+      try {
+        effectiveAnalyticsTabCubit = context.read<AnalyticsTabCubit>();
+    DebtsCubit? effectiveDebtsCubit = widget.debtsCubit;
+    if (effectiveDebtsCubit == null) {
+      try {
+        effectiveDebtsCubit = context.read<DebtsCubit>();
+      } catch (_) {
+        // Not in ancestor context, will be created via repository provider below
+      }
+    }
+
     return MultiBlocProvider(
       providers: [
         if (effectiveDashboardCubit != null)
@@ -155,6 +179,23 @@ class _MainShellScreenState extends State<MainShellScreen> {
           BlocProvider<GroupsCubit>(
             create: (context) => GroupsCubit(
               context.read<GroupsRepository>(),
+              sessionCoordinator: context.read<SessionCoordinator>(),
+              dataSyncCoordinator: context.read<DataSyncCoordinator>(),
+            ),
+          ),
+        if (effectiveAnalyticsTabCubit != null)
+          BlocProvider<AnalyticsTabCubit>.value(value: effectiveAnalyticsTabCubit)
+        else
+          BlocProvider<AnalyticsTabCubit>(
+            create: (context) => AnalyticsTabCubit(
+              analyticsRepository: context.read<AnalyticsRepository>(),
+              groupsRepository: context.read<GroupsRepository>(),
+        if (effectiveDebtsCubit != null)
+          BlocProvider<DebtsCubit>.value(value: effectiveDebtsCubit)
+        else
+          BlocProvider<DebtsCubit>(
+            create: (context) => DebtsCubit(
+              context.read<DebtsRepository>(),
               sessionCoordinator: context.read<SessionCoordinator>(),
               dataSyncCoordinator: context.read<DataSyncCoordinator>(),
             ),

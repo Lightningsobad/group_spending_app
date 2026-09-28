@@ -15,7 +15,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../auth/presentation/cubit/auth_cubit_test.dart';
 import '../../../dashboard/dashboard_cubit_test.dart';
 import '../../../groups/groups_cubit_test.dart';
+import '../../../analytics/presentation/cubit/analytics_cubits_test.dart';
+import 'package:group_spending_app/features/analytics/presentation/cubit/analytics_tab_cubit.dart';
 import 'package:group_spending_app/features/dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'package:group_spending_app/features/debts/presentation/cubit/debts_cubit.dart';
 import 'package:group_spending_app/features/groups/presentation/cubit/groups_cubit.dart';
 
 void main() {
@@ -27,8 +30,11 @@ void main() {
     late AuthCubit authCubit;
     late FakeDebtsRepository debtsRepo;
     late FakeGroupsRepo groupsRepo;
+    late FakeAnalyticsRepository analyticsRepo;
     late DashboardCubit dashboardCubit;
     late GroupsCubit groupsCubit;
+    late AnalyticsTabCubit analyticsTabCubit;
+    late DebtsCubit debtsCubit;
 
     setUp(() async {
       SharedPreferences.setMockInitialValues({
@@ -42,11 +48,17 @@ void main() {
       authCubit = AuthCubit(fakeRepo);
       debtsRepo = FakeDebtsRepository();
       groupsRepo = FakeGroupsRepo();
+      analyticsRepo = FakeAnalyticsRepository();
       dashboardCubit = DashboardCubit(
         debtsRepository: debtsRepo,
         groupsRepository: groupsRepo,
       );
       groupsCubit = GroupsCubit(groupsRepo);
+      analyticsTabCubit = AnalyticsTabCubit(
+        analyticsRepository: analyticsRepo,
+        groupsRepository: groupsRepo,
+      );
+      debtsCubit = DebtsCubit(debtsRepo);
     });
 
     Widget createWidgetUnderTest({int initialTabIndex = 0}) {
@@ -61,6 +73,8 @@ void main() {
             BlocProvider<LocaleCubit>.value(value: localeCubit),
             BlocProvider<DashboardCubit>.value(value: dashboardCubit),
             BlocProvider<GroupsCubit>.value(value: groupsCubit),
+            BlocProvider<AnalyticsTabCubit>.value(value: analyticsTabCubit),
+            BlocProvider<DebtsCubit>.value(value: debtsCubit),
           ],
           child: BlocBuilder<ThemeCubit, ThemeMode>(
             builder: (context, themeMode) {
@@ -71,7 +85,10 @@ void main() {
                     locale: locale,
                     localizationsDelegates: AppLocalizations.localizationsDelegates,
                     supportedLocales: AppLocalizations.supportedLocales,
-                    home: MainShellScreen(initialTabIndex: initialTabIndex),
+                    home: MainShellScreen(
+                      initialTabIndex: initialTabIndex,
+                      analyticsTabCubit: analyticsTabCubit,
+                    ),
                   );
                 },
               );

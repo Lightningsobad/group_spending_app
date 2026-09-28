@@ -247,4 +247,198 @@
   "invalidQrCodeError": "No valid invite code found in this QR code.",
   "noQrFoundInImage": "No QR code found in the selected image.",
   "cameraPermissionRequired": "Please grant camera permission to scan QR codes."
+  "tabAnalyticsTitle": "Reports & Statistics",
+  "totalSpendingAllGroups": "Total spending all groups",
+  "activeGroupsJoinedCount": "Active groups joined",
+  "groupsUnit": "groups",
+  "totalInvoicesRecorded": "Recorded expenses",
+  "invoicesUnit": "invoices",
+  "overallReportBannerTitle": "Overall Report",
+  "viewOverallReportAction": "View Overview",
+  "searchGroupByHint": "Search group by name, category...",
+  "filterAllTab": "All ({count})",
+  "@filterAllTab": {
+  "debtsGroupTitle": "Debts by Group",
+  "debtsYouOwe": "You owe",
+  "debtsYouOweSubtitle": "Total amount you need to pay",
+  "debtsYouReceive": "You receive",
+  "debtsYouReceiveSubtitle": "Friends owe you",
+  "searchDebtGroupPlaceholder": "Search group by name, category...",
+  "filterDebtAllCount": "All groups ({count})",
+  "@filterDebtAllCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterActiveTab": "Active",
+  "filterArchivedTab": "Archived",
+  "groupSpendingListTitle": "GROUP SPENDING LIST",
+  "totalSpendingLabel": "Total spending",
+  "overallReportTitle": "Overall Report",
+  "overallReportSubtitle": "Summary of all active groups",
+  "financialMetricsTitle": "GROUP FINANCIAL METRICS",
+  "totalSpendingMetric": "Total spending amount",
+  "commonGroupSpendingSubtitle": "Shared spending across groups",
+  "averagePerPersonMetric": "Average per person",
+  "splitEquallySubtitle": "Split equally per member",
+  "friendsCountBadge": "÷ {count} friends",
+  "@friendsCountBadge": {
+  "filterDebtHasDebtCount": "Has debt ({count})",
+  "@filterDebtHasDebtCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "expenseCountMetric": "Expense count",
+  "invoicesBadge": "Invoices",
+  "expensesUnit": "expenses",
+  "recordedAndAuditedSubtitle": "Recorded & verified",
+  "settlementRateMetric": "Settlement rate",
+  "paidRateSuffix": "paid",
+  "groupDebtLabel": "Group debt",
+  "remainingDebtRate": "{percent}% remaining",
+  "@remainingDebtRate": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryDistributionTitle": "CATEGORY DISTRIBUTION",
+  "memberContributionTitle": "MEMBER CONTRIBUTIONS",
+  "contributionPercent": "{percent}% of total spending",
+  "@contributionPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "recentExpensesTitle": "RECENT EXPENSES",
+  "expensesCountBadge": "{count} items",
+  "@expensesCountBadge": {
+  "filterDebtSettledCount": "Settled ({count})",
+  "@filterDebtSettledCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "debtsPendingCount": "{count} debts need settlement",
+  "@debtsPendingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "debtsSettledAll": "All settled",
+  "debtsBalanced": "Balanced (0 đ)",
+  "badgeYouReceive": "You receive",
+  "badgeYouMustPay": "You need to pay",
+  "badgeBalanced": "Balanced",
+  "simplifiedDebtsTab": "Simplified Debts",
+  "actualDebtsTab": "Actual Debts",
+  "simplifiedDebtsBanner": "Optimize cash flow transactions for fastest settlement.",
+  "actualDebtsBanner": "Detailed debts arising from each bill and spending item.",
+  "debtsToHandleCount": "{count} DEBTS NEED SETTLEMENT",
+  "@debtsToHandleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paidByPrefix": "Paid by: {name}",
+  "@paidByPrefix": {
+    "placeholders": {
+      "name": {
+  "simplifiedDebtAlgorithm": "Simplified debt algorithm",
+  "payNowAction": "Pay now (100%)",
+  "confirmReceivedAction": "Confirm received",
+  "rejectReceivedAction": "Decline",
+  "remindDebtAction": "Remind",
+  "debtStatusPending": "Unpaid",
+  "debtStatusWaiting": "Awaiting confirmation",
+  "debtStatusSettled": "Settled",
+  "debtorLabel": "Debtor",
+  "creditorLabel": "Creditor",
+  "youTag": "You",
+  "backAction": "Back",
+  "yourBalanceInGroup": "Your balance in group:",
+  "noDebtGroupsTitle": "No debt groups",
+  "noDebtGroupsSubtitle": "You currently have no pending debts to handle.",
+  "noMatchingDebtGroupsTitle": "No matching groups found",
+  "noMatchingDebtGroupsSubtitle": "Try searching with other keywords or change filter.",
+  "confirmPayDebtTitle": "Confirm payment sent",
+  "confirmPayDebtMessage": "Have you transferred or paid in cash to {creditor} the amount of {amount}?",
+  "@confirmPayDebtMessage": {
+    "placeholders": {
+      "creditor": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "viewExpenseDetailAction": "Details →",
+  "periodThisMonth": "This month",
+  "periodLastMonth": "Last month",
+  "periodCurrentQuarter": "This quarter",
+  "periodByYear": "Full year",
+  "membersCountSubtitle": "{memberCount} members",
+  "@membersCountSubtitle": {
+    "placeholders": {
+      "memberCount": {
+        "type": "int"
+      }
+    }
+  },
+  "noExpensesRecorded": "No expenses recorded yet.",
+  "noCategoriesRecorded": "No category data available.",
+  "noLeaderboardData": "No contribution data available.",
+  "loadAnalyticsFailed": "Failed to load analytics data",
+  "retryAction": "Retry",
+  "youLabel": "(Me)"
+  "confirmReceiveDebtTitle": "Confirm money received",
+  "confirmReceiveDebtMessage": "Have you received {amount} from {debtor}?",
+  "@confirmReceiveDebtMessage": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "rejectReceiveDebtTitle": "Decline payment confirmation",
+  "rejectReceiveDebtMessage": "You have not received this payment and want to ask {debtor} to check again?",
+  "@rejectReceiveDebtMessage": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmRemindDebtTitle": "Send debt reminder",
+  "confirmRemindDebtMessage": "Send a reminder notification for debt of {amount} to {debtor}?",
+  "@confirmRemindDebtMessage": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "noDebtsInGroupTitle": "No debts in this group",
+  "noDebtsInGroupSubtitle": "All expenses in this group are balanced or no debts have incurred."
 }

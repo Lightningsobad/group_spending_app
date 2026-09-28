@@ -569,4 +569,323 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get cameraPermissionRequired =>
       'Vui lòng cấp quyền truy cập Camera để quét mã QR.';
+  String get tabAnalyticsTitle => 'Báo cáo & Thống kê';
+
+  @override
+  String get totalSpendingAllGroups => 'Tổng chi tất cả nhóm';
+
+  @override
+  String get activeGroupsJoinedCount => 'Số nhóm tham gia';
+
+  @override
+  String get groupsUnit => 'nhóm';
+
+  @override
+  String get totalInvoicesRecorded => 'Số hóa đơn đã ghi';
+
+  @override
+  String get invoicesUnit => 'hóa đơn';
+
+  @override
+  String get overallReportBannerTitle => 'Báo cáo tổng quan';
+
+  @override
+  String get viewOverallReportAction => 'Xem toàn cảnh';
+
+  @override
+  String get searchGroupByHint => 'Tìm kiếm nhóm theo tên, danh mục...';
+
+  @override
+  String filterAllTab(int count) {
+    return 'Tất cả ($count)';
+  }
+
+  @override
+  String get filterActiveTab => 'Đang hoạt động';
+
+  @override
+  String get filterArchivedTab => 'Đã lưu trữ';
+
+  @override
+  String get groupSpendingListTitle => 'DANH SÁCH NHÓM CHI TIÊU';
+
+  @override
+  String get totalSpendingLabel => 'Tổng chi tiêu';
+
+  @override
+  String get overallReportTitle => 'Báo cáo tổng quan';
+
+  @override
+  String get overallReportSubtitle => 'Tổng hợp tất cả nhóm đang tham gia';
+
+  @override
+  String get financialMetricsTitle => 'CHỈ SỐ TÀI CHÍNH NHÓM';
+
+  @override
+  String get totalSpendingMetric => 'Tổng tiền chi tiêu';
+
+  @override
+  String get commonGroupSpendingSubtitle => 'Chi tiêu chung cả nhóm';
+
+  @override
+  String get averagePerPersonMetric => 'Bình quân đầu người';
+
+  @override
+  String get splitEquallySubtitle => 'Mỗi thành viên chia đều';
+
+  @override
+  String friendsCountBadge(int count) {
+    return '÷ $count bạn';
+  }
+
+  @override
+  String get expenseCountMetric => 'Số khoản chi';
+
+  @override
+  String get invoicesBadge => 'Hóa đơn';
+
+  @override
+  String get expensesUnit => 'khoản chi';
+
+  @override
+  String get recordedAndAuditedSubtitle => 'Đã ghi nhận & đối soát';
+
+  @override
+  String get settlementRateMetric => 'Tỷ lệ tất toán';
+
+  @override
+  String get paidRateSuffix => 'đã trả';
+
+  @override
+  String get groupDebtLabel => 'Công nợ nhóm';
+
+  @override
+  String remainingDebtRate(String percent) {
+    return 'Còn $percent% tồn';
+  }
+
+  @override
+  String get categoryDistributionTitle => 'PHÂN BỐ THEO DANH MỤC CHI TIÊU';
+
+  @override
+  String get memberContributionTitle => 'ĐÓNG GÓP & CHI TIÊU THÀNH VIÊN';
+
+  @override
+  String contributionPercent(String percent) {
+    return 'Đóng góp $percent% tổng chi';
+  }
+
+  @override
+  String get recentExpensesTitle => 'HÓA ĐƠN CHI TIÊU GẦN ĐÂY';
+
+  @override
+  String expensesCountBadge(int count) {
+    return '$count khoản';
+  }
+
+  @override
+  String paidByPrefix(String name) {
+    return 'Người trả: $name';
+  }
+
+  @override
+  String get viewExpenseDetailAction => 'Chi tiết →';
+
+  @override
+  String get periodThisMonth => 'Tháng này';
+
+  @override
+  String get periodLastMonth => 'Tháng trước';
+
+  @override
+  String get periodCurrentQuarter => 'Quý này';
+
+  @override
+  String get periodByYear => 'Cả năm';
+
+  @override
+  String membersCountSubtitle(int memberCount) {
+    return '$memberCount thành viên';
+  }
+
+  @override
+  String get noExpensesRecorded => 'Chưa có khoản chi tiêu nào.';
+
+  @override
+  String get noCategoriesRecorded => 'Chưa có dữ liệu danh mục.';
+
+  @override
+  String get noLeaderboardData => 'Chưa có dữ liệu đóng góp.';
+
+  @override
+  String get loadAnalyticsFailed => 'Không thể tải dữ liệu thống kê';
+
+  @override
+  String get retryAction => 'Thử lại';
+
+  @override
+  String get youLabel => '(Tôi)';
+  String get debtsGroupTitle => 'Công nợ theo nhóm';
+
+  @override
+  String get debtsYouOwe => 'Bạn đang nợ';
+
+  @override
+  String get debtsYouOweSubtitle => 'Tổng tiền bạn cần thanh toán';
+
+  @override
+  String get debtsYouReceive => 'Bạn nhận';
+
+  @override
+  String get debtsYouReceiveSubtitle => 'Bạn bè đang nợ bạn';
+
+  @override
+  String get searchDebtGroupPlaceholder =>
+      'Tìm kiếm nhóm theo tên, danh mục...';
+
+  @override
+  String filterDebtAllCount(int count) {
+    return 'Tất cả nhóm ($count)';
+  }
+
+  @override
+  String filterDebtHasDebtCount(int count) {
+    return 'Có công nợ ($count)';
+  }
+
+  @override
+  String filterDebtSettledCount(int count) {
+    return 'Đã tất toán ($count)';
+  }
+
+  @override
+  String debtsPendingCount(int count) {
+    return '$count khoản nợ cần xử lý';
+  }
+
+  @override
+  String get debtsSettledAll => 'Đã tất toán toàn bộ';
+
+  @override
+  String get debtsBalanced => 'Cân bằng (0 đ)';
+
+  @override
+  String get badgeYouReceive => 'Bạn nhận';
+
+  @override
+  String get badgeYouMustPay => 'Bạn cần thanh toán';
+
+  @override
+  String get badgeBalanced => 'Đã cân bằng';
+
+  @override
+  String get simplifiedDebtsTab => 'Nợ tối giản';
+
+  @override
+  String get actualDebtsTab => 'Nợ thực tế';
+
+  @override
+  String get simplifiedDebtsBanner =>
+      'Tối ưu hóa số lượng giao dịch gộp thông minh để thanh toán nhanh gọn nhất.';
+
+  @override
+  String get actualDebtsBanner =>
+      'Chi tiết các khoản nợ phát sinh theo từng hóa đơn và mục chi tiêu.';
+
+  @override
+  String debtsToHandleCount(int count) {
+    return '$count KHOẢN NỢ CẦN XỬ LÝ';
+  }
+
+  @override
+  String get simplifiedDebtAlgorithm => 'Thuật toán gộp nợ tối giản';
+
+  @override
+  String get payNowAction => 'Thanh toán ngay (100%)';
+
+  @override
+  String get confirmReceivedAction => 'Xác nhận nhận tiền';
+
+  @override
+  String get rejectReceivedAction => 'Từ chối';
+
+  @override
+  String get remindDebtAction => 'Nhắc nợ';
+
+  @override
+  String get debtStatusPending => 'Chưa thanh toán';
+
+  @override
+  String get debtStatusWaiting => 'Chờ xác nhận';
+
+  @override
+  String get debtStatusSettled => 'Đã tất toán';
+
+  @override
+  String get debtorLabel => 'Người nợ';
+
+  @override
+  String get creditorLabel => 'Chủ nợ';
+
+  @override
+  String get youTag => 'Bạn';
+
+  @override
+  String get backAction => 'Quay lại';
+
+  @override
+  String get yourBalanceInGroup => 'Số dư của bạn trong nhóm:';
+
+  @override
+  String get noDebtGroupsTitle => 'Không có nhóm công nợ nào';
+
+  @override
+  String get noDebtGroupsSubtitle =>
+      'Hiện tại bạn không có khoản công nợ nào cần xử lý.';
+
+  @override
+  String get noMatchingDebtGroupsTitle => 'Không tìm thấy nhóm phù hợp';
+
+  @override
+  String get noMatchingDebtGroupsSubtitle =>
+      'Thử tìm kiếm với từ khóa khác hoặc đổi bộ lọc.';
+
+  @override
+  String get confirmPayDebtTitle => 'Xác nhận đã thanh toán';
+
+  @override
+  String confirmPayDebtMessage(String creditor, String amount) {
+    return 'Bạn đã chuyển khoản hoặc trả tiền mặt cho $creditor số tiền $amount?';
+  }
+
+  @override
+  String get confirmReceiveDebtTitle => 'Xác nhận nhận tiền';
+
+  @override
+  String confirmReceiveDebtMessage(String debtor, String amount) {
+    return 'Bạn đã nhận được số tiền $amount từ $debtor?';
+  }
+
+  @override
+  String get rejectReceiveDebtTitle => 'Từ chối nhận tiền';
+
+  @override
+  String rejectReceiveDebtMessage(String debtor) {
+    return 'Bạn chưa nhận được số tiền này và muốn yêu cầu $debtor kiểm tra lại?';
+  }
+
+  @override
+  String get confirmRemindDebtTitle => 'Gửi thông báo nhắc nợ';
+
+  @override
+  String confirmRemindDebtMessage(String debtor, String amount) {
+    return 'Gửi thông báo nhắc nhở thanh toán khoản nợ $amount đến $debtor?';
+  }
+
+  @override
+  String get noDebtsInGroupTitle => 'Nhóm chưa có khoản nợ nào';
+
+  @override
+  String get noDebtsInGroupSubtitle =>
+      'Mọi khoản chi tiêu trong nhóm đã được cân bằng hoặc chưa phát sinh nợ.';
 }
