@@ -121,5 +121,26 @@ void main() {
       expect(find.text('Đội Cầu Lông Ba Đình'), findsOneWidget);
       expect(find.text('Chung cư Sunrise Room'), findsNothing);
     });
+
+    testWidgets('tapping Mã / QR opens JoinGroupView and tapping Quay lại returns to list', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Mã / QR'));
+      await tester.pumpAndSettle();
+
+      // JoinGroupView is displayed
+      expect(find.text('Gia nhập bằng mã / QR'), findsOneWidget);
+      expect(find.text('Quét mã QR'), findsOneWidget);
+      expect(find.text('Nhập mã mời'), findsOneWidget);
+
+      // Tap Quay lại to return
+      await tester.tap(find.text('Quay lại'));
+      await tester.pumpAndSettle();
+
+      // Groups list is visible again
+      expect(find.text('Danh sách nhóm của bạn'), findsOneWidget);
+      expect(find.text('Chung cư Sunrise Room'), findsOneWidget);
+    });
   });
 }

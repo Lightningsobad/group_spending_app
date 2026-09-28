@@ -33,6 +33,7 @@ void main() {
 
     Widget createWidgetUnderTest({
       VoidCallback? onNavigateToGroups,
+      VoidCallback? onNavigateToJoinGroup,
       Locale locale = const Locale('vi'),
     }) {
       return MultiBlocProvider(
@@ -46,7 +47,10 @@ void main() {
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
-            body: DashboardScreen(onNavigateToGroups: onNavigateToGroups),
+            body: DashboardScreen(
+              onNavigateToGroups: onNavigateToGroups,
+              onNavigateToJoinGroup: onNavigateToJoinGroup,
+            ),
           ),
         ),
       );
@@ -114,6 +118,24 @@ void main() {
       await tester.pump();
 
       expect(navigated, isTrue);
+    });
+
+    testWidgets('tapping Mã / QR invokes onNavigateToJoinGroup callback', (tester) async {
+      bool joinNavigated = false;
+      await tester.pumpWidget(createWidgetUnderTest(
+        locale: const Locale('vi'),
+        onNavigateToJoinGroup: () {
+          joinNavigated = true;
+        },
+      ));
+      await tester.pumpAndSettle();
+
+      final qrBtn = find.text('Mã / QR');
+      expect(qrBtn, findsOneWidget);
+      await tester.tap(qrBtn);
+      await tester.pump();
+
+      expect(joinNavigated, isTrue);
     });
   });
 }

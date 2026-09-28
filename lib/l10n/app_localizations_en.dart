@@ -536,6 +536,41 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deleteGroupPermanently => 'Delete group permanently';
 
   @override
+  String get backAction => 'Back';
+
+  @override
+  String get joinGroupQrTitle => 'Join via Code / QR';
+
+  @override
+  String get joinGroupQrSubtitle =>
+      'Quickly join a group by scanning a QR code or entering an invite code';
+
+  @override
+  String get scanQrTab => 'Scan QR Code';
+
+  @override
+  String get enterCodeTab => 'Enter Invite Code';
+
+  @override
+  String get scanQrInstruction =>
+      'Point your camera at the group\'s QR code to send a join request';
+
+  @override
+  String get testScanQrAction => 'Test Scan QR';
+
+  @override
+  String get uploadQrImageAction => 'Upload QR Image';
+
+  @override
+  String get invalidQrCodeError =>
+      'No valid invite code found in this QR code.';
+
+  @override
+  String get noQrFoundInImage => 'No QR code found in the selected image.';
+
+  @override
+  String get cameraPermissionRequired =>
+      'Please grant camera permission to scan QR codes.';
   String get tabAnalyticsTitle => 'Reports & Statistics';
 
   @override

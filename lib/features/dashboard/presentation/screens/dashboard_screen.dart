@@ -18,8 +18,13 @@ import '../widgets/financial_balance_card_skeleton.dart';
 
 class DashboardScreen extends StatefulWidget {
   final VoidCallback? onNavigateToGroups;
+  final VoidCallback? onNavigateToJoinGroup;
 
-  const DashboardScreen({super.key, this.onNavigateToGroups});
+  const DashboardScreen({
+    super.key,
+    this.onNavigateToGroups,
+    this.onNavigateToJoinGroup,
+  });
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -49,7 +54,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _openJoinGroup() {
-    JoinGroupSheet.show(context);
+    if (widget.onNavigateToJoinGroup != null) {
+      widget.onNavigateToJoinGroup!();
+    } else {
+      JoinGroupSheet.show(context);
+    }
   }
 
   @override
