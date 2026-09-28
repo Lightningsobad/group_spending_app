@@ -1357,6 +1357,287 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'(Tôi)'**
   String get youLabel;
+  /// No description provided for @debtsGroupTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Công nợ theo nhóm'**
+  String get debtsGroupTitle;
+
+  /// No description provided for @debtsYouOwe.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đang nợ'**
+  String get debtsYouOwe;
+
+  /// No description provided for @debtsYouOweSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng tiền bạn cần thanh toán'**
+  String get debtsYouOweSubtitle;
+
+  /// No description provided for @debtsYouReceive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn nhận'**
+  String get debtsYouReceive;
+
+  /// No description provided for @debtsYouReceiveSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn bè đang nợ bạn'**
+  String get debtsYouReceiveSubtitle;
+
+  /// No description provided for @searchDebtGroupPlaceholder.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm kiếm nhóm theo tên, danh mục...'**
+  String get searchDebtGroupPlaceholder;
+
+  /// No description provided for @filterDebtAllCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả nhóm ({count})'**
+  String filterDebtAllCount(int count);
+
+  /// No description provided for @filterDebtHasDebtCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Có công nợ ({count})'**
+  String filterDebtHasDebtCount(int count);
+
+  /// No description provided for @filterDebtSettledCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã tất toán ({count})'**
+  String filterDebtSettledCount(int count);
+
+  /// No description provided for @debtsPendingCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} khoản nợ cần xử lý'**
+  String debtsPendingCount(int count);
+
+  /// No description provided for @debtsSettledAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã tất toán toàn bộ'**
+  String get debtsSettledAll;
+
+  /// No description provided for @debtsBalanced.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cân bằng (0 đ)'**
+  String get debtsBalanced;
+
+  /// No description provided for @badgeYouReceive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn nhận'**
+  String get badgeYouReceive;
+
+  /// No description provided for @badgeYouMustPay.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn cần thanh toán'**
+  String get badgeYouMustPay;
+
+  /// No description provided for @badgeBalanced.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã cân bằng'**
+  String get badgeBalanced;
+
+  /// No description provided for @simplifiedDebtsTab.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nợ tối giản'**
+  String get simplifiedDebtsTab;
+
+  /// No description provided for @actualDebtsTab.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nợ thực tế'**
+  String get actualDebtsTab;
+
+  /// No description provided for @simplifiedDebtsBanner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tối ưu hóa số lượng giao dịch gộp thông minh để thanh toán nhanh gọn nhất.'**
+  String get simplifiedDebtsBanner;
+
+  /// No description provided for @actualDebtsBanner.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi tiết các khoản nợ phát sinh theo từng hóa đơn và mục chi tiêu.'**
+  String get actualDebtsBanner;
+
+  /// No description provided for @debtsToHandleCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} KHOẢN NỢ CẦN XỬ LÝ'**
+  String debtsToHandleCount(int count);
+
+  /// No description provided for @simplifiedDebtAlgorithm.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thuật toán gộp nợ tối giản'**
+  String get simplifiedDebtAlgorithm;
+
+  /// No description provided for @payNowAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thanh toán ngay (100%)'**
+  String get payNowAction;
+
+  /// No description provided for @confirmReceivedAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận nhận tiền'**
+  String get confirmReceivedAction;
+
+  /// No description provided for @rejectReceivedAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ chối'**
+  String get rejectReceivedAction;
+
+  /// No description provided for @remindDebtAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhắc nợ'**
+  String get remindDebtAction;
+
+  /// No description provided for @debtStatusPending.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa thanh toán'**
+  String get debtStatusPending;
+
+  /// No description provided for @debtStatusWaiting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ xác nhận'**
+  String get debtStatusWaiting;
+
+  /// No description provided for @debtStatusSettled.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã tất toán'**
+  String get debtStatusSettled;
+
+  /// No description provided for @debtorLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người nợ'**
+  String get debtorLabel;
+
+  /// No description provided for @creditorLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chủ nợ'**
+  String get creditorLabel;
+
+  /// No description provided for @youTag.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn'**
+  String get youTag;
+
+  /// No description provided for @backAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay lại'**
+  String get backAction;
+
+  /// No description provided for @yourBalanceInGroup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư của bạn trong nhóm:'**
+  String get yourBalanceInGroup;
+
+  /// No description provided for @noDebtGroupsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có nhóm công nợ nào'**
+  String get noDebtGroupsTitle;
+
+  /// No description provided for @noDebtGroupsSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hiện tại bạn không có khoản công nợ nào cần xử lý.'**
+  String get noDebtGroupsSubtitle;
+
+  /// No description provided for @noMatchingDebtGroupsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy nhóm phù hợp'**
+  String get noMatchingDebtGroupsTitle;
+
+  /// No description provided for @noMatchingDebtGroupsSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thử tìm kiếm với từ khóa khác hoặc đổi bộ lọc.'**
+  String get noMatchingDebtGroupsSubtitle;
+
+  /// No description provided for @confirmPayDebtTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận đã thanh toán'**
+  String get confirmPayDebtTitle;
+
+  /// No description provided for @confirmPayDebtMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã chuyển khoản hoặc trả tiền mặt cho {creditor} số tiền {amount}?'**
+  String confirmPayDebtMessage(String creditor, String amount);
+
+  /// No description provided for @confirmReceiveDebtTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận nhận tiền'**
+  String get confirmReceiveDebtTitle;
+
+  /// No description provided for @confirmReceiveDebtMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã nhận được số tiền {amount} từ {debtor}?'**
+  String confirmReceiveDebtMessage(String debtor, String amount);
+
+  /// No description provided for @rejectReceiveDebtTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ chối nhận tiền'**
+  String get rejectReceiveDebtTitle;
+
+  /// No description provided for @rejectReceiveDebtMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn chưa nhận được số tiền này và muốn yêu cầu {debtor} kiểm tra lại?'**
+  String rejectReceiveDebtMessage(String debtor);
+
+  /// No description provided for @confirmRemindDebtTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi thông báo nhắc nợ'**
+  String get confirmRemindDebtTitle;
+
+  /// No description provided for @confirmRemindDebtMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi thông báo nhắc nhở thanh toán khoản nợ {amount} đến {debtor}?'**
+  String confirmRemindDebtMessage(String debtor, String amount);
+
+  /// No description provided for @noDebtsInGroupTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhóm chưa có khoản nợ nào'**
+  String get noDebtsInGroupTitle;
+
+  /// No description provided for @noDebtsInGroupSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mọi khoản chi tiêu trong nhóm đã được cân bằng hoặc chưa phát sinh nợ.'**
+  String get noDebtsInGroupSubtitle;
 }
 
 class _AppLocalizationsDelegate

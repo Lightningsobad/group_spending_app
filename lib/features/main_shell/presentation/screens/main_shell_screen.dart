@@ -14,6 +14,8 @@ import '../../../auth/presentation/cubit/auth_state.dart';
 import '../../../dashboard/presentation/cubit/dashboard_cubit.dart';
 import '../../../dashboard/presentation/screens/dashboard_screen.dart';
 import '../../../debts/domain/repositories/debts_repository.dart';
+import '../../../debts/presentation/cubit/debts_cubit.dart';
+import '../../../debts/presentation/screens/debts_screen.dart';
 import '../../../groups/domain/repositories/groups_repository.dart';
 import '../../../groups/presentation/cubit/groups_cubit.dart';
 import '../../../groups/presentation/screens/groups_screen.dart';
@@ -27,6 +29,7 @@ class MainShellScreen extends StatefulWidget {
   final DashboardCubit? dashboardCubit;
   final GroupsCubit? groupsCubit;
   final AnalyticsTabCubit? analyticsTabCubit;
+  final DebtsCubit? debtsCubit;
 
   const MainShellScreen({
     super.key,
@@ -34,6 +37,7 @@ class MainShellScreen extends StatefulWidget {
     this.dashboardCubit,
     this.groupsCubit,
     this.analyticsTabCubit,
+    this.debtsCubit,
   });
 
   @override
@@ -94,6 +98,12 @@ class _MainShellScreenState extends State<MainShellScreen> {
                       tabIndex: 2,
                     ),
                     const AnalyticsTabScreen(),
+                    const DebtsScreen(),
+                    TabPlaceholderView(
+                      title: tr.tabAnalytics,
+                      icon: LucideIcons.barChart3,
+                      tabIndex: 3,
+                    ),
                     const SettingsScreen(),
                   ],
                 ),
@@ -134,6 +144,10 @@ class _MainShellScreenState extends State<MainShellScreen> {
     if (effectiveAnalyticsTabCubit == null) {
       try {
         effectiveAnalyticsTabCubit = context.read<AnalyticsTabCubit>();
+    DebtsCubit? effectiveDebtsCubit = widget.debtsCubit;
+    if (effectiveDebtsCubit == null) {
+      try {
+        effectiveDebtsCubit = context.read<DebtsCubit>();
       } catch (_) {
         // Not in ancestor context, will be created via repository provider below
       }
@@ -169,6 +183,12 @@ class _MainShellScreenState extends State<MainShellScreen> {
             create: (context) => AnalyticsTabCubit(
               analyticsRepository: context.read<AnalyticsRepository>(),
               groupsRepository: context.read<GroupsRepository>(),
+        if (effectiveDebtsCubit != null)
+          BlocProvider<DebtsCubit>.value(value: effectiveDebtsCubit)
+        else
+          BlocProvider<DebtsCubit>(
+            create: (context) => DebtsCubit(
+              context.read<DebtsRepository>(),
               sessionCoordinator: context.read<SessionCoordinator>(),
               dataSyncCoordinator: context.read<DataSyncCoordinator>(),
             ),

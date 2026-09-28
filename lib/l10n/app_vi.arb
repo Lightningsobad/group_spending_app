@@ -247,6 +247,14 @@
   "searchGroupByHint": "Tìm kiếm nhóm theo tên, danh mục...",
   "filterAllTab": "Tất cả ({count})",
   "@filterAllTab": {
+  "debtsGroupTitle": "Công nợ theo nhóm",
+  "debtsYouOwe": "Bạn đang nợ",
+  "debtsYouOweSubtitle": "Tổng tiền bạn cần thanh toán",
+  "debtsYouReceive": "Bạn nhận",
+  "debtsYouReceiveSubtitle": "Bạn bè đang nợ bạn",
+  "searchDebtGroupPlaceholder": "Tìm kiếm nhóm theo tên, danh mục...",
+  "filterDebtAllCount": "Tất cả nhóm ({count})",
+  "@filterDebtAllCount": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -266,6 +274,8 @@
   "splitEquallySubtitle": "Mỗi thành viên chia đều",
   "friendsCountBadge": "÷ {count} bạn",
   "@friendsCountBadge": {
+  "filterDebtHasDebtCount": "Có công nợ ({count})",
+  "@filterDebtHasDebtCount": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -300,6 +310,33 @@
   "recentExpensesTitle": "HÓA ĐƠN CHI TIÊU GẦN ĐÂY",
   "expensesCountBadge": "{count} khoản",
   "@expensesCountBadge": {
+  "filterDebtSettledCount": "Đã tất toán ({count})",
+  "@filterDebtSettledCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "debtsPendingCount": "{count} khoản nợ cần xử lý",
+  "@debtsPendingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "debtsSettledAll": "Đã tất toán toàn bộ",
+  "debtsBalanced": "Cân bằng (0 đ)",
+  "badgeYouReceive": "Bạn nhận",
+  "badgeYouMustPay": "Bạn cần thanh toán",
+  "badgeBalanced": "Đã cân bằng",
+  "simplifiedDebtsTab": "Nợ tối giản",
+  "actualDebtsTab": "Nợ thực tế",
+  "simplifiedDebtsBanner": "Tối ưu hóa số lượng giao dịch gộp thông minh để thanh toán nhanh gọn nhất.",
+  "actualDebtsBanner": "Chi tiết các khoản nợ phát sinh theo từng hóa đơn và mục chi tiêu.",
+  "debtsToHandleCount": "{count} KHOẢN NỢ CẦN XỬ LÝ",
+  "@debtsToHandleCount": {
     "placeholders": {
       "count": {
         "type": "int"
@@ -310,6 +347,31 @@
   "@paidByPrefix": {
     "placeholders": {
       "name": {
+  "simplifiedDebtAlgorithm": "Thuật toán gộp nợ tối giản",
+  "payNowAction": "Thanh toán ngay (100%)",
+  "confirmReceivedAction": "Xác nhận nhận tiền",
+  "rejectReceivedAction": "Từ chối",
+  "remindDebtAction": "Nhắc nợ",
+  "debtStatusPending": "Chưa thanh toán",
+  "debtStatusWaiting": "Chờ xác nhận",
+  "debtStatusSettled": "Đã tất toán",
+  "debtorLabel": "Người nợ",
+  "creditorLabel": "Chủ nợ",
+  "youTag": "Bạn",
+  "backAction": "Quay lại",
+  "yourBalanceInGroup": "Số dư của bạn trong nhóm:",
+  "noDebtGroupsTitle": "Không có nhóm công nợ nào",
+  "noDebtGroupsSubtitle": "Hiện tại bạn không có khoản công nợ nào cần xử lý.",
+  "noMatchingDebtGroupsTitle": "Không tìm thấy nhóm phù hợp",
+  "noMatchingDebtGroupsSubtitle": "Thử tìm kiếm với từ khóa khác hoặc đổi bộ lọc.",
+  "confirmPayDebtTitle": "Xác nhận đã thanh toán",
+  "confirmPayDebtMessage": "Bạn đã chuyển khoản hoặc trả tiền mặt cho {creditor} số tiền {amount}?",
+  "@confirmPayDebtMessage": {
+    "placeholders": {
+      "creditor": {
+        "type": "String"
+      },
+      "amount": {
         "type": "String"
       }
     }
@@ -333,4 +395,39 @@
   "loadAnalyticsFailed": "Không thể tải dữ liệu thống kê",
   "retryAction": "Thử lại",
   "youLabel": "(Tôi)"
+  "confirmReceiveDebtTitle": "Xác nhận nhận tiền",
+  "confirmReceiveDebtMessage": "Bạn đã nhận được số tiền {amount} từ {debtor}?",
+  "@confirmReceiveDebtMessage": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "rejectReceiveDebtTitle": "Từ chối nhận tiền",
+  "rejectReceiveDebtMessage": "Bạn chưa nhận được số tiền này và muốn yêu cầu {debtor} kiểm tra lại?",
+  "@rejectReceiveDebtMessage": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmRemindDebtTitle": "Gửi thông báo nhắc nợ",
+  "confirmRemindDebtMessage": "Gửi thông báo nhắc nhở thanh toán khoản nợ {amount} đến {debtor}?",
+  "@confirmRemindDebtMessage": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "noDebtsInGroupTitle": "Nhóm chưa có khoản nợ nào",
+  "noDebtsInGroupSubtitle": "Mọi khoản chi tiêu trong nhóm đã được cân bằng hoặc chưa phát sinh nợ."
 }

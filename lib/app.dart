@@ -25,6 +25,7 @@ import 'features/dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'features/debts/data/datasources/debts_remote_data_source.dart';
 import 'features/debts/data/repositories/debts_repository_impl.dart';
 import 'features/debts/domain/repositories/debts_repository.dart';
+import 'features/debts/presentation/cubit/debts_cubit.dart';
 import 'features/groups/data/datasources/groups_remote_data_source.dart';
 import 'features/groups/data/repositories/groups_repository_impl.dart';
 import 'features/groups/domain/repositories/groups_repository.dart';
@@ -45,6 +46,7 @@ class FairShareApp extends StatefulWidget {
   final DashboardCubit? dashboardCubit;
   final GroupsCubit? groupsCubit;
   final AnalyticsTabCubit? analyticsTabCubit;
+  final DebtsCubit? debtsCubit;
 
   const FairShareApp({
     super.key,
@@ -62,6 +64,7 @@ class FairShareApp extends StatefulWidget {
     this.dashboardCubit,
     this.groupsCubit,
     this.analyticsTabCubit,
+    this.debtsCubit,
   });
 
   @override
@@ -140,6 +143,7 @@ class _FairShareAppState extends State<FairShareApp> {
         dashboardCubit: widget.dashboardCubit,
         groupsCubit: widget.groupsCubit,
         analyticsTabCubit: widget.analyticsTabCubit,
+        debtsCubit: widget.debtsCubit,
       ),
       sessionCoordinator: _sessionCoordinator,
     );

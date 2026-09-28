@@ -18,6 +18,7 @@ import '../../../groups/groups_cubit_test.dart';
 import '../../../analytics/presentation/cubit/analytics_cubits_test.dart';
 import 'package:group_spending_app/features/analytics/presentation/cubit/analytics_tab_cubit.dart';
 import 'package:group_spending_app/features/dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'package:group_spending_app/features/debts/presentation/cubit/debts_cubit.dart';
 import 'package:group_spending_app/features/groups/presentation/cubit/groups_cubit.dart';
 
 void main() {
@@ -33,6 +34,7 @@ void main() {
     late DashboardCubit dashboardCubit;
     late GroupsCubit groupsCubit;
     late AnalyticsTabCubit analyticsTabCubit;
+    late DebtsCubit debtsCubit;
 
     setUp(() async {
       SharedPreferences.setMockInitialValues({
@@ -56,6 +58,7 @@ void main() {
         analyticsRepository: analyticsRepo,
         groupsRepository: groupsRepo,
       );
+      debtsCubit = DebtsCubit(debtsRepo);
     });
 
     Widget createWidgetUnderTest({int initialTabIndex = 0}) {
@@ -71,6 +74,7 @@ void main() {
             BlocProvider<DashboardCubit>.value(value: dashboardCubit),
             BlocProvider<GroupsCubit>.value(value: groupsCubit),
             BlocProvider<AnalyticsTabCubit>.value(value: analyticsTabCubit),
+            BlocProvider<DebtsCubit>.value(value: debtsCubit),
           ],
           child: BlocBuilder<ThemeCubit, ThemeMode>(
             builder: (context, themeMode) {
