@@ -594,7 +594,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editGroupAction => 'Edit group';
 
   @override
-  String get inviteCodeCardTitle => 'INVITE CODE';
+  String get inviteCodeCardTitle => 'GROUP INVITE CODE';
 
   @override
   String get groupFinancialOverviewTitle => 'GROUP FINANCIAL OVERVIEW';
@@ -976,4 +976,122 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get noDebtsInGroupSubtitle =>
       'All expenses in this group are balanced or no debts have incurred.';
+
+  @override
+  String get groupInfoSectionTitle => 'GROUP INFORMATION';
+
+  @override
+  String get tabExpenses => 'Expenses';
+
+  @override
+  String get tabFunds => 'Funds';
+
+  @override
+  String get tabMembers => 'Members';
+
+  @override
+  String get categoryLabel => 'CATEGORY';
+
+  @override
+  String get createdDateLabel => 'CREATED DATE';
+
+  @override
+  String get membersCountLabel => 'MEMBERS';
+
+  @override
+  String get copyInviteCodeAction => 'Copy invite code';
+
+  @override
+  String get viewQrCodeTooltip => 'View QR Code';
+
+  @override
+  String get inviteMembersTitle => 'Invite members to group';
+
+  @override
+  String get tabQrCode => 'QR Code';
+
+  @override
+  String get tabQrCodeSubtitle => 'Scan directly when together';
+
+  @override
+  String get tabCopyCode => 'Copy invite code';
+
+  @override
+  String get tabCopyCodeSubtitle => 'Send text code via SMS, Zalo';
+
+  @override
+  String get scanToJoinInstruction =>
+      'Members scan this code with their phone to request to join';
+
+  @override
+  String get downloadQrAction => 'Download QR image';
+
+  @override
+  String get downloadQrSuccess => 'QR code image saved successfully!';
+
+  @override
+  String get downloadQrFailed => 'Failed to save QR code image';
+
+  @override
+  String get shareViaOtherAppsAction => 'Share via other apps';
+
+  @override
+  String get closeButton => 'Close';
+
+  @override
+  String get yourBalanceInGroupLabel => 'Your balance in group';
+
+  @override
+  String get youReceiveBadge => 'You receive';
+
+  @override
+  String get youOweBadge => 'You owe';
+
+  @override
+  String get settledBadge => 'Settled';
+
+  @override
+  String get totalSpendingCard => 'Total spending';
+
+  @override
+  String get viewReportAction => 'View report';
+
+  @override
+  String get fundCollectedCard => 'Fund collected';
+
+  @override
+  String get fundGeneralSubtitle => 'General fund';
+
+  @override
+  String get quickActionsTitle => 'SHORTCUTS & QUICK ACTIONS';
+
+  @override
+  String get viewDebtsAction => 'View debts';
+
+  @override
+  String get settleDebtsSubtitle => 'Settle debts';
+
+  @override
+  String get generalFundAction => 'General fund';
+
+  @override
+  String get collectFundSubtitle => 'Collect fund';
+
+  @override
+  String get addExpenseAction => 'Add expense';
+
+  @override
+  String get splitBillSubtitle => 'Split bill';
+
+  @override
+  String get groupSettingsAction => 'Settings';
+
+  @override
+  String get accountAndInterfaceSubtitle => 'Account & settings';
+
+  @override
+  String get groupAdminSectionTitle => 'GROUP MANAGEMENT';
+
+  @override
+  String get editGroupInfo => 'Edit info';
 }

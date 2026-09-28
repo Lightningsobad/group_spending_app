@@ -6,10 +6,11 @@ import '../../../../core/theme/app_text_style.dart';
 import '../../../../l10n/l10n.dart';
 import '../cubit/groups_cubit.dart';
 import '../cubit/groups_state.dart';
+import '../../data/models/group_model.dart';
 import '../widgets/create_group_sheet.dart';
 import '../widgets/group_card_skeleton.dart';
 import '../widgets/group_card_widget.dart';
-import '../widgets/group_detail_sheet.dart';
+import '../widgets/group_detail_view.dart';
 import '../widgets/groups_empty_view.dart';
 import '../widgets/groups_filter_bar.dart';
 import '../widgets/groups_search_bar.dart';
@@ -17,8 +18,13 @@ import '../widgets/join_group_view.dart';
 
 class GroupsScreen extends StatefulWidget {
   final bool initialShowJoin;
+  final VoidCallback? onNavigateToDebts;
 
-  const GroupsScreen({super.key, this.initialShowJoin = false});
+  const GroupsScreen({
+    super.key,
+    this.initialShowJoin = false,
+    this.onNavigateToDebts,
+  });
 
   @override
   State<GroupsScreen> createState() => GroupsScreenState();
@@ -27,6 +33,7 @@ class GroupsScreen extends StatefulWidget {
 class GroupsScreenState extends State<GroupsScreen> {
   final _searchController = TextEditingController();
   late bool _isJoiningGroup;
+  GroupModel? _selectedGroup;
 
   @override
   void initState() {
@@ -34,6 +41,19 @@ class GroupsScreenState extends State<GroupsScreen> {
     _isJoiningGroup = widget.initialShowJoin;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<GroupsCubit>().loadGroups();
+    });
+  }
+
+  void openGroupDetail(GroupModel group) {
+    setState(() {
+      _selectedGroup = group;
+      _isJoiningGroup = false;
+    });
+  }
+
+  void closeGroupDetail() {
+    setState(() {
+      _selectedGroup = null;
     });
   }
 
@@ -85,6 +105,14 @@ class GroupsScreenState extends State<GroupsScreen> {
         }
       },
       builder: (context, state) {
+        if (_selectedGroup != null) {
+          return GroupDetailView(
+            initialGroup: _selectedGroup!,
+            onBack: closeGroupDetail,
+            onNavigateToDebts: widget.onNavigateToDebts,
+          );
+        }
+
         if (_isJoiningGroup) {
           return JoinGroupView(
             onBack: closeJoinGroup,
@@ -216,7 +244,7 @@ class GroupsScreenState extends State<GroupsScreen> {
                   ...filteredGroups.map(
                     (group) => GroupCardWidget(
                       group: group,
-                      onTap: () => GroupDetailSheet.show(context, group),
+                      onTap: () => openGroupDetail(group),
                       onToggleMute: () {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

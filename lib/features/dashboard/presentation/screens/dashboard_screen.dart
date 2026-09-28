@@ -7,6 +7,7 @@ import '../../../groups/presentation/widgets/create_group_sheet.dart';
 import '../../../groups/presentation/widgets/group_card_skeleton.dart';
 import '../../../groups/presentation/widgets/group_card_widget.dart';
 import '../../../groups/presentation/widgets/group_detail_sheet.dart';
+import '../../../groups/data/models/group_model.dart';
 import '../../../groups/presentation/widgets/join_group_sheet.dart';
 import '../cubit/dashboard_cubit.dart';
 import '../cubit/dashboard_state.dart';
@@ -19,11 +20,13 @@ import '../widgets/financial_balance_card_skeleton.dart';
 class DashboardScreen extends StatefulWidget {
   final VoidCallback? onNavigateToGroups;
   final VoidCallback? onNavigateToJoinGroup;
+  final void Function(GroupModel group)? onNavigateToGroupDetail;
 
   const DashboardScreen({
     super.key,
     this.onNavigateToGroups,
     this.onNavigateToJoinGroup,
+    this.onNavigateToGroupDetail,
   });
 
   @override
@@ -125,7 +128,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     (group) => GroupCardWidget(
                       group: group,
                       onTap: () {
-                        GroupDetailSheet.show(context, group);
+                        if (widget.onNavigateToGroupDetail != null) {
+                          widget.onNavigateToGroupDetail!(group);
+                        } else {
+                          GroupDetailSheet.show(context, group);
+                        }
                       },
                       onToggleMute: () {
                         ScaffoldMessenger.of(context).showSnackBar(
