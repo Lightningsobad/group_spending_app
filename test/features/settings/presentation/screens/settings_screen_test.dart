@@ -11,8 +11,10 @@ import 'package:group_spending_app/features/settings/presentation/screens/settin
 import 'package:group_spending_app/features/settings/presentation/widgets/appearance_language_card.dart';
 import 'package:group_spending_app/features/settings/presentation/widgets/logout_button.dart';
 import 'package:group_spending_app/features/settings/presentation/widgets/payment_account_card.dart';
+import 'package:group_spending_app/features/settings/presentation/widgets/privacy_policy_view.dart';
 import 'package:group_spending_app/features/settings/presentation/widgets/support_info_card.dart';
 import 'package:group_spending_app/features/settings/presentation/widgets/user_profile_card.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../auth/presentation/cubit/auth_cubit_test.dart';
 
@@ -137,6 +139,59 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(authCubit.state.status, equals(AuthStatus.unauthenticated));
+    });
+
+    testWidgets('tapping Privacy Policy opens PrivacyPolicyView, and tapping bottom button returns to settings', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      // Find and tap Privacy Policy
+      final privacyTile = find.text('Chính sách bảo mật & Quyền riêng tư');
+      await tester.ensureVisible(privacyTile);
+      await tester.tap(privacyTile);
+      await tester.pumpAndSettle();
+
+      // Check PrivacyPolicyView is visible
+      expect(find.byType(PrivacyPolicyView), findsOneWidget);
+      expect(find.text('BẢO MẬT TIÊU CHUẨN'), findsOneWidget);
+      expect(find.text('Minh bạch thu chi • Bảo mật dữ liệu người dùng'), findsOneWidget);
+      expect(find.text('1. DỮ LIỆU ỨNG DỤNG THU THẬP'), findsOneWidget);
+      expect(find.text('2. AN TOÀN MẬT KHẨU & MÃ HÓA ĐẦU CUỐI'), findsOneWidget);
+      expect(find.text('3. CAM KẾT KHÔNG CHIA SẺ DỮ LIỆU'), findsOneWidget);
+      expect(find.text('4. QUYỀN LÀM CHỦ DỮ LIỆU CỦA BẠN'), findsOneWidget);
+      expect(find.text('Quay lại Cài đặt'), findsOneWidget);
+
+      // Tap bottom "Quay lại Cài đặt" button
+      final bottomBackBtn = find.text('Quay lại Cài đặt');
+      await tester.ensureVisible(bottomBackBtn);
+      await tester.tap(bottomBackBtn);
+      await tester.pumpAndSettle();
+
+      // Settings screen should be visible again
+      expect(find.byType(PrivacyPolicyView), findsNothing);
+      expect(find.byType(UserProfileCard), findsOneWidget);
+      expect(find.text('Cài đặt'), findsOneWidget);
+    });
+
+    testWidgets('tapping top back button in PrivacyPolicyView returns to settings', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      final privacyTile = find.text('Chính sách bảo mật & Quyền riêng tư');
+      await tester.ensureVisible(privacyTile);
+      await tester.tap(privacyTile);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(PrivacyPolicyView), findsOneWidget);
+
+      // Tap top back button (InkWell with LucideIcons.arrowLeft in PrivacyPolicyView)
+      final topBackBtn = find.descendant(
+        of: find.byType(PrivacyPolicyView),
+        matching: find.byIcon(LucideIcons.arrowLeft),
+      ).first;
+      await tester.tap(topBackBtn);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(PrivacyPolicyView), findsNothing);
+      expect(find.byType(UserProfileCard), findsOneWidget);
     });
   });
 }
