@@ -2527,6 +2527,353 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Xóa vĩnh viễn nhóm này cùng toàn bộ chi tiêu, nợ và quỹ liên quan khỏi ứng dụng.'**
   String get deleteGroupSectionSubtitle;
+  /// No description provided for @totalGeneralFundLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'TỔNG TIỀN QUỸ CHUNG'**
+  String get totalGeneralFundLabel;
+
+  /// No description provided for @collectNewFundAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'+ Thu quỹ mới'**
+  String get collectNewFundAction;
+
+  /// No description provided for @fundProgressLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiến độ thu quỹ'**
+  String get fundProgressLabel;
+
+  /// No description provided for @searchFundPlaceholder.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm kiếm đợt thu quỹ theo tên...'**
+  String get searchFundPlaceholder;
+
+  /// No description provided for @filterAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả'**
+  String get filterAll;
+
+  /// No description provided for @filterCollecting.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang thu'**
+  String get filterCollecting;
+
+  /// No description provided for @filterCompleted.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hoàn thành'**
+  String get filterCompleted;
+
+  /// No description provided for @filterThisMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháng này'**
+  String get filterThisMonth;
+
+  /// No description provided for @filterLastMonth.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tháng trước'**
+  String get filterLastMonth;
+
+  /// No description provided for @filterThisQuarter.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quý này'**
+  String get filterThisQuarter;
+
+  /// No description provided for @fundEmptyList.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có đợt đóng quỹ nào'**
+  String get fundEmptyList;
+
+  /// No description provided for @fundEmptySubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhấn \'+ Thu quỹ mới\' để phát động chiến dịch thu quỹ cho nhóm.'**
+  String get fundEmptySubtitle;
+
+  /// No description provided for @createFundTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm đợt thu quỹ'**
+  String get createFundTitle;
+
+  /// No description provided for @editFundTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chỉnh sửa đợt đóng quỹ'**
+  String get editFundTitle;
+
+  /// No description provided for @fundNameLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'TÊN ĐỢT THU QUỸ *'**
+  String get fundNameLabel;
+
+  /// No description provided for @fundNameHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'VD: Tiền phòng Tháng 11, Quỹ liên hoan...'**
+  String get fundNameHint;
+
+  /// No description provided for @quickSuggestionsLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gợi ý nhanh:'**
+  String get quickSuggestionsLabel;
+
+  /// No description provided for @suggestionRoomAndService.
+  ///
+  /// In vi, this message translates to:
+  /// **'+ Tiền phòng & Dịch vụ'**
+  String get suggestionRoomAndService;
+
+  /// No description provided for @suggestionYearEndParty.
+  ///
+  /// In vi, this message translates to:
+  /// **'+ Quỹ tiệc tất niên'**
+  String get suggestionYearEndParty;
+
+  /// No description provided for @suggestionBirthday.
+  ///
+  /// In vi, this message translates to:
+  /// **'+ Quỹ sinh nhật'**
+  String get suggestionBirthday;
+
+  /// No description provided for @suggestionInternetAndWater.
+  ///
+  /// In vi, this message translates to:
+  /// **'+ Tiền mạng & Nước'**
+  String get suggestionInternetAndWater;
+
+  /// No description provided for @fundAmountLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'SỐ TIỀN THU QUỸ *'**
+  String get fundAmountLabel;
+
+  /// No description provided for @perPersonMode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mỗi người'**
+  String get perPersonMode;
+
+  /// No description provided for @totalFundMode.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng quỹ'**
+  String get totalFundMode;
+
+  /// No description provided for @expectedTotalSummary.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng thu dự kiến ({count} người):'**
+  String expectedTotalSummary(int count);
+
+  /// No description provided for @targetTotalSummary.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng mục tiêu:'**
+  String get targetTotalSummary;
+
+  /// No description provided for @dueDateLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'HẠN NỘP (HẠN CHÓT)'**
+  String get dueDateLabel;
+
+  /// No description provided for @fundDescriptionLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'GHI CHÚ / MỤC ĐÍCH THU QUỸ'**
+  String get fundDescriptionLabel;
+
+  /// No description provided for @fundDescriptionHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'VD: Tiền phòng chuyển chủ nhà trước ngày 10, phạt nếu nộp trễ...'**
+  String get fundDescriptionHint;
+
+  /// No description provided for @participatingMembersLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'THÀNH VIÊN THAM GIA ({selected}/{total})'**
+  String participatingMembersLabel(int selected, int total);
+
+  /// No description provided for @selectAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn tất cả'**
+  String get selectAll;
+
+  /// No description provided for @deselectAll.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bỏ chọn'**
+  String get deselectAll;
+
+  /// No description provided for @createFundButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tạo đợt thu quỹ'**
+  String get createFundButton;
+
+  /// No description provided for @saveFundButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu thay đổi'**
+  String get saveFundButton;
+
+  /// No description provided for @fundDetailTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi tiết đợt đóng quỹ'**
+  String get fundDetailTitle;
+
+  /// No description provided for @statusCollectingBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'ĐANG THU QUỸ'**
+  String get statusCollectingBadge;
+
+  /// No description provided for @statusCompletedBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'HOÀN THÀNH'**
+  String get statusCompletedBadge;
+
+  /// No description provided for @closeFundAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đóng quỹ'**
+  String get closeFundAction;
+
+  /// No description provided for @dueDatePrefix.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hạn chót đóng quỹ: '**
+  String get dueDatePrefix;
+
+  /// No description provided for @collectedAmountLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'ĐÃ THU ĐƯỢC'**
+  String get collectedAmountLabel;
+
+  /// No description provided for @targetAmountLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'MỤC TIÊU'**
+  String get targetAmountLabel;
+
+  /// No description provided for @membersPaidRatio.
+  ///
+  /// In vi, this message translates to:
+  /// **'{paid}/{total} thành viên đã nộp'**
+  String membersPaidRatio(int paid, int total);
+
+  /// No description provided for @memberPaymentStatusTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'TRẠNG THÁI NỘP QUỸ CỦA THÀNH VIÊN'**
+  String get memberPaymentStatusTitle;
+
+  /// No description provided for @tapToChangeStatusHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bấm để đổi trạng thái'**
+  String get tapToChangeStatusHint;
+
+  /// No description provided for @statusPaid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã nộp'**
+  String get statusPaid;
+
+  /// No description provided for @statusUnpaid.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa nộp'**
+  String get statusUnpaid;
+
+  /// No description provided for @remindAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhắc nộp'**
+  String get remindAction;
+
+  /// No description provided for @remindCooldownToast.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng đợi {seconds}s trước khi gửi nhắc nhở tiếp theo'**
+  String remindCooldownToast(int seconds);
+
+  /// No description provided for @confirmMarkPaidTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận nộp quỹ'**
+  String get confirmMarkPaidTitle;
+
+  /// No description provided for @confirmMarkPaidMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận thành viên {name} đã đóng {amount} cho đợt quỹ này?'**
+  String confirmMarkPaidMessage(String name, String amount);
+
+  /// No description provided for @confirmDeleteFundTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa đợt đóng quỹ'**
+  String get confirmDeleteFundTitle;
+
+  /// No description provided for @confirmDeleteFundMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn có chắc chắn muốn xóa đợt đóng quỹ này? Mọi dữ liệu về trạng thái nộp tiền của các thành viên sẽ bị xóa vĩnh viễn.'**
+  String get confirmDeleteFundMessage;
+
+  /// No description provided for @editFundCampaignAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chỉnh sửa đợt đóng quỹ'**
+  String get editFundCampaignAction;
+
+  /// No description provided for @exportFundCsvAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xuất báo cáo CSV đợt thu quỹ'**
+  String get exportFundCsvAction;
+
+  /// No description provided for @deleteFundCampaignAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa đợt đóng quỹ này'**
+  String get deleteFundCampaignAction;
+
+  /// No description provided for @mustSelectAtLeastOneMember.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng chọn ít nhất một thành viên tham gia.'**
+  String get mustSelectAtLeastOneMember;
+
+  /// No description provided for @minFundAmountError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tiền mỗi người tối thiểu là 1.000 đ.'**
+  String get minFundAmountError;
+
+  /// No description provided for @paidMemberCannotBeRemoved.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể bỏ chọn thành viên đã đóng quỹ ({name}).'**
+  String paidMemberCannotBeRemoved(String name);
 }
 
 class _AppLocalizationsDelegate

@@ -26,6 +26,14 @@ import 'features/debts/data/datasources/debts_remote_data_source.dart';
 import 'features/debts/data/repositories/debts_repository_impl.dart';
 import 'features/debts/domain/repositories/debts_repository.dart';
 import 'features/debts/presentation/cubit/debts_cubit.dart';
+import 'features/funds/data/datasources/funds_remote_data_source.dart';
+import 'features/funds/data/repositories/funds_repository_impl.dart';
+import 'features/funds/domain/repositories/funds_repository.dart';
+import 'features/funds/presentation/cubit/funds_cubit.dart';
+import 'features/expenses/data/datasources/expenses_remote_data_source.dart';
+import 'features/expenses/data/repositories/expenses_repository_impl.dart';
+import 'features/expenses/domain/repositories/expenses_repository.dart';
+import 'features/expenses/presentation/cubit/expenses_cubit.dart';
 import 'features/groups/data/datasources/groups_remote_data_source.dart';
 import 'features/groups/data/repositories/groups_repository_impl.dart';
 import 'features/groups/domain/repositories/groups_repository.dart';
@@ -43,10 +51,14 @@ class FairShareApp extends StatefulWidget {
   final DebtsRepository? debtsRepository;
   final GroupsRepository? groupsRepository;
   final AnalyticsRepository? analyticsRepository;
+  final FundsRepository? fundsRepository;
+  final ExpensesRepository? expensesRepository;
   final DashboardCubit? dashboardCubit;
   final GroupsCubit? groupsCubit;
   final AnalyticsTabCubit? analyticsTabCubit;
   final DebtsCubit? debtsCubit;
+  final FundsCubit? fundsCubit;
+  final ExpensesCubit? expensesCubit;
 
   const FairShareApp({
     super.key,
@@ -61,10 +73,14 @@ class FairShareApp extends StatefulWidget {
     this.debtsRepository,
     this.groupsRepository,
     this.analyticsRepository,
+    this.fundsRepository,
+    this.expensesRepository,
     this.dashboardCubit,
     this.groupsCubit,
     this.analyticsTabCubit,
     this.debtsCubit,
+    this.fundsCubit,
+    this.expensesCubit,
   });
 
   @override
@@ -82,6 +98,9 @@ class _FairShareAppState extends State<FairShareApp> {
   late final DebtsRepository _debtsRepository;
   late final GroupsRepository _groupsRepository;
   late final AnalyticsRepository _analyticsRepository;
+  late final FundsRepository _fundsRepository;
+  late final FundsCubit _fundsCubit;
+  late final ExpensesRepository _expensesRepository;
   late final GoRouter _router;
   bool _isDisposed = false;
 
@@ -138,12 +157,30 @@ class _FairShareAppState extends State<FairShareApp> {
         widget.analyticsRepository ??
         AnalyticsRepositoryImpl(remoteDataSource: analyticsRemoteDataSource);
 
+    final fundsRemoteDataSource = FundsRemoteDataSourceImpl(_apiClient);
+    _fundsRepository =
+        widget.fundsRepository ??
+        FundsRepositoryImpl(remoteDataSource: fundsRemoteDataSource);
+
+    _fundsCubit =
+        widget.fundsCubit ??
+        FundsCubit(
+          _fundsRepository,
+          sessionCoordinator: _sessionCoordinator,
+          dataSyncCoordinator: _dataSyncCoordinator,
+        );
+    final expensesRemoteDataSource = ExpensesRemoteDataSourceImpl(_apiClient);
+    _expensesRepository =
+        widget.expensesRepository ??
+        ExpensesRepositoryImpl(remoteDataSource: expensesRemoteDataSource);
+
     _router = AppRouter.createRouter(
       routes: buildAppRoutes(
         dashboardCubit: widget.dashboardCubit,
         groupsCubit: widget.groupsCubit,
         analyticsTabCubit: widget.analyticsTabCubit,
         debtsCubit: widget.debtsCubit,
+        expensesCubit: widget.expensesCubit,
       ),
       sessionCoordinator: _sessionCoordinator,
     );
@@ -152,6 +189,7 @@ class _FairShareAppState extends State<FairShareApp> {
   @override
   void dispose() {
     _isDisposed = true;
+    _fundsCubit.close();
     _authCubit.close();
     _themeCubit.close();
     _localeCubit.close();
@@ -170,12 +208,15 @@ class _FairShareAppState extends State<FairShareApp> {
         RepositoryProvider<DebtsRepository>.value(value: _debtsRepository),
         RepositoryProvider<GroupsRepository>.value(value: _groupsRepository),
         RepositoryProvider<AnalyticsRepository>.value(value: _analyticsRepository),
+        RepositoryProvider<FundsRepository>.value(value: _fundsRepository),
+        RepositoryProvider<ExpensesRepository>.value(value: _expensesRepository),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthCubit>.value(value: _authCubit),
           BlocProvider<ThemeCubit>.value(value: _themeCubit),
           BlocProvider<LocaleCubit>.value(value: _localeCubit),
+          BlocProvider<FundsCubit>.value(value: _fundsCubit),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {

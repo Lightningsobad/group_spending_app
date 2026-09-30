@@ -9,6 +9,10 @@ import 'features/auth/presentation/screens/flash_screen.dart';
 import 'features/auth/presentation/screens/verify_otp_screen.dart';
 import 'features/dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'features/debts/presentation/cubit/debts_cubit.dart';
+import 'features/funds/presentation/screens/fund_detail_screen.dart';
+import 'features/funds/presentation/screens/fund_form_screen.dart';
+import 'features/groups/data/models/group_model.dart';
+import 'features/expenses/presentation/cubit/expenses_cubit.dart';
 import 'features/groups/presentation/cubit/groups_cubit.dart';
 import 'features/main_shell/presentation/screens/main_shell_screen.dart';
 import 'features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -21,6 +25,7 @@ List<RouteBase> buildAppRoutes({
   GlobalAnalyticsCubit? globalAnalyticsCubit,
   GroupAnalyticsCubit? groupAnalyticsCubit,
   DebtsCubit? debtsCubit,
+  ExpensesCubit? expensesCubit,
 }) {
   return [
     GoRoute(path: '/splash', builder: (context, state) => const FlashScreen()),
@@ -52,6 +57,7 @@ List<RouteBase> buildAppRoutes({
           groupsCubit: groupsCubit,
           analyticsTabCubit: analyticsTabCubit,
           debtsCubit: debtsCubit,
+          expensesCubit: expensesCubit,
         );
       },
     ),
@@ -81,6 +87,40 @@ List<RouteBase> buildAppRoutes({
     GoRoute(
       path: '/settings/privacy-policy',
       builder: (context, state) => const PrivacyPolicyScreen(),
+    ),
+    GoRoute(
+      path: '/groups/:groupId/funds/create',
+      builder: (context, state) {
+        final groupId = int.tryParse(state.pathParameters['groupId'] ?? '') ?? 0;
+        final group = state.extra as GroupModel?;
+        return FundFormScreen(
+          groupId: groupId,
+          group: group,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/groups/:groupId/funds/:fundId',
+      builder: (context, state) {
+        final fundId = int.tryParse(state.pathParameters['fundId'] ?? '') ?? 0;
+        final group = state.extra as GroupModel?;
+        return FundDetailScreen(
+          fundId: fundId,
+          group: group,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/groups/:groupId/funds/:fundId/edit',
+      builder: (context, state) {
+        final groupId = int.tryParse(state.pathParameters['groupId'] ?? '') ?? 0;
+        final group = state.extra as GroupModel?;
+        return FundFormScreen(
+          groupId: groupId,
+          group: group,
+          isEdit: true,
+        );
+      },
     ),
   ];
 }
