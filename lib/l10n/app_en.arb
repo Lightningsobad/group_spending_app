@@ -500,7 +500,7 @@
   "enterCurrentPasswordPrompt": "Please enter your current password.",
   "enterNewPasswordPrompt": "Please enter a new password.",
   "confirmPasswordMismatchPrompt": "Confirm password does not match.",
-  "newPasswordSameAsCurrentPrompt": "New password must be different from current password."
+  "newPasswordSameAsCurrentPrompt": "New password must be different from current password.",
   "groupInfoSectionTitle": "GROUP INFORMATION",
   "tabExpenses": "Expenses",
   "tabFunds": "Funds",

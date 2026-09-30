@@ -1026,6 +1026,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get newPasswordSameAsCurrentPrompt =>
       'New password must be different from current password.';
+
+  @override
   String get groupInfoSectionTitle => 'GROUP INFORMATION';
 
   @override

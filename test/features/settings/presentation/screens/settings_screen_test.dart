@@ -154,6 +154,8 @@ void main() {
 
       expect(find.byType(ChangePasswordDialog), findsOneWidget);
       expect(find.text('Đổi mật khẩu tài khoản'), findsOneWidget);
+    });
+
     testWidgets('tapping Privacy Policy opens PrivacyPolicyView, and tapping bottom button returns to settings', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 

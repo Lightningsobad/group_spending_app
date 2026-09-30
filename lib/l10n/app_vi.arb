@@ -500,7 +500,7 @@
   "enterCurrentPasswordPrompt": "Vui lòng nhập mật khẩu hiện tại.",
   "enterNewPasswordPrompt": "Vui lòng nhập mật khẩu mới.",
   "confirmPasswordMismatchPrompt": "Mật khẩu xác nhận không khớp.",
-  "newPasswordSameAsCurrentPrompt": "Mật khẩu mới không được trùng với mật khẩu hiện tại."
+  "newPasswordSameAsCurrentPrompt": "Mật khẩu mới không được trùng với mật khẩu hiện tại.",
   "groupInfoSectionTitle": "THÔNG TIN NHÓM",
   "tabExpenses": "Chi tiêu",
   "tabFunds": "Quỹ",

@@ -1933,6 +1933,7 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Mật khẩu mới không được trùng với mật khẩu hiện tại.'**
   String get newPasswordSameAsCurrentPrompt;
+
   /// No description provided for @groupInfoSectionTitle.
   ///
   /// In vi, this message translates to:

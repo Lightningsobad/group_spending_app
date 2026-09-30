@@ -1023,6 +1023,8 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get newPasswordSameAsCurrentPrompt =>
       'Mật khẩu mới không được trùng với mật khẩu hiện tại.';
+
+  @override
   String get groupInfoSectionTitle => 'THÔNG TIN NHÓM';
 
   @override
