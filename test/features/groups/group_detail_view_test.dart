@@ -4,6 +4,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:group_spending_app/core/theme/app_theme.dart';
 import 'package:group_spending_app/features/auth/domain/entities/user_entity.dart';
 import 'package:group_spending_app/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:group_spending_app/features/funds/domain/entities/fund_entities.dart';
+import 'package:group_spending_app/features/funds/domain/entities/fund_enums.dart';
+import 'package:group_spending_app/features/funds/domain/repositories/funds_repository.dart';
+import 'package:group_spending_app/features/funds/presentation/cubit/funds_cubit.dart';
+import 'package:group_spending_app/features/funds/presentation/widgets/group_funds_tab_view.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
 import 'package:group_spending_app/features/groups/presentation/cubit/groups_cubit.dart';
 import 'package:group_spending_app/features/groups/presentation/widgets/group_detail_view.dart';
@@ -14,12 +19,79 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../auth/presentation/cubit/auth_cubit_test.dart';
 import 'groups_cubit_test.dart';
 
+class FakeFundsRepo implements FundsRepository {
+  @override
+  Future<GroupFundsOverviewEntity> getGroupFundsOverview(
+    int groupId, {
+    String? search,
+    FundTimeFilter? timeFilter,
+    FundCollectionStatus? status,
+  }) async {
+    return const GroupFundsOverviewEntity(
+      groupId: 1,
+      totalCollectedAmount: 13000,
+      totalCollectedAmountVnd: 13000000,
+      totalTargetAmount: 20000,
+      totalTargetAmountVnd: 20000000,
+      completionPercentage: 65.0,
+      funds: [],
+    );
+  }
+
+  @override
+  Future<FundCollectionEntity> createFundCollection(
+    int groupId, {
+    required String name,
+    String? description,
+    required num targetAmountPerPersonVnd,
+    String? dueDate,
+    List<int>? memberUserIds,
+  }) async {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<FundCollectionEntity> updateFundCollection(
+    int fundId, {
+    required String name,
+    String? description,
+    required num targetAmountPerPersonVnd,
+    String? dueDate,
+    List<int>? memberUserIds,
+  }) async {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteFundCollection(int fundId) async {}
+
+  @override
+  Future<FundCollectionEntity> getFundCollectionDetails(int fundId) async {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<FundCollectionEntity> markMemberPaid(int fundId, int targetUserId) async {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> sendFundReminder(int fundId) async {}
+
+  @override
+  Future<List<int>> exportFundCsv(int fundId) async {
+    return [];
+  }
+}
+
 void main() {
   group('GroupDetailView Widget Tests', () {
     late FakeGroupsRepo groupsRepo;
     late GroupsCubit groupsCubit;
     late FakeAuthRepository authRepo;
     late AuthCubit authCubit;
+    late FakeFundsRepo fundsRepo;
+    late FundsCubit fundsCubit;
 
     const testGroup = GroupModel(
       id: 1,
@@ -43,6 +115,8 @@ void main() {
       groupsCubit = GroupsCubit(groupsRepo);
       authRepo = FakeAuthRepository();
       authCubit = AuthCubit(authRepo);
+      fundsRepo = FakeFundsRepo();
+      fundsCubit = FundsCubit(fundsRepo);
       authCubit.emit(
         authCubit.state.copyWith(
           currentUser: const UserEntity(
@@ -65,6 +139,7 @@ void main() {
         providers: [
           BlocProvider<GroupsCubit>.value(value: groupsCubit),
           BlocProvider<AuthCubit>.value(value: authCubit),
+          BlocProvider<FundsCubit>.value(value: fundsCubit),
         ],
         child: MaterialApp(
           theme: AppTheme.lightTheme,
@@ -171,7 +246,8 @@ void main() {
       // Tap tab "Quỹ"
       await tester.tap(find.text('Quỹ'));
       await tester.pumpAndSettle();
-      expect(find.text('Tổng quỹ đã thu: 13.000.000 đ'), findsOneWidget);
+      expect(find.byType(GroupFundsTabView), findsOneWidget);
+      expect(find.text('TỔNG TIỀN QUỸ CHUNG'), findsOneWidget);
 
       // Tap tab "Tổng quan"
       await tester.tap(find.text('Tổng quan'));

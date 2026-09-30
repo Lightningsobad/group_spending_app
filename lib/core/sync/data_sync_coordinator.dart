@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+enum DataSyncScope { groups, debts, funds, all }
 enum DataSyncScope { groups, debts, expenses, all }
 
 /// Lớp điều phối sự kiện đồng bộ dữ liệu giữa các phân hệ tại core/sync.
