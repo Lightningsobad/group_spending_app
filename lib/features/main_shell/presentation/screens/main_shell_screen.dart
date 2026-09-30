@@ -14,6 +14,8 @@ import '../../../dashboard/presentation/screens/dashboard_screen.dart';
 import '../../../debts/domain/repositories/debts_repository.dart';
 import '../../../debts/presentation/cubit/debts_cubit.dart';
 import '../../../debts/presentation/screens/debts_screen.dart';
+import '../../../expenses/domain/repositories/expenses_repository.dart';
+import '../../../expenses/presentation/cubit/expenses_cubit.dart';
 import '../../../groups/domain/repositories/groups_repository.dart';
 import '../../../groups/presentation/cubit/groups_cubit.dart';
 import '../../../groups/presentation/screens/groups_screen.dart';
@@ -27,6 +29,7 @@ class MainShellScreen extends StatefulWidget {
   final GroupsCubit? groupsCubit;
   final AnalyticsTabCubit? analyticsTabCubit;
   final DebtsCubit? debtsCubit;
+  final ExpensesCubit? expensesCubit;
 
   const MainShellScreen({
     super.key,
@@ -35,6 +38,7 @@ class MainShellScreen extends StatefulWidget {
     this.groupsCubit,
     this.analyticsTabCubit,
     this.debtsCubit,
+    this.expensesCubit,
   });
 
   @override
@@ -164,6 +168,15 @@ class _MainShellScreenState extends State<MainShellScreen> {
       }
     }
 
+    ExpensesCubit? effectiveExpensesCubit = widget.expensesCubit;
+    if (effectiveExpensesCubit == null) {
+      try {
+        effectiveExpensesCubit = context.read<ExpensesCubit>();
+      } catch (_) {
+        // Not in ancestor context, will be created via repository provider below
+      }
+    }
+
     return MultiBlocProvider(
       providers: [
         if (effectiveDashboardCubit != null)
@@ -204,6 +217,16 @@ class _MainShellScreenState extends State<MainShellScreen> {
             create: (context) => AnalyticsTabCubit(
               analyticsRepository: context.read<AnalyticsRepository>(),
               groupsRepository: context.read<GroupsRepository>(),
+              sessionCoordinator: context.read<SessionCoordinator>(),
+              dataSyncCoordinator: context.read<DataSyncCoordinator>(),
+            ),
+          ),
+        if (effectiveExpensesCubit != null)
+          BlocProvider<ExpensesCubit>.value(value: effectiveExpensesCubit)
+        else
+          BlocProvider<ExpensesCubit>(
+            create: (context) => ExpensesCubit(
+              context.read<ExpensesRepository>(),
               sessionCoordinator: context.read<SessionCoordinator>(),
               dataSyncCoordinator: context.read<DataSyncCoordinator>(),
             ),
