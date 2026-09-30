@@ -2168,6 +2168,365 @@ abstract class AppLocalizations {
   /// **'Sửa thông tin'**
   String get editGroupInfo;
 
+  /// No description provided for @memberListSectionHeader.
+  ///
+  /// In vi, this message translates to:
+  /// **'DANH SÁCH THÀNH VIÊN'**
+  String get memberListSectionHeader;
+
+  /// No description provided for @inviteMoreAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mời thêm'**
+  String get inviteMoreAction;
+
+  /// No description provided for @searchMemberPlaceholder.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm kiếm thành viên...'**
+  String get searchMemberPlaceholder;
+
+  /// No description provided for @pendingMembersSectionTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'THÀNH VIÊN CHỜ DUYỆT'**
+  String get pendingMembersSectionTitle;
+
+  /// No description provided for @pendingRequestsCountBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} yêu cầu'**
+  String pendingRequestsCountBadge(int count);
+
+  /// No description provided for @pendingRequestsSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Yêu cầu gia nhập nhóm đang chờ phê duyệt'**
+  String get pendingRequestsSubtitle;
+
+  /// No description provided for @joinRequestLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Yêu cầu tham gia nhóm'**
+  String get joinRequestLabel;
+
+  /// No description provided for @rejectAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Từ chối'**
+  String get rejectAction;
+
+  /// No description provided for @approveAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Duyệt vào nhóm'**
+  String get approveAction;
+
+  /// No description provided for @approveJoinTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chấp thuận cho {name} tham gia nhóm?'**
+  String approveJoinTitle(String name);
+
+  /// No description provided for @includePastFundsCheckbox.
+  ///
+  /// In vi, this message translates to:
+  /// **'Yêu cầu đóng các đợt quỹ trước đây của nhóm'**
+  String get includePastFundsCheckbox;
+
+  /// No description provided for @includePastFundsHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nếu chọn, thành viên mới sẽ được thêm vào danh sách phải đóng của tất cả các đợt quỹ đang mở trước đây.'**
+  String get includePastFundsHint;
+
+  /// No description provided for @confirmApproveButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận duyệt'**
+  String get confirmApproveButton;
+
+  /// No description provided for @touchMemberForFinancialHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chạm vào thành viên để xem chi tiết tài chính & công nợ'**
+  String get touchMemberForFinancialHint;
+
+  /// No description provided for @membersCountHeader.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} thành viên'**
+  String membersCountHeader(int count);
+
+  /// No description provided for @youPill.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn'**
+  String get youPill;
+
+  /// No description provided for @roleLeaderBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'TRƯỞNG NHÓM'**
+  String get roleLeaderBadge;
+
+  /// No description provided for @roleMemberBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'THÀNH VIÊN'**
+  String get roleMemberBadge;
+
+  /// No description provided for @roleLeaderFull.
+  ///
+  /// In vi, this message translates to:
+  /// **'TRƯỞNG NHÓM (ADMIN)'**
+  String get roleLeaderFull;
+
+  /// No description provided for @roleMemberFull.
+  ///
+  /// In vi, this message translates to:
+  /// **'THÀNH VIÊN (MEMBER)'**
+  String get roleMemberFull;
+
+  /// No description provided for @backToGroup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay lại nhóm'**
+  String get backToGroup;
+
+  /// No description provided for @onTimeDebtRateLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'TRẢ ĐÚNG H...'**
+  String get onTimeDebtRateLabel;
+
+  /// No description provided for @goodRateLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tốt'**
+  String get goodRateLabel;
+
+  /// No description provided for @onTimeFundRateLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'ĐÓNG QUỸ Đ...'**
+  String get onTimeFundRateLabel;
+
+  /// No description provided for @personalAndAccountInfoSection.
+  ///
+  /// In vi, this message translates to:
+  /// **'THÔNG TIN CÁ NHÂN & TÀI KHOẢN'**
+  String get personalAndAccountInfoSection;
+
+  /// No description provided for @bankAccountTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tài khoản ngân hàng'**
+  String get bankAccountTitle;
+
+  /// No description provided for @vietQrCodeButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã VietQR'**
+  String get vietQrCodeButton;
+
+  /// No description provided for @copyAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sao chép'**
+  String get copyAction;
+
+  /// No description provided for @copiedAccountNumber.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã sao chép số tài khoản'**
+  String get copiedAccountNumber;
+
+  /// No description provided for @copiedEmail.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã sao chép email'**
+  String get copiedEmail;
+
+  /// No description provided for @copiedPhone.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã sao chép số điện thoại'**
+  String get copiedPhone;
+
+  /// No description provided for @groupDebtStatusSection.
+  ///
+  /// In vi, this message translates to:
+  /// **'TRẠNG THÁI CÔNG NỢ TRONG NHÓM'**
+  String get groupDebtStatusSection;
+
+  /// No description provided for @totalRefundedByGroup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng số tiền được nhóm hoàn lại:'**
+  String get totalRefundedByGroup;
+
+  /// No description provided for @totalToPayGroup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng số tiền cần chi trả cho nhóm:'**
+  String get totalToPayGroup;
+
+  /// No description provided for @netResultLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kết quả ròng:'**
+  String get netResultLabel;
+
+  /// No description provided for @participatedExpensesSection.
+  ///
+  /// In vi, this message translates to:
+  /// **'CÁC KHOẢN CHI ĐÃ THAM GIA ({count})'**
+  String participatedExpensesSection(int count);
+
+  /// No description provided for @paidFullBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi trả toàn bộ'**
+  String get paidFullBadge;
+
+  /// No description provided for @paidByMemberPrefix.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bởi {name}'**
+  String paidByMemberPrefix(String name);
+
+  /// No description provided for @memberSharePrefix.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phần chia: {amount}'**
+  String memberSharePrefix(String amount);
+
+  /// No description provided for @kickMemberDangerTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'XÓA THÀNH VIÊN KHỎI NHÓM'**
+  String get kickMemberDangerTitle;
+
+  /// No description provided for @kickMemberDangerSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa vĩnh viễn thành viên này khỏi nhóm chi tiêu. Thành viên sẽ không còn quyền truy cập vào các khoản chi và công nợ nhóm.'**
+  String get kickMemberDangerSubtitle;
+
+  /// No description provided for @kickMemberButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kích khỏi nhóm'**
+  String get kickMemberButton;
+
+  /// No description provided for @debtWarningTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cảnh báo khoản nợ chưa tất toán'**
+  String get debtWarningTitle;
+
+  /// No description provided for @debtWarningMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thành viên này hiện còn khoản nợ chưa tất toán ({amount}). Nếu xóa khỏi nhóm, khoản nợ này có thể khó thu hồi. Bạn có chắc chắn muốn xóa thành viên khỏi nhóm?'**
+  String debtWarningMessage(String amount);
+
+  /// No description provided for @receivableWarningTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cảnh báo tiền chưa nhận lại'**
+  String get receivableWarningTitle;
+
+  /// No description provided for @receivableWarningMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thành viên này hiện đang có khoản tiền chưa được nhận lại ({amount}). Bạn có chắc chắn muốn tiếp tục xóa khỏi nhóm?'**
+  String receivableWarningMessage(String amount);
+
+  /// No description provided for @confirmKickMemberTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận xóa thành viên?'**
+  String get confirmKickMemberTitle;
+
+  /// No description provided for @confirmKickMemberMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn có chắc chắn muốn xóa {fullName} khỏi nhóm \"{groupName}\"?'**
+  String confirmKickMemberMessage(String fullName, String groupName);
+
+  /// No description provided for @stillKickButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vẫn xóa'**
+  String get stillKickButton;
+
+  /// No description provided for @continueKickButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tiếp tục xóa'**
+  String get continueKickButton;
+
+  /// No description provided for @confirmKickButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận xóa'**
+  String get confirmKickButton;
+
+  /// No description provided for @noBankInfoYet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa cập nhật tài khoản ngân hàng'**
+  String get noBankInfoYet;
+
+  /// No description provided for @noExpensesYet.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa tham gia khoản chi nào.'**
+  String get noExpensesYet;
+
+  /// No description provided for @leaveGroupSectionTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'RỜI KHỎI NHÓM'**
+  String get leaveGroupSectionTitle;
+
+  /// No description provided for @leaveGroupSectionSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rời khỏi nhóm chi tiêu này. Bạn sẽ không thể xem lại các giao dịch và công nợ của nhóm trừ khi được mời lại.'**
+  String get leaveGroupSectionSubtitle;
+
+  /// No description provided for @leaveGroupButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Rời nhóm'**
+  String get leaveGroupButton;
+
+  /// No description provided for @leaveGroupConfirmTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận rời khỏi nhóm?'**
+  String get leaveGroupConfirmTitle;
+
+  /// No description provided for @leaveGroupConfirmMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn có chắc chắn muốn rời khỏi nhóm \"{groupName}\"?'**
+  String leaveGroupConfirmMessage(String groupName);
+
+  /// No description provided for @deleteGroupSectionTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'XÓA NHÓM'**
+  String get deleteGroupSectionTitle;
+
+  /// No description provided for @deleteGroupSectionSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa vĩnh viễn nhóm này cùng toàn bộ chi tiêu, nợ và quỹ liên quan khỏi ứng dụng.'**
+  String get deleteGroupSectionSubtitle;
   /// No description provided for @totalGeneralFundLabel.
   ///
   /// In vi, this message translates to:

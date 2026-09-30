@@ -1143,6 +1143,211 @@ class AppLocalizationsVi extends AppLocalizations {
   String get editGroupInfo => 'Sửa thông tin';
 
   @override
+  String get memberListSectionHeader => 'DANH SÁCH THÀNH VIÊN';
+
+  @override
+  String get inviteMoreAction => 'Mời thêm';
+
+  @override
+  String get searchMemberPlaceholder => 'Tìm kiếm thành viên...';
+
+  @override
+  String get pendingMembersSectionTitle => 'THÀNH VIÊN CHỜ DUYỆT';
+
+  @override
+  String pendingRequestsCountBadge(int count) {
+    return '$count yêu cầu';
+  }
+
+  @override
+  String get pendingRequestsSubtitle =>
+      'Yêu cầu gia nhập nhóm đang chờ phê duyệt';
+
+  @override
+  String get joinRequestLabel => 'Yêu cầu tham gia nhóm';
+
+  @override
+  String get rejectAction => 'Từ chối';
+
+  @override
+  String get approveAction => 'Duyệt vào nhóm';
+
+  @override
+  String approveJoinTitle(String name) {
+    return 'Chấp thuận cho $name tham gia nhóm?';
+  }
+
+  @override
+  String get includePastFundsCheckbox =>
+      'Yêu cầu đóng các đợt quỹ trước đây của nhóm';
+
+  @override
+  String get includePastFundsHint =>
+      'Nếu chọn, thành viên mới sẽ được thêm vào danh sách phải đóng của tất cả các đợt quỹ đang mở trước đây.';
+
+  @override
+  String get confirmApproveButton => 'Xác nhận duyệt';
+
+  @override
+  String get touchMemberForFinancialHint =>
+      'Chạm vào thành viên để xem chi tiết tài chính & công nợ';
+
+  @override
+  String membersCountHeader(int count) {
+    return '$count thành viên';
+  }
+
+  @override
+  String get youPill => 'Bạn';
+
+  @override
+  String get roleLeaderBadge => 'TRƯỞNG NHÓM';
+
+  @override
+  String get roleMemberBadge => 'THÀNH VIÊN';
+
+  @override
+  String get roleLeaderFull => 'TRƯỞNG NHÓM (ADMIN)';
+
+  @override
+  String get roleMemberFull => 'THÀNH VIÊN (MEMBER)';
+
+  @override
+  String get backToGroup => 'Quay lại nhóm';
+
+  @override
+  String get onTimeDebtRateLabel => 'TRẢ ĐÚNG H...';
+
+  @override
+  String get goodRateLabel => 'Tốt';
+
+  @override
+  String get onTimeFundRateLabel => 'ĐÓNG QUỸ Đ...';
+
+  @override
+  String get personalAndAccountInfoSection => 'THÔNG TIN CÁ NHÂN & TÀI KHOẢN';
+
+  @override
+  String get bankAccountTitle => 'Tài khoản ngân hàng';
+
+  @override
+  String get vietQrCodeButton => 'Mã VietQR';
+
+  @override
+  String get copyAction => 'Sao chép';
+
+  @override
+  String get copiedAccountNumber => 'Đã sao chép số tài khoản';
+
+  @override
+  String get copiedEmail => 'Đã sao chép email';
+
+  @override
+  String get copiedPhone => 'Đã sao chép số điện thoại';
+
+  @override
+  String get groupDebtStatusSection => 'TRẠNG THÁI CÔNG NỢ TRONG NHÓM';
+
+  @override
+  String get totalRefundedByGroup => 'Tổng số tiền được nhóm hoàn lại:';
+
+  @override
+  String get totalToPayGroup => 'Tổng số tiền cần chi trả cho nhóm:';
+
+  @override
+  String get netResultLabel => 'Kết quả ròng:';
+
+  @override
+  String participatedExpensesSection(int count) {
+    return 'CÁC KHOẢN CHI ĐÃ THAM GIA ($count)';
+  }
+
+  @override
+  String get paidFullBadge => 'Chi trả toàn bộ';
+
+  @override
+  String paidByMemberPrefix(String name) {
+    return 'Bởi $name';
+  }
+
+  @override
+  String memberSharePrefix(String amount) {
+    return 'Phần chia: $amount';
+  }
+
+  @override
+  String get kickMemberDangerTitle => 'XÓA THÀNH VIÊN KHỎI NHÓM';
+
+  @override
+  String get kickMemberDangerSubtitle =>
+      'Xóa vĩnh viễn thành viên này khỏi nhóm chi tiêu. Thành viên sẽ không còn quyền truy cập vào các khoản chi và công nợ nhóm.';
+
+  @override
+  String get kickMemberButton => 'Kích khỏi nhóm';
+
+  @override
+  String get debtWarningTitle => 'Cảnh báo khoản nợ chưa tất toán';
+
+  @override
+  String debtWarningMessage(String amount) {
+    return 'Thành viên này hiện còn khoản nợ chưa tất toán ($amount). Nếu xóa khỏi nhóm, khoản nợ này có thể khó thu hồi. Bạn có chắc chắn muốn xóa thành viên khỏi nhóm?';
+  }
+
+  @override
+  String get receivableWarningTitle => 'Cảnh báo tiền chưa nhận lại';
+
+  @override
+  String receivableWarningMessage(String amount) {
+    return 'Thành viên này hiện đang có khoản tiền chưa được nhận lại ($amount). Bạn có chắc chắn muốn tiếp tục xóa khỏi nhóm?';
+  }
+
+  @override
+  String get confirmKickMemberTitle => 'Xác nhận xóa thành viên?';
+
+  @override
+  String confirmKickMemberMessage(String fullName, String groupName) {
+    return 'Bạn có chắc chắn muốn xóa $fullName khỏi nhóm \"$groupName\"?';
+  }
+
+  @override
+  String get stillKickButton => 'Vẫn xóa';
+
+  @override
+  String get continueKickButton => 'Tiếp tục xóa';
+
+  @override
+  String get confirmKickButton => 'Xác nhận xóa';
+
+  @override
+  String get noBankInfoYet => 'Chưa cập nhật tài khoản ngân hàng';
+
+  @override
+  String get noExpensesYet => 'Chưa tham gia khoản chi nào.';
+
+  @override
+  String get leaveGroupSectionTitle => 'RỜI KHỎI NHÓM';
+
+  @override
+  String get leaveGroupSectionSubtitle =>
+      'Rời khỏi nhóm chi tiêu này. Bạn sẽ không thể xem lại các giao dịch và công nợ của nhóm trừ khi được mời lại.';
+
+  @override
+  String get leaveGroupButton => 'Rời nhóm';
+
+  @override
+  String get leaveGroupConfirmTitle => 'Xác nhận rời khỏi nhóm?';
+
+  @override
+  String leaveGroupConfirmMessage(String groupName) {
+    return 'Bạn có chắc chắn muốn rời khỏi nhóm \"$groupName\"?';
+  }
+
+  @override
+  String get deleteGroupSectionTitle => 'XÓA NHÓM';
+
+  @override
+  String get deleteGroupSectionSubtitle =>
+      'Xóa vĩnh viễn nhóm này cùng toàn bộ chi tiêu, nợ và quỹ liên quan khỏi ứng dụng.';
   String get totalGeneralFundLabel => 'TỔNG TIỀN QUỸ CHUNG';
 
   @override

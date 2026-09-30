@@ -164,6 +164,9 @@ class FakeGroupsRepository implements GroupsRepository {
 
   @override
   Future<void> joinGroup(String inviteCode) async {}
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 void main() {
