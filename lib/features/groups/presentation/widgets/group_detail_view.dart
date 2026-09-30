@@ -6,14 +6,21 @@ import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/session/session_coordinator.dart';
+import '../../../../core/sync/data_sync_coordinator.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
+import '../../data/models/group_member_models.dart';
 import '../../data/models/group_model.dart';
+import '../../domain/repositories/groups_repository.dart';
+import '../cubit/group_members_cubit.dart';
 import '../cubit/groups_cubit.dart';
 import 'group_category_helper.dart';
 import 'group_invite_qr_sheet.dart';
+import 'group_member_detail_view.dart';
+import 'group_members_tab_view.dart';
 
 class GroupDetailView extends StatefulWidget {
   final GroupModel initialGroup;
@@ -35,12 +42,51 @@ class _GroupDetailViewState extends State<GroupDetailView> {
   late GroupModel _group;
   int _selectedTabIndex = 0; // 0: Tổng quan, 1: Chi tiêu, 2: Quỹ, 3: Thành viên
   bool _isLoadingDetail = false;
+  int? _viewingMemberId;
+  GroupMembersCubit? _groupMembersCubit;
 
   @override
   void initState() {
     super.initState();
     _group = widget.initialGroup;
     _fetchLatestDetail();
+  }
+
+  @override
+  void dispose() {
+    _groupMembersCubit?.close();
+    super.dispose();
+  }
+
+  GroupMembersCubit _getOrCreateGroupMembersCubit([BuildContext? ctx]) {
+    if (_groupMembersCubit != null) return _groupMembersCubit!;
+
+    final currentContext = ctx ?? context;
+    GroupsRepository repo;
+    try {
+      repo = currentContext.read<GroupsRepository>();
+    } catch (_) {
+      repo = _FallbackGroupsRepo(() => _group);
+    }
+
+    SessionCoordinator? session;
+    try {
+      session = currentContext.read<SessionCoordinator>();
+    } catch (_) {}
+
+    DataSyncCoordinator? dataSync;
+    try {
+      dataSync = currentContext.read<DataSyncCoordinator>();
+    } catch (_) {}
+
+    _groupMembersCubit = GroupMembersCubit(
+      groupId: _group.id,
+      isAdmin: _group.isAdmin,
+      groupsRepository: repo,
+      sessionCoordinator: session,
+      dataSyncCoordinator: dataSync,
+    );
+    return _groupMembersCubit!;
   }
 
   Future<void> _fetchLatestDetail() async {
@@ -124,6 +170,36 @@ class _GroupDetailViewState extends State<GroupDetailView> {
 
     if (confirmed == true && mounted) {
       final success = await context.read<GroupsCubit>().deleteGroup(_group.id);
+      if (success && mounted) {
+        widget.onBack();
+      }
+    }
+  }
+
+  Future<void> _confirmLeaveGroup() async {
+    final tr = context.l10n;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(tr.leaveGroupConfirmTitle),
+        content: Text(tr.leaveGroupConfirmMessage(_group.name)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(tr.cancel),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(tr.leaveGroupButton,
+                style: const TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && mounted) {
+      final success = await _groupMembersCubit?.leaveGroup() ?? false;
       if (success && mounted) {
         widget.onBack();
       }
@@ -281,6 +357,33 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     final currentUserId = context.watch<AuthCubit>().state.currentUser?.id;
     final isOwner = currentUserId != null && currentUserId == _group.ownerId;
 
+    if (_viewingMemberId != null) {
+      return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, _) {
+          if (!didPop) {
+            setState(() => _viewingMemberId = null);
+          }
+        },
+        child: BlocProvider<GroupMembersCubit>.value(
+          value: _getOrCreateGroupMembersCubit(),
+          child: GroupMemberDetailView(
+            groupId: _group.id,
+            targetUserId: _viewingMemberId!,
+            groupName: _group.name,
+            isGroupAdmin: _group.isAdmin,
+            isGroupArchived: _group.isArchived,
+            currentUserId: currentUserId,
+            onBack: () => setState(() => _viewingMemberId = null),
+            onMemberKicked: () {
+              setState(() => _viewingMemberId = null);
+              _getOrCreateGroupMembersCubit().loadMembers();
+            },
+          ),
+        ),
+      );
+    }
+
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
@@ -387,7 +490,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
               else if (_selectedTabIndex == 2)
                 _buildFundsTab(colors, tr)
               else
-                _buildMembersTab(colors, tr),
+                _buildMembersTab(colors, tr, isOwner, currentUserId),
             ],
           ),
         ),
@@ -1176,110 +1279,107 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     );
   }
 
-  Widget _buildMembersTab(dynamic colors, dynamic tr) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              tr.groupMembersCountTitle(_group.members?.length ?? _group.memberCount),
-              style: AppTextStyle.bold(fontSize: 13, color: colors.textSecondary),
-            ),
-            OutlinedButton.icon(
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                side: const BorderSide(color: AppColors.emerald),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              onPressed: _openQrModal,
-              icon: const Icon(LucideIcons.userPlus, size: 14, color: AppColors.emerald),
-              label: Text(
-                tr.inviteMembersTitle,
-                style: AppTextStyle.bold(fontSize: 11, color: AppColors.emerald),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        if (_group.members != null && _group.members!.isNotEmpty)
-          ..._group.members!.map((member) {
-            return Container(
-              margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              decoration: BoxDecoration(
-                color: colors.cardBackground,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: colors.cardBorder),
-              ),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 18,
-                    backgroundColor: AppColors.emerald.withValues(alpha: 0.15),
-                    backgroundImage: member.avatarUrl != null && member.avatarUrl!.isNotEmpty
-                        ? NetworkImage(member.avatarUrl!)
-                        : null,
-                    child: member.avatarUrl == null
-                        ? Text(
-                            member.fullName.isNotEmpty ? member.fullName[0].toUpperCase() : '?',
-                            style: AppTextStyle.bold(fontSize: 14, color: AppColors.emeraldForest),
-                          )
-                        : null,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          member.fullName,
-                          style: AppTextStyle.bold(fontSize: 14, color: colors.textPrimary),
-                        ),
-                        if (member.email != null)
-                          Text(
-                            member.email!,
-                            style: AppTextStyle.regular(fontSize: 12, color: colors.textMuted),
-                          ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                    decoration: BoxDecoration(
-                      color: member.isAdmin ? AppColors.roleAdminBg : colors.surfaceMuted,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      member.isAdmin ? 'ADMIN' : tr.roleMember.toUpperCase(),
-                      style: AppTextStyle.bold(
-                        fontSize: 9,
-                        color: member.isAdmin ? AppColors.roleAdminText : colors.textSecondary,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          })
-        else
-          Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: colors.cardBackground,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: colors.cardBorder),
-            ),
-            child: Text(
-              tr.groupMemberCountSimple(_group.memberCount),
-              style: AppTextStyle.regular(fontSize: 13, color: colors.textSecondary),
-              textAlign: TextAlign.center,
-            ),
-          ),
-      ],
+  Widget _buildMembersTab(
+    dynamic colors,
+    dynamic tr,
+    bool isOwner,
+    int? currentUserId,
+  ) {
+    return BlocProvider<GroupMembersCubit>.value(
+      value: _getOrCreateGroupMembersCubit(),
+      child: GroupMembersTabView(
+        group: _group,
+        isAdmin: _group.isAdmin,
+        isOwner: isOwner,
+        currentUserId: currentUserId,
+        onInviteMore: _openQrModal,
+        onSelectMember: (memberId) {
+          setState(() {
+            _viewingMemberId = memberId;
+          });
+        },
+        onDeleteGroup: _confirmDelete,
+        onLeaveGroup: _confirmLeaveGroup,
+      ),
     );
   }
+}
+
+class _FallbackGroupsRepo implements GroupsRepository {
+  final GroupModel Function() _getGroup;
+  _FallbackGroupsRepo(this._getGroup);
+
+  @override
+  Future<List<GroupMemberSummaryModel>> getGroupMembers(
+    int groupId, {
+    String? name,
+  }) async {
+    final g = _getGroup();
+    if (g.members != null && g.members!.isNotEmpty) {
+      return g.members!
+          .map<GroupMemberSummaryModel>((m) => GroupMemberSummaryModel(
+                userId: m.id,
+                fullName: m.fullName,
+                avatarUrl: m.avatarUrl,
+                role: m.role,
+              ))
+          .toList();
+    }
+    return List.generate(
+      g.memberCount,
+      (i) => GroupMemberSummaryModel(
+        userId: i + 1,
+        fullName: 'Thành viên ${i + 1}',
+        avatarUrl: null,
+        role: i == 0 ? 'ADMIN' : 'MEMBER',
+      ),
+    );
+  }
+
+  @override
+  Future<GroupJoinRequestsResult> getPendingJoinRequests(int groupId) async {
+    return GroupJoinRequestsResult(
+      groupId: groupId,
+      totalRequests: 0,
+      requests: const [],
+    );
+  }
+
+  @override
+  Future<void> reviewJoinRequest(
+    int requestId, {
+    required bool approved,
+    bool includePastFundCollections = false,
+  }) async {}
+
+  @override
+  Future<GroupMemberDetailModel> getMemberDetails(
+    int groupId,
+    int targetUserId,
+  ) async {
+    return GroupMemberDetailModel(
+      userId: targetUserId,
+      fullName: 'Thành viên $targetUserId',
+      role: 'MEMBER',
+      groupId: groupId,
+      groupName: _getGroup().name,
+      email: 'member$targetUserId@fairshare.app',
+      debtAmountVnd: 0,
+      receivableAmountVnd: 0,
+      netBalanceVnd: 0,
+      participatedExpenses: const [],
+    );
+  }
+
+  @override
+  Future<void> removeMember(int groupId, int targetUserId) async {}
+
+  @override
+  Future<void> leaveGroup(int groupId) async {}
+
+  @override
+  Future<void> transferOwnership(int groupId, int newOwnerId) async {}
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

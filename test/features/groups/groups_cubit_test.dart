@@ -4,6 +4,7 @@ import 'package:group_spending_app/core/errors/app_exception.dart';
 import 'package:group_spending_app/core/session/session_coordinator.dart';
 import 'package:group_spending_app/core/storage/token_storage.dart';
 import 'package:group_spending_app/core/sync/data_sync_coordinator.dart';
+import 'package:group_spending_app/features/groups/data/models/group_member_models.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
 import 'package:group_spending_app/features/groups/domain/repositories/groups_repository.dart';
 import 'package:group_spending_app/features/groups/presentation/cubit/groups_cubit.dart';
@@ -108,6 +109,82 @@ class FakeGroupsRepo implements GroupsRepository {
     if (inviteCode == 'INVALID') {
       throw const AppException(message: 'Mã mời không tồn tại');
     }
+  }
+
+  @override
+  Future<List<GroupMemberSummaryModel>> getGroupMembers(
+    int groupId, {
+    String? name,
+  }) async {
+    if (exception != null) throw exception!;
+    return [
+      const GroupMemberSummaryModel(
+        userId: 1,
+        fullName: 'Nguyễn Nhật Minh',
+        role: 'ADMIN',
+      ),
+      const GroupMemberSummaryModel(
+        userId: 2,
+        fullName: 'Trần Văn An',
+        role: 'MEMBER',
+      ),
+    ];
+  }
+
+  @override
+  Future<GroupJoinRequestsResult> getPendingJoinRequests(int groupId) async {
+    if (exception != null) throw exception!;
+    return GroupJoinRequestsResult(
+      groupId: groupId,
+      totalRequests: 0,
+      requests: const [],
+    );
+  }
+
+  @override
+  Future<void> reviewJoinRequest(
+    int requestId, {
+    required bool approved,
+    bool includePastFundCollections = false,
+  }) async {
+    if (exception != null) throw exception!;
+  }
+
+  @override
+  Future<GroupMemberDetailModel> getMemberDetails(
+    int groupId,
+    int targetUserId,
+  ) async {
+    if (exception != null) throw exception!;
+    return GroupMemberDetailModel(
+      userId: targetUserId,
+      fullName: 'Thành viên $targetUserId',
+      groupId: groupId,
+      groupName: 'Chung cư Sunrise Room',
+      role: 'MEMBER',
+      email: 'member$targetUserId@example.com',
+      bankName: 'Techcombank',
+      bankAccountNumber: '19034829104018',
+      bankAccountName: 'NGUYEN NHAT MINH',
+      debtAmountVnd: 0,
+      receivableAmountVnd: 0,
+      netBalanceVnd: 0,
+    );
+  }
+
+  @override
+  Future<void> removeMember(int groupId, int targetUserId) async {
+    if (exception != null) throw exception!;
+  }
+
+  @override
+  Future<void> leaveGroup(int groupId) async {
+    if (exception != null) throw exception!;
+  }
+
+  @override
+  Future<void> transferOwnership(int groupId, int newOwnerId) async {
+    if (exception != null) throw exception!;
   }
 }
 

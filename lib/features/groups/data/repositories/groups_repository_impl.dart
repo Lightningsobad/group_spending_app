@@ -1,5 +1,6 @@
 import '../../domain/repositories/groups_repository.dart';
 import '../datasources/groups_remote_data_source.dart';
+import '../models/group_member_models.dart';
 import '../models/group_model.dart';
 
 class GroupsRepositoryImpl implements GroupsRepository {
@@ -62,5 +63,54 @@ class GroupsRepositoryImpl implements GroupsRepository {
   @override
   Future<void> joinGroup(String inviteCode) {
     return remoteDataSource.joinGroup(inviteCode);
+  }
+
+  @override
+  Future<List<GroupMemberSummaryModel>> getGroupMembers(
+    int groupId, {
+    String? name,
+  }) {
+    return remoteDataSource.getGroupMembers(groupId, name: name);
+  }
+
+  @override
+  Future<GroupJoinRequestsResult> getPendingJoinRequests(int groupId) {
+    return remoteDataSource.getPendingJoinRequests(groupId);
+  }
+
+  @override
+  Future<void> reviewJoinRequest(
+    int requestId, {
+    required bool approved,
+    bool includePastFundCollections = false,
+  }) {
+    return remoteDataSource.reviewJoinRequest(
+      requestId,
+      approved: approved,
+      includePastFundCollections: includePastFundCollections,
+    );
+  }
+
+  @override
+  Future<GroupMemberDetailModel> getMemberDetails(
+    int groupId,
+    int targetUserId,
+  ) {
+    return remoteDataSource.getMemberDetails(groupId, targetUserId);
+  }
+
+  @override
+  Future<void> removeMember(int groupId, int targetUserId) {
+    return remoteDataSource.removeMember(groupId, targetUserId);
+  }
+
+  @override
+  Future<void> leaveGroup(int groupId) {
+    return remoteDataSource.leaveGroup(groupId);
+  }
+
+  @override
+  Future<void> transferOwnership(int groupId, int newOwnerId) {
+    return remoteDataSource.transferOwnership(groupId, newOwnerId);
   }
 }

@@ -539,5 +539,138 @@
   "groupSettingsAction": "Cài đặt",
   "accountAndInterfaceSubtitle": "Tài khoản & thiết lập",
   "groupAdminSectionTitle": "QUẢN TRỊ NHÓM",
-  "editGroupInfo": "Sửa thông tin"
+  "editGroupInfo": "Sửa thông tin",
+  "memberListSectionHeader": "DANH SÁCH THÀNH VIÊN",
+  "inviteMoreAction": "Mời thêm",
+  "searchMemberPlaceholder": "Tìm kiếm thành viên...",
+  "pendingMembersSectionTitle": "THÀNH VIÊN CHỜ DUYỆT",
+  "pendingRequestsCountBadge": "{count} yêu cầu",
+  "@pendingRequestsCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingRequestsSubtitle": "Yêu cầu gia nhập nhóm đang chờ phê duyệt",
+  "joinRequestLabel": "Yêu cầu tham gia nhóm",
+  "rejectAction": "Từ chối",
+  "approveAction": "Duyệt vào nhóm",
+  "approveJoinTitle": "Chấp thuận cho {name} tham gia nhóm?",
+  "@approveJoinTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "includePastFundsCheckbox": "Yêu cầu đóng các đợt quỹ trước đây của nhóm",
+  "includePastFundsHint": "Nếu chọn, thành viên mới sẽ được thêm vào danh sách phải đóng của tất cả các đợt quỹ đang mở trước đây.",
+  "confirmApproveButton": "Xác nhận duyệt",
+  "touchMemberForFinancialHint": "Chạm vào thành viên để xem chi tiết tài chính & công nợ",
+  "membersCountHeader": "{count} thành viên",
+  "@membersCountHeader": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "youPill": "Bạn",
+  "roleLeaderBadge": "TRƯỞNG NHÓM",
+  "roleMemberBadge": "THÀNH VIÊN",
+  "roleLeaderFull": "TRƯỞNG NHÓM (ADMIN)",
+  "roleMemberFull": "THÀNH VIÊN (MEMBER)",
+  "backToGroup": "Quay lại nhóm",
+  "onTimeDebtRateLabel": "TRẢ ĐÚNG H...",
+  "goodRateLabel": "Tốt",
+  "onTimeFundRateLabel": "ĐÓNG QUỸ Đ...",
+  "personalAndAccountInfoSection": "THÔNG TIN CÁ NHÂN & TÀI KHOẢN",
+  "bankAccountTitle": "Tài khoản ngân hàng",
+  "vietQrCodeButton": "Mã VietQR",
+  "copyAction": "Sao chép",
+  "copiedAccountNumber": "Đã sao chép số tài khoản",
+  "copiedEmail": "Đã sao chép email",
+  "copiedPhone": "Đã sao chép số điện thoại",
+  "groupDebtStatusSection": "TRẠNG THÁI CÔNG NỢ TRONG NHÓM",
+  "totalRefundedByGroup": "Tổng số tiền được nhóm hoàn lại:",
+  "totalToPayGroup": "Tổng số tiền cần chi trả cho nhóm:",
+  "netResultLabel": "Kết quả ròng:",
+  "participatedExpensesSection": "CÁC KHOẢN CHI ĐÃ THAM GIA ({count})",
+  "@participatedExpensesSection": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paidFullBadge": "Chi trả toàn bộ",
+  "paidByMemberPrefix": "Bởi {name}",
+  "@paidByMemberPrefix": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "memberSharePrefix": "Phần chia: {amount}",
+  "@memberSharePrefix": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "kickMemberDangerTitle": "XÓA THÀNH VIÊN KHỎI NHÓM",
+  "kickMemberDangerSubtitle": "Xóa vĩnh viễn thành viên này khỏi nhóm chi tiêu. Thành viên sẽ không còn quyền truy cập vào các khoản chi và công nợ nhóm.",
+  "kickMemberButton": "Kích khỏi nhóm",
+  "debtWarningTitle": "Cảnh báo khoản nợ chưa tất toán",
+  "debtWarningMessage": "Thành viên này hiện còn khoản nợ chưa tất toán ({amount}). Nếu xóa khỏi nhóm, khoản nợ này có thể khó thu hồi. Bạn có chắc chắn muốn xóa thành viên khỏi nhóm?",
+  "@debtWarningMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "receivableWarningTitle": "Cảnh báo tiền chưa nhận lại",
+  "receivableWarningMessage": "Thành viên này hiện đang có khoản tiền chưa được nhận lại ({amount}). Bạn có chắc chắn muốn tiếp tục xóa khỏi nhóm?",
+  "@receivableWarningMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmKickMemberTitle": "Xác nhận xóa thành viên?",
+  "confirmKickMemberMessage": "Bạn có chắc chắn muốn xóa {fullName} khỏi nhóm \"{groupName}\"?",
+  "@confirmKickMemberMessage": {
+    "placeholders": {
+      "fullName": {
+        "type": "String"
+      },
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "stillKickButton": "Vẫn xóa",
+  "continueKickButton": "Tiếp tục xóa",
+  "confirmKickButton": "Xác nhận xóa",
+  "noBankInfoYet": "Chưa cập nhật tài khoản ngân hàng",
+  "noExpensesYet": "Chưa tham gia khoản chi nào.",
+  "leaveGroupSectionTitle": "RỜI KHỎI NHÓM",
+  "leaveGroupSectionSubtitle": "Rời khỏi nhóm chi tiêu này. Bạn sẽ không thể xem lại các giao dịch và công nợ của nhóm trừ khi được mời lại.",
+  "leaveGroupButton": "Rời nhóm",
+  "leaveGroupConfirmTitle": "Xác nhận rời khỏi nhóm?",
+  "leaveGroupConfirmMessage": "Bạn có chắc chắn muốn rời khỏi nhóm \"{groupName}\"?",
+  "@leaveGroupConfirmMessage": {
+    "placeholders": {
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteGroupSectionTitle": "XÓA NHÓM",
+  "deleteGroupSectionSubtitle": "Xóa vĩnh viễn nhóm này cùng toàn bộ chi tiêu, nợ và quỹ liên quan khỏi ứng dụng."
 }
