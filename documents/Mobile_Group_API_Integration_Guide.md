@@ -20,6 +20,10 @@
    - [2.4. Sửa thông tin nhóm (Update Group)](#24-sửa-thông-tin-nhóm-update-group)
    - [2.5. Lưu trữ nhóm (Archive Group)](#25-lưu-trữ-nhóm-archive-group)
    - [2.6. Xóa nhóm chi tiêu (Delete Group)](#26-xóa-nhóm-chi-tiêu-delete-group)
+   - [2.7. Lấy danh sách thành viên trong nhóm (Get Group Members)](#27-lấy-danh-sách-thành-viên-trong-nhóm-get-group-members)
+   - [2.8. Lấy danh sách và số lượng yêu cầu gia nhập nhóm (Get Pending Join Requests)](#28-lấy-danh-sách-và-số-lượng-yêu-cầu-gia-nhập-nhóm-get-pending-join-requests)
+   - [2.9. Lấy thông tin chi tiết của một thành viên trong nhóm (Get Member Details)](#29-lấy-thông-tin-chi-tiết-của-một-thành-viên-trong-nhóm-get-member-details)
+   - [2.10. Xóa thành viên khỏi nhóm (Remove Member)](#210-xóa-thành-viên-khỏi-nhóm-remove-member)
 3. [Bảng mã lỗi (Error Codes) & Hướng dẫn xử lý UI](#3-bảng-mã-lỗi-error-codes--hướng-dẫn-xử-lý-ui)
 4. [Quy tắc nghiệp vụ & Trải nghiệm người dùng (UX Guidelines)](#4-quy-tắc-nghiệp-vụ--trải-nghiệm-người-dùng-ux-guidelines)
 
@@ -129,7 +133,8 @@ Lấy danh sách các nhóm mà người dùng đã tham gia hoặc tạo ra. H�
 
 | Tên tham số | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
 | :--- | :--- | :--- | :--- | :--- |
-| `filter` | String (`GroupFilter`) | Không | `ALL` | Bộ lọc nhóm: `ALL`, `ACTIVE`, `ARCHIVED`, `ADMIN` |
+| `filter` | String (`GroupFilter`) | Không | `ALL` | Bộ lọc nhóm: `ALL`, `ACTIVE`, `ARCHIVED`, `ADMIN`, `HAS_DEBT`, `SETTLED` |
+| `category` | String (`GroupCategory`) | Không | *null* | Ô chọn (combo box) lọc theo chủ đề/thể loại nhóm: `Apartment`, `Travel & Trip`, `Sport & Clubs`, `Friends & Dining`, `Works & Project`, `Other` |
 | `search` | String | Không | *null* | Chuỗi tìm kiếm gần đúng theo tên nhóm |
 
 - **Header:**
@@ -193,7 +198,9 @@ Lấy danh sách các nhóm mà người dùng đã tham gia hoặc tạo ra. H�
 
 ### 2.2. Lấy thông tin chi tiết của từng nhóm (Get Group Details)
 
-Lấy toàn bộ thông tin chi tiết của nhóm bao gồm: thông tin cơ bản, vai trò người gọi, số dư cá nhân, tổng quan tài chính (tổng chi tiêu, tổng quỹ thu) và danh sách đầy đủ các thành viên.
+Lấy toàn bộ thông tin chi tiết của nhóm bao gồm: thông tin cơ bản, vai trò người gọi, số dư cá nhân, tổng quan tài chính (tổng chi tiêu, tổng quỹ thu) và số lượng thành viên (`memberCount`).
+
+> **Lưu ý:** Để tối ưu băng thông mạng và hiệu năng tải trang, danh sách thành viên `members` **không còn trả về** trong API chi tiết nhóm. Khi cần xem hoặc thao tác danh sách thành viên, vui lòng gọi API [2.7. Lấy danh sách thành viên trong nhóm](#27-lấy-danh-sách-thành-viên-trong-nhóm-get-group-members).
 
 - **Method:** `GET`
 - **Path:** `/groups/{groupId}`
@@ -233,28 +240,6 @@ Lấy toàn bộ thông tin chi tiết của nhóm bao gồm: thông tin cơ b�
     "totalFundCollected": 500,
     "totalFundCollectedVnd": 500000,
     "memberCount": 2,
-    "members": [
-      {
-        "id": 101,
-        "userId": 1,
-        "fullName": "Nguyễn Văn A",
-        "email": "nguyenvana@gmail.com",
-        "avatarUrl": "https://cdn.example.com/avatar/1.jpg",
-        "role": "ADMIN",
-        "isMuted": false,
-        "joinedAt": "2026-09-01T08:30:00Z"
-      },
-      {
-        "id": 102,
-        "userId": 2,
-        "fullName": "Trần Thị B",
-        "email": "tranthib@gmail.com",
-        "avatarUrl": null,
-        "role": "MEMBER",
-        "isMuted": false,
-        "joinedAt": "2026-09-02T09:15:00Z"
-      }
-    ],
     "createdAt": "2026-09-01T08:30:00Z"
   },
   "timestamp": "2026-09-26T11:42:00Z"
@@ -478,6 +463,257 @@ Xóa vĩnh viễn nhóm chi tiêu. Hệ thống sẽ tự động dọn dẹp v�
 - **Mã lỗi thường gặp:**
   - `403 Forbidden`: `NOT_GROUP_ADMIN` - Chỉ quản trị viên người tạo nhóm mới có quyền xóa nhóm.
   - `404 Not Found`: `GROUP_NOT_FOUND` - Không tìm thấy nhóm.
+
+---
+
+### 2.7. Lấy danh sách thành viên trong nhóm (Get Group Members)
+
+Lấy danh sách thành viên rút gọn theo từng nhóm chi tiêu. Người gọi bắt buộc phải là thành viên trong nhóm. API trả về các thông tin cơ bản phục vụ hiển thị danh sách (Avatar, Tên, Vai trò) và ID người dùng (`userId`) để thực hiện các thao tác quản trị hoặc chi tiêu.
+
+- **Method:** `GET`
+- **Path:** `/groups/{groupId}/members`
+- **Full URL:** `/api/v1/groups/{groupId}/members`
+- **Path Variables:**
+
+| Tên biến | Kiểu dữ liệu | Bắt buộc | Mô tả |
+| :--- | :--- | :--- | :--- |
+| `groupId` | Long | Có | ID của nhóm cần lấy danh sách thành viên |
+
+- **Query Parameters:** (Tùy chọn)
+
+| Tham số | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
+| :--- | :--- | :--- | :--- | :--- |
+| `name` | String | Không | *null* | Ô nhập tìm kiếm gần đúng theo tên thành viên (không phân biệt chữ hoa, chữ thường) |
+
+- **Header:**
+  ```http
+  Authorization: Bearer <accessToken>
+  ```
+
+- **Mã phản hồi thành công:** `200 OK`
+- **Response Body mẫu:**
+```json
+{
+  "success": true,
+  "message": "Thành công",
+  "data": [
+    {
+      "userId": 1,
+      "fullName": "Nguyễn Văn A",
+      "role": "ADMIN",
+      "avatarUrl": "https://cdn.example.com/avatar/1.jpg"
+    },
+    {
+      "userId": 2,
+      "fullName": "Trần Thị B",
+      "role": "MEMBER",
+      "avatarUrl": null
+    }
+  ],
+  "timestamp": "2026-09-26T11:48:00Z"
+}
+```
+
+- **Mã lỗi thường gặp:**
+  - `403 Forbidden`: `NOT_GROUP_MEMBER` - Người dùng hiện tại không phải là thành viên của nhóm này.
+  - `404 Not Found`: `GROUP_NOT_FOUND` - Không tìm thấy nhóm.
+
+---
+
+### 2.8. Lấy danh sách và số lượng yêu cầu gia nhập nhóm (Get Pending Join Requests)
+
+Lấy tổng số lượng và danh sách chi tiết các yêu cầu gia nhập nhóm đang ở trạng thái chờ duyệt (`PENDING`). Chỉ Quản trị viên (`ADMIN`) của nhóm mới có quyền gọi API này.
+
+- **Method:** `GET`
+- **Path:** `/groups/{groupId}/join-requests`
+- **Full URL:** `/api/v1/groups/{groupId}/join-requests`
+- **Path Variables:**
+
+| Tên biến | Kiểu dữ liệu | Bắt buộc | Mô tả |
+| :--- | :--- | :--- | :--- |
+| `groupId` | Long | Có | ID của nhóm cần xem danh sách yêu cầu gia nhập |
+
+- **Header:**
+  ```http
+  Authorization: Bearer <accessToken>
+  ```
+
+- **Mã phản hồi thành công:** `200 OK`
+- **Response Body mẫu:**
+```json
+{
+  "success": true,
+  "message": "Thành công",
+  "data": {
+    "groupId": 10,
+    "totalRequests": 2,
+    "requests": [
+      {
+        "id": 1,
+        "groupId": 10,
+        "groupName": "Nhóm Đi Chơi",
+        "userId": 2,
+        "userFullName": "Nguyễn Văn A",
+        "userEmail": "a@example.com",
+        "userAvatarUrl": "https://cdn.example.com/avatar/2.jpg",
+        "status": "PENDING",
+        "requestedAt": "2026-09-29T10:00:00Z",
+        "reviewedAt": null
+      },
+      {
+        "id": 2,
+        "groupId": 10,
+        "groupName": "Nhóm Đi Chơi",
+        "userId": 3,
+        "userFullName": "Trần Thị B",
+        "userEmail": "b@example.com",
+        "userAvatarUrl": null,
+        "status": "PENDING",
+        "requestedAt": "2026-09-29T10:30:00Z",
+        "reviewedAt": null
+      }
+    ]
+  },
+  "timestamp": "2026-09-29T16:25:00Z"
+}
+```
+
+- **Mã lỗi thường gặp:**
+  - `403 Forbidden`: `NOT_GROUP_ADMIN` - Người dùng không phải là quản trị viên của nhóm.
+  - `404 Not Found`: `GROUP_NOT_FOUND` - Không tìm thấy nhóm.
+
+---
+
+### 2.9. Lấy thông tin chi tiết của một thành viên trong nhóm (Get Member Details)
+
+Lấy toàn bộ thông tin chi tiết của một thành viên trong nhóm, bao gồm:
+- Thông tin cơ bản: Tên, ảnh đại diện, vai trò trong nhóm (`ADMIN` / `MEMBER`), tên nhóm.
+- Tình hình công nợ hiện tại trong nhóm: Số tiền nợ người khác (`debtAmount`), số tiền người khác nợ mình (`receivableAmount`), số dư ròng (`netBalance`).
+- Chỉ số đánh giá: Tỷ lệ tất toán công nợ (`debtSettlementRate`), tỷ lệ đóng quỹ đúng hạn (`fundContributionOnTimeRate`).
+- Thông tin liên hệ cá nhân & chuyển khoản ngân hàng: Email cá nhân, số điện thoại, tên ngân hàng, số tài khoản ngân hàng, tên chủ tài khoản.
+- Số lượng và danh sách các khoản chi đã tham gia (Tên khoản chi, tổng số tiền, số tiền thành viên này chịu, người thanh toán, ngày chi tiêu, danh mục).
+
+Người gọi bắt buộc phải là thành viên trong nhóm.
+
+- **Method:** `GET`
+- **Path:** `/groups/{groupId}/members/{targetUserId}`
+- **Full URL:** `/api/v1/groups/{groupId}/members/{targetUserId}`
+- **Path Variables:**
+
+| Tên biến | Kiểu dữ liệu | Bắt buộc | Mô tả |
+| :--- | :--- | :--- | :--- |
+| `groupId` | Long | Có | ID của nhóm chi tiêu |
+| `targetUserId` | Long | Có | ID của thành viên cần xem thông tin chi tiết |
+
+- **Header:**
+  ```http
+  Authorization: Bearer <accessToken>
+  ```
+
+- **Mã phản hồi thành công:** `200 OK`
+- **Response Body mẫu:**
+```json
+{
+  "success": true,
+  "message": "Thành công",
+  "data": {
+    "userId": 2,
+    "fullName": "Trần Thị B",
+    "avatarUrl": "https://cdn.example.com/avatar/user2.jpg",
+    "role": "MEMBER",
+    "joinedAt": "2026-09-01T08:30:00Z",
+    "groupId": 10,
+    "groupName": "Chuyến đi Đà Lạt 2026",
+    "email": "tranthib@example.com",
+    "phone": "0987654321",
+    "bankName": "MB Bank",
+    "bankAccountNumber": "098765432101",
+    "bankAccountName": "TRAN THI B",
+    "debtAmount": 150,
+    "debtAmountVnd": 150000,
+    "receivableAmount": 300,
+    "receivableAmountVnd": 300000,
+    "netBalance": 150,
+    "netBalanceVnd": 150000,
+    "debtSettlementRate": 85.5,
+    "fundContributionOnTimeRate": 100.0,
+    "participatedExpenseCount": 2,
+    "participatedExpenses": [
+      {
+        "expenseId": 101,
+        "title": "Ăn tối lẩu gà lá é",
+        "amount": 600,
+        "amountVnd": 600000,
+        "myAmountOwed": 150,
+        "myAmountOwedVnd": 150000,
+        "isPaidByMember": false,
+        "expenseDate": "2026-09-28",
+        "categoryName": "Ăn uống",
+        "categoryIcon": "restaurant"
+      },
+      {
+        "expenseId": 98,
+        "title": "Thuê xe máy 3 ngày",
+        "amount": 450,
+        "amountVnd": 450000,
+        "myAmountOwed": 150,
+        "myAmountOwedVnd": 150000,
+        "isPaidByMember": true,
+        "expenseDate": "2026-09-26",
+        "categoryName": "Đi lại",
+        "categoryIcon": "two_wheeler"
+      }
+    ]
+  },
+  "timestamp": "2026-09-29T16:15:00Z"
+}
+```
+
+- **Mã lỗi thường gặp:**
+  - `401 Unauthorized`: `INVALID_TOKEN` - Phiên đăng nhập không hợp lệ hoặc đã hết hạn.
+  - `403 Forbidden`: `NOT_GROUP_MEMBER` - Người dùng gọi API không phải là thành viên trong nhóm.
+  - `404 Not Found`: `GROUP_NOT_FOUND` - Không tìm thấy nhóm chi tiêu.
+  - `404 Not Found`: `USER_NOT_FOUND` - Thành viên chỉ định không thuộc nhóm này.
+
+---
+
+### 2.10. Xóa thành viên khỏi nhóm (Remove Member)
+
+Quản trị viên (`ADMIN`) thực hiện xóa một thành viên thường (`MEMBER`) khỏi nhóm chi tiêu. Khi xóa thành viên, quan hệ thành viên trong nhóm bị hủy bỏ và hệ thống ghi lại nhật ký hoạt động.
+
+- **Method:** `DELETE`
+- **Path:** `/groups/{groupId}/members/{targetUserId}`
+- **Full URL:** `/api/v1/groups/{groupId}/members/{targetUserId}`
+- **Path Variables:**
+
+| Tên biến | Kiểu dữ liệu | Bắt buộc | Mô tả |
+| :--- | :--- | :--- | :--- |
+| `groupId` | Long | Có | ID của nhóm chi tiêu |
+| `targetUserId` | Long | Có | ID của thành viên cần xóa khỏi nhóm |
+
+- **Header:**
+  ```http
+  Authorization: Bearer <accessToken>
+  ```
+
+- **Mã phản hồi thành công:** `200 OK`
+- **Response Body mẫu:**
+```json
+{
+  "success": true,
+  "message": "Đã xóa thành viên khỏi nhóm",
+  "data": null,
+  "timestamp": "2026-09-30T14:35:00Z"
+}
+```
+
+- **Mã lỗi thường gặp:**
+  - `400 Bad Request`: `Admin không thể tự xóa chính mình khỏi nhóm` - Admin cố tình xóa chính tài khoản của mình.
+  - `400 Bad Request`: `Thành viên không tồn tại trong nhóm` - `targetUserId` không thuộc nhóm.
+  - `400 Bad Request`: `GROUP_ARCHIVED` - Nhóm đã ở trạng thái lưu trữ.
+  - `401 Unauthorized`: `INVALID_TOKEN` - Phiên đăng nhập hết hạn.
+  - `403 Forbidden`: `NOT_GROUP_ADMIN` - Chỉ quản trị viên nhóm mới có quyền xóa thành viên.
+  - `404 Not Found`: `GROUP_NOT_FOUND` - Không tìm thấy nhóm chi tiêu.
 
 ---
 
