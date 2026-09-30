@@ -1146,6 +1146,196 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editGroupInfo => 'Edit info';
 
   @override
+  String get totalGeneralFundLabel => 'TOTAL GENERAL FUND';
+
+  @override
+  String get collectNewFundAction => '+ New Fund Collection';
+
+  @override
+  String get fundProgressLabel => 'Fund progress';
+
+  @override
+  String get searchFundPlaceholder => 'Search fund collection by name...';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get filterCollecting => 'Collecting';
+
+  @override
+  String get filterCompleted => 'Completed';
+
+  @override
+  String get filterThisMonth => 'This month';
+
+  @override
+  String get filterLastMonth => 'Last month';
+
+  @override
+  String get filterThisQuarter => 'This quarter';
+
+  @override
+  String get fundEmptyList => 'No fund collections yet';
+
+  @override
+  String get fundEmptySubtitle =>
+      'Tap \'+ New Fund Collection\' to start a fund collection for your group.';
+
+  @override
+  String get createFundTitle => 'Add Fund Collection';
+
+  @override
+  String get editFundTitle => 'Edit Fund Collection';
+
+  @override
+  String get fundNameLabel => 'FUND COLLECTION NAME *';
+
+  @override
+  String get fundNameHint => 'E.g.: Room rent for Nov, Party fund...';
+
+  @override
+  String get quickSuggestionsLabel => 'Quick suggestions:';
+
+  @override
+  String get suggestionRoomAndService => '+ Room & Service';
+
+  @override
+  String get suggestionYearEndParty => '+ Year-end Party';
+
+  @override
+  String get suggestionBirthday => '+ Birthday';
+
+  @override
+  String get suggestionInternetAndWater => '+ Internet & Water';
+
+  @override
+  String get fundAmountLabel => 'FUND AMOUNT *';
+
+  @override
+  String get perPersonMode => 'Per person';
+
+  @override
+  String get totalFundMode => 'Total fund';
+
+  @override
+  String expectedTotalSummary(int count) {
+    return 'Estimated total ($count members):';
+  }
+
+  @override
+  String get targetTotalSummary => 'Total target:';
+
+  @override
+  String get dueDateLabel => 'DUE DATE';
+
+  @override
+  String get fundDescriptionLabel => 'NOTE / PURPOSE';
+
+  @override
+  String get fundDescriptionHint =>
+      'E.g.: Pay rent before the 10th, late penalty applies...';
+
+  @override
+  String participatingMembersLabel(int selected, int total) {
+    return 'PARTICIPATING MEMBERS ($selected/$total)';
+  }
+
+  @override
+  String get selectAll => 'Select all';
+
+  @override
+  String get deselectAll => 'Deselect all';
+
+  @override
+  String get createFundButton => 'Create Fund Collection';
+
+  @override
+  String get saveFundButton => 'Save changes';
+
+  @override
+  String get fundDetailTitle => 'Fund Collection Details';
+
+  @override
+  String get statusCollectingBadge => 'COLLECTING';
+
+  @override
+  String get statusCompletedBadge => 'COMPLETED';
+
+  @override
+  String get closeFundAction => 'Close fund';
+
+  @override
+  String get dueDatePrefix => 'Due date: ';
+
+  @override
+  String get collectedAmountLabel => 'COLLECTED';
+
+  @override
+  String get targetAmountLabel => 'TARGET';
+
+  @override
+  String membersPaidRatio(int paid, int total) {
+    return '$paid/$total members have paid';
+  }
+
+  @override
+  String get memberPaymentStatusTitle => 'MEMBER PAYMENT STATUS';
+
+  @override
+  String get tapToChangeStatusHint => 'Tap to change status';
+
+  @override
+  String get statusPaid => 'Paid';
+
+  @override
+  String get statusUnpaid => 'Unpaid';
+
+  @override
+  String get remindAction => 'Remind';
+
+  @override
+  String remindCooldownToast(int seconds) {
+    return 'Please wait ${seconds}s before sending another reminder';
+  }
+
+  @override
+  String get confirmMarkPaidTitle => 'Confirm payment';
+
+  @override
+  String confirmMarkPaidMessage(String name, String amount) {
+    return 'Confirm that member $name has paid $amount for this fund?';
+  }
+
+  @override
+  String get confirmDeleteFundTitle => 'Delete fund collection';
+
+  @override
+  String get confirmDeleteFundMessage =>
+      'Are you sure you want to delete this fund collection? All member payment data will be permanently removed.';
+
+  @override
+  String get editFundCampaignAction => 'Edit fund collection';
+
+  @override
+  String get exportFundCsvAction => 'Export fund collection CSV';
+
+  @override
+  String get deleteFundCampaignAction => 'Delete this fund collection';
+
+  @override
+  String get mustSelectAtLeastOneMember =>
+      'Please select at least one participating member.';
+
+  @override
+  String get minFundAmountError => 'Minimum amount per person is 1,000 đ.';
+
+  @override
+  String paidMemberCannotBeRemoved(String name) {
+    return 'Cannot remove member who has already paid ($name).';
+  }
+
+  @override
   String get memberListSectionHeader => 'MEMBER LIST';
 
   @override
@@ -1350,192 +1540,4 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deleteGroupSectionSubtitle =>
       'Permanently delete this group along with all expenses, debts and funds from application.';
-  String get totalGeneralFundLabel => 'TOTAL GENERAL FUND';
-
-  @override
-  String get collectNewFundAction => '+ New Fund Collection';
-
-  @override
-  String get fundProgressLabel => 'Fund progress';
-
-  @override
-  String get searchFundPlaceholder => 'Search fund collection by name...';
-
-  @override
-  String get filterAll => 'All';
-
-  @override
-  String get filterCollecting => 'Collecting';
-
-  @override
-  String get filterCompleted => 'Completed';
-
-  @override
-  String get filterThisMonth => 'This month';
-
-  @override
-  String get filterLastMonth => 'Last month';
-
-  @override
-  String get filterThisQuarter => 'This quarter';
-
-  @override
-  String get fundEmptyList => 'No fund collections yet';
-
-  @override
-  String get fundEmptySubtitle =>
-      'Tap \'+ New Fund Collection\' to start a fund collection for your group.';
-
-  @override
-  String get createFundTitle => 'Add Fund Collection';
-
-  @override
-  String get editFundTitle => 'Edit Fund Collection';
-
-  @override
-  String get fundNameLabel => 'FUND COLLECTION NAME *';
-
-  @override
-  String get fundNameHint => 'E.g.: Room rent for Nov, Party fund...';
-
-  @override
-  String get quickSuggestionsLabel => 'Quick suggestions:';
-
-  @override
-  String get suggestionRoomAndService => '+ Room & Service';
-
-  @override
-  String get suggestionYearEndParty => '+ Year-end Party';
-
-  @override
-  String get suggestionBirthday => '+ Birthday';
-
-  @override
-  String get suggestionInternetAndWater => '+ Internet & Water';
-
-  @override
-  String get fundAmountLabel => 'FUND AMOUNT *';
-
-  @override
-  String get perPersonMode => 'Per person';
-
-  @override
-  String get totalFundMode => 'Total fund';
-
-  @override
-  String expectedTotalSummary(int count) {
-    return 'Estimated total ($count members):';
-  }
-
-  @override
-  String get targetTotalSummary => 'Total target:';
-
-  @override
-  String get dueDateLabel => 'DUE DATE';
-
-  @override
-  String get fundDescriptionLabel => 'NOTE / PURPOSE';
-
-  @override
-  String get fundDescriptionHint =>
-      'E.g.: Pay rent before the 10th, late penalty applies...';
-
-  @override
-  String participatingMembersLabel(int selected, int total) {
-    return 'PARTICIPATING MEMBERS ($selected/$total)';
-  }
-
-  @override
-  String get selectAll => 'Select all';
-
-  @override
-  String get deselectAll => 'Deselect all';
-
-  @override
-  String get createFundButton => 'Create Fund Collection';
-
-  @override
-  String get saveFundButton => 'Save changes';
-
-  @override
-  String get fundDetailTitle => 'Fund Collection Details';
-
-  @override
-  String get statusCollectingBadge => 'COLLECTING';
-
-  @override
-  String get statusCompletedBadge => 'COMPLETED';
-
-  @override
-  String get closeFundAction => 'Close fund';
-
-  @override
-  String get dueDatePrefix => 'Due date: ';
-
-  @override
-  String get collectedAmountLabel => 'COLLECTED';
-
-  @override
-  String get targetAmountLabel => 'TARGET';
-
-  @override
-  String membersPaidRatio(int paid, int total) {
-    return '$paid/$total members have paid';
-  }
-
-  @override
-  String get memberPaymentStatusTitle => 'MEMBER PAYMENT STATUS';
-
-  @override
-  String get tapToChangeStatusHint => 'Tap to change status';
-
-  @override
-  String get statusPaid => 'Paid';
-
-  @override
-  String get statusUnpaid => 'Unpaid';
-
-  @override
-  String get remindAction => 'Remind';
-
-  @override
-  String remindCooldownToast(int seconds) {
-    return 'Please wait ${seconds}s before sending another reminder';
-  }
-
-  @override
-  String get confirmMarkPaidTitle => 'Confirm payment';
-
-  @override
-  String confirmMarkPaidMessage(String name, String amount) {
-    return 'Confirm that member $name has paid $amount for this fund?';
-  }
-
-  @override
-  String get confirmDeleteFundTitle => 'Delete fund collection';
-
-  @override
-  String get confirmDeleteFundMessage =>
-      'Are you sure you want to delete this fund collection? All member payment data will be permanently removed.';
-
-  @override
-  String get editFundCampaignAction => 'Edit fund collection';
-
-  @override
-  String get exportFundCsvAction => 'Export fund collection CSV';
-
-  @override
-  String get deleteFundCampaignAction => 'Delete this fund collection';
-
-  @override
-  String get mustSelectAtLeastOneMember =>
-      'Please select at least one participating member.';
-
-  @override
-  String get minFundAmountError => 'Minimum amount per person is 1,000 đ.';
-
-  @override
-  String paidMemberCannotBeRemoved(String name) {
-    return 'Cannot remove member who has already paid ($name).';
-  }
 }

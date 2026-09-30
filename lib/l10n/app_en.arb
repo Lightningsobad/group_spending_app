@@ -236,7 +236,6 @@
   "archiveGroupSuccess": "Group has been moved to archives.",
   "deleteGroupSuccess": "Group deleted successfully.",
   "joinGroupSuccess": "Joined group successfully!",
-  "cancel": "Cancel",
   "editGroupAction": "Edit group",
   "inviteCodeCardTitle": "GROUP INVITE CODE",
   "groupFinancialOverviewTitle": "GROUP FINANCIAL OVERVIEW",
@@ -540,12 +539,6 @@
   "accountAndInterfaceSubtitle": "Account & settings",
   "groupAdminSectionTitle": "GROUP MANAGEMENT",
   "editGroupInfo": "Edit info",
-  "memberListSectionHeader": "MEMBER LIST",
-  "inviteMoreAction": "Invite more",
-  "searchMemberPlaceholder": "Search members...",
-  "pendingMembersSectionTitle": "PENDING MEMBERS",
-  "pendingRequestsCountBadge": "{count} requests",
-  "@pendingRequestsCountBadge": {
   "totalGeneralFundLabel": "TOTAL GENERAL FUND",
   "collectNewFundAction": "+ New Fund Collection",
   "fundProgressLabel": "Fund progress",
@@ -578,26 +571,6 @@
       }
     }
   },
-  "pendingRequestsSubtitle": "Join requests waiting for approval",
-  "joinRequestLabel": "Request to join group",
-  "rejectAction": "Reject",
-  "approveAction": "Approve",
-  "approveJoinTitle": "Approve {name} to join group?",
-  "@approveJoinTitle": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "includePastFundsCheckbox": "Require contributing to past group fund collections",
-  "includePastFundsHint": "If selected, new member will be added to the required list of all previous open fund collections.",
-  "confirmApproveButton": "Confirm approval",
-  "touchMemberForFinancialHint": "Tap member to view financial & debt details",
-  "membersCountHeader": "{count} members",
-  "@membersCountHeader": {
-    "placeholders": {
-      "count": {
   "targetTotalSummary": "Total target:",
   "dueDateLabel": "DUE DATE",
   "fundDescriptionLabel": "NOTE / PURPOSE",
@@ -635,6 +608,82 @@
       }
     }
   },
+  "memberPaymentStatusTitle": "MEMBER PAYMENT STATUS",
+  "tapToChangeStatusHint": "Tap to change status",
+  "statusPaid": "Paid",
+  "statusUnpaid": "Unpaid",
+  "remindAction": "Remind",
+  "remindCooldownToast": "Please wait {seconds}s before sending another reminder",
+  "@remindCooldownToast": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "confirmMarkPaidTitle": "Confirm payment",
+  "confirmMarkPaidMessage": "Confirm that member {name} has paid {amount} for this fund?",
+  "@confirmMarkPaidMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmDeleteFundTitle": "Delete fund collection",
+  "confirmDeleteFundMessage": "Are you sure you want to delete this fund collection? All member payment data will be permanently removed.",
+  "editFundCampaignAction": "Edit fund collection",
+  "exportFundCsvAction": "Export fund collection CSV",
+  "deleteFundCampaignAction": "Delete this fund collection",
+  "mustSelectAtLeastOneMember": "Please select at least one participating member.",
+  "minFundAmountError": "Minimum amount per person is 1,000 đ.",
+  "paidMemberCannotBeRemoved": "Cannot remove member who has already paid ({name}).",
+  "@paidMemberCannotBeRemoved": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "memberListSectionHeader": "MEMBER LIST",
+  "inviteMoreAction": "Invite more",
+  "searchMemberPlaceholder": "Search members...",
+  "pendingMembersSectionTitle": "PENDING MEMBERS",
+  "pendingRequestsCountBadge": "{count} requests",
+  "@pendingRequestsCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingRequestsSubtitle": "Join requests waiting for approval",
+  "joinRequestLabel": "Request to join group",
+  "rejectAction": "Reject",
+  "approveAction": "Approve",
+  "approveJoinTitle": "Approve {name} to join group?",
+  "@approveJoinTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "includePastFundsCheckbox": "Require contributing to past group fund collections",
+  "includePastFundsHint": "If selected, new member will be added to the required list of all previous open fund collections.",
+  "confirmApproveButton": "Confirm approval",
+  "touchMemberForFinancialHint": "Tap member to view financial & debt details",
+  "membersCountHeader": "{count} members",
+  "@membersCountHeader": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "youPill": "You",
   "roleLeaderBadge": "LEADER",
   "roleMemberBadge": "MEMBER",
@@ -659,15 +708,6 @@
   "@participatedExpensesSection": {
     "placeholders": {
       "count": {
-  "memberPaymentStatusTitle": "MEMBER PAYMENT STATUS",
-  "tapToChangeStatusHint": "Tap to change status",
-  "statusPaid": "Paid",
-  "statusUnpaid": "Unpaid",
-  "remindAction": "Remind",
-  "remindCooldownToast": "Please wait {seconds}s before sending another reminder",
-  "@remindCooldownToast": {
-    "placeholders": {
-      "seconds": {
         "type": "int"
       }
     }
@@ -718,14 +758,6 @@
         "type": "String"
       },
       "groupName": {
-  "confirmMarkPaidTitle": "Confirm payment",
-  "confirmMarkPaidMessage": "Confirm that member {name} has paid {amount} for this fund?",
-  "@confirmMarkPaidMessage": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "amount": {
         "type": "String"
       }
     }
@@ -749,19 +781,4 @@
   },
   "deleteGroupSectionTitle": "DELETE GROUP",
   "deleteGroupSectionSubtitle": "Permanently delete this group along with all expenses, debts and funds from application."
-  "confirmDeleteFundTitle": "Delete fund collection",
-  "confirmDeleteFundMessage": "Are you sure you want to delete this fund collection? All member payment data will be permanently removed.",
-  "editFundCampaignAction": "Edit fund collection",
-  "exportFundCsvAction": "Export fund collection CSV",
-  "deleteFundCampaignAction": "Delete this fund collection",
-  "mustSelectAtLeastOneMember": "Please select at least one participating member.",
-  "minFundAmountError": "Minimum amount per person is 1,000 đ.",
-  "paidMemberCannotBeRemoved": "Cannot remove member who has already paid ({name}).",
-  "@paidMemberCannotBeRemoved": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  }
 }

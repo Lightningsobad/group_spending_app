@@ -236,7 +236,6 @@
   "archiveGroupSuccess": "Nhóm đã được chuyển sang chế độ lưu trữ.",
   "deleteGroupSuccess": "Xóa nhóm thành công.",
   "joinGroupSuccess": "Tham gia nhóm thành công!",
-  "cancel": "Hủy",
   "editGroupAction": "Sửa nhóm",
   "inviteCodeCardTitle": "MÃ MỜI THAM GIA NHÓM",
   "groupFinancialOverviewTitle": "TỔNG QUAN TÀI CHÍNH NHÓM",
@@ -540,12 +539,6 @@
   "accountAndInterfaceSubtitle": "Tài khoản & thiết lập",
   "groupAdminSectionTitle": "QUẢN TRỊ NHÓM",
   "editGroupInfo": "Sửa thông tin",
-  "memberListSectionHeader": "DANH SÁCH THÀNH VIÊN",
-  "inviteMoreAction": "Mời thêm",
-  "searchMemberPlaceholder": "Tìm kiếm thành viên...",
-  "pendingMembersSectionTitle": "THÀNH VIÊN CHỜ DUYỆT",
-  "pendingRequestsCountBadge": "{count} yêu cầu",
-  "@pendingRequestsCountBadge": {
   "totalGeneralFundLabel": "TỔNG TIỀN QUỸ CHUNG",
   "collectNewFundAction": "+ Thu quỹ mới",
   "fundProgressLabel": "Tiến độ thu quỹ",
@@ -578,26 +571,6 @@
       }
     }
   },
-  "pendingRequestsSubtitle": "Yêu cầu gia nhập nhóm đang chờ phê duyệt",
-  "joinRequestLabel": "Yêu cầu tham gia nhóm",
-  "rejectAction": "Từ chối",
-  "approveAction": "Duyệt vào nhóm",
-  "approveJoinTitle": "Chấp thuận cho {name} tham gia nhóm?",
-  "@approveJoinTitle": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  },
-  "includePastFundsCheckbox": "Yêu cầu đóng các đợt quỹ trước đây của nhóm",
-  "includePastFundsHint": "Nếu chọn, thành viên mới sẽ được thêm vào danh sách phải đóng của tất cả các đợt quỹ đang mở trước đây.",
-  "confirmApproveButton": "Xác nhận duyệt",
-  "touchMemberForFinancialHint": "Chạm vào thành viên để xem chi tiết tài chính & công nợ",
-  "membersCountHeader": "{count} thành viên",
-  "@membersCountHeader": {
-    "placeholders": {
-      "count": {
   "targetTotalSummary": "Tổng mục tiêu:",
   "dueDateLabel": "HẠN NỘP (HẠN CHÓT)",
   "fundDescriptionLabel": "GHI CHÚ / MỤC ĐÍCH THU QUỸ",
@@ -635,6 +608,82 @@
       }
     }
   },
+  "memberPaymentStatusTitle": "TRẠNG THÁI NỘP QUỸ CỦA THÀNH VIÊN",
+  "tapToChangeStatusHint": "Bấm để đổi trạng thái",
+  "statusPaid": "Đã nộp",
+  "statusUnpaid": "Chưa nộp",
+  "remindAction": "Nhắc nộp",
+  "remindCooldownToast": "Vui lòng đợi {seconds}s trước khi gửi nhắc nhở tiếp theo",
+  "@remindCooldownToast": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "confirmMarkPaidTitle": "Xác nhận nộp quỹ",
+  "confirmMarkPaidMessage": "Xác nhận thành viên {name} đã đóng {amount} cho đợt quỹ này?",
+  "@confirmMarkPaidMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmDeleteFundTitle": "Xóa đợt đóng quỹ",
+  "confirmDeleteFundMessage": "Bạn có chắc chắn muốn xóa đợt đóng quỹ này? Mọi dữ liệu về trạng thái nộp tiền của các thành viên sẽ bị xóa vĩnh viễn.",
+  "editFundCampaignAction": "Chỉnh sửa đợt đóng quỹ",
+  "exportFundCsvAction": "Xuất báo cáo CSV đợt thu quỹ",
+  "deleteFundCampaignAction": "Xóa đợt đóng quỹ này",
+  "mustSelectAtLeastOneMember": "Vui lòng chọn ít nhất một thành viên tham gia.",
+  "minFundAmountError": "Số tiền mỗi người tối thiểu là 1.000 đ.",
+  "paidMemberCannotBeRemoved": "Không thể bỏ chọn thành viên đã đóng quỹ ({name}).",
+  "@paidMemberCannotBeRemoved": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "memberListSectionHeader": "DANH SÁCH THÀNH VIÊN",
+  "inviteMoreAction": "Mời thêm",
+  "searchMemberPlaceholder": "Tìm kiếm thành viên...",
+  "pendingMembersSectionTitle": "THÀNH VIÊN CHỜ DUYỆT",
+  "pendingRequestsCountBadge": "{count} yêu cầu",
+  "@pendingRequestsCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingRequestsSubtitle": "Yêu cầu gia nhập nhóm đang chờ phê duyệt",
+  "joinRequestLabel": "Yêu cầu tham gia nhóm",
+  "rejectAction": "Từ chối",
+  "approveAction": "Duyệt vào nhóm",
+  "approveJoinTitle": "Chấp thuận cho {name} tham gia nhóm?",
+  "@approveJoinTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "includePastFundsCheckbox": "Yêu cầu đóng các đợt quỹ trước đây của nhóm",
+  "includePastFundsHint": "Nếu chọn, thành viên mới sẽ được thêm vào danh sách phải đóng của tất cả các đợt quỹ đang mở trước đây.",
+  "confirmApproveButton": "Xác nhận duyệt",
+  "touchMemberForFinancialHint": "Chạm vào thành viên để xem chi tiết tài chính & công nợ",
+  "membersCountHeader": "{count} thành viên",
+  "@membersCountHeader": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "youPill": "Bạn",
   "roleLeaderBadge": "TRƯỞNG NHÓM",
   "roleMemberBadge": "THÀNH VIÊN",
@@ -659,15 +708,6 @@
   "@participatedExpensesSection": {
     "placeholders": {
       "count": {
-  "memberPaymentStatusTitle": "TRẠNG THÁI NỘP QUỸ CỦA THÀNH VIÊN",
-  "tapToChangeStatusHint": "Bấm để đổi trạng thái",
-  "statusPaid": "Đã nộp",
-  "statusUnpaid": "Chưa nộp",
-  "remindAction": "Nhắc nộp",
-  "remindCooldownToast": "Vui lòng đợi {seconds}s trước khi gửi nhắc nhở tiếp theo",
-  "@remindCooldownToast": {
-    "placeholders": {
-      "seconds": {
         "type": "int"
       }
     }
@@ -718,14 +758,6 @@
         "type": "String"
       },
       "groupName": {
-  "confirmMarkPaidTitle": "Xác nhận nộp quỹ",
-  "confirmMarkPaidMessage": "Xác nhận thành viên {name} đã đóng {amount} cho đợt quỹ này?",
-  "@confirmMarkPaidMessage": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      },
-      "amount": {
         "type": "String"
       }
     }
@@ -749,19 +781,4 @@
   },
   "deleteGroupSectionTitle": "XÓA NHÓM",
   "deleteGroupSectionSubtitle": "Xóa vĩnh viễn nhóm này cùng toàn bộ chi tiêu, nợ và quỹ liên quan khỏi ứng dụng."
-  "confirmDeleteFundTitle": "Xóa đợt đóng quỹ",
-  "confirmDeleteFundMessage": "Bạn có chắc chắn muốn xóa đợt đóng quỹ này? Mọi dữ liệu về trạng thái nộp tiền của các thành viên sẽ bị xóa vĩnh viễn.",
-  "editFundCampaignAction": "Chỉnh sửa đợt đóng quỹ",
-  "exportFundCsvAction": "Xuất báo cáo CSV đợt thu quỹ",
-  "deleteFundCampaignAction": "Xóa đợt đóng quỹ này",
-  "mustSelectAtLeastOneMember": "Vui lòng chọn ít nhất một thành viên tham gia.",
-  "minFundAmountError": "Số tiền mỗi người tối thiểu là 1.000 đ.",
-  "paidMemberCannotBeRemoved": "Không thể bỏ chọn thành viên đã đóng quỹ ({name}).",
-  "@paidMemberCannotBeRemoved": {
-    "placeholders": {
-      "name": {
-        "type": "String"
-      }
-    }
-  }
 }
