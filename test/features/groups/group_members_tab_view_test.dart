@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:group_spending_app/core/session/session_coordinator.dart';
 import 'package:group_spending_app/core/sync/data_sync_coordinator.dart';
 import 'package:group_spending_app/core/theme/app_theme.dart';
-import 'package:group_spending_app/features/groups/data/models/group_member_models.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
 import 'package:group_spending_app/features/groups/presentation/cubit/group_members_cubit.dart';
 import 'package:group_spending_app/features/groups/presentation/widgets/group_members_tab_view.dart';
-import 'package:group_spending_app/features/groups/presentation/widgets/review_join_request_sheet.dart';
 import 'package:group_spending_app/l10n/app_localizations.dart';
 
 import 'groups_cubit_test.dart';

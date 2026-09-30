@@ -121,7 +121,7 @@ class VietQrModalSheet extends StatelessWidget {
               child: Image.network(
                 _vietQrUrl,
                 fit: BoxFit.contain,
-                errorBuilder: (_, __, ___) {
+                errorBuilder: (_, _, _) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

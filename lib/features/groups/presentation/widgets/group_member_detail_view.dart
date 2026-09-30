@@ -62,6 +62,7 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
     GroupMemberDetailModel detail,
   ) async {
     final tr = context.l10n;
+    final cubit = context.read<GroupMembersCubit>();
     bool? confirmed;
 
     if (detail.debtAmountVnd > 0) {
@@ -143,9 +144,7 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
     }
 
     if (confirmed == true && mounted) {
-      final success = await context
-          .read<GroupMembersCubit>()
-          .kickMember(widget.targetUserId);
+      final success = await cubit.kickMember(widget.targetUserId);
       if (success && mounted) {
         if (widget.onMemberKicked != null) {
           widget.onMemberKicked!();
