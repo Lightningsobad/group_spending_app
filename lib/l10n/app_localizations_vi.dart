@@ -1141,4 +1141,194 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get editGroupInfo => 'Sửa thông tin';
+
+  @override
+  String get totalGeneralFundLabel => 'TỔNG TIỀN QUỸ CHUNG';
+
+  @override
+  String get collectNewFundAction => '+ Thu quỹ mới';
+
+  @override
+  String get fundProgressLabel => 'Tiến độ thu quỹ';
+
+  @override
+  String get searchFundPlaceholder => 'Tìm kiếm đợt thu quỹ theo tên...';
+
+  @override
+  String get filterAll => 'Tất cả';
+
+  @override
+  String get filterCollecting => 'Đang thu';
+
+  @override
+  String get filterCompleted => 'Hoàn thành';
+
+  @override
+  String get filterThisMonth => 'Tháng này';
+
+  @override
+  String get filterLastMonth => 'Tháng trước';
+
+  @override
+  String get filterThisQuarter => 'Quý này';
+
+  @override
+  String get fundEmptyList => 'Chưa có đợt đóng quỹ nào';
+
+  @override
+  String get fundEmptySubtitle =>
+      'Nhấn \'+ Thu quỹ mới\' để phát động chiến dịch thu quỹ cho nhóm.';
+
+  @override
+  String get createFundTitle => 'Thêm đợt thu quỹ';
+
+  @override
+  String get editFundTitle => 'Chỉnh sửa đợt đóng quỹ';
+
+  @override
+  String get fundNameLabel => 'TÊN ĐỢT THU QUỸ *';
+
+  @override
+  String get fundNameHint => 'VD: Tiền phòng Tháng 11, Quỹ liên hoan...';
+
+  @override
+  String get quickSuggestionsLabel => 'Gợi ý nhanh:';
+
+  @override
+  String get suggestionRoomAndService => '+ Tiền phòng & Dịch vụ';
+
+  @override
+  String get suggestionYearEndParty => '+ Quỹ tiệc tất niên';
+
+  @override
+  String get suggestionBirthday => '+ Quỹ sinh nhật';
+
+  @override
+  String get suggestionInternetAndWater => '+ Tiền mạng & Nước';
+
+  @override
+  String get fundAmountLabel => 'SỐ TIỀN THU QUỸ *';
+
+  @override
+  String get perPersonMode => 'Mỗi người';
+
+  @override
+  String get totalFundMode => 'Tổng quỹ';
+
+  @override
+  String expectedTotalSummary(int count) {
+    return 'Tổng thu dự kiến ($count người):';
+  }
+
+  @override
+  String get targetTotalSummary => 'Tổng mục tiêu:';
+
+  @override
+  String get dueDateLabel => 'HẠN NỘP (HẠN CHÓT)';
+
+  @override
+  String get fundDescriptionLabel => 'GHI CHÚ / MỤC ĐÍCH THU QUỸ';
+
+  @override
+  String get fundDescriptionHint =>
+      'VD: Tiền phòng chuyển chủ nhà trước ngày 10, phạt nếu nộp trễ...';
+
+  @override
+  String participatingMembersLabel(int selected, int total) {
+    return 'THÀNH VIÊN THAM GIA ($selected/$total)';
+  }
+
+  @override
+  String get selectAll => 'Chọn tất cả';
+
+  @override
+  String get deselectAll => 'Bỏ chọn';
+
+  @override
+  String get createFundButton => 'Tạo đợt thu quỹ';
+
+  @override
+  String get saveFundButton => 'Lưu thay đổi';
+
+  @override
+  String get fundDetailTitle => 'Chi tiết đợt đóng quỹ';
+
+  @override
+  String get statusCollectingBadge => 'ĐANG THU QUỸ';
+
+  @override
+  String get statusCompletedBadge => 'HOÀN THÀNH';
+
+  @override
+  String get closeFundAction => 'Đóng quỹ';
+
+  @override
+  String get dueDatePrefix => 'Hạn chót đóng quỹ: ';
+
+  @override
+  String get collectedAmountLabel => 'ĐÃ THU ĐƯỢC';
+
+  @override
+  String get targetAmountLabel => 'MỤC TIÊU';
+
+  @override
+  String membersPaidRatio(int paid, int total) {
+    return '$paid/$total thành viên đã nộp';
+  }
+
+  @override
+  String get memberPaymentStatusTitle => 'TRẠNG THÁI NỘP QUỸ CỦA THÀNH VIÊN';
+
+  @override
+  String get tapToChangeStatusHint => 'Bấm để đổi trạng thái';
+
+  @override
+  String get statusPaid => 'Đã nộp';
+
+  @override
+  String get statusUnpaid => 'Chưa nộp';
+
+  @override
+  String get remindAction => 'Nhắc nộp';
+
+  @override
+  String remindCooldownToast(int seconds) {
+    return 'Vui lòng đợi ${seconds}s trước khi gửi nhắc nhở tiếp theo';
+  }
+
+  @override
+  String get confirmMarkPaidTitle => 'Xác nhận nộp quỹ';
+
+  @override
+  String confirmMarkPaidMessage(String name, String amount) {
+    return 'Xác nhận thành viên $name đã đóng $amount cho đợt quỹ này?';
+  }
+
+  @override
+  String get confirmDeleteFundTitle => 'Xóa đợt đóng quỹ';
+
+  @override
+  String get confirmDeleteFundMessage =>
+      'Bạn có chắc chắn muốn xóa đợt đóng quỹ này? Mọi dữ liệu về trạng thái nộp tiền của các thành viên sẽ bị xóa vĩnh viễn.';
+
+  @override
+  String get editFundCampaignAction => 'Chỉnh sửa đợt đóng quỹ';
+
+  @override
+  String get exportFundCsvAction => 'Xuất báo cáo CSV đợt thu quỹ';
+
+  @override
+  String get deleteFundCampaignAction => 'Xóa đợt đóng quỹ này';
+
+  @override
+  String get mustSelectAtLeastOneMember =>
+      'Vui lòng chọn ít nhất một thành viên tham gia.';
+
+  @override
+  String get minFundAmountError => 'Số tiền mỗi người tối thiểu là 1.000 đ.';
+
+  @override
+  String paidMemberCannotBeRemoved(String name) {
+    return 'Không thể bỏ chọn thành viên đã đóng quỹ ($name).';
+  }
 }

@@ -539,5 +539,114 @@
   "groupSettingsAction": "Settings",
   "accountAndInterfaceSubtitle": "Account & settings",
   "groupAdminSectionTitle": "GROUP MANAGEMENT",
-  "editGroupInfo": "Edit info"
+  "editGroupInfo": "Edit info",
+  "totalGeneralFundLabel": "TOTAL GENERAL FUND",
+  "collectNewFundAction": "+ New Fund Collection",
+  "fundProgressLabel": "Fund progress",
+  "searchFundPlaceholder": "Search fund collection by name...",
+  "filterAll": "All",
+  "filterCollecting": "Collecting",
+  "filterCompleted": "Completed",
+  "filterThisMonth": "This month",
+  "filterLastMonth": "Last month",
+  "filterThisQuarter": "This quarter",
+  "fundEmptyList": "No fund collections yet",
+  "fundEmptySubtitle": "Tap '+ New Fund Collection' to start a fund collection for your group.",
+  "createFundTitle": "Add Fund Collection",
+  "editFundTitle": "Edit Fund Collection",
+  "fundNameLabel": "FUND COLLECTION NAME *",
+  "fundNameHint": "E.g.: Room rent for Nov, Party fund...",
+  "quickSuggestionsLabel": "Quick suggestions:",
+  "suggestionRoomAndService": "+ Room & Service",
+  "suggestionYearEndParty": "+ Year-end Party",
+  "suggestionBirthday": "+ Birthday",
+  "suggestionInternetAndWater": "+ Internet & Water",
+  "fundAmountLabel": "FUND AMOUNT *",
+  "perPersonMode": "Per person",
+  "totalFundMode": "Total fund",
+  "expectedTotalSummary": "Estimated total ({count} members):",
+  "@expectedTotalSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "targetTotalSummary": "Total target:",
+  "dueDateLabel": "DUE DATE",
+  "fundDescriptionLabel": "NOTE / PURPOSE",
+  "fundDescriptionHint": "E.g.: Pay rent before the 10th, late penalty applies...",
+  "participatingMembersLabel": "PARTICIPATING MEMBERS ({selected}/{total})",
+  "@participatingMembersLabel": {
+    "placeholders": {
+      "selected": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "selectAll": "Select all",
+  "deselectAll": "Deselect all",
+  "createFundButton": "Create Fund Collection",
+  "saveFundButton": "Save changes",
+  "fundDetailTitle": "Fund Collection Details",
+  "statusCollectingBadge": "COLLECTING",
+  "statusCompletedBadge": "COMPLETED",
+  "closeFundAction": "Close fund",
+  "dueDatePrefix": "Due date: ",
+  "collectedAmountLabel": "COLLECTED",
+  "targetAmountLabel": "TARGET",
+  "membersPaidRatio": "{paid}/{total} members have paid",
+  "@membersPaidRatio": {
+    "placeholders": {
+      "paid": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "memberPaymentStatusTitle": "MEMBER PAYMENT STATUS",
+  "tapToChangeStatusHint": "Tap to change status",
+  "statusPaid": "Paid",
+  "statusUnpaid": "Unpaid",
+  "remindAction": "Remind",
+  "remindCooldownToast": "Please wait {seconds}s before sending another reminder",
+  "@remindCooldownToast": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "confirmMarkPaidTitle": "Confirm payment",
+  "confirmMarkPaidMessage": "Confirm that member {name} has paid {amount} for this fund?",
+  "@confirmMarkPaidMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmDeleteFundTitle": "Delete fund collection",
+  "confirmDeleteFundMessage": "Are you sure you want to delete this fund collection? All member payment data will be permanently removed.",
+  "editFundCampaignAction": "Edit fund collection",
+  "exportFundCsvAction": "Export fund collection CSV",
+  "deleteFundCampaignAction": "Delete this fund collection",
+  "mustSelectAtLeastOneMember": "Please select at least one participating member.",
+  "minFundAmountError": "Minimum amount per person is 1,000 đ.",
+  "paidMemberCannotBeRemoved": "Cannot remove member who has already paid ({name}).",
+  "@paidMemberCannotBeRemoved": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }
