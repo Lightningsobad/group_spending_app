@@ -39,9 +39,10 @@ class GroupsScreenState extends State<GroupsScreen> {
   void initState() {
     super.initState();
     _isJoiningGroup = widget.initialShowJoin;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<GroupsCubit>().loadGroups();
-    });
+    final cubit = context.read<GroupsCubit>();
+    if (cubit.state.status == GroupsStatus.initial) {
+      cubit.loadGroups();
+    }
   }
 
   void openGroupDetail(GroupModel group) {
@@ -236,7 +237,7 @@ class GroupsScreenState extends State<GroupsScreen> {
                 const SizedBox(height: 16),
 
                 // 5. Groups List or Skeletons or Empty State
-                if (state.isLoading && state.groups.isEmpty)
+                if ((state.status == GroupsStatus.initial || state.isLoading) && state.groups.isEmpty)
                   ...List.generate(3, (index) => const GroupCardSkeleton())
                 else if (filteredGroups.isEmpty)
                   GroupsEmptyView(isSearching: state.searchQuery.isNotEmpty)

@@ -536,17 +536,11 @@ abstract class AppLocalizations {
   /// **'TÀI KHOẢN NHẬN TIỀN NỢ (VIETQR)'**
   String get vietqrTitle;
 
-  /// No description provided for @defaultBankInfo.
+  /// No description provided for @noBankData.
   ///
   /// In vi, this message translates to:
-  /// **'Techcombank - 19034829104018'**
-  String get defaultBankInfo;
-
-  /// No description provided for @defaultAccountName.
-  ///
-  /// In vi, this message translates to:
-  /// **'NGUYEN NHAT MINH'**
-  String get defaultAccountName;
+  /// **'Chưa có dữ liệu'**
+  String get noBankData;
 
   /// No description provided for @appearanceLanguageSection.
   ///

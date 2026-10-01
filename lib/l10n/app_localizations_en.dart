@@ -242,10 +242,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vietqrTitle => 'PAYMENT RECEIVING ACCOUNT (VIETQR)';
 
   @override
-  String get defaultBankInfo => 'Techcombank - 19034829104018';
-
-  @override
-  String get defaultAccountName => 'NGUYEN NHAT MINH';
+  String get noBankData => 'No data';
 
   @override
   String get appearanceLanguageSection => 'APPEARANCE & LANGUAGE';

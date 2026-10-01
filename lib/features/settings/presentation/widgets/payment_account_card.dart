@@ -32,14 +32,12 @@ class PaymentAccountCard extends StatelessWidget {
 
     final bankInfoText = hasBankInfo
         ? '${user.bankName} - ${user.bankAccountNumber}'
-        : tr.defaultBankInfo;
+        : tr.noBankData;
 
     final accountNameText = (user?.bankAccountName != null &&
             user!.bankAccountName!.trim().isNotEmpty)
         ? user.bankAccountName!
-        : (user?.fullName.isNotEmpty == true
-            ? user!.fullName
-            : tr.defaultAccountName);
+        : (user?.fullName.isNotEmpty == true ? user!.fullName : '');
 
     void handleCardTap() {
       if (onTap != null) {
@@ -133,32 +131,40 @@ class PaymentAccountCard extends StatelessWidget {
                               bankInfoText,
                               style: AppTextStyle.bold(
                                 fontSize: 14,
-                                color: colors.textPrimary,
+                                color: hasBankInfo
+                                    ? colors.textPrimary
+                                    : colors.textMuted,
                                 letterSpacing: -0.2,
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            Text(
-                              accountNameText,
-                              style: AppTextStyle.semiBold(
-                                fontSize: 11,
-                                color: colors.textMuted,
-                                letterSpacing: 0.6,
+                            if (hasBankInfo) ...[
+                              const SizedBox(height: 4),
+                              Text(
+                                accountNameText,
+                                style: AppTextStyle.semiBold(
+                                  fontSize: 11,
+                                  color: colors.textMuted,
+                                  letterSpacing: 0.6,
+                                ),
                               ),
-                            ),
+                            ],
                           ],
                         ),
                       ),
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: AppColors.emeraldForest.withValues(alpha: 0.1),
+                          color: hasBankInfo
+                              ? AppColors.emeraldForest.withValues(alpha: 0.1)
+                              : colors.divider.withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Icon(
-                          LucideIcons.qrCode,
+                        child: Icon(
+                          hasBankInfo ? LucideIcons.qrCode : LucideIcons.creditCard,
                           size: 20,
-                          color: AppColors.emeraldForest,
+                          color: hasBankInfo
+                              ? AppColors.emeraldForest
+                              : colors.textMuted,
                         ),
                       ),
                     ],

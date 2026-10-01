@@ -95,8 +95,9 @@ void main() {
 
       // PaymentAccountCard details
       expect(find.text('TÀI KHOẢN NHẬN TIỀN NỢ (VIETQR)'), findsOneWidget);
-      expect(find.text('Techcombank - 19034829104018'), findsOneWidget);
-      expect(find.text('NGUYEN NHAT MINH'), findsOneWidget);
+      expect(find.text('Chưa có dữ liệu'), findsOneWidget);
+      expect(find.text('Techcombank - 19034829104018'), findsNothing);
+      expect(find.text('NGUYEN NHAT MINH'), findsNothing);
 
       // AppearanceLanguageCard details
       expect(find.text('GIAO DIỆN & NGÔN NGỮ'), findsOneWidget);
@@ -251,6 +252,8 @@ void main() {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
 
+      expect(find.text('MBBank - 9876543210'), findsOneWidget);
+
       final paymentCard = find.byType(PaymentAccountCard);
       await tester.ensureVisible(paymentCard);
       await tester.tap(paymentCard);
@@ -272,6 +275,8 @@ void main() {
 
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
+
+      expect(find.text('Chưa có dữ liệu'), findsOneWidget);
 
       final paymentCard = find.byType(PaymentAccountCard);
       await tester.ensureVisible(paymentCard);
