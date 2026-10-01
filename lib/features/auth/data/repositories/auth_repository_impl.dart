@@ -1,3 +1,4 @@
+import 'dart:io';
 import '../../../../core/session/session_coordinator.dart';
 import '../../../../core/storage/app_preferences.dart';
 import '../../../../core/storage/token_storage.dart';
@@ -178,5 +179,40 @@ class AuthRepositoryImpl implements AuthRepository {
       oldPassword: oldPassword,
       newPassword: newPassword,
     );
+  }
+
+  @override
+  Future<UserEntity> updateProfile({
+    required String fullName,
+    String? phone,
+    String? avatarUrl,
+    String? bankName,
+    String? bankAccountNumber,
+    String? bankAccountName,
+    String? fcmToken,
+    File? avatarFile,
+  }) async {
+    final userModel = await remoteDataSource.updateProfile(
+      fullName: fullName,
+      phone: phone,
+      avatarUrl: avatarUrl,
+      bankName: bankName,
+      bankAccountNumber: bankAccountNumber,
+      bankAccountName: bankAccountName,
+      fcmToken: fcmToken,
+      avatarFile: avatarFile,
+    );
+
+    await appPreferences.saveUserInfo(
+      fullName: userModel.fullName,
+      email: userModel.email,
+    );
+
+    return userModel.toEntity();
+  }
+
+  @override
+  Future<void> updateFcmToken({required String fcmToken}) async {
+    await remoteDataSource.updateFcmToken(fcmToken: fcmToken);
   }
 }
