@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/errors/app_exception.dart';
+import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
 import 'auth_state.dart';
 
@@ -31,6 +33,30 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (_) {
       // Ignore network errors or unauthenticated errors gracefully
     }
+  }
+
+  Future<UserEntity> updateProfile({
+    required String fullName,
+    String? phone,
+    String? avatarUrl,
+    String? bankName,
+    String? bankAccountNumber,
+    String? bankAccountName,
+    String? fcmToken,
+    File? avatarFile,
+  }) async {
+    final updated = await _repository.updateProfile(
+      fullName: fullName,
+      phone: phone,
+      avatarUrl: avatarUrl,
+      bankName: bankName,
+      bankAccountNumber: bankAccountNumber,
+      bankAccountName: bankAccountName,
+      fcmToken: fcmToken,
+      avatarFile: avatarFile,
+    );
+    emit(state.copyWith(currentUser: updated));
+    return updated;
   }
 
   Future<void> login({required String email, required String password}) async {

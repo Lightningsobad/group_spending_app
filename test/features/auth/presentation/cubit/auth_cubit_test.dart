@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:group_spending_app/core/errors/app_exception.dart';
 import 'package:group_spending_app/features/auth/domain/entities/auth_tokens_entity.dart';
@@ -102,6 +103,34 @@ class FakeAuthRepository implements AuthRepository {
     required String oldPassword,
     required String newPassword,
   }) async {
+    if (exceptionToThrow != null) throw exceptionToThrow!;
+  }
+
+  @override
+  Future<UserEntity> updateProfile({
+    required String fullName,
+    String? phone,
+    String? avatarUrl,
+    String? bankName,
+    String? bankAccountNumber,
+    String? bankAccountName,
+    String? fcmToken,
+    File? avatarFile,
+  }) async {
+    if (exceptionToThrow != null) throw exceptionToThrow!;
+    final updated = sampleUser.copyWith(
+      fullName: fullName,
+      phone: phone,
+      avatarUrl: avatarUrl,
+      bankName: bankName,
+      bankAccountNumber: bankAccountNumber,
+      bankAccountName: bankAccountName,
+    );
+    return updated;
+  }
+
+  @override
+  Future<void> updateFcmToken({required String fcmToken}) async {
     if (exceptionToThrow != null) throw exceptionToThrow!;
   }
 }

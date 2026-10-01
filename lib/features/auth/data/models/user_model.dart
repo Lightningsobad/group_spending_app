@@ -9,6 +9,9 @@ class UserModel extends UserEntity {
     super.avatarUrl,
     required super.role,
     required super.isEmailVerified,
+    super.bankName,
+    super.bankAccountNumber,
+    super.bankAccountName,
     super.createdAt,
   });
 
@@ -21,6 +24,9 @@ class UserModel extends UserEntity {
       avatarUrl: json['avatarUrl'] as String?,
       role: (json['role'] as String?) ?? 'ROLE_USER',
       isEmailVerified: (json['isEmailVerified'] as bool?) ?? false,
+      bankName: json['bankName'] as String?,
+      bankAccountNumber: json['bankAccountNumber'] as String?,
+      bankAccountName: json['bankAccountName'] as String?,
       createdAt: json['createdAt'] as String?,
     );
   }
@@ -34,6 +40,9 @@ class UserModel extends UserEntity {
       'avatarUrl': avatarUrl,
       'role': role,
       'isEmailVerified': isEmailVerified,
+      'bankName': bankName,
+      'bankAccountNumber': bankAccountNumber,
+      'bankAccountName': bankAccountName,
       'createdAt': createdAt,
     };
   }

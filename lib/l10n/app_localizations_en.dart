@@ -86,7 +86,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneOptionalTag => '(Optional)';
 
   @override
-  String get phoneHint => 'Enter phone number';
+  String get phoneHint => 'Enter phone number (optional)';
 
   @override
   String get registerButton => 'Create New Account';
@@ -1540,4 +1540,67 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get deleteGroupSectionSubtitle =>
       'Permanently delete this group along with all expenses, debts and funds from application.';
+
+  @override
+  String get editProfileTitle => 'Update Profile';
+
+  @override
+  String get editProfileSubtitle =>
+      'Edit your profile and VietQR payout account';
+
+  @override
+  String get fullNameRequired => 'Full name cannot be blank';
+
+  @override
+  String get bankNameLabel => 'Payout Bank (VietQR)';
+
+  @override
+  String get bankNameHint => 'Select bank from list';
+
+  @override
+  String get selectBankPrompt => 'Select bank';
+
+  @override
+  String get searchBankHint => 'Search by name, short name or BIN...';
+
+  @override
+  String get bankAccountNumberLabel => 'Bank account number';
+
+  @override
+  String get bankAccountNumberHint => 'Enter bank account number';
+
+  @override
+  String get bankAccountNameLabel => 'Account holder name';
+
+  @override
+  String get bankAccountNameHint => 'NGUYEN VAN A (uppercase without accents)';
+
+  @override
+  String get tapToViewQrHint => 'Tap to view VietQR';
+
+  @override
+  String get tapToSetupBankHint => 'Tap to set up account';
+
+  @override
+  String get changeAvatarPrompt => 'Change avatar';
+
+  @override
+  String get chooseFromGallery => 'Choose from gallery';
+
+  @override
+  String get takePhoto => 'Take new photo';
+
+  @override
+  String get updateProfileSuccess => 'Profile updated successfully!';
+
+  @override
+  String get imageTooLargeError =>
+      'Avatar image exceeds 10MB limit. Please choose another image.';
+
+  @override
+  String get loadBanksFailed =>
+      'Failed to load banks. Please check your internet connection.';
+
+  @override
+  String get noBanksFound => 'No matching banks found';
 }

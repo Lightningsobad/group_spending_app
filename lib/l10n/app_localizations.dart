@@ -233,7 +233,7 @@ abstract class AppLocalizations {
   /// No description provided for @fullNameHint.
   ///
   /// In vi, this message translates to:
-  /// **'Nhập họ và tên đầy đủ'**
+  /// **'Nhập họ và tên của bạn'**
   String get fullNameHint;
 
   /// No description provided for @phoneLabel.
@@ -251,7 +251,7 @@ abstract class AppLocalizations {
   /// No description provided for @phoneHint.
   ///
   /// In vi, this message translates to:
-  /// **'Nhập số điện thoại'**
+  /// **'Nhập số điện thoại (tùy chọn)'**
   String get phoneHint;
 
   /// No description provided for @registerButton.
@@ -2875,6 +2875,126 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Xóa vĩnh viễn nhóm này cùng toàn bộ chi tiêu, nợ và quỹ liên quan khỏi ứng dụng.'**
   String get deleteGroupSectionSubtitle;
+
+  /// No description provided for @editProfileTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cập nhật thông tin cá nhân'**
+  String get editProfileTitle;
+
+  /// No description provided for @editProfileSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chỉnh sửa hồ sơ và tài khoản nhận tiền VietQR'**
+  String get editProfileSubtitle;
+
+  /// No description provided for @fullNameRequired.
+  ///
+  /// In vi, this message translates to:
+  /// **'Họ và tên không được để trống'**
+  String get fullNameRequired;
+
+  /// No description provided for @bankNameLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ngân hàng nhận tiền (VietQR)'**
+  String get bankNameLabel;
+
+  /// No description provided for @bankNameHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn ngân hàng từ danh sách'**
+  String get bankNameHint;
+
+  /// No description provided for @selectBankPrompt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn ngân hàng'**
+  String get selectBankPrompt;
+
+  /// No description provided for @searchBankHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm theo tên, viết tắt hoặc mã BIN...'**
+  String get searchBankHint;
+
+  /// No description provided for @bankAccountNumberLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tài khoản ngân hàng'**
+  String get bankAccountNumberLabel;
+
+  /// No description provided for @bankAccountNumberHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập số tài khoản ngân hàng'**
+  String get bankAccountNumberHint;
+
+  /// No description provided for @bankAccountNameLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tên chủ tài khoản'**
+  String get bankAccountNameLabel;
+
+  /// No description provided for @bankAccountNameHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'NGUYEN VAN A (in hoa không dấu)'**
+  String get bankAccountNameHint;
+
+  /// No description provided for @tapToViewQrHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chạm để xem mã VietQR'**
+  String get tapToViewQrHint;
+
+  /// No description provided for @tapToSetupBankHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chạm để thiết lập tài khoản'**
+  String get tapToSetupBankHint;
+
+  /// No description provided for @changeAvatarPrompt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi ảnh đại diện'**
+  String get changeAvatarPrompt;
+
+  /// No description provided for @chooseFromGallery.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn từ thư viện'**
+  String get chooseFromGallery;
+
+  /// No description provided for @takePhoto.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chụp ảnh mới'**
+  String get takePhoto;
+
+  /// No description provided for @updateProfileSuccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cập nhật thông tin cá nhân thành công!'**
+  String get updateProfileSuccess;
+
+  /// No description provided for @imageTooLargeError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kích thước ảnh đại diện vượt quá 10MB. Vui lòng chọn ảnh khác.'**
+  String get imageTooLargeError;
+
+  /// No description provided for @loadBanksFailed.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể tải danh sách ngân hàng. Vui lòng kiểm tra kết nối mạng.'**
+  String get loadBanksFailed;
+
+  /// No description provided for @noBanksFound.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không tìm thấy ngân hàng phù hợp'**
+  String get noBanksFound;
 }
 
 class _AppLocalizationsDelegate

@@ -76,7 +76,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get fullNameLabel => 'Họ và tên';
 
   @override
-  String get fullNameHint => 'Nhập họ và tên đầy đủ';
+  String get fullNameHint => 'Nhập họ và tên của bạn';
 
   @override
   String get phoneLabel => 'Số điện thoại';
@@ -85,7 +85,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get phoneOptionalTag => '(Không bắt buộc / Tùy chọn)';
 
   @override
-  String get phoneHint => 'Nhập số điện thoại';
+  String get phoneHint => 'Nhập số điện thoại (tùy chọn)';
 
   @override
   String get registerButton => 'Tạo tài khoản mới';
@@ -1538,4 +1538,67 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get deleteGroupSectionSubtitle =>
       'Xóa vĩnh viễn nhóm này cùng toàn bộ chi tiêu, nợ và quỹ liên quan khỏi ứng dụng.';
+
+  @override
+  String get editProfileTitle => 'Cập nhật thông tin cá nhân';
+
+  @override
+  String get editProfileSubtitle =>
+      'Chỉnh sửa hồ sơ và tài khoản nhận tiền VietQR';
+
+  @override
+  String get fullNameRequired => 'Họ và tên không được để trống';
+
+  @override
+  String get bankNameLabel => 'Ngân hàng nhận tiền (VietQR)';
+
+  @override
+  String get bankNameHint => 'Chọn ngân hàng từ danh sách';
+
+  @override
+  String get selectBankPrompt => 'Chọn ngân hàng';
+
+  @override
+  String get searchBankHint => 'Tìm theo tên, viết tắt hoặc mã BIN...';
+
+  @override
+  String get bankAccountNumberLabel => 'Số tài khoản ngân hàng';
+
+  @override
+  String get bankAccountNumberHint => 'Nhập số tài khoản ngân hàng';
+
+  @override
+  String get bankAccountNameLabel => 'Tên chủ tài khoản';
+
+  @override
+  String get bankAccountNameHint => 'NGUYEN VAN A (in hoa không dấu)';
+
+  @override
+  String get tapToViewQrHint => 'Chạm để xem mã VietQR';
+
+  @override
+  String get tapToSetupBankHint => 'Chạm để thiết lập tài khoản';
+
+  @override
+  String get changeAvatarPrompt => 'Đổi ảnh đại diện';
+
+  @override
+  String get chooseFromGallery => 'Chọn từ thư viện';
+
+  @override
+  String get takePhoto => 'Chụp ảnh mới';
+
+  @override
+  String get updateProfileSuccess => 'Cập nhật thông tin cá nhân thành công!';
+
+  @override
+  String get imageTooLargeError =>
+      'Kích thước ảnh đại diện vượt quá 10MB. Vui lòng chọn ảnh khác.';
+
+  @override
+  String get loadBanksFailed =>
+      'Không thể tải danh sách ngân hàng. Vui lòng kiểm tra kết nối mạng.';
+
+  @override
+  String get noBanksFound => 'Không tìm thấy ngân hàng phù hợp';
 }

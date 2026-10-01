@@ -8,6 +8,7 @@ import '../../../../l10n/l10n.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../../core/storage/app_preferences.dart';
 import 'change_password_dialog.dart';
+import 'edit_profile_dialog.dart';
 
 class UserProfileCard extends StatelessWidget {
   final VoidCallback? onEditProfile;
@@ -149,11 +150,7 @@ class UserProfileCard extends StatelessWidget {
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: onEditProfile ?? () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(tr.underDevelopment)),
-                    );
-                  },
+                  onPressed: onEditProfile ?? () => EditProfileDialog.show(context),
                   icon: const Icon(LucideIcons.userCheck, size: 16),
                   label: Text(
                     tr.editProfile,

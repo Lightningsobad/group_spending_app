@@ -11,6 +11,8 @@ import 'package:group_spending_app/features/auth/presentation/cubit/auth_state.d
 import 'package:group_spending_app/features/settings/presentation/screens/settings_screen.dart';
 import 'package:group_spending_app/features/settings/presentation/widgets/appearance_language_card.dart';
 import 'package:group_spending_app/features/settings/presentation/widgets/change_password_dialog.dart';
+import 'package:group_spending_app/features/settings/presentation/widgets/edit_profile_dialog.dart';
+import 'package:group_spending_app/features/groups/presentation/widgets/viet_qr_modal_sheet.dart';
 import 'package:group_spending_app/features/settings/presentation/widgets/logout_button.dart';
 import 'package:group_spending_app/features/settings/presentation/widgets/payment_account_card.dart';
 import 'package:group_spending_app/features/settings/presentation/widgets/privacy_policy_view.dart';
@@ -207,6 +209,76 @@ void main() {
 
       expect(find.byType(PrivacyPolicyView), findsNothing);
       expect(find.byType(UserProfileCard), findsOneWidget);
+    });
+
+    testWidgets('tapping Sửa thông tin opens EditProfileDialog', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      final editProfileBtn = find.text('Sửa thông tin');
+      await tester.ensureVisible(editProfileBtn);
+      await tester.tap(editProfileBtn);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(EditProfileDialog), findsOneWidget);
+      expect(find.text('Cập nhật thông tin cá nhân'), findsOneWidget);
+    });
+
+    testWidgets('tapping Sửa in PaymentAccountCard opens EditProfileDialog', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      final editBankBtn = find.descendant(
+        of: find.byType(PaymentAccountCard),
+        matching: find.text('Chỉnh sửa'),
+      );
+      await tester.ensureVisible(editBankBtn);
+      await tester.tap(editBankBtn);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(EditProfileDialog), findsOneWidget);
+    });
+
+    testWidgets('tapping PaymentAccountCard when user has bank info opens VietQrModalSheet', (tester) async {
+      authCubit.emit(
+        authCubit.state.copyWith(
+          currentUser: fakeRepo.sampleUser.copyWith(
+            bankName: 'MBBank',
+            bankAccountNumber: '9876543210',
+            bankAccountName: 'NGUYEN NHAT MINH',
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      final paymentCard = find.byType(PaymentAccountCard);
+      await tester.ensureVisible(paymentCard);
+      await tester.tap(paymentCard);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(VietQrModalSheet), findsOneWidget);
+      expect(find.text('Mã VietQR'), findsOneWidget);
+    });
+
+    testWidgets('tapping PaymentAccountCard when user has no bank info opens EditProfileDialog', (tester) async {
+      authCubit.emit(
+        authCubit.state.copyWith(
+          currentUser: fakeRepo.sampleUser.copyWith(
+            bankName: null,
+            bankAccountNumber: null,
+          ),
+        ),
+      );
+
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      final paymentCard = find.byType(PaymentAccountCard);
+      await tester.ensureVisible(paymentCard);
+      await tester.tap(paymentCard);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(EditProfileDialog), findsOneWidget);
     });
   });
 }
