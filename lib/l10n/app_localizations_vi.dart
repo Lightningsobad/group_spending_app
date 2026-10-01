@@ -240,10 +240,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get vietqrTitle => 'TÀI KHOẢN NHẬN TIỀN NỢ (VIETQR)';
 
   @override
-  String get defaultBankInfo => 'Techcombank - 19034829104018';
-
-  @override
-  String get defaultAccountName => 'NGUYEN NHAT MINH';
+  String get noBankData => 'Chưa có dữ liệu';
 
   @override
   String get appearanceLanguageSection => 'GIAO DIỆN & NGÔN NGỮ';

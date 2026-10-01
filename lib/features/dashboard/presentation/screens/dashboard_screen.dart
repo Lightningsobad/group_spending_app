@@ -37,9 +37,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<DashboardCubit>().loadDashboard();
-    });
+    final cubit = context.read<DashboardCubit>();
+    if (cubit.state.status == DashboardStatus.initial) {
+      cubit.loadDashboard();
+    }
   }
 
   void _showAddExpenseNotice() {
@@ -70,7 +71,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return BlocBuilder<DashboardCubit, DashboardState>(
       builder: (context, state) {
-        final isLoadingInitial = state.isLoading && state.groups.isEmpty;
+        final isLoadingInitial =
+            (state.status == DashboardStatus.initial || state.isLoading) &&
+                state.groups.isEmpty;
         final groups = state.groups;
 
         return RefreshIndicator(
@@ -110,6 +113,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 // 3. Section Header
                 DashboardGroupsHeader(
                   groupCount: groups.length,
+                  isLoading: isLoadingInitial,
                   onSeeAll: widget.onNavigateToGroups,
                 ),
 

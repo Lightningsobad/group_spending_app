@@ -7,11 +7,13 @@ import '../../../../l10n/l10n.dart';
 class DashboardGroupsHeader extends StatelessWidget {
   final int groupCount;
   final VoidCallback? onSeeAll;
+  final bool isLoading;
 
   const DashboardGroupsHeader({
     super.key,
     required this.groupCount,
     this.onSeeAll,
+    this.isLoading = false,
   });
 
   @override
@@ -39,7 +41,8 @@ class DashboardGroupsHeader extends StatelessWidget {
             ),
           ],
         ),
-        InkWell(
+        if (!isLoading)
+          InkWell(
           onTap: onSeeAll,
           borderRadius: BorderRadius.circular(8),
           child: Padding(

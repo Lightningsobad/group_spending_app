@@ -6,6 +6,10 @@ import 'package:group_spending_app/features/dashboard/presentation/cubit/dashboa
 import 'package:group_spending_app/features/dashboard/presentation/screens/dashboard_screen.dart';
 import 'package:group_spending_app/features/debts/data/models/debt_overview_model.dart';
 import 'package:group_spending_app/features/groups/presentation/cubit/groups_cubit.dart';
+import 'package:group_spending_app/features/dashboard/presentation/widgets/dashboard_empty_groups_view.dart';
+import 'package:group_spending_app/features/dashboard/presentation/widgets/financial_balance_card.dart';
+import 'package:group_spending_app/features/dashboard/presentation/widgets/financial_balance_card_skeleton.dart';
+import 'package:group_spending_app/features/groups/presentation/widgets/group_card_skeleton.dart';
 import 'package:group_spending_app/l10n/app_localizations.dart';
 import 'dashboard_cubit_test.dart';
 import '../groups/groups_cubit_test.dart';
@@ -136,6 +140,45 @@ void main() {
       await tester.pump();
 
       expect(joinNavigated, isTrue);
+    });
+
+    testWidgets('renders shimmer skeletons immediately during initial loading without flashing 0 balance or empty state', (tester) async {
+      final slowDebtsRepo = FakeDebtsRepository()..delay = const Duration(milliseconds: 500);
+      final slowGroupsRepo = FakeGroupsRepo()..delay = const Duration(milliseconds: 500);
+      final cubit = DashboardCubit(
+        debtsRepository: slowDebtsRepo,
+        groupsRepository: slowGroupsRepo,
+      );
+
+      await tester.pumpWidget(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider<DashboardCubit>.value(value: cubit),
+            BlocProvider<GroupsCubit>.value(value: groupsCubit),
+          ],
+          child: const MaterialApp(
+            locale: Locale('vi'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: Scaffold(body: DashboardScreen()),
+          ),
+        ),
+      );
+
+      // Only pump 1 frame before async repository completes
+      await tester.pump();
+
+      // Must show skeletons
+      expect(find.byType(FinancialBalanceCardSkeleton), findsOneWidget);
+      expect(find.byType(GroupCardSkeleton), findsNWidgets(2));
+
+      // Must NOT show 0d financial balance card or empty groups view or "Xem tất cả (0)"
+      expect(find.byType(FinancialBalanceCard), findsNothing);
+      expect(find.byType(DashboardEmptyGroupsView), findsNothing);
+      expect(find.text('Xem tất cả (0)'), findsNothing);
+
+      // Complete async tasks
+      await tester.pumpAndSettle();
     });
   });
 }
