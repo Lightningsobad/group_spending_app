@@ -14,8 +14,24 @@ class GroupsRepositoryImpl implements GroupsRepository {
   }
 
   @override
-  Future<GroupModel> getGroupDetails(int groupId) {
-    return remoteDataSource.getGroupDetails(groupId);
+  Future<GroupModel> getGroupDetails(int groupId) async {
+    final group = await remoteDataSource.getGroupDetails(groupId);
+    if (group.members != null && group.members!.isNotEmpty) {
+      return group;
+    }
+    try {
+      final membersSummary = await remoteDataSource.getGroupMembers(groupId);
+      if (membersSummary.isNotEmpty) {
+        final members = membersSummary
+            .map((m) => GroupMemberModel.fromSummary(m))
+            .toList();
+        return group.copyWith(
+          members: members,
+          memberCount: members.length,
+        );
+      }
+    } catch (_) {}
+    return group;
   }
 
   @override

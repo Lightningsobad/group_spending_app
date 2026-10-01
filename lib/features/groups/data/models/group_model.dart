@@ -1,3 +1,5 @@
+import 'group_member_models.dart';
+
 class GroupMemberModel {
   final int id;
   final int userId;
@@ -20,6 +22,16 @@ class GroupMemberModel {
   });
 
   bool get isAdmin => role.toUpperCase() == 'ADMIN';
+
+  factory GroupMemberModel.fromSummary(GroupMemberSummaryModel summary) {
+    return GroupMemberModel(
+      id: summary.userId,
+      userId: summary.userId,
+      fullName: summary.fullName,
+      role: summary.role,
+      avatarUrl: summary.avatarUrl,
+    );
+  }
 
   factory GroupMemberModel.fromJson(Map<String, dynamic> json) {
     return GroupMemberModel(

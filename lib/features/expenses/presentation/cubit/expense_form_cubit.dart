@@ -122,6 +122,42 @@ class ExpenseFormCubit extends Cubit<ExpenseFormState> {
     emit(state.copyWith(category: cat, clearMessages: true));
   }
 
+  void updateGroup(int groupId, String groupName) {
+    emit(state.copyWith(groupId: groupId, groupName: groupName, clearMessages: true));
+  }
+
+  void updateMembers(List<GroupMemberModel> members, {int? currentUserId}) {
+    final effectiveCurrentUserId = currentUserId ?? 0;
+    final int newPaidByUserId;
+    if (state.paidByUserId != 0 && members.any((m) => m.userId == state.paidByUserId)) {
+      newPaidByUserId = state.paidByUserId;
+    } else if (members.any((m) => m.userId == effectiveCurrentUserId)) {
+      newPaidByUserId = effectiveCurrentUserId;
+    } else if (members.isNotEmpty) {
+      newPaidByUserId = members.first.userId;
+    } else {
+      newPaidByUserId = 0;
+    }
+
+    final Set<int> newSelected;
+    if (state.splitOption == SplitOption.equalAll || state.selectedParticipantUserIds.isEmpty) {
+      newSelected = members.map((m) => m.userId).toSet();
+    } else {
+      final availableIds = members.map((m) => m.userId).toSet();
+      newSelected = state.selectedParticipantUserIds.intersection(availableIds);
+      if (newSelected.isEmpty && members.isNotEmpty) {
+        newSelected.addAll(availableIds);
+      }
+    }
+
+    emit(state.copyWith(
+      members: members,
+      paidByUserId: newPaidByUserId,
+      selectedParticipantUserIds: newSelected,
+      clearMessages: true,
+    ));
+  }
+
   void setPayer(int userId) {
     emit(state.copyWith(paidByUserId: userId, clearMessages: true));
   }

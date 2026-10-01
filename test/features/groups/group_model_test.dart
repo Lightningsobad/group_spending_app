@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:group_spending_app/features/groups/data/models/group_member_models.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
 
 void main() {
@@ -82,6 +83,24 @@ void main() {
       expect(group.members, hasLength(2));
       expect(group.members![0].isAdmin, isTrue);
       expect(group.members![1].isMuted, isTrue);
+    });
+
+    test('GroupMemberModel.fromSummary converts summary correctly', () {
+      const summary = GroupMemberSummaryModel(
+        userId: 42,
+        fullName: 'Lê Thị D',
+        role: 'ADMIN',
+        avatarUrl: 'https://example.com/avatar.png',
+      );
+
+      final model = GroupMemberModel.fromSummary(summary);
+
+      expect(model.id, 42);
+      expect(model.userId, 42);
+      expect(model.fullName, 'Lê Thị D');
+      expect(model.role, 'ADMIN');
+      expect(model.isAdmin, isTrue);
+      expect(model.avatarUrl, 'https://example.com/avatar.png');
     });
   });
 }
