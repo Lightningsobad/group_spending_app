@@ -1146,7 +1146,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get totalGeneralFundLabel => 'TỔNG TIỀN QUỸ CHUNG';
 
   @override
-  String get collectNewFundAction => '+ Thu quỹ mới';
+  String get collectNewFundAction => 'Thu quỹ mới';
 
   @override
   String get fundProgressLabel => 'Tiến độ thu quỹ';
@@ -1177,7 +1177,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get fundEmptySubtitle =>
-      'Nhấn \'+ Thu quỹ mới\' để phát động chiến dịch thu quỹ cho nhóm.';
+      'Nhấn \'Thu quỹ mới\' để phát động chiến dịch thu quỹ cho nhóm.';
 
   @override
   String get createFundTitle => 'Thêm đợt thu quỹ';

@@ -15,10 +15,12 @@ import 'fund_overview_card.dart';
 
 class GroupFundsTabView extends StatefulWidget {
   final GroupModel group;
+  final VoidCallback? onCreateFund;
 
   const GroupFundsTabView({
     super.key,
     required this.group,
+    this.onCreateFund,
   });
 
   @override
@@ -53,18 +55,28 @@ class _GroupFundsTabViewState extends State<GroupFundsTabView> {
     super.dispose();
   }
 
-  void _openCreateFund() {
-    context.push(
-      '/groups/${widget.group.id}/funds/create',
-      extra: widget.group,
-    );
+  Future<void> _openCreateFund() async {
+    if (widget.onCreateFund != null) {
+      widget.onCreateFund!();
+    } else {
+      final result = await context.push(
+        '/groups/${widget.group.id}/funds/create',
+        extra: widget.group,
+      );
+      if (result == true && mounted) {
+        context.read<FundsCubit>().loadGroupFunds(widget.group.id);
+      }
+    }
   }
 
-  void _openFundDetails(int fundId) {
-    context.push(
+  Future<void> _openFundDetails(int fundId) async {
+    await context.push(
       '/groups/${widget.group.id}/funds/$fundId',
       extra: widget.group,
     );
+    if (mounted) {
+      context.read<FundsCubit>().loadGroupFunds(widget.group.id);
+    }
   }
 
   @override

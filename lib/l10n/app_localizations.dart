@@ -2177,7 +2177,7 @@ abstract class AppLocalizations {
   /// No description provided for @collectNewFundAction.
   ///
   /// In vi, this message translates to:
-  /// **'+ Thu quỹ mới'**
+  /// **'Thu quỹ mới'**
   String get collectNewFundAction;
 
   /// No description provided for @fundProgressLabel.
@@ -2237,7 +2237,7 @@ abstract class AppLocalizations {
   /// No description provided for @fundEmptySubtitle.
   ///
   /// In vi, this message translates to:
-  /// **'Nhấn \'+ Thu quỹ mới\' để phát động chiến dịch thu quỹ cho nhóm.'**
+  /// **'Nhấn \'Thu quỹ mới\' để phát động chiến dịch thu quỹ cho nhóm.'**
   String get fundEmptySubtitle;
 
   /// No description provided for @createFundTitle.

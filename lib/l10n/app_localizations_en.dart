@@ -1149,7 +1149,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get totalGeneralFundLabel => 'TOTAL GENERAL FUND';
 
   @override
-  String get collectNewFundAction => '+ New Fund Collection';
+  String get collectNewFundAction => 'New fund';
 
   @override
   String get fundProgressLabel => 'Fund progress';
@@ -1180,7 +1180,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fundEmptySubtitle =>
-      'Tap \'+ New Fund Collection\' to start a fund collection for your group.';
+      'Tap \'New fund\' to start a fund collection for your group.';
 
   @override
   String get createFundTitle => 'Add Fund Collection';
