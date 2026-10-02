@@ -19,6 +19,8 @@ import '../cubit/group_members_cubit.dart';
 import '../cubit/groups_cubit.dart';
 import 'group_category_helper.dart';
 import 'group_invite_qr_sheet.dart';
+import '../../../funds/presentation/cubit/funds_cubit.dart';
+import '../../../funds/presentation/screens/fund_form_screen.dart';
 import 'group_member_detail_view.dart';
 import 'group_members_tab_view.dart';
 import '../../../funds/presentation/widgets/group_funds_tab_view.dart';
@@ -44,6 +46,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
   late GroupModel _group;
   int _selectedTabIndex = 0; // 0: Tổng quan, 1: Chi tiêu, 2: Quỹ, 3: Thành viên
   bool _isLoadingDetail = false;
+  bool _isCreatingFund = false;
   int? _viewingMemberId;
   GroupMembersCubit? _groupMembersCubit;
 
@@ -354,6 +357,29 @@ class _GroupDetailViewState extends State<GroupDetailView> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isCreatingFund) {
+      return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, _) {
+          if (!didPop) {
+            setState(() => _isCreatingFund = false);
+          }
+        },
+        child: FundFormScreen(
+          groupId: _group.id,
+          group: _group,
+          onBack: () => setState(() => _isCreatingFund = false),
+          onSuccess: () {
+            setState(() => _isCreatingFund = false);
+            try {
+              context.read<FundsCubit>().loadGroupFunds(_group.id);
+            } catch (_) {}
+            _fetchLatestDetail();
+          },
+        ),
+      );
+    }
+
     final colors = context.colors;
     final tr = context.l10n;
     final currentUserId = context.watch<AuthCubit>().state.currentUser?.id;
@@ -1232,7 +1258,10 @@ class _GroupDetailViewState extends State<GroupDetailView> {
   }
 
   Widget _buildFundsTab(dynamic colors, dynamic tr) {
-    return GroupFundsTabView(group: _group);
+    return GroupFundsTabView(
+      group: _group,
+      onCreateFund: () => setState(() => _isCreatingFund = true),
+    );
   }
 
   Widget _buildMembersTab(

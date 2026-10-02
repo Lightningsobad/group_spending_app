@@ -168,5 +168,29 @@ void main() {
       expect(mockRepo.deleted, isTrue);
       expect(cubit.state.isDeleted, isTrue);
     });
+
+    test('createFund notifies DataSyncCoordinator with funds scope', () async {
+      final syncCoordinator = DataSyncCoordinator();
+      DataSyncScope? notifiedScope;
+      syncCoordinator.addListener(() {
+        notifiedScope = syncCoordinator.lastScope;
+      });
+
+      final cubitWithSync = FundDetailCubit(
+        mockRepo,
+        dataSyncCoordinator: syncCoordinator,
+      );
+
+      final success = await cubitWithSync.createFund(
+        5,
+        name: 'Quỹ dã ngoại',
+        targetAmountPerPersonVnd: 100000,
+      );
+
+      expect(success, isTrue);
+      expect(notifiedScope, DataSyncScope.funds);
+
+      cubitWithSync.close();
+    });
   });
 }

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/sync/data_sync_coordinator.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
@@ -22,6 +23,8 @@ class FundFormScreen extends StatefulWidget {
   final GroupModel? group;
   final FundCollectionEntity? initialFund;
   final bool isEdit;
+  final VoidCallback? onBack;
+  final VoidCallback? onSuccess;
 
   const FundFormScreen({
     super.key,
@@ -29,6 +32,8 @@ class FundFormScreen extends StatefulWidget {
     this.group,
     this.initialFund,
     this.isEdit = false,
+    this.onBack,
+    this.onSuccess,
   });
 
   @override
@@ -292,16 +297,35 @@ class _FundFormScreenState extends State<FundFormScreen> {
     }
 
     if (success && mounted) {
-      Navigator.of(context).pop(true);
+      if (widget.onSuccess != null) {
+        widget.onSuccess!();
+      } else {
+        Navigator.of(context).pop(true);
+      }
+    }
+  }
+
+  void _handleBack() {
+    if (widget.onBack != null) {
+      widget.onBack!();
+    } else {
+      Navigator.of(context).pop();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<FundDetailCubit>(
-      create: (ctx) => FundDetailCubit(
-        ctx.read<FundsRepository>(),
-      ),
+      create: (ctx) {
+        DataSyncCoordinator? syncCoordinator;
+        try {
+          syncCoordinator = ctx.read<DataSyncCoordinator>();
+        } catch (_) {}
+        return FundDetailCubit(
+          ctx.read<FundsRepository>(),
+          dataSyncCoordinator: syncCoordinator,
+        );
+      },
       child: Builder(
         builder: (innerContext) {
           final colors = innerContext.colors;
@@ -337,90 +361,73 @@ class _FundFormScreenState extends State<FundFormScreen> {
             builder: (ctx, state) {
               final isSubmitting = state.isSubmitting;
 
-              return Scaffold(
-                backgroundColor: colors.background,
-                body: SafeArea(
-                  child: Column(
-                    children: [
-                      // Header (Back button, Title, Subtitle, Submit Pill)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                        child: Row(
-                          children: [
-                            InkWell(
-                              borderRadius: BorderRadius.circular(12),
-                              onTap: () => Navigator.of(context).pop(),
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: colors.surfaceMuted,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Icon(
-                                  LucideIcons.arrowLeft,
-                                  size: 18,
-                                  color: colors.textPrimary,
+              return PopScope(
+                canPop: widget.onBack == null,
+                onPopInvokedWithResult: (didPop, _) {
+                  if (!didPop) {
+                    _handleBack();
+                  }
+                },
+                child: Scaffold(
+                  backgroundColor: colors.background,
+                  body: SafeArea(
+                    top: widget.onBack == null,
+                    bottom: false,
+                    child: Column(
+                      children: [
+                        // Header (Back button, Title, Subtitle)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                          child: Row(
+                            children: [
+                              InkWell(
+                                borderRadius: BorderRadius.circular(12),
+                                onTap: _handleBack,
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: colors.surfaceMuted,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Icon(
+                                    LucideIcons.arrowLeft,
+                                    size: 18,
+                                    color: colors.textPrimary,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    widget.isEdit
-                                        ? tr.editFundTitle
-                                        : tr.createFundTitle,
-                                    style: AppTextStyle.bold(
-                                      fontSize: 18,
-                                      color: colors.textPrimary,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  if (groupName.isNotEmpty)
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
                                     Text(
-                                      groupName,
+                                      widget.isEdit
+                                          ? tr.editFundTitle
+                                          : tr.createFundTitle,
                                       style: AppTextStyle.bold(
-                                        fontSize: 11,
-                                        color: const Color(0xFF047857),
+                                        fontSize: 18,
+                                        color: colors.textPrimary,
                                       ),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
                                     ),
-                                ],
-                              ),
-                            ),
-                            ElevatedButton.icon(
-                              onPressed: isSubmitting ? null : () => _submit(ctx),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF14532D),
-                                foregroundColor: Colors.white,
-                                elevation: 0,
-                                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                                    if (groupName.isNotEmpty)
+                                      Text(
+                                        groupName,
+                                        style: AppTextStyle.bold(
+                                          fontSize: 11,
+                                          color: const Color(0xFF047857),
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                  ],
                                 ),
                               ),
-                              icon: isSubmitting
-                                  ? const SizedBox(
-                                      width: 14,
-                                      height: 14,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : const Icon(LucideIcons.check, size: 15, color: Colors.white),
-                              label: Text(
-                                widget.isEdit ? tr.confirm : tr.createGroupAction,
-                                style: AppTextStyle.bold(fontSize: 12, color: Colors.white),
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
 
                       // Form Body
                       Expanded(
@@ -980,7 +987,7 @@ class _FundFormScreenState extends State<FundFormScreen> {
                                   Expanded(
                                     flex: 1,
                                     child: OutlinedButton(
-                                      onPressed: () => Navigator.of(context).pop(),
+                                      onPressed: _handleBack,
                                       style: OutlinedButton.styleFrom(
                                         padding: const EdgeInsets.symmetric(vertical: 13),
                                         shape: RoundedRectangleBorder(
@@ -1041,8 +1048,9 @@ class _FundFormScreenState extends State<FundFormScreen> {
                     ],
                   ),
                 ),
-              );
-            },
+              ),
+            );
+          },
           );
         },
       ),

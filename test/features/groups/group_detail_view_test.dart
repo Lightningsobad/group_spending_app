@@ -8,6 +8,7 @@ import 'package:group_spending_app/features/funds/domain/entities/fund_entities.
 import 'package:group_spending_app/features/funds/domain/entities/fund_enums.dart';
 import 'package:group_spending_app/features/funds/domain/repositories/funds_repository.dart';
 import 'package:group_spending_app/features/funds/presentation/cubit/funds_cubit.dart';
+import 'package:group_spending_app/features/funds/presentation/screens/fund_form_screen.dart';
 import 'package:group_spending_app/features/funds/presentation/widgets/group_funds_tab_view.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
 import 'package:group_spending_app/features/groups/presentation/cubit/groups_cubit.dart';
@@ -135,22 +136,25 @@ void main() {
       VoidCallback? onBack,
       VoidCallback? onNavigateToDebts,
     }) {
-      return MultiBlocProvider(
-        providers: [
-          BlocProvider<GroupsCubit>.value(value: groupsCubit),
-          BlocProvider<AuthCubit>.value(value: authCubit),
-          BlocProvider<FundsCubit>.value(value: fundsCubit),
-        ],
-        child: MaterialApp(
-          theme: AppTheme.lightTheme,
-          locale: const Locale('vi'),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: Scaffold(
-            body: GroupDetailView(
-              initialGroup: group,
-              onBack: onBack ?? () {},
-              onNavigateToDebts: onNavigateToDebts,
+      return RepositoryProvider<FundsRepository>.value(
+        value: fundsRepo,
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<GroupsCubit>.value(value: groupsCubit),
+            BlocProvider<AuthCubit>.value(value: authCubit),
+            BlocProvider<FundsCubit>.value(value: fundsCubit),
+          ],
+          child: MaterialApp(
+            theme: AppTheme.lightTheme,
+            locale: const Locale('vi'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: Scaffold(
+              body: GroupDetailView(
+                initialGroup: group,
+                onBack: onBack ?? () {},
+                onNavigateToDebts: onNavigateToDebts,
+              ),
             ),
           ),
         ),
@@ -253,6 +257,37 @@ void main() {
       await tester.tap(find.text('Tổng quan'));
       await tester.pumpAndSettle();
       expect(find.text('THÔNG TIN NHÓM'), findsOneWidget);
+    });
+
+    testWidgets('tapping Thu quỹ mới opens FundFormScreen in-place without redundant createGroup button, and back returns to funds tab', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Switch to Quỹ tab
+      await tester.tap(find.text('Quỹ'));
+      await tester.pumpAndSettle();
+
+      // Verify Fund Overview button shows 'Thu quỹ mới' (no redundant plus sign in string)
+      expect(find.text('Thu quỹ mới'), findsOneWidget);
+
+      // Tap Thu quỹ mới
+      await tester.tap(find.text('Thu quỹ mới'));
+      await tester.pumpAndSettle();
+
+      // Expect FundFormScreen is displayed in-place
+      expect(find.byType(FundFormScreen), findsOneWidget);
+      expect(find.text('Thêm đợt thu quỹ'), findsWidgets);
+
+      // Redundant 'Tạo nhóm' button should NOT exist on the screen
+      expect(find.text('Tạo nhóm'), findsNothing);
+
+      // Tap back button
+      await tester.tap(find.byIcon(LucideIcons.arrowLeft).first);
+      await tester.pumpAndSettle();
+
+      // Should be back to funds tab
+      expect(find.byType(FundFormScreen), findsNothing);
+      expect(find.byType(GroupFundsTabView), findsOneWidget);
     });
   });
 }
