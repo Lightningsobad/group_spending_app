@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:dio/dio.dart';
 import '../../../../core/network/api_client.dart';
 import '../models/auth_response_model.dart';
 import '../models/user_model.dart';
@@ -32,6 +35,19 @@ abstract class AuthRemoteDataSource {
     required String oldPassword,
     required String newPassword,
   });
+
+  Future<UserModel> updateProfile({
+    required String fullName,
+    String? phone,
+    String? avatarUrl,
+    String? bankName,
+    String? bankAccountNumber,
+    String? bankAccountName,
+    String? fcmToken,
+    File? avatarFile,
+  });
+
+  Future<void> updateFcmToken({required String fcmToken});
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -137,6 +153,70 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         'oldPassword': oldPassword,
         'newPassword': newPassword,
       },
+    );
+  }
+
+  @override
+  Future<UserModel> updateProfile({
+    required String fullName,
+    String? phone,
+    String? avatarUrl,
+    String? bankName,
+    String? bankAccountNumber,
+    String? bankAccountName,
+    String? fcmToken,
+    File? avatarFile,
+  }) async {
+    final profileData = <String, dynamic>{
+      'fullName': fullName.trim(),
+      if (phone != null && phone.trim().isNotEmpty) 'phone': phone.trim(),
+      if (avatarUrl != null && avatarUrl.trim().isNotEmpty)
+        'avatarUrl': avatarUrl.trim(),
+      if (bankName != null && bankName.trim().isNotEmpty)
+        'bankName': bankName.trim(),
+      if (bankAccountNumber != null && bankAccountNumber.trim().isNotEmpty)
+        'bankAccountNumber': bankAccountNumber.trim(),
+      if (bankAccountName != null && bankAccountName.trim().isNotEmpty)
+        'bankAccountName': bankAccountName.trim().toUpperCase(),
+      if (fcmToken != null && fcmToken.trim().isNotEmpty)
+        'fcmToken': fcmToken.trim(),
+    };
+
+    final formDataMap = <String, dynamic>{
+      'data': MultipartFile.fromString(
+        jsonEncode(profileData),
+        contentType: DioMediaType('application', 'json'),
+      ),
+    };
+
+    if (avatarFile != null && await avatarFile.exists()) {
+      final fileName = avatarFile.path.split(Platform.isWindows ? '\\' : '/').last;
+      final ext = fileName.split('.').last.toLowerCase();
+      final mimeSubtype = (ext == 'png') ? 'png' : 'jpeg';
+      formDataMap['avatar'] = await MultipartFile.fromFile(
+        avatarFile.path,
+        filename: fileName,
+        contentType: DioMediaType('image', mimeSubtype),
+      );
+    }
+
+    final formData = FormData.fromMap(formDataMap);
+
+    final response = await _client.put(
+      '/users/me',
+      data: formData,
+      options: Options(contentType: 'multipart/form-data'),
+    );
+
+    final data = response.data['data'] as Map<String, dynamic>;
+    return UserModel.fromJson(data);
+  }
+
+  @override
+  Future<void> updateFcmToken({required String fcmToken}) async {
+    await _client.put(
+      '/users/me/fcm-token',
+      queryParameters: {'fcmToken': fcmToken.trim()},
     );
   }
 }

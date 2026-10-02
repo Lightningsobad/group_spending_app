@@ -90,8 +90,7 @@
   "editProfile": "Edit Profile",
   "changePassword": "Change Password",
   "vietqrTitle": "PAYMENT RECEIVING ACCOUNT (VIETQR)",
-  "defaultBankInfo": "Techcombank - 19034829104018",
-  "defaultAccountName": "NGUYEN NHAT MINH",
+  "noBankData": "No data",
   "appearanceLanguageSection": "APPEARANCE & LANGUAGE",
   "themeModeTitle": "Theme Mode",
   "themeLightSubtitle": "Light surface #F8FAFC",
@@ -236,7 +235,6 @@
   "archiveGroupSuccess": "Group has been moved to archives.",
   "deleteGroupSuccess": "Group deleted successfully.",
   "joinGroupSuccess": "Joined group successfully!",
-  "cancel": "Cancel",
   "editGroupAction": "Edit group",
   "inviteCodeCardTitle": "GROUP INVITE CODE",
   "groupFinancialOverviewTitle": "GROUP FINANCIAL OVERVIEW",
@@ -648,5 +646,164 @@
         "type": "String"
       }
     }
-  }
+  },
+  "memberListSectionHeader": "MEMBER LIST",
+  "inviteMoreAction": "Invite more",
+  "searchMemberPlaceholder": "Search members...",
+  "pendingMembersSectionTitle": "PENDING MEMBERS",
+  "pendingRequestsCountBadge": "{count} requests",
+  "@pendingRequestsCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingRequestsSubtitle": "Join requests waiting for approval",
+  "joinRequestLabel": "Request to join group",
+  "rejectAction": "Reject",
+  "approveAction": "Approve",
+  "approveJoinTitle": "Approve {name} to join group?",
+  "@approveJoinTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "includePastFundsCheckbox": "Require contributing to past group fund collections",
+  "includePastFundsHint": "If selected, new member will be added to the required list of all previous open fund collections.",
+  "confirmApproveButton": "Confirm approval",
+  "touchMemberForFinancialHint": "Tap member to view financial & debt details",
+  "membersCountHeader": "{count} members",
+  "@membersCountHeader": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "youPill": "You",
+  "roleLeaderBadge": "LEADER",
+  "roleMemberBadge": "MEMBER",
+  "roleLeaderFull": "LEADER (ADMIN)",
+  "roleMemberFull": "MEMBER",
+  "backToGroup": "Back to group",
+  "onTimeDebtRateLabel": "PAID ON TIME",
+  "goodRateLabel": "Good",
+  "onTimeFundRateLabel": "FUND ON TIME",
+  "personalAndAccountInfoSection": "PERSONAL & ACCOUNT INFO",
+  "bankAccountTitle": "Bank account",
+  "vietQrCodeButton": "VietQR Code",
+  "copyAction": "Copy",
+  "copiedAccountNumber": "Bank account number copied",
+  "copiedEmail": "Email copied",
+  "copiedPhone": "Phone number copied",
+  "groupDebtStatusSection": "DEBT STATUS IN GROUP",
+  "totalRefundedByGroup": "Total refunded by group:",
+  "totalToPayGroup": "Total to pay to group:",
+  "netResultLabel": "Net result:",
+  "participatedExpensesSection": "PARTICIPATED EXPENSES ({count})",
+  "@participatedExpensesSection": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paidFullBadge": "Paid fully",
+  "paidByMemberPrefix": "By {name}",
+  "@paidByMemberPrefix": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "memberSharePrefix": "Share: {amount}",
+  "@memberSharePrefix": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "kickMemberDangerTitle": "REMOVE MEMBER FROM GROUP",
+  "kickMemberDangerSubtitle": "Permanently remove this member from the spending group. The member will no longer have access to group expenses and debts.",
+  "kickMemberButton": "Kick from group",
+  "debtWarningTitle": "Warning: Unsettled debt",
+  "debtWarningMessage": "This member still has an unsettled debt of {amount}. Removing them may make it difficult to reconcile. Are you sure you want to remove this member?",
+  "@debtWarningMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "receivableWarningTitle": "Warning: Uncollected money",
+  "receivableWarningMessage": "This member currently has uncollected money of {amount}. Are you sure you want to proceed with removal?",
+  "@receivableWarningMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmKickMemberTitle": "Confirm remove member?",
+  "confirmKickMemberMessage": "Are you sure you want to remove {fullName} from group \"{groupName}\"?",
+  "@confirmKickMemberMessage": {
+    "placeholders": {
+      "fullName": {
+        "type": "String"
+      },
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "stillKickButton": "Still remove",
+  "continueKickButton": "Continue remove",
+  "confirmKickButton": "Confirm remove",
+  "noBankInfoYet": "No bank account info updated yet",
+  "noExpensesYet": "No expenses participated yet.",
+  "leaveGroupSectionTitle": "LEAVE GROUP",
+  "leaveGroupSectionSubtitle": "Leave this spending group. You will not be able to review transactions and debts unless invited again.",
+  "leaveGroupButton": "Leave group",
+  "leaveGroupConfirmTitle": "Confirm leaving group?",
+  "leaveGroupConfirmMessage": "Are you sure you want to leave group \"{groupName}\"?",
+  "@leaveGroupConfirmMessage": {
+    "placeholders": {
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteGroupSectionTitle": "DELETE GROUP",
+  "deleteGroupSectionSubtitle": "Permanently delete this group along with all expenses, debts and funds from application.",
+  "editProfileTitle": "Update Profile",
+  "editProfileSubtitle": "Edit your profile and VietQR payout account",
+  "fullNameLabel": "Full name",
+  "fullNameHint": "Enter your full name",
+  "fullNameRequired": "Full name cannot be blank",
+  "phoneLabel": "Phone number",
+  "phoneHint": "Enter phone number (optional)",
+  "bankNameLabel": "Payout Bank (VietQR)",
+  "bankNameHint": "Select bank from list",
+  "selectBankPrompt": "Select bank",
+  "searchBankHint": "Search by name, short name or BIN...",
+  "bankAccountNumberLabel": "Bank account number",
+  "bankAccountNumberHint": "Enter bank account number",
+  "bankAccountNameLabel": "Account holder name",
+  "bankAccountNameHint": "NGUYEN VAN A (uppercase without accents)",
+  "tapToViewQrHint": "Tap to view VietQR",
+  "tapToSetupBankHint": "Tap to set up account",
+  "changeAvatarPrompt": "Change avatar",
+  "chooseFromGallery": "Choose from gallery",
+  "takePhoto": "Take new photo",
+  "saveChanges": "Save changes",
+  "updateProfileSuccess": "Profile updated successfully!",
+  "imageTooLargeError": "Avatar image exceeds 10MB limit. Please choose another image.",
+  "loadBanksFailed": "Failed to load banks. Please check your internet connection.",
+  "retryAction": "Retry",
+  "noBanksFound": "No matching banks found"
 }

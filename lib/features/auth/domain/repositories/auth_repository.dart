@@ -1,3 +1,4 @@
+import 'dart:io';
 import '../entities/auth_tokens_entity.dart';
 import '../entities/user_entity.dart';
 
@@ -35,4 +36,17 @@ abstract class AuthRepository {
     required String oldPassword,
     required String newPassword,
   });
+
+  Future<UserEntity> updateProfile({
+    required String fullName,
+    String? phone,
+    String? avatarUrl,
+    String? bankName,
+    String? bankAccountNumber,
+    String? bankAccountName,
+    String? fcmToken,
+    File? avatarFile,
+  });
+
+  Future<void> updateFcmToken({required String fcmToken});
 }

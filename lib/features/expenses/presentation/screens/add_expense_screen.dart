@@ -7,6 +7,7 @@ import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../groups/data/models/group_model.dart';
+import '../../../groups/domain/repositories/groups_repository.dart';
 import '../../../groups/presentation/cubit/groups_cubit.dart';
 import '../../data/models/expense_models.dart';
 import '../../domain/repositories/expenses_repository.dart';
@@ -36,6 +37,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   late GroupModel _currentGroup;
   List<GroupMemberModel> _groupMembers = [];
   bool _isLoadingMembers = false;
+  ExpenseFormCubit? _expenseFormCubit;
 
   @override
   void initState() {
@@ -45,23 +47,61 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     _notesCtrl = TextEditingController(text: widget.expenseToEdit?.notes ?? '');
 
     if (_currentGroup.members != null && _currentGroup.members!.isNotEmpty) {
-      _groupMembers = _currentGroup.members!;
+      _groupMembers = List.from(_currentGroup.members!);
     } else {
       _fetchGroupDetail();
     }
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_expenseFormCubit == null) {
+      final currentUserId = context.read<AuthCubit>().state.currentUser?.id ?? 0;
+      _expenseFormCubit = ExpenseFormCubit(
+        context.read<ExpensesRepository>(),
+        groupId: _currentGroup.id,
+        groupName: _currentGroup.name,
+        members: _groupMembers,
+        currentUserId: currentUserId,
+        expenseToEdit: widget.expenseToEdit,
+        dataSyncCoordinator: context.read<DataSyncCoordinator>(),
+      );
+    }
+  }
+
   Future<void> _fetchGroupDetail() async {
     setState(() => _isLoadingMembers = true);
-    final detail = await context.read<GroupsCubit>().loadGroupDetails(_currentGroup.id);
-    if (mounted && detail != null && detail.members != null) {
+    List<GroupMemberModel>? members = _currentGroup.members;
+    GroupModel? detail;
+    try {
+      detail = await context.read<GroupsCubit>().loadGroupDetails(_currentGroup.id);
+      members = detail?.members;
+    } catch (_) {}
+
+    if (members == null || members.isEmpty) {
+      try {
+        final repo = context.read<GroupsRepository>();
+        final summaries = await repo.getGroupMembers(_currentGroup.id);
+        if (summaries.isNotEmpty) {
+          members = summaries.map((s) => GroupMemberModel.fromSummary(s)).toList();
+        }
+      } catch (_) {}
+    }
+
+    if (mounted) {
       setState(() {
-        _currentGroup = detail;
-        _groupMembers = detail.members!;
+        if (detail != null) _currentGroup = detail;
+        if (members != null && members.isNotEmpty) {
+          _groupMembers = members;
+          _currentGroup = _currentGroup.copyWith(members: members);
+        }
         _isLoadingMembers = false;
       });
-    } else if (mounted) {
-      setState(() => _isLoadingMembers = false);
+      if (members != null && members.isNotEmpty) {
+        final currentUserId = context.read<AuthCubit>().state.currentUser?.id;
+        _expenseFormCubit?.updateMembers(members, currentUserId: currentUserId);
+      }
     }
   }
 
@@ -69,6 +109,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   void dispose() {
     _titleCtrl.dispose();
     _notesCtrl.dispose();
+    _expenseFormCubit?.close();
     super.dispose();
   }
 
@@ -116,7 +157,13 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                               _currentGroup = g;
                               _groupMembers = g.members ?? [];
                             });
-                            _fetchGroupDetail();
+                            _expenseFormCubit?.updateGroup(g.id, g.name);
+                            if (g.members != null && g.members!.isNotEmpty) {
+                              final currentUserId = context.read<AuthCubit>().state.currentUser?.id;
+                              _expenseFormCubit?.updateMembers(g.members!, currentUserId: currentUserId);
+                            } else {
+                              _fetchGroupDetail();
+                            }
                           }
                         },
                       );
@@ -159,17 +206,11 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     final colors = context.colors;
     final currentUserId = context.read<AuthCubit>().state.currentUser?.id ?? 0;
     final isEdit = widget.expenseToEdit != null;
+    final formCubit = _expenseFormCubit;
+    if (formCubit == null) return const SizedBox.shrink();
 
-    return BlocProvider(
-      create: (context) => ExpenseFormCubit(
-        context.read<ExpensesRepository>(),
-        groupId: _currentGroup.id,
-        groupName: _currentGroup.name,
-        members: _groupMembers,
-        currentUserId: currentUserId,
-        expenseToEdit: widget.expenseToEdit,
-        dataSyncCoordinator: context.read<DataSyncCoordinator>(),
-      ),
+    return BlocProvider.value(
+      value: formCubit,
       child: BlocConsumer<ExpenseFormCubit, ExpenseFormState>(
         listener: (context, state) {
           if (state.errorMessage != null) {
@@ -462,9 +503,27 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 8),
-                                if (_groupMembers.isNotEmpty)
+                                if (_isLoadingMembers && _groupMembers.isEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                    child: Row(
+                                      children: [
+                                        const SizedBox(
+                                          width: 16,
+                                          height: 16,
+                                          child: CircularProgressIndicator(strokeWidth: 2),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          'Đang tải danh sách thành viên...',
+                                          style: AppTextStyle.regular(fontSize: 12, color: colors.textMuted),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                else if (_groupMembers.isNotEmpty)
                                   DropdownButtonFormField<int>(
-                                    initialValue: _groupMembers.any((m) => m.userId == state.paidByUserId)
+                                    value: _groupMembers.any((m) => m.userId == state.paidByUserId)
                                         ? state.paidByUserId
                                         : _groupMembers.first.userId,
                                     decoration: InputDecoration(
@@ -495,11 +554,6 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                       if (val != null) cubit.setPayer(val);
                                     },
                                   )
-                                else if (_isLoadingMembers)
-                                  Text(
-                                    'Đang tải danh sách thành viên...',
-                                    style: AppTextStyle.regular(fontSize: 12, color: colors.textMuted),
-                                  )
                                 else
                                   Text(
                                     'Không có thành viên trong nhóm.',
@@ -524,18 +578,36 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                   ),
                                 ),
                                 const SizedBox(height: 12),
-                                SplitMembersSection(
-                                  members: _groupMembers,
-                                  selectedParticipantUserIds: state.selectedParticipantUserIds,
-                                  splitOption: state.splitOption,
-                                  paidByUserId: state.paidByUserId,
-                                  totalAmountVnd: state.totalAmountVnd,
-                                  onSplitOptionChanged: cubit.setSplitOption,
-                                  onToggleParticipant: cubit.toggleParticipant,
-                                  onSelectAll: cubit.selectAllParticipants,
-                                  onDeselectAll: cubit.deselectAllParticipants,
-                                  getMemberShareVnd: cubit.state.getMemberShareVnd,
-                                ),
+                                if (_isLoadingMembers && _groupMembers.isEmpty)
+                                  const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 24),
+                                    child: Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                                  )
+                                else if (_groupMembers.isEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 16),
+                                    child: Center(
+                                      child: Text(
+                                        'Không có thành viên trong nhóm để chia chi phí.',
+                                        style: AppTextStyle.regular(fontSize: 12, color: colors.textMuted),
+                                      ),
+                                    ),
+                                  )
+                                else
+                                  SplitMembersSection(
+                                    members: _groupMembers,
+                                    selectedParticipantUserIds: state.selectedParticipantUserIds,
+                                    splitOption: state.splitOption,
+                                    paidByUserId: state.paidByUserId,
+                                    totalAmountVnd: state.totalAmountVnd,
+                                    onSplitOptionChanged: cubit.setSplitOption,
+                                    onToggleParticipant: cubit.toggleParticipant,
+                                    onSelectAll: cubit.selectAllParticipants,
+                                    onDeselectAll: cubit.deselectAllParticipants,
+                                    getMemberShareVnd: cubit.state.getMemberShareVnd,
+                                  ),
                               ],
                             ),
                           ),

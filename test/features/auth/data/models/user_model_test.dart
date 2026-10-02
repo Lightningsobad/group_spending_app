@@ -13,6 +13,9 @@ void main() {
         'avatarUrl': null,
         'role': 'ROLE_USER',
         'isEmailVerified': false,
+        'bankName': 'MBBank',
+        'bankAccountNumber': '0987654321',
+        'bankAccountName': 'NGUYEN VAN A',
         'createdAt': '2026-09-24T07:15:20.123Z',
       };
 
@@ -25,6 +28,9 @@ void main() {
       expect(user.avatarUrl, isNull);
       expect(user.role, 'ROLE_USER');
       expect(user.isEmailVerified, isFalse);
+      expect(user.bankName, 'MBBank');
+      expect(user.bankAccountNumber, '0987654321');
+      expect(user.bankAccountName, 'NGUYEN VAN A');
       expect(user.createdAt, '2026-09-24T07:15:20.123Z');
     });
 
@@ -36,6 +42,9 @@ void main() {
         phone: '0987654321',
         role: 'ROLE_USER',
         isEmailVerified: true,
+        bankName: 'Vietcombank',
+        bankAccountNumber: '1234567890',
+        bankAccountName: 'NGUYEN VAN A',
       );
 
       final json = user.toJson();
@@ -43,6 +52,9 @@ void main() {
       expect(json['id'], 15);
       expect(json['email'], 'nguyenvana@example.com');
       expect(json['isEmailVerified'], isTrue);
+      expect(json['bankName'], 'Vietcombank');
+      expect(json['bankAccountNumber'], '1234567890');
+      expect(json['bankAccountName'], 'NGUYEN VAN A');
     });
   });
 

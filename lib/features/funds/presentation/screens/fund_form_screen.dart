@@ -9,6 +9,8 @@ import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../groups/data/models/group_model.dart';
+import '../../../groups/domain/repositories/groups_repository.dart';
+import '../../../groups/presentation/cubit/groups_cubit.dart';
 import '../../domain/entities/fund_entities.dart';
 import '../../domain/repositories/funds_repository.dart';
 import '../cubit/fund_detail_cubit.dart';
@@ -47,6 +49,9 @@ class _FundFormScreenState extends State<FundFormScreen> {
   DateTime? _selectedDueDate;
   final Set<int> _selectedUserIds = {};
   final Set<int> _paidUserIds = {};
+  List<GroupMemberModel> _members = [];
+  bool _isLoadingMembers = false;
+  String? _groupName;
 
   final List<num> _quickAmountPresets = [
     50000,
@@ -60,7 +65,16 @@ class _FundFormScreenState extends State<FundFormScreen> {
   @override
   void initState() {
     super.initState();
+    _groupName = widget.group?.name;
+    if (widget.group?.members != null && widget.group!.members!.isNotEmpty) {
+      _members = List.from(widget.group!.members!);
+    }
     _initData();
+    if (_members.isEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _loadMembers();
+      });
+    }
   }
 
   void _initData() {
@@ -82,15 +96,82 @@ class _FundFormScreenState extends State<FundFormScreen> {
           _paidUserIds.add(m.userId);
         }
       }
+      if (_members.isEmpty && initialFund.members.isNotEmpty) {
+        _members = initialFund.members
+            .map((m) => GroupMemberModel(
+                  id: m.userId,
+                  userId: m.userId,
+                  fullName: m.fullName,
+                  avatarUrl: m.avatarUrl,
+                  role: 'MEMBER',
+                ))
+            .toList();
+      }
     } else {
       _amountController.text = '200000';
-      // Default: select all group members
-      final members = widget.group?.members;
-      if (members != null && members.isNotEmpty) {
-        for (final m in members) {
+      if (_members.isNotEmpty) {
+        for (final m in _members) {
           _selectedUserIds.add(m.userId);
         }
       }
+    }
+  }
+
+  Future<void> _loadMembers() async {
+    if (!mounted) return;
+    setState(() => _isLoadingMembers = true);
+    List<GroupMemberModel> fetched = [];
+    String? fetchedGroupName;
+    try {
+      final repo = context.read<GroupsRepository>();
+      final summaries = await repo.getGroupMembers(widget.groupId);
+      if (summaries.isNotEmpty) {
+        fetched = summaries.map((s) => GroupMemberModel.fromSummary(s)).toList();
+      }
+    } catch (_) {}
+
+    if (fetched.isEmpty || _groupName == null || _groupName!.isEmpty) {
+      try {
+        final detail = await context.read<GroupsCubit>().loadGroupDetails(widget.groupId);
+        if (detail != null) {
+          fetchedGroupName = detail.name;
+          if (fetched.isEmpty && detail.members != null && detail.members!.isNotEmpty) {
+            fetched = detail.members!;
+          }
+        }
+      } catch (_) {}
+    }
+
+    if (mounted) {
+      setState(() {
+        if (fetchedGroupName != null && (_groupName == null || _groupName!.isEmpty)) {
+          _groupName = fetchedGroupName;
+        }
+        if (fetched.isNotEmpty) {
+          if (widget.isEdit && widget.initialFund != null) {
+            final existingIds = fetched.map((m) => m.userId).toSet();
+            for (final fm in widget.initialFund!.members) {
+              if (!existingIds.contains(fm.userId)) {
+                fetched.add(GroupMemberModel(
+                  id: fm.userId,
+                  userId: fm.userId,
+                  fullName: fm.fullName,
+                  avatarUrl: fm.avatarUrl,
+                  role: 'MEMBER',
+                ));
+              }
+            }
+          }
+          _members = fetched;
+
+          if (!widget.isEdit && _selectedUserIds.isEmpty) {
+            for (final m in _members) {
+              _selectedUserIds.add(m.userId);
+            }
+          }
+        }
+        _isLoadingMembers = false;
+      });
     }
   }
 
@@ -139,7 +220,7 @@ class _FundFormScreenState extends State<FundFormScreen> {
   }
 
   void _toggleSelectAll() {
-    final members = widget.group?.members ?? const [];
+    final members = _members;
     setState(() {
       if (_selectedUserIds.length == members.length) {
         // Deselect all except PAID members
@@ -250,8 +331,8 @@ class _FundFormScreenState extends State<FundFormScreen> {
           final colors = innerContext.colors;
           final tr = innerContext.l10n;
           final currentUserId = innerContext.watch<AuthCubit>().state.currentUser?.id;
-          final groupName = widget.group?.name ?? '';
-          final members = widget.group?.members ?? const [];
+          final groupName = _groupName ?? widget.group?.name ?? '';
+          final members = _members;
 
           return BlocConsumer<FundDetailCubit, FundDetailState>(
             listenWhen: (prev, curr) =>
@@ -791,8 +872,38 @@ class _FundFormScreenState extends State<FundFormScreen> {
                                     ),
                                     const SizedBox(height: 10),
 
-                                    // Member list
-                                    ...members.map((member) {
+                                    if (_isLoadingMembers && members.isEmpty)
+                                      const Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(vertical: 24.0),
+                                          child: CircularProgressIndicator(),
+                                        ),
+                                      )
+                                    else if (members.isEmpty)
+                                      Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(vertical: 20.0),
+                                          child: Column(
+                                            children: [
+                                              Icon(LucideIcons.users, size: 36, color: colors.textMuted),
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                'Không có thành viên nào trong nhóm',
+                                                style: AppTextStyle.medium(fontSize: 13, color: colors.textSecondary),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              TextButton.icon(
+                                                onPressed: _loadMembers,
+                                                icon: const Icon(LucideIcons.refreshCw, size: 14),
+                                                label: const Text('Thử lại'),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    else
+                                      // Member list
+                                      ...members.map((member) {
                                       final isSelected = _selectedUserIds.contains(member.userId);
                                       final isPaid = _paidUserIds.contains(member.userId);
                                       final isMe = currentUserId != null && currentUserId == member.userId;

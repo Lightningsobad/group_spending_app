@@ -86,7 +86,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneOptionalTag => '(Optional)';
 
   @override
-  String get phoneHint => 'Enter phone number';
+  String get phoneHint => 'Enter phone number (optional)';
 
   @override
   String get registerButton => 'Create New Account';
@@ -242,10 +242,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get vietqrTitle => 'PAYMENT RECEIVING ACCOUNT (VIETQR)';
 
   @override
-  String get defaultBankInfo => 'Techcombank - 19034829104018';
-
-  @override
-  String get defaultAccountName => 'NGUYEN NHAT MINH';
+  String get noBankData => 'No data';
 
   @override
   String get appearanceLanguageSection => 'APPEARANCE & LANGUAGE';
@@ -1334,4 +1331,273 @@ class AppLocalizationsEn extends AppLocalizations {
   String paidMemberCannotBeRemoved(String name) {
     return 'Cannot remove member who has already paid ($name).';
   }
+
+  @override
+  String get memberListSectionHeader => 'MEMBER LIST';
+
+  @override
+  String get inviteMoreAction => 'Invite more';
+
+  @override
+  String get searchMemberPlaceholder => 'Search members...';
+
+  @override
+  String get pendingMembersSectionTitle => 'PENDING MEMBERS';
+
+  @override
+  String pendingRequestsCountBadge(int count) {
+    return '$count requests';
+  }
+
+  @override
+  String get pendingRequestsSubtitle => 'Join requests waiting for approval';
+
+  @override
+  String get joinRequestLabel => 'Request to join group';
+
+  @override
+  String get rejectAction => 'Reject';
+
+  @override
+  String get approveAction => 'Approve';
+
+  @override
+  String approveJoinTitle(String name) {
+    return 'Approve $name to join group?';
+  }
+
+  @override
+  String get includePastFundsCheckbox =>
+      'Require contributing to past group fund collections';
+
+  @override
+  String get includePastFundsHint =>
+      'If selected, new member will be added to the required list of all previous open fund collections.';
+
+  @override
+  String get confirmApproveButton => 'Confirm approval';
+
+  @override
+  String get touchMemberForFinancialHint =>
+      'Tap member to view financial & debt details';
+
+  @override
+  String membersCountHeader(int count) {
+    return '$count members';
+  }
+
+  @override
+  String get youPill => 'You';
+
+  @override
+  String get roleLeaderBadge => 'LEADER';
+
+  @override
+  String get roleMemberBadge => 'MEMBER';
+
+  @override
+  String get roleLeaderFull => 'LEADER (ADMIN)';
+
+  @override
+  String get roleMemberFull => 'MEMBER';
+
+  @override
+  String get backToGroup => 'Back to group';
+
+  @override
+  String get onTimeDebtRateLabel => 'PAID ON TIME';
+
+  @override
+  String get goodRateLabel => 'Good';
+
+  @override
+  String get onTimeFundRateLabel => 'FUND ON TIME';
+
+  @override
+  String get personalAndAccountInfoSection => 'PERSONAL & ACCOUNT INFO';
+
+  @override
+  String get bankAccountTitle => 'Bank account';
+
+  @override
+  String get vietQrCodeButton => 'VietQR Code';
+
+  @override
+  String get copyAction => 'Copy';
+
+  @override
+  String get copiedAccountNumber => 'Bank account number copied';
+
+  @override
+  String get copiedEmail => 'Email copied';
+
+  @override
+  String get copiedPhone => 'Phone number copied';
+
+  @override
+  String get groupDebtStatusSection => 'DEBT STATUS IN GROUP';
+
+  @override
+  String get totalRefundedByGroup => 'Total refunded by group:';
+
+  @override
+  String get totalToPayGroup => 'Total to pay to group:';
+
+  @override
+  String get netResultLabel => 'Net result:';
+
+  @override
+  String participatedExpensesSection(int count) {
+    return 'PARTICIPATED EXPENSES ($count)';
+  }
+
+  @override
+  String get paidFullBadge => 'Paid fully';
+
+  @override
+  String paidByMemberPrefix(String name) {
+    return 'By $name';
+  }
+
+  @override
+  String memberSharePrefix(String amount) {
+    return 'Share: $amount';
+  }
+
+  @override
+  String get kickMemberDangerTitle => 'REMOVE MEMBER FROM GROUP';
+
+  @override
+  String get kickMemberDangerSubtitle =>
+      'Permanently remove this member from the spending group. The member will no longer have access to group expenses and debts.';
+
+  @override
+  String get kickMemberButton => 'Kick from group';
+
+  @override
+  String get debtWarningTitle => 'Warning: Unsettled debt';
+
+  @override
+  String debtWarningMessage(String amount) {
+    return 'This member still has an unsettled debt of $amount. Removing them may make it difficult to reconcile. Are you sure you want to remove this member?';
+  }
+
+  @override
+  String get receivableWarningTitle => 'Warning: Uncollected money';
+
+  @override
+  String receivableWarningMessage(String amount) {
+    return 'This member currently has uncollected money of $amount. Are you sure you want to proceed with removal?';
+  }
+
+  @override
+  String get confirmKickMemberTitle => 'Confirm remove member?';
+
+  @override
+  String confirmKickMemberMessage(String fullName, String groupName) {
+    return 'Are you sure you want to remove $fullName from group \"$groupName\"?';
+  }
+
+  @override
+  String get stillKickButton => 'Still remove';
+
+  @override
+  String get continueKickButton => 'Continue remove';
+
+  @override
+  String get confirmKickButton => 'Confirm remove';
+
+  @override
+  String get noBankInfoYet => 'No bank account info updated yet';
+
+  @override
+  String get noExpensesYet => 'No expenses participated yet.';
+
+  @override
+  String get leaveGroupSectionTitle => 'LEAVE GROUP';
+
+  @override
+  String get leaveGroupSectionSubtitle =>
+      'Leave this spending group. You will not be able to review transactions and debts unless invited again.';
+
+  @override
+  String get leaveGroupButton => 'Leave group';
+
+  @override
+  String get leaveGroupConfirmTitle => 'Confirm leaving group?';
+
+  @override
+  String leaveGroupConfirmMessage(String groupName) {
+    return 'Are you sure you want to leave group \"$groupName\"?';
+  }
+
+  @override
+  String get deleteGroupSectionTitle => 'DELETE GROUP';
+
+  @override
+  String get deleteGroupSectionSubtitle =>
+      'Permanently delete this group along with all expenses, debts and funds from application.';
+
+  @override
+  String get editProfileTitle => 'Update Profile';
+
+  @override
+  String get editProfileSubtitle =>
+      'Edit your profile and VietQR payout account';
+
+  @override
+  String get fullNameRequired => 'Full name cannot be blank';
+
+  @override
+  String get bankNameLabel => 'Payout Bank (VietQR)';
+
+  @override
+  String get bankNameHint => 'Select bank from list';
+
+  @override
+  String get selectBankPrompt => 'Select bank';
+
+  @override
+  String get searchBankHint => 'Search by name, short name or BIN...';
+
+  @override
+  String get bankAccountNumberLabel => 'Bank account number';
+
+  @override
+  String get bankAccountNumberHint => 'Enter bank account number';
+
+  @override
+  String get bankAccountNameLabel => 'Account holder name';
+
+  @override
+  String get bankAccountNameHint => 'NGUYEN VAN A (uppercase without accents)';
+
+  @override
+  String get tapToViewQrHint => 'Tap to view VietQR';
+
+  @override
+  String get tapToSetupBankHint => 'Tap to set up account';
+
+  @override
+  String get changeAvatarPrompt => 'Change avatar';
+
+  @override
+  String get chooseFromGallery => 'Choose from gallery';
+
+  @override
+  String get takePhoto => 'Take new photo';
+
+  @override
+  String get updateProfileSuccess => 'Profile updated successfully!';
+
+  @override
+  String get imageTooLargeError =>
+      'Avatar image exceeds 10MB limit. Please choose another image.';
+
+  @override
+  String get loadBanksFailed =>
+      'Failed to load banks. Please check your internet connection.';
+
+  @override
+  String get noBanksFound => 'No matching banks found';
 }

@@ -142,5 +142,42 @@ void main() {
       expect(share3, 0);
       expect(share1 + share2, 100000);
     });
+
+    test('updateMembers correctly populates members, payer and selected participants', () {
+      final repo = MockExpensesRepository();
+      // Initially initialized with empty members
+      final cubit = ExpenseFormCubit(
+        repo,
+        groupId: 1,
+        members: const [],
+        currentUserId: 0,
+      );
+
+      expect(cubit.state.members, isEmpty);
+      expect(cubit.state.paidByUserId, 0);
+      expect(cubit.state.selectedParticipantUserIds, isEmpty);
+
+      // Members loaded asynchronously
+      cubit.updateMembers(members, currentUserId: 102);
+
+      expect(cubit.state.members.length, 3);
+      expect(cubit.state.paidByUserId, 102); // current user selected as payer
+      expect(cubit.state.selectedParticipantUserIds, {101, 102, 103}); // all selected
+    });
+
+    test('updateGroup correctly updates groupId and groupName', () {
+      final repo = MockExpensesRepository();
+      final cubit = ExpenseFormCubit(
+        repo,
+        groupId: 1,
+        groupName: 'Group 1',
+        members: members,
+        currentUserId: 101,
+      );
+
+      cubit.updateGroup(2, 'Group 2');
+      expect(cubit.state.groupId, 2);
+      expect(cubit.state.groupName, 'Group 2');
+    });
   });
 }
