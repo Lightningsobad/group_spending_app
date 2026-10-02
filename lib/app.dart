@@ -30,6 +30,10 @@ import 'features/funds/data/datasources/funds_remote_data_source.dart';
 import 'features/funds/data/repositories/funds_repository_impl.dart';
 import 'features/funds/domain/repositories/funds_repository.dart';
 import 'features/funds/presentation/cubit/funds_cubit.dart';
+import 'features/expenses/data/datasources/expenses_remote_data_source.dart';
+import 'features/expenses/data/repositories/expenses_repository_impl.dart';
+import 'features/expenses/domain/repositories/expenses_repository.dart';
+import 'features/expenses/presentation/cubit/expenses_cubit.dart';
 import 'features/groups/data/datasources/groups_remote_data_source.dart';
 import 'features/groups/data/repositories/groups_repository_impl.dart';
 import 'features/groups/domain/repositories/groups_repository.dart';
@@ -48,11 +52,13 @@ class FairShareApp extends StatefulWidget {
   final GroupsRepository? groupsRepository;
   final AnalyticsRepository? analyticsRepository;
   final FundsRepository? fundsRepository;
+  final ExpensesRepository? expensesRepository;
   final DashboardCubit? dashboardCubit;
   final GroupsCubit? groupsCubit;
   final AnalyticsTabCubit? analyticsTabCubit;
   final DebtsCubit? debtsCubit;
   final FundsCubit? fundsCubit;
+  final ExpensesCubit? expensesCubit;
 
   const FairShareApp({
     super.key,
@@ -68,11 +74,13 @@ class FairShareApp extends StatefulWidget {
     this.groupsRepository,
     this.analyticsRepository,
     this.fundsRepository,
+    this.expensesRepository,
     this.dashboardCubit,
     this.groupsCubit,
     this.analyticsTabCubit,
     this.debtsCubit,
     this.fundsCubit,
+    this.expensesCubit,
   });
 
   @override
@@ -92,6 +100,7 @@ class _FairShareAppState extends State<FairShareApp> {
   late final AnalyticsRepository _analyticsRepository;
   late final FundsRepository _fundsRepository;
   late final FundsCubit _fundsCubit;
+  late final ExpensesRepository _expensesRepository;
   late final GoRouter _router;
   bool _isDisposed = false;
 
@@ -160,6 +169,10 @@ class _FairShareAppState extends State<FairShareApp> {
           sessionCoordinator: _sessionCoordinator,
           dataSyncCoordinator: _dataSyncCoordinator,
         );
+    final expensesRemoteDataSource = ExpensesRemoteDataSourceImpl(_apiClient);
+    _expensesRepository =
+        widget.expensesRepository ??
+        ExpensesRepositoryImpl(remoteDataSource: expensesRemoteDataSource);
 
     _router = AppRouter.createRouter(
       routes: buildAppRoutes(
@@ -167,6 +180,7 @@ class _FairShareAppState extends State<FairShareApp> {
         groupsCubit: widget.groupsCubit,
         analyticsTabCubit: widget.analyticsTabCubit,
         debtsCubit: widget.debtsCubit,
+        expensesCubit: widget.expensesCubit,
       ),
       sessionCoordinator: _sessionCoordinator,
     );
@@ -195,6 +209,7 @@ class _FairShareAppState extends State<FairShareApp> {
         RepositoryProvider<GroupsRepository>.value(value: _groupsRepository),
         RepositoryProvider<AnalyticsRepository>.value(value: _analyticsRepository),
         RepositoryProvider<FundsRepository>.value(value: _fundsRepository),
+        RepositoryProvider<ExpensesRepository>.value(value: _expensesRepository),
       ],
       child: MultiBlocProvider(
         providers: [

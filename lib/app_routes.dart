@@ -12,6 +12,7 @@ import 'features/debts/presentation/cubit/debts_cubit.dart';
 import 'features/funds/presentation/screens/fund_detail_screen.dart';
 import 'features/funds/presentation/screens/fund_form_screen.dart';
 import 'features/groups/data/models/group_model.dart';
+import 'features/expenses/presentation/cubit/expenses_cubit.dart';
 import 'features/groups/presentation/cubit/groups_cubit.dart';
 import 'features/main_shell/presentation/screens/main_shell_screen.dart';
 import 'features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -24,6 +25,7 @@ List<RouteBase> buildAppRoutes({
   GlobalAnalyticsCubit? globalAnalyticsCubit,
   GroupAnalyticsCubit? groupAnalyticsCubit,
   DebtsCubit? debtsCubit,
+  ExpensesCubit? expensesCubit,
 }) {
   return [
     GoRoute(path: '/splash', builder: (context, state) => const FlashScreen()),
@@ -55,6 +57,7 @@ List<RouteBase> buildAppRoutes({
           groupsCubit: groupsCubit,
           analyticsTabCubit: analyticsTabCubit,
           debtsCubit: debtsCubit,
+          expensesCubit: expensesCubit,
         );
       },
     ),

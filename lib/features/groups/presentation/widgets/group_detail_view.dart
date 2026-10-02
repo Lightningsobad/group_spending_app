@@ -17,6 +17,7 @@ import 'group_invite_qr_sheet.dart';
 import '../../../funds/presentation/cubit/funds_cubit.dart';
 import '../../../funds/presentation/screens/fund_form_screen.dart';
 import '../../../funds/presentation/widgets/group_funds_tab_view.dart';
+import '../../../expenses/presentation/widgets/group_expenses_tab_view.dart';
 
 class GroupDetailView extends StatefulWidget {
   final GroupModel initialGroup;
@@ -1150,30 +1151,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
   }
 
   Widget _buildExpensesTab(dynamic colors, dynamic tr) {
-    return Container(
-      padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: colors.cardBackground,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: colors.cardBorder),
-      ),
-      child: Column(
-        children: [
-          Icon(LucideIcons.receipt, size: 48, color: colors.textMuted),
-          const SizedBox(height: 12),
-          Text(
-            tr.tabExpenses,
-            style: AppTextStyle.bold(fontSize: 16, color: colors.textPrimary),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            tr.commonGroupSpendingSubtitle,
-            style: AppTextStyle.regular(fontSize: 13, color: colors.textSecondary),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
+    return GroupExpensesTabView(group: _group);
   }
 
   Widget _buildFundsTab(dynamic colors, dynamic tr) {
