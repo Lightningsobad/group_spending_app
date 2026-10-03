@@ -105,13 +105,7 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void _onGoogleAuth() {
-    final tr = context.l10n;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(tr.googleAuthNotice),
-        duration: const Duration(seconds: 2),
-      ),
-    );
+    context.read<AuthCubit>().loginWithGoogle();
   }
 
   void _onForgotPassword() {
@@ -194,7 +188,10 @@ class _AuthScreenState extends State<AuthScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        SocialAuthButtons(onGoogleAuth: _onGoogleAuth),
+                        SocialAuthButtons(
+                          onGoogleAuth: _onGoogleAuth,
+                          isLoading: state.isLoading,
+                        ),
                         const SizedBox(height: 18),
                         if (_isLoginMode)
                           LoginForm(

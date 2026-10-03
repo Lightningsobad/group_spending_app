@@ -102,6 +102,45 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> loginWithGoogle() async {
+    emit(state.copyWith(status: AuthStatus.loading, clearErrors: true));
+    try {
+      final result = await _repository.signInWithGoogle();
+      if (result != null) {
+        emit(
+          state.copyWith(
+            status: AuthStatus.authenticated,
+            currentUser: result.user,
+            clearErrors: true,
+          ),
+        );
+      } else {
+        emit(
+          state.copyWith(
+            status: AuthStatus.unauthenticated,
+            clearErrors: true,
+          ),
+        );
+      }
+    } on AppException catch (e) {
+      emit(
+        state.copyWith(
+          status: AuthStatus.error,
+          errorMessage: e.message,
+          fieldErrors: e.fieldErrors,
+        ),
+      );
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: AuthStatus.error,
+          errorMessage:
+              'Đăng nhập bằng Google không thành công. Vui lòng thử lại.',
+        ),
+      );
+    }
+  }
+
   Future<void> register({
     required String email,
     required String password,

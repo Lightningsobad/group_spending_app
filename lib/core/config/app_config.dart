@@ -11,6 +11,18 @@ class AppConfig {
     defaultValue: 'https://api.groupspending.xyz/api/v1',
   );
 
+  static const String googleServerClientId = String.fromEnvironment(
+    'GOOGLE_SERVER_CLIENT_ID',
+    defaultValue:
+        '417752871964-3plv3ntal9gjbou5s1bj7n1mqt6u4n2n.apps.googleusercontent.com',
+  );
+
+  static const String googleClientId = String.fromEnvironment(
+    'GOOGLE_CLIENT_ID',
+    defaultValue:
+        '417752871964-608qvusfmtjed38t1mkhj7hrbq7095nk.apps.googleusercontent.com',
+  );
+
   static const Duration connectTimeout = Duration(seconds: 15);
   static const Duration receiveTimeout = Duration(seconds: 15);
 

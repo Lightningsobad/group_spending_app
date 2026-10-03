@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'package:google_sign_in/google_sign_in.dart';
+import '../../../../core/config/app_config.dart';
+import '../../../../core/errors/app_exception.dart';
 import '../../../../core/session/session_coordinator.dart';
 import '../../../../core/storage/app_preferences.dart';
 import '../../../../core/storage/token_storage.dart';
@@ -12,12 +15,18 @@ class AuthRepositoryImpl implements AuthRepository {
   final TokenStorage tokenStorage;
   final AppPreferences appPreferences;
   final SessionCoordinator? sessionCoordinator;
+  final Future<String?> Function()? googleIdTokenProvider;
+  final Future<void> Function()? googleSignOutHandler;
+
+  static bool _isGoogleSignInInitialized = false;
 
   AuthRepositoryImpl({
     required this.remoteDataSource,
     required this.tokenStorage,
     required this.appPreferences,
     this.sessionCoordinator,
+    this.googleIdTokenProvider,
+    this.googleSignOutHandler,
   });
 
   @override
@@ -136,10 +145,86 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<AuthTokensEntity?> signInWithGoogle({String? fcmToken}) async {
+    final idToken =
+        await (googleIdTokenProvider ?? _defaultGoogleIdTokenProvider)();
+    if (idToken == null || idToken.isEmpty) {
+      return null;
+    }
+
+    final response = await remoteDataSource.loginWithGoogle(
+      idToken: idToken,
+      fcmToken: fcmToken,
+    );
+
+    if (response.accessToken != null && response.refreshToken != null) {
+      if (sessionCoordinator != null) {
+        await sessionCoordinator!.commitTokens(
+          accessToken: response.accessToken!,
+          refreshToken: response.refreshToken!,
+          forEpoch: sessionCoordinator!.sessionEpoch,
+        );
+      } else {
+        await tokenStorage.saveTokens(
+          accessToken: response.accessToken!,
+          refreshToken: response.refreshToken!,
+        );
+      }
+
+      if (response.user != null) {
+        await appPreferences.saveUserInfo(
+          fullName: response.user!.fullName,
+          email: response.user!.email,
+        );
+      }
+    }
+
+    return response.toEntity();
+  }
+
+  Future<String?> _defaultGoogleIdTokenProvider() async {
+    if (!_isGoogleSignInInitialized) {
+      await GoogleSignIn.instance.initialize(
+        serverClientId: AppConfig.googleServerClientId,
+        clientId: AppConfig.googleClientId,
+      );
+      _isGoogleSignInInitialized = true;
+    }
+    try {
+      final account = await GoogleSignIn.instance.authenticate(
+        scopeHint: const ['email', 'profile', 'openid'],
+      );
+      final idToken = account.authentication.idToken;
+      if (idToken == null || idToken.isEmpty) {
+        throw const AppException(
+          message: 'Không lấy được mã xác thực ID Token từ Google.',
+        );
+      }
+      return idToken;
+    } on GoogleSignInException catch (e) {
+      if (e.code == GoogleSignInExceptionCode.canceled) {
+        return null;
+      }
+      throw AppException(
+        message: 'Đăng nhập Google thất bại: ${e.description ?? e.code.name}',
+      );
+    }
+  }
+
+  Future<void> _defaultGoogleSignOutHandler() async {
+    try {
+      await GoogleSignIn.instance.signOut();
+    } catch (_) {}
+  }
+
+  @override
   Future<void> logout() async {
     final refreshToken = await tokenStorage.getRefreshToken();
     try {
       await remoteDataSource.logout(refreshToken: refreshToken);
+    } catch (_) {}
+    try {
+      await (googleSignOutHandler ?? _defaultGoogleSignOutHandler)();
     } catch (_) {}
     if (sessionCoordinator != null) {
       await sessionCoordinator!.clearSession();

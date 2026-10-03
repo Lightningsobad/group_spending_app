@@ -25,6 +25,11 @@ abstract class AuthRemoteDataSource {
     required String password,
   });
 
+  Future<AuthResponseModel> loginWithGoogle({
+    required String idToken,
+    String? fcmToken,
+  });
+
   Future<AuthResponseModel> refreshToken({required String refreshToken});
 
   Future<void> logout({String? refreshToken});
@@ -106,6 +111,24 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final response = await _client.post(
       '/auth/login',
       data: {'email': email.trim().toLowerCase(), 'password': password},
+    );
+
+    final data = response.data['data'] as Map<String, dynamic>;
+    return AuthResponseModel.fromJson(data, requireTokens: true);
+  }
+
+  @override
+  Future<AuthResponseModel> loginWithGoogle({
+    required String idToken,
+    String? fcmToken,
+  }) async {
+    final response = await _client.post(
+      '/auth/google',
+      data: {
+        'idToken': idToken,
+        if (fcmToken != null && fcmToken.trim().isNotEmpty)
+          'fcmToken': fcmToken.trim(),
+      },
     );
 
     final data = response.data['data'] as Map<String, dynamic>;
