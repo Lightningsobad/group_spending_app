@@ -197,8 +197,6 @@ void main() {
 
   group('AuthRemoteDataSource Password Reset Tests', () {
     test('forgotPassword sends POST /auth/forgot-password with correct payload', () async {
-  group('AuthRemoteDataSource loginWithGoogle Tests', () {
-    test('loginWithGoogle sends POST /auth/google and parses AuthResponseModel', () async {
       RequestOptions? capturedOptions;
       dynamic capturedData;
 
@@ -287,6 +285,36 @@ void main() {
     });
 
     test('throws AppException when server returns 400 or 429', () async {
+      final customDio = Dio(BaseOptions(baseUrl: 'https://api.groupspending.xyz/api/v1'));
+      customDio.httpClientAdapter = TestStubAdapter((options) async {
+        return jsonResponse({
+          'success': false,
+          'message': 'Mã đã bị khóa do nhập sai quá 5 lần.',
+          'errorCode': 'RESET_CODE_LOCKED',
+        }, statusCode: 400);
+      });
+
+      final apiClient = ApiClient(tokenStorage: tokenStorage, customDio: customDio);
+      final dataSource = AuthRemoteDataSourceImpl(apiClient);
+
+      expect(
+        () => dataSource.verifyResetPassword(email: 'user@example.com', code: 'WRONG123'),
+        throwsA(isA<AppException>().having((e) => e.errorCode, 'errorCode', 'RESET_CODE_LOCKED')),
+      );
+    });
+  });
+
+  group('AuthRemoteDataSource loginWithGoogle Tests', () {
+    test('loginWithGoogle sends POST /auth/google and parses AuthResponseModel', () async {
+      RequestOptions? capturedOptions;
+      dynamic capturedData;
+
+      final customDio = Dio(BaseOptions(baseUrl: 'https://api.groupspending.xyz/api/v1'));
+      customDio.httpClientAdapter = TestStubAdapter((options) async {
+        capturedOptions = options;
+        capturedData = options.data;
+        return jsonResponse({
+          'success': true,
           'message': 'Đăng nhập bằng Google thành công',
           'data': {
             'accessToken': 'google_jwt_access_token',
@@ -332,17 +360,6 @@ void main() {
       customDio.httpClientAdapter = TestStubAdapter((options) async {
         return jsonResponse({
           'success': false,
-          'message': 'Mã đã bị khóa do nhập sai quá 5 lần.',
-          'errorCode': 'RESET_CODE_LOCKED',
-        }, statusCode: 400);
-      });
-
-      final apiClient = ApiClient(tokenStorage: tokenStorage, customDio: customDio);
-      final dataSource = AuthRemoteDataSourceImpl(apiClient);
-
-      expect(
-        () => dataSource.verifyResetPassword(email: 'user@example.com', code: 'WRONG123'),
-        throwsA(isA<AppException>().having((e) => e.errorCode, 'errorCode', 'RESET_CODE_LOCKED')),
           'message': 'Mã xác thực Google không hợp lệ hoặc đã hết hạn',
           'errorCode': 'INVALID_TOKEN',
           'errors': null,

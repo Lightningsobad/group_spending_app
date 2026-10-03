@@ -93,6 +93,24 @@ class MockAuthRemoteDataSource implements AuthRemoteDataSource {
   @override
   Future<void> updateFcmToken({required String fcmToken}) =>
       throw UnimplementedError();
+
+  @override
+  Future<void> forgotPassword({required String email}) =>
+      throw UnimplementedError();
+
+  @override
+  Future<String> verifyResetPassword({
+    required String email,
+    required String code,
+  }) =>
+      throw UnimplementedError();
+
+  @override
+  Future<void> resetPassword({
+    required String resetToken,
+    required String newPassword,
+  }) =>
+      throw UnimplementedError();
 }
 
 void main() {
