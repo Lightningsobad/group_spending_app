@@ -6,8 +6,13 @@ import '../../../../l10n/l10n.dart';
 
 class SocialAuthButtons extends StatelessWidget {
   final VoidCallback onGoogleAuth;
+  final bool isLoading;
 
-  const SocialAuthButtons({super.key, required this.onGoogleAuth});
+  const SocialAuthButtons({
+    super.key,
+    required this.onGoogleAuth,
+    this.isLoading = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,7 @@ class SocialAuthButtons extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         OutlinedButton(
-          onPressed: onGoogleAuth,
+          onPressed: isLoading ? null : onGoogleAuth,
           style: OutlinedButton.styleFrom(
             backgroundColor: Colors.white,
             foregroundColor: AppColors.textDark,
@@ -31,13 +36,25 @@ class SocialAuthButtons extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SvgPicture.asset('assets/auth/google.svg', width: 20, height: 20),
+              if (isLoading)
+                const SizedBox(
+                  width: 18,
+                  height: 18,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      AppColors.emeraldForest,
+                    ),
+                  ),
+                )
+              else
+                SvgPicture.asset('assets/auth/google.svg', width: 20, height: 20),
               const SizedBox(width: 10),
               Text(
                 tr.continueWithGoogle,
                 style: AppTextStyle.semiBold(
                   fontSize: 14,
-                  color: AppColors.textDark,
+                  color: isLoading ? AppColors.textSecondary : AppColors.textDark,
                 ),
               ),
             ],

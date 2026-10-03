@@ -22,6 +22,8 @@ abstract class AuthRepository {
     required String password,
   });
 
+  Future<AuthTokensEntity?> signInWithGoogle({String? fcmToken});
+
   Future<AuthTokensEntity> refreshToken({required String refreshToken});
 
   Future<void> logout();

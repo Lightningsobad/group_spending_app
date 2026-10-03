@@ -197,6 +197,8 @@ void main() {
 
   group('AuthRemoteDataSource Password Reset Tests', () {
     test('forgotPassword sends POST /auth/forgot-password with correct payload', () async {
+  group('AuthRemoteDataSource loginWithGoogle Tests', () {
+    test('loginWithGoogle sends POST /auth/google and parses AuthResponseModel', () async {
       RequestOptions? capturedOptions;
       dynamic capturedData;
 
@@ -285,6 +287,47 @@ void main() {
     });
 
     test('throws AppException when server returns 400 or 429', () async {
+          'message': 'Đăng nhập bằng Google thành công',
+          'data': {
+            'accessToken': 'google_jwt_access_token',
+            'refreshToken': 'google_jwt_refresh_token',
+            'tokenType': 'Bearer',
+            'user': {
+              'id': 15,
+              'email': 'user@gmail.com',
+              'fullName': 'Nguyễn Văn A',
+              'role': 'ROLE_USER',
+              'isEmailVerified': true,
+            },
+          },
+          'timestamp': '2026-10-04T00:00:00Z',
+        });
+      });
+
+      final apiClient = ApiClient(
+        tokenStorage: tokenStorage,
+        customDio: customDio,
+      );
+
+      final dataSource = AuthRemoteDataSourceImpl(apiClient);
+
+      final response = await dataSource.loginWithGoogle(
+        idToken: 'mock_google_id_token_xyz',
+        fcmToken: 'mock_fcm_token_123',
+      );
+
+      expect(capturedOptions, isNotNull);
+      expect(capturedOptions!.method, 'POST');
+      expect(capturedOptions!.path, '/auth/google');
+      expect(capturedData['idToken'], 'mock_google_id_token_xyz');
+      expect(capturedData['fcmToken'], 'mock_fcm_token_123');
+      expect(response.accessToken, 'google_jwt_access_token');
+      expect(response.refreshToken, 'google_jwt_refresh_token');
+      expect(response.user?.email, 'user@gmail.com');
+      expect(response.user?.fullName, 'Nguyễn Văn A');
+    });
+
+    test('loginWithGoogle throws AppException on 401 INVALID_TOKEN', () async {
       final customDio = Dio(BaseOptions(baseUrl: 'https://api.groupspending.xyz/api/v1'));
       customDio.httpClientAdapter = TestStubAdapter((options) async {
         return jsonResponse({
@@ -300,6 +343,27 @@ void main() {
       expect(
         () => dataSource.verifyResetPassword(email: 'user@example.com', code: 'WRONG123'),
         throwsA(isA<AppException>().having((e) => e.errorCode, 'errorCode', 'RESET_CODE_LOCKED')),
+          'message': 'Mã xác thực Google không hợp lệ hoặc đã hết hạn',
+          'errorCode': 'INVALID_TOKEN',
+          'errors': null,
+        }, statusCode: 401);
+      });
+
+      final apiClient = ApiClient(
+        tokenStorage: tokenStorage,
+        customDio: customDio,
+      );
+
+      final dataSource = AuthRemoteDataSourceImpl(apiClient);
+
+      expect(
+        () => dataSource.loginWithGoogle(idToken: 'invalid_token'),
+        throwsA(
+          isA<AppException>()
+              .having((e) => e.statusCode, 'statusCode', 401)
+              .having((e) => e.errorCode, 'errorCode', 'INVALID_TOKEN')
+              .having((e) => e.message, 'message', 'Mã xác thực Google không hợp lệ hoặc đã hết hạn'),
+        ),
       );
     });
   });

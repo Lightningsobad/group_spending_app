@@ -114,6 +114,7 @@ void main() {
   });
 
   testWidgets('AuthScreen tapping "Quên mật khẩu?" navigates to /forgot-password', (
+  testWidgets('AuthScreen Google login button navigates to /dashboard when authenticated', (
     WidgetTester tester,
   ) async {
     SharedPreferences.setMockInitialValues({});
@@ -129,6 +130,9 @@ void main() {
           path: '/forgot-password',
           builder: (context, state) =>
               const Scaffold(body: Text('Forgot Password Screen')),
+          path: '/dashboard',
+          builder: (context, state) =>
+              const Scaffold(body: Text('Dashboard Screen')),
         ),
       ],
     );
@@ -153,5 +157,11 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Forgot Password Screen'), findsOneWidget);
+    final googleBtn = find.text('Tiếp tục với Google');
+    expect(googleBtn, findsOneWidget);
+    await tester.tap(googleBtn);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Dashboard Screen'), findsOneWidget);
   });
 }

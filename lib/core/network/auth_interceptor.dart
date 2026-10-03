@@ -16,6 +16,7 @@ class AuthInterceptor extends Interceptor {
     '/auth/verify-email',
     '/auth/resend-verification',
     '/auth/refresh-token',
+    '/auth/google',
   };
 
   Future<String?>? _refreshFuture;

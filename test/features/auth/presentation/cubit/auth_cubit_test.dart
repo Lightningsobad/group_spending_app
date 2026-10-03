@@ -28,6 +28,8 @@ class FakeAuthRepository implements AuthRepository {
   @override
   Future<String?> getSavedAccessToken() async => isAuth ? 'token' : null;
 
+  bool googleSignInCancelled = false;
+
   @override
   Future<AuthTokensEntity> login({
     required String email,
@@ -44,6 +46,25 @@ class FakeAuthRepository implements AuthRepository {
     return AuthTokensEntity(
       accessToken: 'access_123',
       refreshToken: 'refresh_123',
+      user: sampleUser,
+    );
+  }
+
+  @override
+  Future<AuthTokensEntity?> signInWithGoogle({String? fcmToken}) async {
+    if (exceptionToThrow != null) throw exceptionToThrow!;
+    if (googleSignInCancelled) return null;
+    isAuth = true;
+    if (sessionCoordinator != null) {
+      await sessionCoordinator.commitTokens(
+        accessToken: 'google_access_123',
+        refreshToken: 'google_refresh_123',
+        forEpoch: sessionCoordinator.sessionEpoch,
+      );
+    }
+    return AuthTokensEntity(
+      accessToken: 'google_access_123',
+      refreshToken: 'google_refresh_123',
       user: sampleUser,
     );
   }
@@ -270,6 +291,39 @@ void main() {
     test('loadUserProfile updates currentUser', () async {
       await cubit.loadUserProfile();
       expect(cubit.state.currentUser, equals(fakeRepo.sampleUser));
+    });
+
+    test('loginWithGoogle success emits authenticated and sets user', () async {
+      await cubit.loginWithGoogle();
+
+      expect(cubit.state.status, AuthStatus.authenticated);
+      expect(cubit.state.currentUser, equals(fakeRepo.sampleUser));
+      expect(cubit.state.errorMessage, isNull);
+    });
+
+    test('loginWithGoogle cancelled by user emits unauthenticated', () async {
+      fakeRepo.googleSignInCancelled = true;
+
+      await cubit.loginWithGoogle();
+
+      expect(cubit.state.status, AuthStatus.unauthenticated);
+      expect(cubit.state.errorMessage, isNull);
+    });
+
+    test('loginWithGoogle error emits error state with message', () async {
+      fakeRepo.exceptionToThrow = const AppException(
+        message: 'Mã xác thực Google không hợp lệ hoặc đã hết hạn',
+        errorCode: 'INVALID_TOKEN',
+        statusCode: 401,
+      );
+
+      await cubit.loginWithGoogle();
+
+      expect(cubit.state.status, AuthStatus.error);
+      expect(
+        cubit.state.errorMessage,
+        'Mã xác thực Google không hợp lệ hoặc đã hết hạn',
+      );
     });
   });
 }
