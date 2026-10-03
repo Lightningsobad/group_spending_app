@@ -1,4 +1,4 @@
-package com.example.group_spending_app
+package com.lightning.fairshare
 
 import io.flutter.embedding.android.FlutterActivity
 
