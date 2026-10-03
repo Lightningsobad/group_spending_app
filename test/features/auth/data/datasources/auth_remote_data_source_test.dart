@@ -194,4 +194,113 @@ void main() {
       expect(capturedOptions!.queryParameters['fcmToken'], 'fcm_sample_token_123');
     });
   });
+
+  group('AuthRemoteDataSource Password Reset Tests', () {
+    test('forgotPassword sends POST /auth/forgot-password with correct payload', () async {
+      RequestOptions? capturedOptions;
+      dynamic capturedData;
+
+      final customDio = Dio(BaseOptions(baseUrl: 'https://api.groupspending.xyz/api/v1'));
+      customDio.httpClientAdapter = TestStubAdapter((options) async {
+        capturedOptions = options;
+        capturedData = options.data;
+        return jsonResponse({
+          'success': true,
+          'message': 'Hướng dẫn đặt lại mật khẩu đã được gửi.',
+          'data': null,
+        });
+      });
+
+      final apiClient = ApiClient(tokenStorage: tokenStorage, customDio: customDio);
+      final dataSource = AuthRemoteDataSourceImpl(apiClient);
+
+      await dataSource.forgotPassword(email: ' User@Example.COM ');
+
+      expect(capturedOptions, isNotNull);
+      expect(capturedOptions!.method, 'POST');
+      expect(capturedOptions!.path, '/auth/forgot-password');
+      expect(capturedData['email'], 'user@example.com');
+    });
+
+    test('verifyResetPassword sends POST /auth/verify-reset-password and returns resetToken', () async {
+      RequestOptions? capturedOptions;
+      dynamic capturedData;
+
+      final customDio = Dio(BaseOptions(baseUrl: 'https://api.groupspending.xyz/api/v1'));
+      customDio.httpClientAdapter = TestStubAdapter((options) async {
+        capturedOptions = options;
+        capturedData = options.data;
+        return jsonResponse({
+          'success': true,
+          'message': 'Xác thực mã thành công',
+          'data': {
+            'resetToken': 'mock_token_abc_123',
+            'expiresIn': 300,
+          },
+        });
+      });
+
+      final apiClient = ApiClient(tokenStorage: tokenStorage, customDio: customDio);
+      final dataSource = AuthRemoteDataSourceImpl(apiClient);
+
+      final token = await dataSource.verifyResetPassword(
+        email: ' user@example.com ',
+        code: ' 4f9a2b1c ',
+      );
+
+      expect(token, 'mock_token_abc_123');
+      expect(capturedOptions!.method, 'POST');
+      expect(capturedOptions!.path, '/auth/verify-reset-password');
+      expect(capturedData['email'], 'user@example.com');
+      expect(capturedData['code'], '4F9A2B1C');
+    });
+
+    test('resetPassword sends POST /auth/reset-password with token and new password', () async {
+      RequestOptions? capturedOptions;
+      dynamic capturedData;
+
+      final customDio = Dio(BaseOptions(baseUrl: 'https://api.groupspending.xyz/api/v1'));
+      customDio.httpClientAdapter = TestStubAdapter((options) async {
+        capturedOptions = options;
+        capturedData = options.data;
+        return jsonResponse({
+          'success': true,
+          'message': 'Đặt lại mật khẩu thành công.',
+          'data': null,
+        });
+      });
+
+      final apiClient = ApiClient(tokenStorage: tokenStorage, customDio: customDio);
+      final dataSource = AuthRemoteDataSourceImpl(apiClient);
+
+      await dataSource.resetPassword(
+        resetToken: 'mock_token_abc_123',
+        newPassword: 'MyNewPassword123',
+      );
+
+      expect(capturedOptions!.method, 'POST');
+      expect(capturedOptions!.path, '/auth/reset-password');
+      expect(capturedData['resetToken'], 'mock_token_abc_123');
+      expect(capturedData['newPassword'], 'MyNewPassword123');
+    });
+
+    test('throws AppException when server returns 400 or 429', () async {
+      final customDio = Dio(BaseOptions(baseUrl: 'https://api.groupspending.xyz/api/v1'));
+      customDio.httpClientAdapter = TestStubAdapter((options) async {
+        return jsonResponse({
+          'success': false,
+          'message': 'Mã đã bị khóa do nhập sai quá 5 lần.',
+          'errorCode': 'RESET_CODE_LOCKED',
+        }, statusCode: 400);
+      });
+
+      final apiClient = ApiClient(tokenStorage: tokenStorage, customDio: customDio);
+      final dataSource = AuthRemoteDataSourceImpl(apiClient);
+
+      expect(
+        () => dataSource.verifyResetPassword(email: 'user@example.com', code: 'WRONG123'),
+        throwsA(isA<AppException>().having((e) => e.errorCode, 'errorCode', 'RESET_CODE_LOCKED')),
+      );
+    });
+  });
 }

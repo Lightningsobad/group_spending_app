@@ -1625,4 +1625,72 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noBanksFound => 'No matching banks found';
+
+  @override
+  String get forgotPasswordTitle => 'Forgot Password';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Enter your email address to receive a password reset verification code.';
+
+  @override
+  String get sendResetCodeButton => 'Send Verification Code';
+
+  @override
+  String get backToLogin => 'Back to Login';
+
+  @override
+  String get verifyResetPasswordTitle => 'Verify Password Reset';
+
+  @override
+  String get verifyResetPasswordSubtitle =>
+      'Please enter the 8-character security code sent to your inbox:';
+
+  @override
+  String get resetOtpInputLabel => '8-character verification code';
+
+  @override
+  String get resetOtpInputHint => '8 alphanumeric characters (e.g. 47285BAF)';
+
+  @override
+  String get verifyAndProceedButton => 'Verify Code & Reset Password';
+
+  @override
+  String get resendCodeIn => 'Resend code in ';
+
+  @override
+  String get resendCodeNow => 'Resend code';
+
+  @override
+  String get setNewPasswordTitle => 'Set New Password';
+
+  @override
+  String get setNewPasswordSubtitle =>
+      'Set up a new password for email account:';
+
+  @override
+  String get savePasswordButton => 'Save New Password & Login';
+
+  @override
+  String get passwordMinLengthError =>
+      'Password must be at least 6 characters.';
+
+  @override
+  String get resetPasswordSuccessMessage =>
+      'Password reset successful! Please log in with your new password.';
+
+  @override
+  String get otpInvalidError => 'Verification code is invalid or has expired.';
+
+  @override
+  String get otpCodeLockedError =>
+      'Verification code locked due to exceeding 5 attempts. Please request a new code.';
+
+  @override
+  String get resetTokenExpiredError =>
+      'Password reset session has expired (5 minutes). Please start over.';
+
+  @override
+  String get resendRateLimitError =>
+      'Please wait for the cooldown timer before requesting a new code.';
 }

@@ -112,4 +112,46 @@ void main() {
 
     expect(find.text('Dashboard Screen'), findsOneWidget);
   });
+
+  testWidgets('AuthScreen tapping "Quên mật khẩu?" navigates to /forgot-password', (
+    WidgetTester tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await AppPreferences.init();
+    final fakeRepo = FakeAuthRepository();
+    final authCubit = AuthCubit(fakeRepo);
+
+    final router = GoRouter(
+      initialLocation: '/auth',
+      routes: [
+        GoRoute(path: '/auth', builder: (context, state) => const AuthScreen()),
+        GoRoute(
+          path: '/forgot-password',
+          builder: (context, state) =>
+              const Scaffold(body: Text('Forgot Password Screen')),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<AppPreferences>.value(value: prefs),
+          RepositoryProvider<AuthRepository>.value(value: fakeRepo),
+        ],
+        child: BlocProvider<AuthCubit>.value(
+          value: authCubit,
+          child: MaterialApp.router(routerConfig: router),
+        ),
+      ),
+    );
+
+    final forgotPwBtn = find.text('Quên mật khẩu?');
+    expect(forgotPwBtn, findsOneWidget);
+
+    await tester.tap(forgotPwBtn);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Forgot Password Screen'), findsOneWidget);
+  });
 }

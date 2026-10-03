@@ -49,4 +49,16 @@ abstract class AuthRepository {
   });
 
   Future<void> updateFcmToken({required String fcmToken});
+
+  Future<void> forgotPassword({required String email});
+
+  Future<String> verifyResetPassword({
+    required String email,
+    required String code,
+  });
+
+  Future<void> resetPassword({
+    required String resetToken,
+    required String newPassword,
+  });
 }

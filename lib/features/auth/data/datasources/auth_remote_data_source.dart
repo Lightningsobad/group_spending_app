@@ -48,6 +48,18 @@ abstract class AuthRemoteDataSource {
   });
 
   Future<void> updateFcmToken({required String fcmToken});
+
+  Future<void> forgotPassword({required String email});
+
+  Future<String> verifyResetPassword({
+    required String email,
+    required String code,
+  });
+
+  Future<void> resetPassword({
+    required String resetToken,
+    required String newPassword,
+  });
 }
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
@@ -217,6 +229,45 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     await _client.put(
       '/users/me/fcm-token',
       queryParameters: {'fcmToken': fcmToken.trim()},
+    );
+  }
+
+  @override
+  Future<void> forgotPassword({required String email}) async {
+    await _client.post(
+      '/auth/forgot-password',
+      data: {'email': email.trim().toLowerCase()},
+    );
+  }
+
+  @override
+  Future<String> verifyResetPassword({
+    required String email,
+    required String code,
+  }) async {
+    final response = await _client.post(
+      '/auth/verify-reset-password',
+      data: {
+        'email': email.trim().toLowerCase(),
+        'code': code.trim().toUpperCase(),
+      },
+    );
+
+    final data = response.data['data'] as Map<String, dynamic>;
+    return data['resetToken'] as String;
+  }
+
+  @override
+  Future<void> resetPassword({
+    required String resetToken,
+    required String newPassword,
+  }) async {
+    await _client.post(
+      '/auth/reset-password',
+      data: {
+        'resetToken': resetToken,
+        'newPassword': newPassword,
+      },
     );
   }
 }

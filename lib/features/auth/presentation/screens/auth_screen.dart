@@ -115,12 +115,7 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   void _onForgotPassword() {
-    final tr = context.l10n;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(tr.forgotPasswordNotice),
-      ),
-    );
+    context.push('/forgot-password');
   }
 
   @override
