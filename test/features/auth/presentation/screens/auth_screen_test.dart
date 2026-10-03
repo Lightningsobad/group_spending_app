@@ -112,4 +112,45 @@ void main() {
 
     expect(find.text('Dashboard Screen'), findsOneWidget);
   });
+
+  testWidgets('AuthScreen Google login button navigates to /dashboard when authenticated', (
+    WidgetTester tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await AppPreferences.init();
+    final fakeRepo = FakeAuthRepository();
+    final authCubit = AuthCubit(fakeRepo);
+
+    final router = GoRouter(
+      initialLocation: '/auth',
+      routes: [
+        GoRoute(path: '/auth', builder: (context, state) => const AuthScreen()),
+        GoRoute(
+          path: '/dashboard',
+          builder: (context, state) =>
+              const Scaffold(body: Text('Dashboard Screen')),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider<AppPreferences>.value(value: prefs),
+          RepositoryProvider<AuthRepository>.value(value: fakeRepo),
+        ],
+        child: BlocProvider<AuthCubit>.value(
+          value: authCubit,
+          child: MaterialApp.router(routerConfig: router),
+        ),
+      ),
+    );
+
+    final googleBtn = find.text('Tiếp tục với Google');
+    expect(googleBtn, findsOneWidget);
+    await tester.tap(googleBtn);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Dashboard Screen'), findsOneWidget);
+  });
 }
