@@ -401,6 +401,31 @@ class AppLocalizationsVi extends AppLocalizations {
       'Tính năng Thêm chi tiêu đang được tích hợp.';
 
   @override
+  String get chooseGroupToAddExpenseTitle => 'Chọn nhóm muốn thêm khoản chi';
+
+  @override
+  String get filterActiveOnly => 'Đang hoạt động';
+
+  @override
+  String get filterAllGroupsOnly => 'Tất cả nhóm';
+
+  @override
+  String get filterAdminOnly => 'Tôi làm Admin';
+
+  @override
+  String get filterAllTopicsOnly => 'Tất cả chủ đề';
+
+  @override
+  String get balanceLabel => 'Số dư';
+
+  @override
+  String get noSuitableGroupQuestion => 'Chưa có nhóm phù hợp?';
+
+  @override
+  String get cannotAddExpenseToArchivedGroup =>
+      'Nhóm này đã được lưu trữ, không thể thêm khoản chi.';
+
+  @override
   String get createGroupAction => 'Tạo nhóm';
 
   @override

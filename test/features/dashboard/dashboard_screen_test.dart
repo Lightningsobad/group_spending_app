@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:group_spending_app/core/theme/app_theme.dart';
 import 'package:group_spending_app/features/dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'package:group_spending_app/features/dashboard/presentation/screens/dashboard_screen.dart';
@@ -179,6 +180,26 @@ void main() {
 
       // Complete async tasks
       await tester.pumpAndSettle();
+    });
+
+    testWidgets('tapping Thêm chi tiêu opens SelectGroupForExpenseView and back returns to dashboard', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest(locale: const Locale('vi')));
+      await tester.pumpAndSettle();
+
+      // Tap 'Thêm chi tiêu'
+      await tester.tap(find.text('Thêm chi tiêu'));
+      await tester.pumpAndSettle();
+
+      // Expect SelectGroupForExpenseView to be visible
+      expect(find.text('Chọn nhóm muốn thêm khoản chi'), findsOneWidget);
+
+      // Tap back button
+      await tester.tap(find.byIcon(LucideIcons.arrowLeft));
+      await tester.pumpAndSettle();
+
+      // Expect dashboard to be visible again
+      expect(find.text('TỔNG QUAN SỐ DƯ TÀI CHÍNH'), findsOneWidget);
+      expect(find.text('Chọn nhóm muốn thêm khoản chi'), findsNothing);
     });
   });
 }
