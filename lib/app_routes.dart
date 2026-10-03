@@ -6,6 +6,7 @@ import 'features/analytics/presentation/screens/global_analytics_screen.dart';
 import 'features/analytics/presentation/screens/group_analytics_screen.dart';
 import 'features/auth/presentation/screens/auth_screen.dart';
 import 'features/auth/presentation/screens/flash_screen.dart';
+import 'features/auth/presentation/screens/forgot_password_screen.dart';
 import 'features/auth/presentation/screens/verify_otp_screen.dart';
 import 'features/dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'features/debts/presentation/cubit/debts_cubit.dart';
@@ -35,6 +36,10 @@ List<RouteBase> buildAppRoutes({
         final mode = state.uri.queryParameters['mode'] ?? 'login';
         return AuthScreen(initialMode: mode);
       },
+    ),
+    GoRoute(
+      path: '/forgot-password',
+      builder: (context, state) => const ForgotPasswordScreen(),
     ),
     GoRoute(
       path: '/verify-otp',

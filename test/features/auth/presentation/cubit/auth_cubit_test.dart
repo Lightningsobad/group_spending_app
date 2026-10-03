@@ -154,6 +154,28 @@ class FakeAuthRepository implements AuthRepository {
   Future<void> updateFcmToken({required String fcmToken}) async {
     if (exceptionToThrow != null) throw exceptionToThrow!;
   }
+
+  @override
+  Future<void> forgotPassword({required String email}) async {
+    if (exceptionToThrow != null) throw exceptionToThrow!;
+  }
+
+  @override
+  Future<String> verifyResetPassword({
+    required String email,
+    required String code,
+  }) async {
+    if (exceptionToThrow != null) throw exceptionToThrow!;
+    return 'mock_reset_token_32_bytes_random';
+  }
+
+  @override
+  Future<void> resetPassword({
+    required String resetToken,
+    required String newPassword,
+  }) async {
+    if (exceptionToThrow != null) throw exceptionToThrow!;
+  }
 }
 
 void main() {

@@ -300,4 +300,31 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> updateFcmToken({required String fcmToken}) async {
     await remoteDataSource.updateFcmToken(fcmToken: fcmToken);
   }
+
+  @override
+  Future<void> forgotPassword({required String email}) async {
+    await remoteDataSource.forgotPassword(email: email);
+  }
+
+  @override
+  Future<String> verifyResetPassword({
+    required String email,
+    required String code,
+  }) async {
+    return await remoteDataSource.verifyResetPassword(
+      email: email,
+      code: code,
+    );
+  }
+
+  @override
+  Future<void> resetPassword({
+    required String resetToken,
+    required String newPassword,
+  }) async {
+    await remoteDataSource.resetPassword(
+      resetToken: resetToken,
+      newPassword: newPassword,
+    );
+  }
 }

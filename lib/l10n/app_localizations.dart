@@ -3037,6 +3037,126 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Không tìm thấy ngân hàng phù hợp'**
   String get noBanksFound;
+
+  /// No description provided for @forgotPasswordTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quên mật khẩu'**
+  String get forgotPasswordTitle;
+
+  /// No description provided for @forgotPasswordSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập địa chỉ email của bạn để nhận mã xác thực đặt lại mật khẩu.'**
+  String get forgotPasswordSubtitle;
+
+  /// No description provided for @sendResetCodeButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi mã xác thực'**
+  String get sendResetCodeButton;
+
+  /// No description provided for @backToLogin.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quay lại đăng nhập'**
+  String get backToLogin;
+
+  /// No description provided for @verifyResetPasswordTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác thực đặt lại mật khẩu'**
+  String get verifyResetPasswordTitle;
+
+  /// No description provided for @verifyResetPasswordSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng nhập mã bảo mật 8 ký tự đã được gửi đến hộp thư:'**
+  String get verifyResetPasswordSubtitle;
+
+  /// No description provided for @resetOtpInputLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã xác thực 8 ký tự'**
+  String get resetOtpInputLabel;
+
+  /// No description provided for @resetOtpInputHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'8 ký tự chữ và số (VD: 47285BAF)'**
+  String get resetOtpInputHint;
+
+  /// No description provided for @verifyAndProceedButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận mã & Đặt lại mật khẩu'**
+  String get verifyAndProceedButton;
+
+  /// No description provided for @resendCodeIn.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi lại mã sau '**
+  String get resendCodeIn;
+
+  /// No description provided for @resendCodeNow.
+  ///
+  /// In vi, this message translates to:
+  /// **'Gửi lại mã'**
+  String get resendCodeNow;
+
+  /// No description provided for @setNewPasswordTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt lại mật khẩu mới'**
+  String get setNewPasswordTitle;
+
+  /// No description provided for @setNewPasswordSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thiết lập mật khẩu mới cho tài khoản email:'**
+  String get setNewPasswordSubtitle;
+
+  /// No description provided for @savePasswordButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu mật khẩu mới & Đăng nhập'**
+  String get savePasswordButton;
+
+  /// No description provided for @passwordMinLengthError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mật khẩu phải có tối thiểu 6 ký tự.'**
+  String get passwordMinLengthError;
+
+  /// No description provided for @resetPasswordSuccessMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đặt lại mật khẩu thành công! Vui lòng đăng nhập bằng mật khẩu mới.'**
+  String get resetPasswordSuccessMessage;
+
+  /// No description provided for @otpInvalidError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã xác thực không hợp lệ hoặc đã hết hạn.'**
+  String get otpInvalidError;
+
+  /// No description provided for @otpCodeLockedError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã xác thực đã bị khóa do nhập sai quá 5 lần. Vui lòng yêu cầu mã mới.'**
+  String get otpCodeLockedError;
+
+  /// No description provided for @resetTokenExpiredError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Phiên đặt lại mật khẩu đã hết hạn (5 phút). Vui lòng thực hiện lại từ đầu.'**
+  String get resetTokenExpiredError;
+
+  /// No description provided for @resendRateLimitError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Vui lòng chờ hết thời gian đếm ngược trước khi yêu cầu gửi lại mã.'**
+  String get resendRateLimitError;
 }
 
 class _AppLocalizationsDelegate

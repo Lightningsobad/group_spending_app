@@ -113,6 +113,7 @@ void main() {
     expect(find.text('Dashboard Screen'), findsOneWidget);
   });
 
+  testWidgets('AuthScreen tapping "Quên mật khẩu?" navigates to /forgot-password', (
   testWidgets('AuthScreen Google login button navigates to /dashboard when authenticated', (
     WidgetTester tester,
   ) async {
@@ -126,6 +127,9 @@ void main() {
       routes: [
         GoRoute(path: '/auth', builder: (context, state) => const AuthScreen()),
         GoRoute(
+          path: '/forgot-password',
+          builder: (context, state) =>
+              const Scaffold(body: Text('Forgot Password Screen')),
           path: '/dashboard',
           builder: (context, state) =>
               const Scaffold(body: Text('Dashboard Screen')),
@@ -146,6 +150,13 @@ void main() {
       ),
     );
 
+    final forgotPwBtn = find.text('Quên mật khẩu?');
+    expect(forgotPwBtn, findsOneWidget);
+
+    await tester.tap(forgotPwBtn);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Forgot Password Screen'), findsOneWidget);
     final googleBtn = find.text('Tiếp tục với Google');
     expect(googleBtn, findsOneWidget);
     await tester.tap(googleBtn);

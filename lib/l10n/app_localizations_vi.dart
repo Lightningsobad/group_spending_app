@@ -1623,4 +1623,71 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get noBanksFound => 'Không tìm thấy ngân hàng phù hợp';
+
+  @override
+  String get forgotPasswordTitle => 'Quên mật khẩu';
+
+  @override
+  String get forgotPasswordSubtitle =>
+      'Nhập địa chỉ email của bạn để nhận mã xác thực đặt lại mật khẩu.';
+
+  @override
+  String get sendResetCodeButton => 'Gửi mã xác thực';
+
+  @override
+  String get backToLogin => 'Quay lại đăng nhập';
+
+  @override
+  String get verifyResetPasswordTitle => 'Xác thực đặt lại mật khẩu';
+
+  @override
+  String get verifyResetPasswordSubtitle =>
+      'Vui lòng nhập mã bảo mật 8 ký tự đã được gửi đến hộp thư:';
+
+  @override
+  String get resetOtpInputLabel => 'Mã xác thực 8 ký tự';
+
+  @override
+  String get resetOtpInputHint => '8 ký tự chữ và số (VD: 47285BAF)';
+
+  @override
+  String get verifyAndProceedButton => 'Xác nhận mã & Đặt lại mật khẩu';
+
+  @override
+  String get resendCodeIn => 'Gửi lại mã sau ';
+
+  @override
+  String get resendCodeNow => 'Gửi lại mã';
+
+  @override
+  String get setNewPasswordTitle => 'Đặt lại mật khẩu mới';
+
+  @override
+  String get setNewPasswordSubtitle =>
+      'Thiết lập mật khẩu mới cho tài khoản email:';
+
+  @override
+  String get savePasswordButton => 'Lưu mật khẩu mới & Đăng nhập';
+
+  @override
+  String get passwordMinLengthError => 'Mật khẩu phải có tối thiểu 6 ký tự.';
+
+  @override
+  String get resetPasswordSuccessMessage =>
+      'Đặt lại mật khẩu thành công! Vui lòng đăng nhập bằng mật khẩu mới.';
+
+  @override
+  String get otpInvalidError => 'Mã xác thực không hợp lệ hoặc đã hết hạn.';
+
+  @override
+  String get otpCodeLockedError =>
+      'Mã xác thực đã bị khóa do nhập sai quá 5 lần. Vui lòng yêu cầu mã mới.';
+
+  @override
+  String get resetTokenExpiredError =>
+      'Phiên đặt lại mật khẩu đã hết hạn (5 phút). Vui lòng thực hiện lại từ đầu.';
+
+  @override
+  String get resendRateLimitError =>
+      'Vui lòng chờ hết thời gian đếm ngược trước khi yêu cầu gửi lại mã.';
 }
