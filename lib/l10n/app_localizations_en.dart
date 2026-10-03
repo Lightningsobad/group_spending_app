@@ -403,6 +403,31 @@ class AppLocalizationsEn extends AppLocalizations {
       'Add expense feature is being integrated.';
 
   @override
+  String get chooseGroupToAddExpenseTitle => 'Select group to add expense';
+
+  @override
+  String get filterActiveOnly => 'Active';
+
+  @override
+  String get filterAllGroupsOnly => 'All groups';
+
+  @override
+  String get filterAdminOnly => 'I\'m Admin';
+
+  @override
+  String get filterAllTopicsOnly => 'All categories';
+
+  @override
+  String get balanceLabel => 'Balance';
+
+  @override
+  String get noSuitableGroupQuestion => 'No suitable group?';
+
+  @override
+  String get cannotAddExpenseToArchivedGroup =>
+      'This group is archived, cannot add expense.';
+
+  @override
   String get createGroupAction => 'Create group';
 
   @override

@@ -80,4 +80,22 @@ class GroupCategoryHelper {
         return 'Khác';
     }
   }
+
+  static String getShortLabel(String category) {
+    switch (category) {
+      case 'Apartment':
+        return 'Căn hộ chung';
+      case 'Sport & Clubs':
+        return 'Thể thao';
+      case 'Travel & Trip':
+        return 'Du lịch';
+      case 'Friends & Dining':
+        return 'Ăn uống';
+      case 'Works & Project':
+        return 'Công việc';
+      case 'Other':
+      default:
+        return 'Khác';
+    }
+  }
 }

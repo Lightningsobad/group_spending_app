@@ -824,6 +824,54 @@ abstract class AppLocalizations {
   /// **'Tính năng Thêm chi tiêu đang được tích hợp.'**
   String get addExpenseFeatureNotice;
 
+  /// No description provided for @chooseGroupToAddExpenseTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn nhóm muốn thêm khoản chi'**
+  String get chooseGroupToAddExpenseTitle;
+
+  /// No description provided for @filterActiveOnly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang hoạt động'**
+  String get filterActiveOnly;
+
+  /// No description provided for @filterAllGroupsOnly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả nhóm'**
+  String get filterAllGroupsOnly;
+
+  /// No description provided for @filterAdminOnly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tôi làm Admin'**
+  String get filterAdminOnly;
+
+  /// No description provided for @filterAllTopicsOnly.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả chủ đề'**
+  String get filterAllTopicsOnly;
+
+  /// No description provided for @balanceLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số dư'**
+  String get balanceLabel;
+
+  /// No description provided for @noSuitableGroupQuestion.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có nhóm phù hợp?'**
+  String get noSuitableGroupQuestion;
+
+  /// No description provided for @cannotAddExpenseToArchivedGroup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhóm này đã được lưu trữ, không thể thêm khoản chi.'**
+  String get cannotAddExpenseToArchivedGroup;
+
   /// No description provided for @createGroupAction.
   ///
   /// In vi, this message translates to:
