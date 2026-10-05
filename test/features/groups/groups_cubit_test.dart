@@ -44,7 +44,11 @@ class FakeGroupsRepo implements GroupsRepository {
   Duration delay = Duration.zero;
 
   @override
-  Future<List<GroupModel>> getMyGroups({String? filter, String? search}) async {
+  Future<List<GroupModel>> getMyGroups({
+    String? filter,
+    String? category,
+    String? search,
+  }) async {
     if (delay > Duration.zero) await Future.delayed(delay);
     if (exception != null) throw exception!;
     return groups;
@@ -224,6 +228,48 @@ void main() {
 
       cubit.setFilter('ADMIN');
       expect(cubit.state.filteredGroups, hasLength(2));
+    });
+
+    test('category filter works correctly for specific topics and resets with ALL', () async {
+      await cubit.loadGroups();
+
+      // Filter by Apartment
+      cubit.setCategory('Apartment');
+      expect(cubit.state.filteredGroups, hasLength(1));
+      expect(cubit.state.filteredGroups.first.name, 'Chung cư Sunrise Room');
+
+      // Filter by Sport & Clubs
+      cubit.setCategory('Sport & Clubs');
+      expect(cubit.state.filteredGroups, hasLength(1));
+      expect(cubit.state.filteredGroups.first.name, 'Đội Cầu Lông Ba Đình');
+
+      // Filter by non-existent category
+      cubit.setCategory('Works & Project');
+      expect(cubit.state.filteredGroups, isEmpty);
+
+      // Reset with ALL
+      cubit.setCategory('ALL');
+      expect(cubit.state.filteredGroups, hasLength(3));
+    });
+
+    test('combined status and category filter works correctly', () async {
+      await cubit.loadGroups();
+
+      // ACTIVE + Travel & Trip -> 0 (since Travel & Trip is ARCHIVED)
+      cubit.setFilter('ACTIVE');
+      cubit.setCategory('Travel & Trip');
+      expect(cubit.state.filteredGroups, isEmpty);
+
+      // ARCHIVED + Travel & Trip -> 1
+      cubit.setFilter('ARCHIVED');
+      expect(cubit.state.filteredGroups, hasLength(1));
+      expect(cubit.state.filteredGroups.first.name, 'Đi phượt Đà Lạt 2024');
+
+      // ADMIN + Apartment -> 1
+      cubit.setFilter('ADMIN');
+      cubit.setCategory('Apartment');
+      expect(cubit.state.filteredGroups, hasLength(1));
+      expect(cubit.state.filteredGroups.first.name, 'Chung cư Sunrise Room');
     });
 
     test('search filters groups by keyword', () async {

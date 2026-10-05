@@ -72,6 +72,15 @@ void main() {
       expect(find.text('Đã lưu trữ (1)'), findsOneWidget);
       expect(find.text('Tôi quản lý (2)'), findsOneWidget);
 
+      // Topic filter chips
+      expect(find.text('Tất cả chủ đề'), findsOneWidget);
+      expect(find.text('Căn hộ & Phòng trọ'), findsOneWidget);
+      expect(find.text('Du lịch & Dã ngoại'), findsOneWidget);
+      expect(find.text('Thể thao & CLB'), findsOneWidget);
+      expect(find.text('Bạn bè & Ăn uống'), findsOneWidget);
+      expect(find.text('Công việc & Dự án'), findsOneWidget);
+      expect(find.text('Khác'), findsOneWidget);
+
       // Groups list
       expect(find.text('Chung cư Sunrise Room'), findsOneWidget);
       expect(find.text('Đội Cầu Lông Ba Đình'), findsOneWidget);
@@ -97,6 +106,9 @@ void main() {
       expect(find.text('Active (2)'), findsOneWidget);
       expect(find.text('Archived (1)'), findsOneWidget);
       expect(find.text('Managed by me (2)'), findsOneWidget);
+
+      // Topic filter reset chip in English
+      expect(find.text('All categories'), findsOneWidget);
     });
 
     testWidgets('filtering by Đã lưu trữ shows only archived groups', (tester) async {
@@ -109,6 +121,42 @@ void main() {
       expect(find.text('Đi phượt Đà Lạt 2024'), findsOneWidget);
       expect(find.text('Chung cư Sunrise Room'), findsNothing);
       expect(find.text('Đội Cầu Lông Ba Đình'), findsNothing);
+    });
+
+    testWidgets('filtering by topic chips filters displayed list and resets with Tất cả chủ đề', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Tap 'Căn hộ & Phòng trọ' chip
+      await tester.tap(find.text('Căn hộ & Phòng trọ'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Chung cư Sunrise Room'), findsOneWidget);
+      expect(find.text('Đội Cầu Lông Ba Đình'), findsNothing);
+      expect(find.text('Đi phượt Đà Lạt 2024'), findsNothing);
+
+      // Tap 'Thể thao & CLB' chip
+      await tester.tap(find.text('Thể thao & CLB'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Đội Cầu Lông Ba Đình'), findsOneWidget);
+      expect(find.text('Chung cư Sunrise Room'), findsNothing);
+
+      // Tap 'Công việc & Dự án' chip (no groups in this category)
+      await tester.ensureVisible(find.text('Công việc & Dự án'));
+      await tester.tap(find.text('Công việc & Dự án'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Không tìm thấy nhóm phù hợp'), findsOneWidget);
+
+      // Tap 'Tất cả chủ đề' chip to reset
+      await tester.ensureVisible(find.text('Tất cả chủ đề'));
+      await tester.tap(find.text('Tất cả chủ đề'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Chung cư Sunrise Room'), findsOneWidget);
+      expect(find.text('Đội Cầu Lông Ba Đình'), findsOneWidget);
+      expect(find.text('Đi phượt Đà Lạt 2024'), findsOneWidget);
     });
 
     testWidgets('searching by name filters displayed list', (tester) async {

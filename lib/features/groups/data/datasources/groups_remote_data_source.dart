@@ -3,7 +3,11 @@ import '../models/group_member_models.dart';
 import '../models/group_model.dart';
 
 abstract class GroupsRemoteDataSource {
-  Future<List<GroupModel>> getMyGroups({String? filter, String? search});
+  Future<List<GroupModel>> getMyGroups({
+    String? filter,
+    String? category,
+    String? search,
+  });
   Future<GroupModel> getGroupDetails(int groupId);
   Future<GroupModel> createGroup({
     required String name,
@@ -47,10 +51,17 @@ class GroupsRemoteDataSourceImpl implements GroupsRemoteDataSource {
   GroupsRemoteDataSourceImpl(this._apiClient);
 
   @override
-  Future<List<GroupModel>> getMyGroups({String? filter, String? search}) async {
+  Future<List<GroupModel>> getMyGroups({
+    String? filter,
+    String? category,
+    String? search,
+  }) async {
     final queryParams = <String, dynamic>{};
     if (filter != null && filter.isNotEmpty && filter != 'ALL') {
       queryParams['filter'] = filter;
+    }
+    if (category != null && category.isNotEmpty && category != 'ALL') {
+      queryParams['category'] = category;
     }
     if (search != null && search.trim().isNotEmpty) {
       queryParams['search'] = search.trim();

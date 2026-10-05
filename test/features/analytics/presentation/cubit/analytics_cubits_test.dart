@@ -143,7 +143,11 @@ class FakeGroupsRepository implements GroupsRepository {
   ];
 
   @override
-  Future<List<GroupModel>> getMyGroups({String? filter, String? search}) async {
+  Future<List<GroupModel>> getMyGroups({
+    String? filter,
+    String? category,
+    String? search,
+  }) async {
     return mockGroups;
   }
 
