@@ -5,12 +5,12 @@ class GroupCategoryHelper {
   GroupCategoryHelper._();
 
   static const List<String> categories = [
-    'Other',
     'Apartment',
     'Travel & Trip',
     'Sport & Clubs',
     'Friends & Dining',
     'Works & Project',
+    'Other',
   ];
 
   static String getSvgPath(String category) {

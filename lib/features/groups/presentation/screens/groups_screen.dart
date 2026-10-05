@@ -226,12 +226,16 @@ class GroupsScreenState extends State<GroupsScreen> {
                 // 4. Filter Chips Bar
                 GroupsFilterBar(
                   activeFilter: state.activeFilter,
+                  activeCategory: state.activeCategory,
                   totalCount: state.totalCount,
                   activeCount: state.activeCount,
                   archivedCount: state.archivedCount,
                   adminCount: state.adminCount,
                   onFilterChanged: (filterKey) {
                     context.read<GroupsCubit>().setFilter(filterKey);
+                  },
+                  onCategoryChanged: (categoryKey) {
+                    context.read<GroupsCubit>().setCategory(categoryKey);
                   },
                 ),
                 const SizedBox(height: 16),
@@ -240,7 +244,11 @@ class GroupsScreenState extends State<GroupsScreen> {
                 if ((state.status == GroupsStatus.initial || state.isLoading) && state.groups.isEmpty)
                   ...List.generate(3, (index) => const GroupCardSkeleton())
                 else if (filteredGroups.isEmpty)
-                  GroupsEmptyView(isSearching: state.searchQuery.isNotEmpty)
+                  GroupsEmptyView(
+                    isSearching: state.searchQuery.isNotEmpty ||
+                        state.activeCategory != 'ALL' ||
+                        state.activeFilter != 'ALL',
+                  )
                 else
                   ...filteredGroups.map(
                     (group) => GroupCardWidget(

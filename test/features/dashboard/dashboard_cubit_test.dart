@@ -67,7 +67,11 @@ class FakeGroupsRepository implements GroupsRepository {
   AppException? exception;
 
   @override
-  Future<List<GroupModel>> getMyGroups({String? filter, String? search}) async {
+  Future<List<GroupModel>> getMyGroups({
+    String? filter,
+    String? category,
+    String? search,
+  }) async {
     if (exception != null) throw exception!;
     return groups;
   }

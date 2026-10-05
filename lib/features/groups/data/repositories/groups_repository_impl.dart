@@ -9,8 +9,16 @@ class GroupsRepositoryImpl implements GroupsRepository {
   GroupsRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<List<GroupModel>> getMyGroups({String? filter, String? search}) {
-    return remoteDataSource.getMyGroups(filter: filter, search: search);
+  Future<List<GroupModel>> getMyGroups({
+    String? filter,
+    String? category,
+    String? search,
+  }) {
+    return remoteDataSource.getMyGroups(
+      filter: filter,
+      category: category,
+      search: search,
+    );
   }
 
   @override

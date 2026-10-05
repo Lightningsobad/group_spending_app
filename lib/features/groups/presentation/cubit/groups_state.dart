@@ -1,11 +1,14 @@
 import '../../data/models/group_model.dart';
 
+import '../widgets/group_category_helper.dart';
+
 enum GroupsStatus { initial, loading, success, failure }
 
 class GroupsState {
   final GroupsStatus status;
   final List<GroupModel> groups;
   final String activeFilter; // 'ALL', 'ACTIVE', 'ARCHIVED', 'ADMIN'
+  final String activeCategory; // 'ALL' or GroupCategory value (e.g. 'Apartment')
   final String searchQuery;
   final GroupModel? selectedGroup;
   final bool isActionLoading;
@@ -16,6 +19,7 @@ class GroupsState {
     this.status = GroupsStatus.initial,
     this.groups = const [],
     this.activeFilter = 'ALL',
+    this.activeCategory = 'ALL',
     this.searchQuery = '',
     this.selectedGroup,
     this.isActionLoading = false,
@@ -50,6 +54,11 @@ class GroupsState {
         break;
     }
 
+    // Apply topic / category filter
+    if (activeCategory.isNotEmpty && activeCategory != 'ALL') {
+      result = result.where((g) => g.category == activeCategory).toList();
+    }
+
     // Apply search query if provided
     if (searchQuery.trim().isNotEmpty) {
       final query = searchQuery.trim().toLowerCase();
@@ -57,7 +66,10 @@ class GroupsState {
         final matchName = g.name.toLowerCase().contains(query);
         final matchDesc = (g.description ?? '').toLowerCase().contains(query);
         final matchCategory = g.category.toLowerCase().contains(query);
-        return matchName || matchDesc || matchCategory;
+        final matchCategoryLabel =
+            GroupCategoryHelper.getLabel(g.category).toLowerCase().contains(query) ||
+            GroupCategoryHelper.getShortLabel(g.category).toLowerCase().contains(query);
+        return matchName || matchDesc || matchCategory || matchCategoryLabel;
       }).toList();
     }
 
@@ -68,6 +80,7 @@ class GroupsState {
     GroupsStatus? status,
     List<GroupModel>? groups,
     String? activeFilter,
+    String? activeCategory,
     String? searchQuery,
     GroupModel? selectedGroup,
     bool? isActionLoading,
@@ -80,6 +93,7 @@ class GroupsState {
       status: status ?? this.status,
       groups: groups ?? this.groups,
       activeFilter: activeFilter ?? this.activeFilter,
+      activeCategory: activeCategory ?? this.activeCategory,
       searchQuery: searchQuery ?? this.searchQuery,
       selectedGroup: clearSelectedGroup ? null : (selectedGroup ?? this.selectedGroup),
       isActionLoading: isActionLoading ?? this.isActionLoading,

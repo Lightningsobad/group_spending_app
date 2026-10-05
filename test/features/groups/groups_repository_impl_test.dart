@@ -27,7 +27,12 @@ class FakeGroupsRemoteDataSource implements GroupsRemoteDataSource {
   }
 
   @override
-  Future<List<GroupModel>> getMyGroups({String? filter, String? search}) async => [groupDetail];
+  Future<List<GroupModel>> getMyGroups({
+    String? filter,
+    String? category,
+    String? search,
+  }) async =>
+      [groupDetail];
 
   @override
   Future<GroupModel> createGroup({required String name, String? description, String? category, String? defaultCurrency}) => throw UnimplementedError();

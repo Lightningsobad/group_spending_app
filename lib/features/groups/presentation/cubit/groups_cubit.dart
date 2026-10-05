@@ -71,6 +71,10 @@ class GroupsCubit extends Cubit<GroupsState> {
     emit(state.copyWith(activeFilter: filter));
   }
 
+  void setCategory(String category) {
+    emit(state.copyWith(activeCategory: category));
+  }
+
   void setSearchQuery(String query) {
     emit(state.copyWith(searchQuery: query));
   }
