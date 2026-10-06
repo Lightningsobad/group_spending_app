@@ -328,7 +328,7 @@ Chạy thuật toán luân chuyển dòng tiền nhằm tối ưu hóa số lư�
 
 ### 3.3. Lấy kết quả tình hình nợ thực tế theo nhóm (Get Group Actual Debts)
 
-Lấy danh sách các khoản nợ thực tế được tính toán và lưu trong CSDL giữa từng cặp thành viên trong nhóm. Hỗ trợ lọc theo trạng thái và trả về `action` cụ thể cho từng khoản nợ.
+Lấy danh sách các khoản chi tiêu và phân bổ nợ chi tiết giữa các thành viên trong nhóm, phục vụ hiển thị trực tiếp danh sách thẻ chi tiêu kèm phân bổ con nợ. Hỗ trợ combo box bộ lọc theo trạng thái nợ (`ALL`, `PENDING`, `WAITING_FOR_CONFIRMATION`, `SETTLED`) và trả về `action` cụ thể cho từng con nợ.
 
 - **Method:** `GET`
 - **Path:** `/groups/{groupId}/debts/actual`
@@ -343,7 +343,7 @@ Lấy danh sách các khoản nợ thực tế được tính toán và lưu tro
 
 | Tên tham số | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
 | :--- | :--- | :--- | :--- | :--- |
-| `status` | String (`DebtStatus`) | Không | *null* (Lấy tất cả) | Bộ lọc trạng thái nợ: `PENDING`, `WAITING_FOR_CONFIRMATION`, `SETTLED` |
+| `status` | String (`DebtStatusFilter`) | Không | `ALL` | Combo box bộ chọn trạng thái nợ: `ALL` (Tất cả), `PENDING` (Chưa thanh toán), `WAITING_FOR_CONFIRMATION` (Chờ xác nhận), `SETTLED` (Đã tất toán) |
 
 - **Header:**
   ```http
@@ -359,61 +359,102 @@ Lấy danh sách các khoản nợ thực tế được tính toán và lưu tro
     "userBalance": {
       "groupId": 10,
       "groupName": "Nhóm bạn cấp 3",
-      "youOwe": 50,
-      "youOweVnd": 50000,
-      "youAreOwed": 400,
-      "youAreOwedVnd": 400000,
-      "netBalance": 350,
-      "netBalanceVnd": 350000
+      "youOwe": 150,
+      "youOweVnd": 150000,
+      "youAreOwed": 640,
+      "youAreOwedVnd": 640000,
+      "netBalance": 490,
+      "netBalanceVnd": 490000
     },
     "actualDebts": [
       {
-        "id": 101,
-        "groupId": 10,
-        "debtorId": 1,
-        "debtorName": "Tôi (Người dùng hiện tại)",
-        "debtorAvatar": "https://cdn.example.com/avatar/user1.jpg",
-        "creditorId": 2,
-        "creditorName": "Nguyễn Văn B",
-        "creditorAvatar": "https://cdn.example.com/avatar/user2.jpg",
-        "amount": 50,
-        "amountVnd": 50000,
-        "status": "PENDING",
-        "settledAt": null,
-        "createdAt": "2026-09-27T08:00:00Z",
-        "action": "PAY"
+        "expenseId": 1,
+        "title": "Lẩu Haidilao cuối tuần",
+        "categoryName": "Ăn uống",
+        "categoryIcon": "restaurant",
+        "totalAmount": 1280,
+        "totalAmountVnd": 1280000,
+        "expenseDate": "2026-09-10",
+        "createdAt": "2026-09-10T19:30:00Z",
+        "paidByUserId": 1,
+        "paidByUserName": "Nguyễn Nhật Minh",
+        "paidByUserAvatar": "https://cdn.example.com/avatar/user1.jpg",
+        "isPaidByMe": true,
+        "debtorCount": 3,
+        "debtors": [
+          {
+            "splitId": 101,
+            "userId": 2,
+            "name": "An",
+            "avatarUrl": "https://cdn.example.com/avatar/user2.jpg",
+            "isMe": false,
+            "amount": 320,
+            "amountVnd": 320000,
+            "status": "SETTLED",
+            "action": "NONE"
+          },
+          {
+            "splitId": 102,
+            "userId": 3,
+            "name": "Hương",
+            "avatarUrl": "https://cdn.example.com/avatar/user3.jpg",
+            "isMe": false,
+            "amount": 320,
+            "amountVnd": 320000,
+            "status": "PENDING",
+            "action": "REMIND"
+          },
+          {
+            "splitId": 103,
+            "userId": 4,
+            "name": "Linh",
+            "avatarUrl": "https://cdn.example.com/avatar/user4.jpg",
+            "isMe": false,
+            "amount": 320,
+            "amountVnd": 320000,
+            "status": "WAITING_FOR_CONFIRMATION",
+            "action": "CONFIRM"
+          }
+        ]
       },
       {
-        "id": 102,
-        "groupId": 10,
-        "debtorId": 3,
-        "debtorName": "Hoàng Minh C",
-        "debtorAvatar": "https://cdn.example.com/avatar/user3.jpg",
-        "creditorId": 1,
-        "creditorName": "Tôi (Người dùng hiện tại)",
-        "creditorAvatar": "https://cdn.example.com/avatar/user1.jpg",
-        "amount": 200,
-        "amountVnd": 200000,
-        "status": "WAITING_FOR_CONFIRMATION",
-        "settledAt": null,
-        "createdAt": "2026-09-27T09:30:00Z",
-        "action": "CONFIRM"
-      },
-      {
-        "id": 99,
-        "groupId": 10,
-        "debtorId": 4,
-        "debtorName": "Đặng Thị D",
-        "debtorAvatar": "https://cdn.example.com/avatar/user4.jpg",
-        "creditorId": 1,
-        "creditorName": "Tôi (Người dùng hiện tại)",
-        "creditorAvatar": "https://cdn.example.com/avatar/user1.jpg",
-        "amount": 100,
-        "amountVnd": 100000,
-        "status": "SETTLED",
-        "settledAt": "2026-09-27T11:00:00Z",
-        "createdAt": "2026-09-26T14:00:00Z",
-        "action": "NONE"
+        "expenseId": 2,
+        "title": "Tiền Internet & Truyền hình FPT",
+        "categoryName": "Nhà ở & Điện nước",
+        "categoryIcon": "home",
+        "totalAmount": 450,
+        "totalAmountVnd": 450000,
+        "expenseDate": "2026-09-08",
+        "createdAt": "2026-09-08T10:15:00Z",
+        "paidByUserId": 2,
+        "paidByUserName": "Trần Văn An",
+        "paidByUserAvatar": "https://cdn.example.com/avatar/user2.jpg",
+        "isPaidByMe": false,
+        "debtorCount": 2,
+        "debtors": [
+          {
+            "splitId": 104,
+            "userId": 1,
+            "name": "Minh",
+            "avatarUrl": "https://cdn.example.com/avatar/user1.jpg",
+            "isMe": true,
+            "amount": 150,
+            "amountVnd": 150000,
+            "status": "PENDING",
+            "action": "PAY"
+          },
+          {
+            "splitId": 105,
+            "userId": 5,
+            "name": "Tuấn",
+            "avatarUrl": "https://cdn.example.com/avatar/user5.jpg",
+            "isMe": false,
+            "amount": 150,
+            "amountVnd": 150000,
+            "status": "PENDING",
+            "action": "NONE"
+          }
+        ]
       }
     ]
   },
