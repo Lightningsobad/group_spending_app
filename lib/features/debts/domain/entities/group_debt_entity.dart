@@ -66,41 +66,61 @@ class GroupSimplifiedDebtsEntity {
   });
 }
 
-class ActualDebtEntity {
-  final int id;
-  final int groupId;
-  final int debtorId;
-  final String debtorName;
-  final String? debtorAvatar;
-  final int creditorId;
-  final String creditorName;
-  final String? creditorAvatar;
+class ActualDebtorEntity {
+  final int splitId;
+  final int userId;
+  final String name;
+  final String? avatarUrl;
+  final bool isMe;
   final num amount;
   final num amountVnd;
   final DebtStatus status;
-  final String? settledAt;
-  final String? createdAt;
   final DebtAction action;
-  final String? expenseTitle;
-  final String? category;
 
-  const ActualDebtEntity({
-    required this.id,
-    required this.groupId,
-    required this.debtorId,
-    required this.debtorName,
-    this.debtorAvatar,
-    required this.creditorId,
-    required this.creditorName,
-    this.creditorAvatar,
+  const ActualDebtorEntity({
+    required this.splitId,
+    required this.userId,
+    required this.name,
+    this.avatarUrl,
+    this.isMe = false,
     this.amount = 0,
     this.amountVnd = 0,
     this.status = DebtStatus.pending,
-    this.settledAt,
-    this.createdAt,
     this.action = DebtAction.none,
-    this.expenseTitle,
-    this.category,
+  });
+}
+
+class ActualDebtEntity {
+  final int expenseId;
+  final String title;
+  final String categoryName;
+  final String? categoryIcon;
+  final num totalAmount;
+  final num totalAmountVnd;
+  final String? expenseDate;
+  final String? createdAt;
+  final int paidByUserId;
+  final String paidByUserName;
+  final String? paidByUserAvatar;
+  final bool isPaidByMe;
+  final int debtorCount;
+  final List<ActualDebtorEntity> debtors;
+
+  const ActualDebtEntity({
+    required this.expenseId,
+    required this.title,
+    this.categoryName = '',
+    this.categoryIcon,
+    this.totalAmount = 0,
+    this.totalAmountVnd = 0,
+    this.expenseDate,
+    this.createdAt,
+    this.paidByUserId = 0,
+    this.paidByUserName = '',
+    this.paidByUserAvatar,
+    this.isPaidByMe = false,
+    this.debtorCount = 0,
+    this.debtors = const [],
   });
 }
 
