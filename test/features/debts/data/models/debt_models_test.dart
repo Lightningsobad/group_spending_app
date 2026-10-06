@@ -91,29 +91,90 @@ void main() {
       expect(model.note, 'Gộp nợ từ các hóa đơn');
     });
 
-    test('ActualDebtModel parses from JSON correctly', () {
+    test('ActualDebtModel parses from Section 3.3 JSON correctly', () {
       final json = {
-        'id': 102,
-        'groupId': 10,
-        'debtorId': 3,
-        'debtorName': 'Hoàng Minh C',
-        'creditorId': 1,
-        'creditorName': 'Tôi',
-        'amount': 200,
-        'amountVnd': 200000,
-        'status': 'WAITING_FOR_CONFIRMATION',
-        'action': 'CONFIRM',
-        'createdAt': '2026-09-27T09:30:00Z',
+        'expenseId': 1,
+        'title': 'Lẩu Haidilao cuối tuần',
+        'categoryName': 'Ăn uống',
+        'categoryIcon': 'restaurant',
+        'totalAmount': 1280,
+        'totalAmountVnd': 1280000,
+        'expenseDate': '2026-09-10',
+        'createdAt': '2026-09-10T19:30:00Z',
+        'paidByUserId': 1,
+        'paidByUserName': 'Nguyễn Nhật Minh',
+        'paidByUserAvatar': 'https://cdn.example.com/avatar/user1.jpg',
+        'isPaidByMe': true,
+        'debtorCount': 3,
+        'debtors': [
+          {
+            'splitId': 101,
+            'userId': 2,
+            'name': 'An',
+            'avatarUrl': 'https://cdn.example.com/avatar/user2.jpg',
+            'isMe': false,
+            'amount': 320,
+            'amountVnd': 320000,
+            'status': 'SETTLED',
+            'action': 'NONE',
+          },
+          {
+            'splitId': 102,
+            'userId': 3,
+            'name': 'Hương',
+            'avatarUrl': 'https://cdn.example.com/avatar/user3.jpg',
+            'isMe': false,
+            'amount': 320,
+            'amountVnd': 320000,
+            'status': 'PENDING',
+            'action': 'REMIND',
+          },
+          {
+            'splitId': 103,
+            'userId': 4,
+            'name': 'Linh',
+            'avatarUrl': 'https://cdn.example.com/avatar/user4.jpg',
+            'isMe': false,
+            'amount': 320,
+            'amountVnd': 320000,
+            'status': 'WAITING_FOR_CONFIRMATION',
+            'action': 'CONFIRM',
+          },
+        ],
       };
 
       final model = ActualDebtModel.fromJson(json);
 
-      expect(model.id, 102);
-      expect(model.groupId, 10);
-      expect(model.debtorId, 3);
-      expect(model.status, DebtStatus.waitingForConfirmation);
-      expect(model.action, DebtAction.confirm);
-      expect(model.amountVnd, 200000);
+      expect(model.expenseId, 1);
+      expect(model.title, 'Lẩu Haidilao cuối tuần');
+      expect(model.categoryName, 'Ăn uống');
+      expect(model.totalAmountVnd, 1280000);
+      expect(model.isPaidByMe, isTrue);
+      expect(model.debtorCount, 3);
+      expect(model.debtors.length, 3);
+
+      final debtor1 = model.debtors[0];
+      expect(debtor1.splitId, 101);
+      expect(debtor1.name, 'An');
+      expect(debtor1.amountVnd, 320000);
+      expect(debtor1.status, DebtStatus.settled);
+      expect(debtor1.action, DebtAction.none);
+
+      final debtor2 = model.debtors[1];
+      expect(debtor2.splitId, 102);
+      expect(debtor2.name, 'Hương');
+      expect(debtor2.status, DebtStatus.pending);
+      expect(debtor2.action, DebtAction.remind);
+
+      final debtor3 = model.debtors[2];
+      expect(debtor3.splitId, 103);
+      expect(debtor3.name, 'Linh');
+      expect(debtor3.status, DebtStatus.waitingForConfirmation);
+      expect(debtor3.action, DebtAction.confirm);
+
+      final serialized = model.toJson();
+      expect(serialized['expenseId'], 1);
+      expect(serialized['debtors'], hasLength(3));
     });
 
     test('GroupSimplifiedDebtsModel & GroupActualDebtsModel parse correctly', () {
@@ -152,15 +213,19 @@ void main() {
         },
         'actualDebts': [
           {
-            'id': 1,
-            'groupId': 10,
-            'debtorId': 1,
-            'debtorName': 'Tôi',
-            'creditorId': 2,
-            'creditorName': 'B',
-            'amountVnd': 50000,
-            'status': 'PENDING',
-            'action': 'PAY',
+            'expenseId': 1,
+            'title': 'Tiền Internet & Truyền hình FPT',
+            'totalAmountVnd': 150000,
+            'debtors': [
+              {
+                'splitId': 104,
+                'userId': 1,
+                'name': 'Minh',
+                'amountVnd': 150000,
+                'status': 'PENDING',
+                'action': 'PAY',
+              }
+            ]
           }
         ]
       };
@@ -168,7 +233,7 @@ void main() {
       final actual = GroupActualDebtsModel.fromJson(actualJson);
       expect(actual.userBalance.netBalanceVnd, 350000);
       expect(actual.actualDebts.length, 1);
-      expect(actual.actualDebts.first.action, DebtAction.pay);
+      expect(actual.actualDebts.first.debtors.first.action, DebtAction.pay);
     });
   });
 }

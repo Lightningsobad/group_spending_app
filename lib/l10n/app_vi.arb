@@ -437,6 +437,18 @@
   "debtStatusPending": "Chưa thanh toán",
   "debtStatusWaiting": "Chờ xác nhận",
   "debtStatusSettled": "Đã tất toán",
+  "totalExpenseCaps": "TỔNG CHI",
+  "paidByLabel": "Người trả: ",
+  "allocationByMember": "PHÂN BỐ THEO THÀNH VIÊN:",
+  "debtorCountLabel": "{count} người nợ",
+  "@debtorCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "debtSplitDetailTitle": "Chi tiết phần nợ",
   "debtorLabel": "Người nợ",
   "creditorLabel": "Chủ nợ",
   "youTag": "Bạn",

@@ -1,68 +1,141 @@
 import '../../domain/entities/debt_enums.dart';
 import '../../domain/entities/group_debt_entity.dart';
 
-class ActualDebtModel extends ActualDebtEntity {
-  const ActualDebtModel({
-    required super.id,
-    required super.groupId,
-    required super.debtorId,
-    required super.debtorName,
-    super.debtorAvatar,
-    required super.creditorId,
-    required super.creditorName,
-    super.creditorAvatar,
+class ActualDebtorModel extends ActualDebtorEntity {
+  const ActualDebtorModel({
+    required super.splitId,
+    required super.userId,
+    required super.name,
+    super.avatarUrl,
+    super.isMe,
     super.amount,
     super.amountVnd,
     super.status,
-    super.settledAt,
-    super.createdAt,
     super.action,
-    super.expenseTitle,
-    super.category,
   });
 
-  factory ActualDebtModel.fromJson(Map<String, dynamic> json) {
+  factory ActualDebtorModel.fromJson(Map<String, dynamic> json) {
     final amount = (json['amount'] as num?) ?? 0;
     final amountVnd = (json['amountVnd'] as num?) ?? (amount * 1000);
 
-    return ActualDebtModel(
-      id: (json['id'] as num?)?.toInt() ?? 0,
-      groupId: (json['groupId'] as num?)?.toInt() ?? 0,
-      debtorId: (json['debtorId'] as num?)?.toInt() ?? 0,
-      debtorName: (json['debtorName'] as String?) ?? '',
-      debtorAvatar: json['debtorAvatar'] as String?,
-      creditorId: (json['creditorId'] as num?)?.toInt() ?? 0,
-      creditorName: (json['creditorName'] as String?) ?? '',
-      creditorAvatar: json['creditorAvatar'] as String?,
+    return ActualDebtorModel(
+      splitId: (json['splitId'] as num?)?.toInt() ?? 0,
+      userId: (json['userId'] as num?)?.toInt() ?? 0,
+      name: (json['name'] as String?) ?? '',
+      avatarUrl: json['avatarUrl'] as String?,
+      isMe: (json['isMe'] as bool?) ?? false,
       amount: amount,
       amountVnd: amountVnd,
       status: DebtStatus.fromString(json['status'] as String?),
-      settledAt: json['settledAt'] as String?,
-      createdAt: json['createdAt'] as String?,
       action: DebtAction.fromString(json['action'] as String?),
-      expenseTitle: json['expenseTitle'] as String?,
-      category: json['category'] as String?,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'groupId': groupId,
-      'debtorId': debtorId,
-      'debtorName': debtorName,
-      if (debtorAvatar != null) 'debtorAvatar': debtorAvatar,
-      'creditorId': creditorId,
-      'creditorName': creditorName,
-      if (creditorAvatar != null) 'creditorAvatar': creditorAvatar,
+      'splitId': splitId,
+      'userId': userId,
+      'name': name,
+      if (avatarUrl != null) 'avatarUrl': avatarUrl,
+      'isMe': isMe,
       'amount': amount,
       'amountVnd': amountVnd,
       'status': status.toServerString(),
-      if (settledAt != null) 'settledAt': settledAt,
-      if (createdAt != null) 'createdAt': createdAt,
       'action': action.name.toUpperCase(),
-      if (expenseTitle != null) 'expenseTitle': expenseTitle,
-      if (category != null) 'category': category,
+    };
+  }
+}
+
+class ActualDebtModel extends ActualDebtEntity {
+  const ActualDebtModel({
+    required super.expenseId,
+    required super.title,
+    super.categoryName,
+    super.categoryIcon,
+    super.totalAmount,
+    super.totalAmountVnd,
+    super.expenseDate,
+    super.createdAt,
+    super.paidByUserId,
+    super.paidByUserName,
+    super.paidByUserAvatar,
+    super.isPaidByMe,
+    super.debtorCount,
+    super.debtors,
+  });
+
+  factory ActualDebtModel.fromJson(Map<String, dynamic> json) {
+    final totalAmount =
+        (json['totalAmount'] as num?) ?? (json['amount'] as num?) ?? 0;
+    final totalAmountVnd = (json['totalAmountVnd'] as num?) ??
+        (json['amountVnd'] as num?) ??
+        (totalAmount * 1000);
+
+    final rawDebtors = json['debtors'] as List<dynamic>? ?? [];
+    final debtors = rawDebtors
+        .whereType<Map<String, dynamic>>()
+        .map((e) => ActualDebtorModel.fromJson(e))
+        .toList();
+
+    return ActualDebtModel(
+      expenseId: (json['expenseId'] as num?)?.toInt() ??
+          (json['id'] as num?)?.toInt() ??
+          0,
+      title: (json['title'] as String?) ??
+          (json['expenseTitle'] as String?) ??
+          '',
+      categoryName: (json['categoryName'] as String?) ??
+          (json['category'] as String?) ??
+          '',
+      categoryIcon: json['categoryIcon'] as String?,
+      totalAmount: totalAmount,
+      totalAmountVnd: totalAmountVnd,
+      expenseDate: json['expenseDate'] as String?,
+      createdAt: json['createdAt'] as String?,
+      paidByUserId: (json['paidByUserId'] as num?)?.toInt() ??
+          (json['creditorId'] as num?)?.toInt() ??
+          0,
+      paidByUserName: (json['paidByUserName'] as String?) ??
+          (json['creditorName'] as String?) ??
+          '',
+      paidByUserAvatar: (json['paidByUserAvatar'] as String?) ??
+          (json['creditorAvatar'] as String?),
+      isPaidByMe: (json['isPaidByMe'] as bool?) ?? false,
+      debtorCount: (json['debtorCount'] as num?)?.toInt() ?? debtors.length,
+      debtors: debtors,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'expenseId': expenseId,
+      'title': title,
+      'categoryName': categoryName,
+      if (categoryIcon != null) 'categoryIcon': categoryIcon,
+      'totalAmount': totalAmount,
+      'totalAmountVnd': totalAmountVnd,
+      if (expenseDate != null) 'expenseDate': expenseDate,
+      if (createdAt != null) 'createdAt': createdAt,
+      'paidByUserId': paidByUserId,
+      'paidByUserName': paidByUserName,
+      if (paidByUserAvatar != null) 'paidByUserAvatar': paidByUserAvatar,
+      'isPaidByMe': isPaidByMe,
+      'debtorCount': debtorCount,
+      'debtors': debtors
+          .map((d) => d is ActualDebtorModel
+              ? d.toJson()
+              : {
+                  'splitId': d.splitId,
+                  'userId': d.userId,
+                  'name': d.name,
+                  if (d.avatarUrl != null) 'avatarUrl': d.avatarUrl,
+                  'isMe': d.isMe,
+                  'amount': d.amount,
+                  'amountVnd': d.amountVnd,
+                  'status': d.status.toServerString(),
+                  'action': d.action.name.toUpperCase(),
+                })
+          .toList(),
     };
   }
 }

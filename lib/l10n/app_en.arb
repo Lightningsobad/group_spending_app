@@ -437,6 +437,18 @@
   "debtStatusPending": "Unpaid",
   "debtStatusWaiting": "Awaiting confirmation",
   "debtStatusSettled": "Settled",
+  "totalExpenseCaps": "TOTAL EXPENSE",
+  "paidByLabel": "Paid by: ",
+  "allocationByMember": "ALLOCATION BY MEMBER:",
+  "debtorCountLabel": "{count} debtors",
+  "@debtorCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "debtSplitDetailTitle": "Debt Split Details",
   "debtorLabel": "Debtor",
   "creditorLabel": "Creditor",
   "youTag": "You",

@@ -1778,6 +1778,36 @@ abstract class AppLocalizations {
   /// **'Đã tất toán'**
   String get debtStatusSettled;
 
+  /// No description provided for @totalExpenseCaps.
+  ///
+  /// In vi, this message translates to:
+  /// **'TỔNG CHI'**
+  String get totalExpenseCaps;
+
+  /// No description provided for @paidByLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người trả: '**
+  String get paidByLabel;
+
+  /// No description provided for @allocationByMember.
+  ///
+  /// In vi, this message translates to:
+  /// **'PHÂN BỐ THEO THÀNH VIÊN:'**
+  String get allocationByMember;
+
+  /// No description provided for @debtorCountLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} người nợ'**
+  String debtorCountLabel(int count);
+
+  /// No description provided for @debtSplitDetailTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi tiết phần nợ'**
+  String get debtSplitDetailTitle;
+
   /// No description provided for @debtorLabel.
   ///
   /// In vi, this message translates to:

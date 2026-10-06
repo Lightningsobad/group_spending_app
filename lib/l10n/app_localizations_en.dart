@@ -935,6 +935,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get debtStatusSettled => 'Settled';
 
   @override
+  String get totalExpenseCaps => 'TOTAL EXPENSE';
+
+  @override
+  String get paidByLabel => 'Paid by: ';
+
+  @override
+  String get allocationByMember => 'ALLOCATION BY MEMBER:';
+
+  @override
+  String debtorCountLabel(int count) {
+    return '$count debtors';
+  }
+
+  @override
+  String get debtSplitDetailTitle => 'Debt Split Details';
+
+  @override
   String get debtorLabel => 'Debtor';
 
   @override

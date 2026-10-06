@@ -934,6 +934,23 @@ class AppLocalizationsVi extends AppLocalizations {
   String get debtStatusSettled => 'Đã tất toán';
 
   @override
+  String get totalExpenseCaps => 'TỔNG CHI';
+
+  @override
+  String get paidByLabel => 'Người trả: ';
+
+  @override
+  String get allocationByMember => 'PHÂN BỐ THEO THÀNH VIÊN:';
+
+  @override
+  String debtorCountLabel(int count) {
+    return '$count người nợ';
+  }
+
+  @override
+  String get debtSplitDetailTitle => 'Chi tiết phần nợ';
+
+  @override
   String get debtorLabel => 'Người nợ';
 
   @override

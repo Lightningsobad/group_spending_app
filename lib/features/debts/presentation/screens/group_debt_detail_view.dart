@@ -160,48 +160,48 @@ class GroupDebtDetailView extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
 
-                // 4. Info Banner Box
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? const Color(0xFF064E3B).withValues(alpha: 0.25)
-                        : const Color(0xFFF0FDF4),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
+                // 4. Info Banner Box (chỉ hiện ở tab Nợ tối giản, tab Nợ thực tế hiển thị trực tiếp danh sách theo thiết kế)
+                if (activeTab == 0) ...[
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
                       color: isDark
-                          ? const Color(0xFF065F46)
-                          : const Color(0xFFBBF7D0),
-                    ),
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Icon(
-                        LucideIcons.info,
-                        size: 16,
+                          ? const Color(0xFF064E3B).withValues(alpha: 0.25)
+                          : const Color(0xFFF0FDF4),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
                         color: isDark
-                            ? const Color(0xFF6EE7B7)
-                            : const Color(0xFF16A34A),
+                            ? const Color(0xFF065F46)
+                            : const Color(0xFFBBF7D0),
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          activeTab == 0
-                              ? tr.simplifiedDebtsBanner
-                              : tr.actualDebtsBanner,
-                          style: AppTextStyle.medium(
-                            fontSize: 12,
-                            color: isDark
-                                ? const Color(0xFFA7F3D0)
-                                : const Color(0xFF166534),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          LucideIcons.info,
+                          size: 16,
+                          color: isDark
+                              ? const Color(0xFF6EE7B7)
+                              : const Color(0xFF16A34A),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            tr.simplifiedDebtsBanner,
+                            style: AppTextStyle.medium(
+                              fontSize: 12,
+                              color: isDark
+                                  ? const Color(0xFFA7F3D0)
+                                  : const Color(0xFF166534),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 14),
+                  const SizedBox(height: 14),
+                ],
 
                 // 5. Section Header for Tab 0
                 if (activeTab == 0)
@@ -303,43 +303,17 @@ class GroupDebtDetailView extends StatelessWidget {
                     ...actualList.map(
                       (debt) => ActualDebtCardWidget(
                         debt: debt,
-                        currentUserId: currentUserId,
-                        onPay: () async {
-                          final ok = await SettleDebtDialogs.showPayConfirm(
-                            context,
-                            creditorName: debt.creditorName,
-                            formattedAmount:
-                                CurrencyUtils.formatVnd(debt.amountVnd),
-                          );
-                          if (ok == true) {
-                            cubit.markDebtAsPaid(debt.id);
-                          }
+                        onDebtorPay: (debtor) {
+                          cubit.markDebtAsPaid(debtor.splitId);
                         },
-                        onConfirm: (confirmed) async {
-                          final ok = await SettleDebtDialogs.showConfirmSettled(
-                            context,
-                            debtorName: debt.debtorName,
-                            formattedAmount:
-                                CurrencyUtils.formatVnd(debt.amountVnd),
+                        onDebtorConfirm: (debtor, confirmed) {
+                          cubit.confirmDebtSettled(
+                            debtor.splitId,
                             confirmed: confirmed,
                           );
-                          if (ok == true) {
-                            cubit.confirmDebtSettled(
-                              debt.id,
-                              confirmed: confirmed,
-                            );
-                          }
                         },
-                        onRemind: () async {
-                          final ok = await SettleDebtDialogs.showRemindConfirm(
-                            context,
-                            debtorName: debt.debtorName,
-                            formattedAmount:
-                                CurrencyUtils.formatVnd(debt.amountVnd),
-                          );
-                          if (ok == true) {
-                            cubit.sendDebtReminder(debt.id);
-                          }
+                        onDebtorRemind: (debtor) {
+                          cubit.sendDebtReminder(debtor.splitId);
                         },
                       ),
                     ),

@@ -143,18 +143,22 @@ class GroupActualDebtsModel extends GroupActualDebtsEntity {
       'actualDebts': actualDebts
           .map((e) => e is ActualDebtModel
               ? e.toJson()
-              : {
-                  'id': e.id,
-                  'groupId': e.groupId,
-                  'debtorId': e.debtorId,
-                  'debtorName': e.debtorName,
-                  'creditorId': e.creditorId,
-                  'creditorName': e.creditorName,
-                  'amount': e.amount,
-                  'amountVnd': e.amountVnd,
-                  'status': e.status.toServerString(),
-                  'action': e.action.name.toUpperCase(),
-                })
+              : ActualDebtModel(
+                  expenseId: e.expenseId,
+                  title: e.title,
+                  categoryName: e.categoryName,
+                  categoryIcon: e.categoryIcon,
+                  totalAmount: e.totalAmount,
+                  totalAmountVnd: e.totalAmountVnd,
+                  expenseDate: e.expenseDate,
+                  createdAt: e.createdAt,
+                  paidByUserId: e.paidByUserId,
+                  paidByUserName: e.paidByUserName,
+                  paidByUserAvatar: e.paidByUserAvatar,
+                  isPaidByMe: e.isPaidByMe,
+                  debtorCount: e.debtorCount,
+                  debtors: e.debtors,
+                ).toJson())
           .toList(),
     };
   }

@@ -68,15 +68,21 @@ class FakeDebtsRepo implements DebtsRepository {
       ),
       actualDebts: [
         ActualDebtEntity(
-          id: 201,
-          groupId: 10,
-          debtorId: 2,
-          debtorName: 'Hoàng Minh C',
-          creditorId: 1,
-          creditorName: 'Nguyễn Nhật Minh',
-          amountVnd: 150000,
-          status: DebtStatus.pending,
-          action: DebtAction.remind,
+          expenseId: 201,
+          title: 'Tiền Internet',
+          totalAmountVnd: 150000,
+          paidByUserId: 1,
+          paidByUserName: 'Nguyễn Nhật Minh',
+          debtors: [
+            ActualDebtorEntity(
+              splitId: 104,
+              userId: 2,
+              name: 'Hoàng Minh C',
+              amountVnd: 150000,
+              status: DebtStatus.pending,
+              action: DebtAction.remind,
+            ),
+          ],
         ),
       ],
     );

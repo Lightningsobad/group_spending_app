@@ -63,14 +63,21 @@ class MockDebtsRepository implements DebtsRepository {
     ),
     actualDebts: [
       ActualDebtEntity(
-        id: 201,
-        groupId: 10,
-        debtorId: 2,
-        debtorName: 'Minh',
-        creditorId: 1,
-        creditorName: 'An',
-        amountVnd: 150000,
-        action: DebtAction.pay,
+        expenseId: 201,
+        title: 'Tiền Internet',
+        totalAmountVnd: 150000,
+        paidByUserId: 1,
+        paidByUserName: 'An',
+        debtors: [
+          ActualDebtorEntity(
+            splitId: 104,
+            userId: 2,
+            name: 'Minh',
+            amountVnd: 150000,
+            status: DebtStatus.pending,
+            action: DebtAction.pay,
+          ),
+        ],
       ),
     ],
   );
