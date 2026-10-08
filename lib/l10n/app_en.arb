@@ -845,5 +845,18 @@
   "otpInvalidError": "Verification code is invalid or has expired.",
   "otpCodeLockedError": "Verification code locked due to exceeding 5 attempts. Please request a new code.",
   "resetTokenExpiredError": "Password reset session has expired (5 minutes). Please start over.",
-  "resendRateLimitError": "Please wait for the cooldown timer before requesting a new code."
+  "resendRateLimitError": "Please wait for the cooldown timer before requesting a new code.",
+  "noCreditorBankInfoTitle": "No Payment Information",
+  "noCreditorBankInfoMessage": "Creditor {creditor} has not updated bank account information. Please contact the creditor for payment details.",
+  "@noCreditorBankInfoMessage": {
+    "placeholders": {
+      "creditor": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentAmountLabel": "Payment Amount",
+  "transferContentLabel": "Transfer Memo",
+  "copiedTransferContent": "Copied transfer memo",
+  "iHavePaidAction": "I Have Transferred"
 }

@@ -1710,4 +1710,24 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get resendRateLimitError =>
       'Please wait for the cooldown timer before requesting a new code.';
+
+  @override
+  String get noCreditorBankInfoTitle => 'No Payment Information';
+
+  @override
+  String noCreditorBankInfoMessage(String creditor) {
+    return 'Creditor $creditor has not updated bank account information. Please contact the creditor for payment details.';
+  }
+
+  @override
+  String get paymentAmountLabel => 'Payment Amount';
+
+  @override
+  String get transferContentLabel => 'Transfer Memo';
+
+  @override
+  String get copiedTransferContent => 'Copied transfer memo';
+
+  @override
+  String get iHavePaidAction => 'I Have Transferred';
 }

@@ -34,6 +34,14 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
     final isCurrentUserCreditor =
         currentUserId != null && debt.creditorId == currentUserId;
 
+    final effectiveAction = debt.action != DebtAction.none
+        ? debt.action
+        : (isCurrentUserDebtor
+            ? DebtAction.pay
+            : (isCurrentUserCreditor
+                ? DebtAction.remind
+                : DebtAction.none));
+
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(16),
@@ -238,9 +246,9 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
           ),
 
           // 4. Action Buttons (PAY / CONFIRM / REMIND)
-          if (debt.action != DebtAction.none) ...[
+          if (effectiveAction != DebtAction.none) ...[
             const SizedBox(height: 12),
-            _buildActionButtons(context, tr, colors, isDark),
+            _buildActionButtons(context, tr, colors, isDark, effectiveAction),
           ],
         ],
       ),
@@ -306,9 +314,11 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
     BuildContext context,
     AppLocalizations tr,
     AppThemeColors colors,
-    bool isDark,
-  ) {
-    switch (debt.action) {
+    bool isDark, [
+    DebtAction? actionOverride,
+  ]) {
+    final action = actionOverride ?? debt.action;
+    switch (action) {
       case DebtAction.pay:
         return ElevatedButton.icon(
           style: ElevatedButton.styleFrom(

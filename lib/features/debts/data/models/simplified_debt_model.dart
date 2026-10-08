@@ -10,6 +10,9 @@ class SimplifiedDebtModel extends SimplifiedDebtEntity {
     required super.creditorId,
     required super.creditorName,
     super.creditorAvatar,
+    super.creditorBankName,
+    super.creditorAccountNumber,
+    super.creditorBankAccountName,
     super.amount,
     super.amountVnd,
     super.action,
@@ -30,6 +33,14 @@ class SimplifiedDebtModel extends SimplifiedDebtEntity {
       creditorId: (json['creditorId'] as num?)?.toInt() ?? 0,
       creditorName: (json['creditorName'] as String?) ?? '',
       creditorAvatar: json['creditorAvatar'] as String?,
+      creditorBankName:
+          (json['creditorBankName'] ?? json['bankName']) as String?,
+      creditorAccountNumber:
+          (json['creditorAccountNumber'] ?? json['bankAccountNumber'])
+              as String?,
+      creditorBankAccountName:
+          (json['creditorBankAccountName'] ?? json['bankAccountName'])
+              as String?,
       amount: amount,
       amountVnd: amountVnd,
       action: DebtAction.fromString(json['action'] as String?),
@@ -47,6 +58,11 @@ class SimplifiedDebtModel extends SimplifiedDebtEntity {
       'creditorId': creditorId,
       'creditorName': creditorName,
       if (creditorAvatar != null) 'creditorAvatar': creditorAvatar,
+      if (creditorBankName != null) 'creditorBankName': creditorBankName,
+      if (creditorAccountNumber != null)
+        'creditorAccountNumber': creditorAccountNumber,
+      if (creditorBankAccountName != null)
+        'creditorBankAccountName': creditorBankAccountName,
       'amount': amount,
       'amountVnd': amountVnd,
       'action': action.name.toUpperCase(),

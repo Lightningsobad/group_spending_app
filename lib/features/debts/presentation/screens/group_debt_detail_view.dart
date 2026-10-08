@@ -6,6 +6,9 @@ import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
+import '../../../groups/domain/repositories/groups_repository.dart';
+import '../../../groups/presentation/widgets/viet_qr_modal_sheet.dart';
+import '../../domain/entities/debt_enums.dart';
 import '../../domain/entities/group_debt_entity.dart';
 import '../cubit/debts_cubit.dart';
 import '../cubit/debts_state.dart';
@@ -248,52 +251,67 @@ class GroupDebtDetailView extends StatelessWidget {
                       (debt) => SimplifiedDebtCardWidget(
                         debt: debt,
                         currentUserId: currentUserId,
-                        onPay: debt.id != null
-                            ? () async {
-                                final ok =
-                                    await SettleDebtDialogs.showPayConfirm(
-                                  context,
-                                  creditorName: debt.creditorName,
-                                  formattedAmount:
-                                      CurrencyUtils.formatVnd(debt.amountVnd),
-                                );
-                                if (ok == true && debt.id != null) {
-                                  cubit.markDebtAsPaid(debt.id!);
-                                }
-                              }
-                            : null,
-                        onConfirm: debt.id != null
-                            ? (confirmed) async {
-                                final ok =
-                                    await SettleDebtDialogs.showConfirmSettled(
-                                  context,
-                                  debtorName: debt.debtorName,
-                                  formattedAmount:
-                                      CurrencyUtils.formatVnd(debt.amountVnd),
+                        onPay: () => _handlePaySimplifiedDebt(
+                          context,
+                          debt: debt,
+                          groupName: userBalance.groupName,
+                          cubit: cubit,
+                        ),
+                        onConfirm: (confirmed) async {
+                          final ok =
+                              await SettleDebtDialogs.showConfirmSettled(
+                            context,
+                            debtorName: debt.debtorName,
+                            formattedAmount:
+                                CurrencyUtils.formatVnd(debt.amountVnd),
+                            confirmed: confirmed,
+                          );
+                          if (ok == true) {
+                            if (debt.id != null) {
+                              await cubit.confirmDebtSettled(
+                                debt.id!,
+                                confirmed: confirmed,
+                              );
+                            } else {
+                              final splits = _findMatchingSplitIds(
+                                cubit: cubit,
+                                creditorId: debt.creditorId,
+                                debtorId: debt.debtorId,
+                                action: DebtAction.confirm,
+                              );
+                              for (final sid in splits) {
+                                await cubit.confirmDebtSettled(
+                                  sid,
                                   confirmed: confirmed,
                                 );
-                                if (ok == true && debt.id != null) {
-                                  cubit.confirmDebtSettled(
-                                    debt.id!,
-                                    confirmed: confirmed,
-                                  );
-                                }
                               }
-                            : null,
-                        onRemind: debt.id != null
-                            ? () async {
-                                final ok =
-                                    await SettleDebtDialogs.showRemindConfirm(
-                                  context,
-                                  debtorName: debt.debtorName,
-                                  formattedAmount:
-                                      CurrencyUtils.formatVnd(debt.amountVnd),
-                                );
-                                if (ok == true && debt.id != null) {
-                                  cubit.sendDebtReminder(debt.id!);
-                                }
+                            }
+                          }
+                        },
+                        onRemind: () async {
+                          final ok =
+                              await SettleDebtDialogs.showRemindConfirm(
+                            context,
+                            debtorName: debt.debtorName,
+                            formattedAmount:
+                                CurrencyUtils.formatVnd(debt.amountVnd),
+                          );
+                          if (ok == true) {
+                            if (debt.id != null) {
+                              await cubit.sendDebtReminder(debt.id!);
+                            } else {
+                              final splits = _findMatchingSplitIds(
+                                cubit: cubit,
+                                creditorId: debt.creditorId,
+                                debtorId: debt.debtorId,
+                                action: DebtAction.remind,
+                              );
+                              for (final sid in splits) {
+                                await cubit.sendDebtReminder(sid);
                               }
-                            : null,
+                            }
+                          }
+                        },
                       ),
                     ),
                 ] else ...[
@@ -371,5 +389,106 @@ class GroupDebtDetailView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _handlePaySimplifiedDebt(
+    BuildContext context, {
+    required SimplifiedDebtEntity debt,
+    required String groupName,
+    required DebtsCubit cubit,
+  }) async {
+    String? bankName = debt.creditorBankName;
+    String? bankAccountNumber = debt.creditorAccountNumber;
+    String? bankAccountName =
+        debt.creditorBankAccountName ?? debt.creditorName;
+
+    if (bankAccountNumber == null || bankAccountNumber.trim().isEmpty) {
+      try {
+        final groupsRepo = context.read<GroupsRepository>();
+        final member =
+            await groupsRepo.getMemberDetails(groupId, debt.creditorId);
+        if (member.hasBankInfo) {
+          bankName = member.bankName;
+          bankAccountNumber = member.bankAccountNumber;
+          bankAccountName = member.bankAccountName ?? member.fullName;
+        }
+      } catch (_) {
+        // Fall through to bank info validation below
+      }
+    }
+
+    if (!context.mounted) return;
+
+    if (bankAccountNumber == null ||
+        bankAccountNumber.trim().isEmpty ||
+        bankName == null ||
+        bankName.trim().isEmpty) {
+      await SettleDebtDialogs.showNoBankInfoAlert(
+        context,
+        creditorName: debt.creditorName,
+      );
+      return;
+    }
+
+    final transferNote = debt.note != null && debt.note!.trim().isNotEmpty
+        ? debt.note!.trim()
+        : '${debt.debtorName} tra no $groupName'.trim();
+
+    await VietQrModalSheet.show(
+      context,
+      bankName: bankName,
+      accountNumber: bankAccountNumber,
+      accountName: (bankAccountName != null && bankAccountName.trim().isNotEmpty)
+          ? bankAccountName
+          : debt.creditorName,
+      amount: debt.amountVnd,
+      note: transferNote,
+      onPaidConfirmed: () async {
+        if (debt.id != null) {
+          await cubit.markDebtAsPaid(debt.id!);
+        } else {
+          final splits = _findMatchingSplitIds(
+            cubit: cubit,
+            creditorId: debt.creditorId,
+            debtorId: debt.debtorId,
+            action: DebtAction.pay,
+          );
+          if (splits.isNotEmpty) {
+            for (final sid in splits) {
+              await cubit.markDebtAsPaid(sid);
+            }
+          } else {
+            await cubit.loadGroupDebts(groupId, silent: true);
+          }
+        }
+      },
+    );
+  }
+
+  List<int> _findMatchingSplitIds({
+    required DebtsCubit cubit,
+    required int creditorId,
+    required int debtorId,
+    DebtAction? action,
+  }) {
+    final actualDebts = cubit.state.actualDebts?.actualDebts ?? const [];
+    final splitIds = <int>[];
+    for (final exp in actualDebts) {
+      if (exp.paidByUserId == creditorId) {
+        for (final d in exp.debtors) {
+          final isDebtor = d.userId == debtorId || d.isMe;
+          final matchesAction = action == null ||
+              d.action == action ||
+              (action == DebtAction.pay && d.status == DebtStatus.pending) ||
+              (action == DebtAction.confirm &&
+                  d.status == DebtStatus.waitingForConfirmation) ||
+              (action == DebtAction.remind && d.status == DebtStatus.pending);
+          if (isDebtor && matchesAction) {
+            splitIds.add(d.splitId);
+          }
+        }
+      }
+    }
+    return splitIds;
   }
 }

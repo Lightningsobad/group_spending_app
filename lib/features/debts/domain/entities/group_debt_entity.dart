@@ -34,6 +34,9 @@ class SimplifiedDebtEntity {
   final int creditorId;
   final String creditorName;
   final String? creditorAvatar;
+  final String? creditorBankName;
+  final String? creditorAccountNumber;
+  final String? creditorBankAccountName;
   final num amount;
   final num amountVnd;
   final DebtAction action;
@@ -48,12 +51,21 @@ class SimplifiedDebtEntity {
     required this.creditorId,
     required this.creditorName,
     this.creditorAvatar,
+    this.creditorBankName,
+    this.creditorAccountNumber,
+    this.creditorBankAccountName,
     this.amount = 0,
     this.amountVnd = 0,
     this.action = DebtAction.none,
     this.createdAt,
     this.note,
   });
+
+  bool get hasCreditorBankInfo =>
+      creditorAccountNumber != null &&
+      creditorAccountNumber!.trim().isNotEmpty &&
+      creditorBankName != null &&
+      creditorBankName!.trim().isNotEmpty;
 }
 
 class GroupSimplifiedDebtsEntity {
