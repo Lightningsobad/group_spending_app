@@ -75,6 +75,9 @@ void main() {
         'creditorId': 1,
         'creditorName': 'Tôi',
         'creditorAvatar': 'https://example.com/user1.jpg',
+        'creditorBankName': 'MBBank',
+        'creditorAccountNumber': '0987654321',
+        'creditorBankAccountName': 'NGUYEN VAN A',
         'amount': 350,
         'amountVnd': 350000,
         'action': 'REMIND',
@@ -86,9 +89,33 @@ void main() {
       expect(model.id, 101);
       expect(model.debtorId, 2);
       expect(model.creditorId, 1);
+      expect(model.creditorBankName, 'MBBank');
+      expect(model.creditorAccountNumber, '0987654321');
+      expect(model.creditorBankAccountName, 'NGUYEN VAN A');
+      expect(model.hasCreditorBankInfo, isTrue);
       expect(model.amountVnd, 350000);
       expect(model.action, DebtAction.remind);
       expect(model.note, 'Gộp nợ từ các hóa đơn');
+
+      final serialized = model.toJson();
+      expect(serialized['creditorBankName'], 'MBBank');
+      expect(serialized['creditorAccountNumber'], '0987654321');
+      expect(serialized['creditorBankAccountName'], 'NGUYEN VAN A');
+    });
+
+    test('SimplifiedDebtModel hasCreditorBankInfo is false when bank info is missing', () {
+      final json = {
+        'id': 102,
+        'debtorId': 2,
+        'debtorName': 'Nguyễn Văn B',
+        'creditorId': 1,
+        'creditorName': 'Tôi',
+        'amount': 100,
+        'amountVnd': 100000,
+      };
+
+      final model = SimplifiedDebtModel.fromJson(json);
+      expect(model.hasCreditorBankInfo, isFalse);
     });
 
     test('ActualDebtModel parses from Section 3.3 JSON correctly', () {

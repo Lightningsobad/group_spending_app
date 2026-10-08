@@ -845,5 +845,18 @@
   "otpInvalidError": "Mã xác thực không hợp lệ hoặc đã hết hạn.",
   "otpCodeLockedError": "Mã xác thực đã bị khóa do nhập sai quá 5 lần. Vui lòng yêu cầu mã mới.",
   "resetTokenExpiredError": "Phiên đặt lại mật khẩu đã hết hạn (5 phút). Vui lòng thực hiện lại từ đầu.",
-  "resendRateLimitError": "Vui lòng chờ hết thời gian đếm ngược trước khi yêu cầu gửi lại mã."
+  "resendRateLimitError": "Vui lòng chờ hết thời gian đếm ngược trước khi yêu cầu gửi lại mã.",
+  "noCreditorBankInfoTitle": "Chưa có thông tin thanh toán",
+  "noCreditorBankInfoMessage": "Chủ nợ {creditor} chưa cập nhật thông tin số tài khoản và ngân hàng. Vui lòng liên hệ chủ nợ để nhận thông tin thanh toán.",
+  "@noCreditorBankInfoMessage": {
+    "placeholders": {
+      "creditor": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentAmountLabel": "Số tiền thanh toán",
+  "transferContentLabel": "Nội dung chuyển khoản",
+  "copiedTransferContent": "Đã sao chép nội dung chuyển khoản",
+  "iHavePaidAction": "Tôi đã chuyển khoản"
 }

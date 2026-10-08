@@ -1707,4 +1707,24 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get resendRateLimitError =>
       'Vui lòng chờ hết thời gian đếm ngược trước khi yêu cầu gửi lại mã.';
+
+  @override
+  String get noCreditorBankInfoTitle => 'Chưa có thông tin thanh toán';
+
+  @override
+  String noCreditorBankInfoMessage(String creditor) {
+    return 'Chủ nợ $creditor chưa cập nhật thông tin số tài khoản và ngân hàng. Vui lòng liên hệ chủ nợ để nhận thông tin thanh toán.';
+  }
+
+  @override
+  String get paymentAmountLabel => 'Số tiền thanh toán';
+
+  @override
+  String get transferContentLabel => 'Nội dung chuyển khoản';
+
+  @override
+  String get copiedTransferContent => 'Đã sao chép nội dung chuyển khoản';
+
+  @override
+  String get iHavePaidAction => 'Tôi đã chuyển khoản';
 }

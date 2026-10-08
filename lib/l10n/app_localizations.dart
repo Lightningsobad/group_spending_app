@@ -3187,6 +3187,42 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Vui lòng chờ hết thời gian đếm ngược trước khi yêu cầu gửi lại mã.'**
   String get resendRateLimitError;
+
+  /// No description provided for @noCreditorBankInfoTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa có thông tin thanh toán'**
+  String get noCreditorBankInfoTitle;
+
+  /// No description provided for @noCreditorBankInfoMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chủ nợ {creditor} chưa cập nhật thông tin số tài khoản và ngân hàng. Vui lòng liên hệ chủ nợ để nhận thông tin thanh toán.'**
+  String noCreditorBankInfoMessage(String creditor);
+
+  /// No description provided for @paymentAmountLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tiền thanh toán'**
+  String get paymentAmountLabel;
+
+  /// No description provided for @transferContentLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nội dung chuyển khoản'**
+  String get transferContentLabel;
+
+  /// No description provided for @copiedTransferContent.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã sao chép nội dung chuyển khoản'**
+  String get copiedTransferContent;
+
+  /// No description provided for @iHavePaidAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tôi đã chuyển khoản'**
+  String get iHavePaidAction;
 }
 
 class _AppLocalizationsDelegate
