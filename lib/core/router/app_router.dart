@@ -1,15 +1,20 @@
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import '../session/session_coordinator.dart';
 
 class AppRouter {
   AppRouter._();
 
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
+
   static GoRouter createRouter({
     required List<RouteBase> routes,
     SessionCoordinator? sessionCoordinator,
     String initialLocation = '/splash',
   }) {
-    return GoRouter(
+    final routerInstance = GoRouter(
+      navigatorKey: navigatorKey,
       initialLocation: initialLocation,
       refreshListenable: sessionCoordinator,
       redirect: (context, state) {
@@ -34,6 +39,8 @@ class AppRouter {
       },
       routes: routes,
     );
+    _router = routerInstance;
+    return routerInstance;
   }
 
   static GoRouter? _router;
