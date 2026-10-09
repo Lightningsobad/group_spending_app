@@ -38,6 +38,14 @@ import 'features/groups/data/datasources/groups_remote_data_source.dart';
 import 'features/groups/data/repositories/groups_repository_impl.dart';
 import 'features/groups/domain/repositories/groups_repository.dart';
 import 'features/groups/presentation/cubit/groups_cubit.dart';
+import 'features/notifications/data/datasources/notifications_remote_data_source.dart';
+import 'features/notifications/data/repositories/notifications_repository_impl.dart';
+import 'features/notifications/domain/repositories/notifications_repository.dart';
+import 'features/notifications/presentation/cubit/notifications_cubit.dart';
+import 'features/notifications/presentation/widgets/in_app_notification_toast.dart';
+import 'features/notifications/services/fcm_service.dart';
+import 'features/notifications/services/notification_navigation_handler.dart';
+import 'features/notifications/services/stomp_notification_service.dart';
 
 class FairShareApp extends StatefulWidget {
   final AppPreferences appPreferences;
@@ -59,6 +67,8 @@ class FairShareApp extends StatefulWidget {
   final DebtsCubit? debtsCubit;
   final FundsCubit? fundsCubit;
   final ExpensesCubit? expensesCubit;
+  final NotificationsRepository? notificationsRepository;
+  final NotificationsCubit? notificationsCubit;
 
   const FairShareApp({
     super.key,
@@ -75,12 +85,14 @@ class FairShareApp extends StatefulWidget {
     this.analyticsRepository,
     this.fundsRepository,
     this.expensesRepository,
+    this.notificationsRepository,
     this.dashboardCubit,
     this.groupsCubit,
     this.analyticsTabCubit,
     this.debtsCubit,
     this.fundsCubit,
     this.expensesCubit,
+    this.notificationsCubit,
   });
 
   @override
@@ -101,6 +113,10 @@ class _FairShareAppState extends State<FairShareApp> {
   late final FundsRepository _fundsRepository;
   late final FundsCubit _fundsCubit;
   late final ExpensesRepository _expensesRepository;
+  late final NotificationsRepository _notificationsRepository;
+  late final NotificationsCubit _notificationsCubit;
+  late final StompNotificationService _stompService;
+  late final FcmService _fcmService;
   late final GoRouter _router;
   bool _isDisposed = false;
 
@@ -174,6 +190,45 @@ class _FairShareAppState extends State<FairShareApp> {
         widget.expensesRepository ??
         ExpensesRepositoryImpl(remoteDataSource: expensesRemoteDataSource);
 
+    final notificationsRemoteDataSource =
+        NotificationsRemoteDataSourceImpl(_apiClient);
+    _notificationsRepository =
+        widget.notificationsRepository ??
+        NotificationsRepositoryImpl(
+          remoteDataSource: notificationsRemoteDataSource,
+        );
+    _notificationsCubit =
+        widget.notificationsCubit ??
+        NotificationsCubit(_notificationsRepository);
+
+    _stompService = StompNotificationService(
+      dataSyncCoordinator: _dataSyncCoordinator,
+      onNotificationReceived: (notification) {
+        _notificationsCubit.onNotificationReceived(notification);
+        InAppNotificationToast.show(notification);
+      },
+    );
+
+    _fcmService = FcmService(
+      authRepository: _authRepository,
+      onNotificationReceived: (notification) {
+        _notificationsCubit.onNotificationReceived(notification);
+        InAppNotificationToast.show(notification);
+      },
+      onNotificationTapped: (notification) {
+        _notificationsCubit.markAsRead(notification.id);
+        NotificationNavigationHandler.handleTap(notification);
+      },
+    );
+    _fcmService.init();
+
+    _sessionCoordinator.addListener(_onSessionChanged);
+    if (_sessionCoordinator.isAuthenticated) {
+      _notificationsCubit.loadUnreadCount();
+      _connectStomp();
+      _fcmService.syncToken();
+    }
+
     _router = AppRouter.createRouter(
       routes: buildAppRoutes(
         dashboardCubit: widget.dashboardCubit,
@@ -186,9 +241,32 @@ class _FairShareAppState extends State<FairShareApp> {
     );
   }
 
+  void _connectStomp() {
+    _authRepository.getCurrentUser().then((user) {
+      if (!_isDisposed && _sessionCoordinator.isAuthenticated) {
+        _stompService.connect(userId: user.id);
+      }
+    }).catchError((_) {});
+  }
+
+  void _onSessionChanged() {
+    if (_sessionCoordinator.isAuthenticated) {
+      _notificationsCubit.loadUnreadCount();
+      _connectStomp();
+      _fcmService.syncToken();
+    } else {
+      _stompService.disconnect();
+      _notificationsCubit.clear();
+    }
+  }
+
   @override
   void dispose() {
     _isDisposed = true;
+    _sessionCoordinator.removeListener(_onSessionChanged);
+    _stompService.disconnect();
+    _fcmService.dispose();
+    _notificationsCubit.close();
     _fundsCubit.close();
     _authCubit.close();
     _themeCubit.close();
@@ -210,6 +288,7 @@ class _FairShareAppState extends State<FairShareApp> {
         RepositoryProvider<AnalyticsRepository>.value(value: _analyticsRepository),
         RepositoryProvider<FundsRepository>.value(value: _fundsRepository),
         RepositoryProvider<ExpensesRepository>.value(value: _expensesRepository),
+        RepositoryProvider<NotificationsRepository>.value(value: _notificationsRepository),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -217,6 +296,7 @@ class _FairShareAppState extends State<FairShareApp> {
           BlocProvider<ThemeCubit>.value(value: _themeCubit),
           BlocProvider<LocaleCubit>.value(value: _localeCubit),
           BlocProvider<FundsCubit>.value(value: _fundsCubit),
+          BlocProvider<NotificationsCubit>.value(value: _notificationsCubit),
         ],
         child: BlocBuilder<ThemeCubit, ThemeMode>(
           builder: (context, themeMode) {

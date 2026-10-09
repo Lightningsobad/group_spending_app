@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:group_spending_app/core/theme/app_theme.dart';
-import 'package:group_spending_app/features/auth/domain/entities/user_entity.dart';
 import 'package:group_spending_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:group_spending_app/features/debts/domain/entities/debt_enums.dart';
 import 'package:group_spending_app/features/debts/domain/entities/debt_overview_entity.dart';

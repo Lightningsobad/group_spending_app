@@ -9,6 +9,7 @@ import '../../../../core/theme/theme_cubit.dart';
 import '../../../../core/utils/name_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
+import '../../../notifications/presentation/cubit/notifications_cubit.dart';
 import 'notification_modal.dart';
 
 class AppHeader extends StatelessWidget {
@@ -32,6 +33,11 @@ class AppHeader extends StatelessWidget {
         : (prefs.getUserFullName() ?? '');
     final avatarUrl = user?.avatarUrl;
     final initials = NameUtils.getInitials(name);
+
+    int unreadCount = 0;
+    try {
+      unreadCount = context.watch<NotificationsCubit>().state.unreadCount;
+    } catch (_) {}
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -162,7 +168,11 @@ class AppHeader extends StatelessWidget {
                 backgroundColor: colors.cardBackground,
                 borderColor: colors.cardBorder,
                 tooltip: tr.notificationsTitle,
-                hasRedDot: true,
+                badgeText: unreadCount > 0
+                    ? (unreadCount > 99 ? '99+' : '$unreadCount')
+                    : null,
+                badgeColor: AppColors.error,
+                hasRedDot: false,
                 onTap: () => NotificationModal.show(context),
               ),
             ],
