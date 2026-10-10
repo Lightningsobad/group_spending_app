@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:group_spending_app/features/expenses/data/models/expense_enums.dart';
 import 'package:group_spending_app/features/expenses/data/models/expense_models.dart';
+import 'package:group_spending_app/features/expenses/data/models/receipt_scan_models.dart';
 import 'package:group_spending_app/features/expenses/presentation/cubit/expense_form_cubit.dart';
 import 'package:group_spending_app/features/expenses/domain/repositories/expenses_repository.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
@@ -32,6 +33,11 @@ class MockExpensesRepository implements ExpensesRepository {
 
   @override
   Future<List<String>> getCategories() async => [];
+
+  @override
+  Future<ReceiptScanDataModel> scanReceipt(File file) async {
+    throw UnimplementedError();
+  }
 }
 
 void main() {
