@@ -7,6 +7,7 @@ import '../../../../core/sync/data_sync_coordinator.dart';
 import '../../../groups/data/models/group_model.dart';
 import '../../data/models/expense_enums.dart';
 import '../../data/models/expense_models.dart';
+import '../../data/models/receipt_scan_models.dart';
 import '../../domain/repositories/expenses_repository.dart';
 import 'expense_form_state.dart';
 
@@ -49,6 +50,8 @@ class ExpenseFormCubit extends Cubit<ExpenseFormState> {
             selectedParticipantUserIds: expenseToEdit != null
                 ? expenseToEdit.splits.map((s) => s.userId).toSet()
                 : members.map((m) => m.userId).toSet(),
+            receiptUrl: expenseToEdit?.receiptUrl,
+            expenseDate: expenseToEdit?.expenseDate,
             isEditMode: expenseToEdit != null,
             expenseIdToEdit: expenseToEdit?.id,
           ),
@@ -206,8 +209,88 @@ class ExpenseFormCubit extends Cubit<ExpenseFormState> {
     emit(state.copyWith(receiptFile: file, clearMessages: true));
   }
 
-  void removeReceiptFile() {
+  void setReceiptUrl(String? url) {
+    emit(state.copyWith(receiptUrl: url, clearMessages: true));
+  }
+
+  void removeReceipt() {
     emit(state.copyWith(clearReceipt: true, clearMessages: true));
+  }
+
+  void removeReceiptFile() {
+    removeReceipt();
+  }
+
+  void setExpenseDate(String? date) {
+    emit(state.copyWith(expenseDate: date, clearMessages: true));
+  }
+
+  Future<ReceiptScanDataModel?> scanAndPrefillReceipt(File file) async {
+    emit(state.copyWith(
+      isScanningReceipt: true,
+      receiptFile: file,
+      clearMessages: true,
+    ));
+
+    try {
+      final data = await _repository.scanReceipt(file);
+
+      String newAmountDigits = state.amountDigits;
+      if (data.totalAmountVnd != null && data.totalAmountVnd! > 0) {
+        newAmountDigits = data.totalAmountVnd!.round().toString();
+      } else if (data.totalAmount != null && data.totalAmount! > 0) {
+        newAmountDigits = (data.totalAmount! * 1000).round().toString();
+      }
+
+      final newTitle = (data.suggestedTitle != null && data.suggestedTitle!.trim().isNotEmpty)
+          ? data.suggestedTitle!.trim()
+          : state.title;
+
+      final newNotes = (data.generatedNotes != null && data.generatedNotes!.trim().isNotEmpty)
+          ? data.generatedNotes!.trim()
+          : state.notes;
+
+      final newCategory = (data.category != null && data.category!.trim().isNotEmpty)
+          ? ExpenseCategoryType.fromString(data.category)
+          : state.category;
+
+      final newExpenseDate = (data.expenseDate != null && data.expenseDate!.trim().isNotEmpty)
+          ? data.expenseDate
+          : state.expenseDate;
+
+      final newReceiptUrl = data.receiptUrl ?? state.receiptUrl;
+
+      if (!isClosed) {
+        emit(state.copyWith(
+          amountDigits: newAmountDigits,
+          title: newTitle,
+          notes: newNotes,
+          category: newCategory,
+          expenseDate: newExpenseDate,
+          receiptUrl: newReceiptUrl,
+          scanConfidence: data.confidence,
+          isScanningReceipt: false,
+          clearMessages: true,
+        ));
+      }
+      return data;
+    } on AppException catch (e) {
+      if (!isClosed) {
+        emit(state.copyWith(
+          isScanningReceipt: false,
+          errorMessage: e.message,
+        ));
+      }
+      return null;
+    } catch (e) {
+      if (!isClosed) {
+        emit(state.copyWith(
+          isScanningReceipt: false,
+          errorMessage: 'Không thể nhận diện hóa đơn: $e',
+        ));
+      }
+      return null;
+    }
   }
 
   Future<bool> submitExpense() async {
@@ -237,6 +320,7 @@ class ExpenseFormCubit extends Cubit<ExpenseFormState> {
     emit(state.copyWith(status: ExpenseFormStatus.submitting, clearMessages: true));
 
     final nowStr = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    final effectiveExpenseDate = state.expenseDate ?? nowStr;
 
     try {
       if (state.isEditMode && state.expenseIdToEdit != null) {
@@ -244,38 +328,40 @@ class ExpenseFormCubit extends Cubit<ExpenseFormState> {
           title: state.title.trim(),
           totalAmount: state.totalAmountK,
           paidByUserId: state.paidByUserId,
-          expenseDate: nowStr,
+          expenseDate: effectiveExpenseDate,
           notes: state.notes,
           category: state.category.apiValue,
           splitOption: state.splitOption.key,
           participantUserIds: state.splitOption == SplitOption.equalSelected
               ? state.selectedParticipantUserIds.toList()
               : null,
+          receiptUrl: state.receiptUrl,
         );
 
         await _repository.updateExpense(
           state.expenseIdToEdit!,
           updateReq,
-          receiptFile: state.receiptFile,
+          receiptFile: state.receiptUrl != null ? null : state.receiptFile,
         );
       } else {
         final createReq = CreateExpenseRequest(
           title: state.title.trim(),
           totalAmount: state.totalAmountK,
           paidByUserId: state.paidByUserId,
-          expenseDate: nowStr,
+          expenseDate: effectiveExpenseDate,
           notes: state.notes,
           category: state.category.apiValue,
           splitOption: state.splitOption.key,
           participantUserIds: state.splitOption == SplitOption.equalSelected
               ? state.selectedParticipantUserIds.toList()
               : null,
+          receiptUrl: state.receiptUrl,
         );
 
         await _repository.createExpense(
           state.groupId,
           createReq,
-          receiptFile: state.receiptFile,
+          receiptFile: state.receiptUrl != null ? null : state.receiptFile,
         );
       }
 

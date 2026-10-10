@@ -300,6 +300,7 @@ class CreateExpenseRequest {
   final String category;
   final String splitOption;
   final List<int>? participantUserIds;
+  final String? receiptUrl;
 
   const CreateExpenseRequest({
     required this.title,
@@ -310,6 +311,7 @@ class CreateExpenseRequest {
     required this.category,
     this.splitOption = 'EQUAL_ALL',
     this.participantUserIds,
+    this.receiptUrl,
   });
 
   Map<String, dynamic> toJson() {
@@ -323,6 +325,8 @@ class CreateExpenseRequest {
       'splitOption': splitOption,
       if (participantUserIds != null && participantUserIds!.isNotEmpty)
         'participantUserIds': participantUserIds,
+      if (receiptUrl != null && receiptUrl!.trim().isNotEmpty)
+        'receiptUrl': receiptUrl!.trim(),
     };
   }
 }
@@ -336,6 +340,7 @@ class UpdateExpenseRequest {
   final String category;
   final String splitOption;
   final List<int>? participantUserIds;
+  final String? receiptUrl;
 
   const UpdateExpenseRequest({
     required this.title,
@@ -346,6 +351,7 @@ class UpdateExpenseRequest {
     required this.category,
     this.splitOption = 'EQUAL_ALL',
     this.participantUserIds,
+    this.receiptUrl,
   });
 
   Map<String, dynamic> toJson() {
@@ -359,6 +365,8 @@ class UpdateExpenseRequest {
       'splitOption': splitOption,
       if (participantUserIds != null && participantUserIds!.isNotEmpty)
         'participantUserIds': participantUserIds,
+      if (receiptUrl != null && receiptUrl!.trim().isNotEmpty)
+        'receiptUrl': receiptUrl!.trim(),
     };
   }
 }

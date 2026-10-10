@@ -1,6 +1,7 @@
 import 'dart:io';
 import '../../data/models/expense_enums.dart';
 import '../../data/models/expense_models.dart';
+import '../../data/models/receipt_scan_models.dart';
 
 abstract class ExpensesRepository {
   Future<GroupExpensesResponseModel> getGroupExpenses(
@@ -28,4 +29,6 @@ abstract class ExpensesRepository {
   Future<ExpenseDetailModel> getExpenseDetail(int expenseId);
 
   Future<List<String>> getCategories();
+
+  Future<ReceiptScanDataModel> scanReceipt(File file);
 }

@@ -17,6 +17,10 @@ class ExpenseFormState {
   final Set<int> selectedParticipantUserIds;
   final List<GroupMemberModel> members;
   final File? receiptFile;
+  final String? receiptUrl;
+  final bool isScanningReceipt;
+  final String? scanConfidence;
+  final String? expenseDate;
   final bool isEditMode;
   final int? expenseIdToEdit;
   final String? errorMessage;
@@ -35,6 +39,10 @@ class ExpenseFormState {
     this.selectedParticipantUserIds = const {},
     this.members = const [],
     this.receiptFile,
+    this.receiptUrl,
+    this.isScanningReceipt = false,
+    this.scanConfidence,
+    this.expenseDate,
     this.isEditMode = false,
     this.expenseIdToEdit,
     this.errorMessage,
@@ -92,7 +100,11 @@ class ExpenseFormState {
     Set<int>? selectedParticipantUserIds,
     List<GroupMemberModel>? members,
     File? receiptFile,
+    String? receiptUrl,
     bool clearReceipt = false,
+    bool? isScanningReceipt,
+    String? scanConfidence,
+    String? expenseDate,
     bool? isEditMode,
     int? expenseIdToEdit,
     String? errorMessage,
@@ -112,6 +124,10 @@ class ExpenseFormState {
       selectedParticipantUserIds: selectedParticipantUserIds ?? this.selectedParticipantUserIds,
       members: members ?? this.members,
       receiptFile: clearReceipt ? null : (receiptFile ?? this.receiptFile),
+      receiptUrl: clearReceipt ? null : (receiptUrl ?? this.receiptUrl),
+      isScanningReceipt: isScanningReceipt ?? this.isScanningReceipt,
+      scanConfidence: clearReceipt ? null : (scanConfidence ?? this.scanConfidence),
+      expenseDate: expenseDate ?? this.expenseDate,
       isEditMode: isEditMode ?? this.isEditMode,
       expenseIdToEdit: expenseIdToEdit ?? this.expenseIdToEdit,
       errorMessage: clearMessages ? null : (errorMessage ?? this.errorMessage),

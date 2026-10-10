@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import '../../../../core/errors/app_exception.dart';
 import '../../../../core/network/api_client.dart';
 import '../models/expense_enums.dart';
 import '../models/expense_models.dart';
+import '../models/receipt_scan_models.dart';
 
 abstract class ExpensesRemoteDataSource {
   Future<GroupExpensesResponseModel> getGroupExpenses(
@@ -31,6 +33,8 @@ abstract class ExpensesRemoteDataSource {
   Future<ExpenseDetailModel> getExpenseDetail(int expenseId);
 
   Future<List<String>> getCategories();
+
+  Future<ReceiptScanDataModel> scanReceipt(File file);
 }
 
 class ExpensesRemoteDataSourceImpl implements ExpensesRemoteDataSource {
@@ -194,5 +198,39 @@ class ExpensesRemoteDataSourceImpl implements ExpensesRemoteDataSource {
       return (data['data'] as List).map((e) => e.toString()).toList();
     }
     return [];
+  }
+
+  @override
+  Future<ReceiptScanDataModel> scanReceipt(File file) async {
+    final fileName = file.path.split(Platform.pathSeparator).last;
+    final ext = fileName.split('.').last.toLowerCase();
+    final subType = (ext == 'png') ? 'png' : (ext == 'webp') ? 'webp' : 'jpeg';
+
+    final formData = FormData();
+    formData.files.add(
+      MapEntry(
+        'file',
+        await MultipartFile.fromFile(
+          file.path,
+          filename: fileName,
+          contentType: DioMediaType('image', subType),
+        ),
+      ),
+    );
+
+    final response = await _apiClient.post<Map<String, dynamic>>(
+      '/expenses/scan-receipt',
+      data: formData,
+      options: Options(
+        receiveTimeout: const Duration(seconds: 45),
+        sendTimeout: const Duration(seconds: 30),
+      ),
+    );
+
+    final data = response.data;
+    if (data != null && data['data'] is Map<String, dynamic>) {
+      return ReceiptScanDataModel.fromJson(data['data'] as Map<String, dynamic>);
+    }
+    throw const AppException(message: 'Phản hồi quét hóa đơn không hợp lệ');
   }
 }

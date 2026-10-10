@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/sync/data_sync_coordinator.dart';
@@ -13,8 +15,10 @@ import '../../data/models/expense_models.dart';
 import '../../domain/repositories/expenses_repository.dart';
 import '../cubit/expense_form_cubit.dart';
 import '../cubit/expense_form_state.dart';
+import '../widgets/ai_receipt_scanner_card.dart';
 import '../widgets/category_selector_grid.dart';
 import '../widgets/custom_numeric_keypad.dart';
+import '../widgets/expense_receipt_viewer_dialog.dart';
 import '../widgets/split_members_section.dart';
 
 class AddExpenseScreen extends StatefulWidget {
@@ -178,6 +182,119 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     );
   }
 
+  Future<void> _pickReceipt(ImageSource source) async {
+    try {
+      final picker = ImagePicker();
+      final picked = await picker.pickImage(
+        source: source,
+        maxWidth: 2048,
+        maxHeight: 2048,
+        imageQuality: 85,
+      );
+      if (picked == null) return;
+
+      final file = File(picked.path);
+      final size = await file.length();
+      if (size > 10 * 1024 * 1024) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Kích thước ảnh tối đa là 10MB'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+        return;
+      }
+
+      final result = await _expenseFormCubit?.scanAndPrefillReceipt(file);
+      if (result != null && mounted) {
+        if (_expenseFormCubit != null) {
+          _titleCtrl.text = _expenseFormCubit!.state.title;
+          _notesCtrl.text = _expenseFormCubit!.state.notes ?? '';
+        }
+        if (result.isLowConfidence) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Ảnh mờ hoặc không nhận dạng được chữ. Ảnh đã được lưu, vui lòng tự nhập số tiền và tiêu đề.'),
+              backgroundColor: Colors.orange,
+              duration: Duration(seconds: 4),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Quét hóa đơn thành công! Đã tự động điền thông tin.'),
+              backgroundColor: AppColors.emerald,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Lỗi khi chọn ảnh: $e'),
+            backgroundColor: AppColors.error,
+          ),
+        );
+      }
+    }
+  }
+
+  void _viewReceipt() {
+    final state = _expenseFormCubit?.state;
+    if (state == null) return;
+    if (state.receiptUrl != null && state.receiptUrl!.trim().isNotEmpty) {
+      ExpenseReceiptViewerDialog.show(
+        context,
+        receiptUrl: state.receiptUrl!,
+        title: state.title.isNotEmpty ? state.title : 'Hóa đơn chi tiêu',
+      );
+    } else if (state.receiptFile != null) {
+      showDialog(
+        context: context,
+        barrierColor: Colors.black87,
+        builder: (_) => Dialog(
+          backgroundColor: Colors.transparent,
+          insetPadding: const EdgeInsets.all(12),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Flexible(
+                    child: Text(
+                      state.title.isNotEmpty ? state.title : 'Hóa đơn chi tiêu',
+                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(LucideIcons.x, color: Colors.white),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Flexible(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: InteractiveViewer(
+                    minScale: 0.8,
+                    maxScale: 4.0,
+                    child: Image.file(state.receiptFile!, fit: BoxFit.contain),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
   Widget _buildCard({
     required Widget child,
     required dynamic colors,
@@ -319,6 +436,19 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                   ),
                               ],
                             ),
+                          ),
+                          const SizedBox(height: 14),
+
+                          // QUÉT HÓA ĐƠN AI
+                          AiReceiptScannerCard(
+                            isScanning: state.isScanningReceipt,
+                            receiptFile: state.receiptFile,
+                            receiptUrl: state.receiptUrl,
+                            scanConfidence: state.scanConfidence,
+                            onCapturePressed: () => _pickReceipt(ImageSource.camera),
+                            onPickGalleryPressed: () => _pickReceipt(ImageSource.gallery),
+                            onRemoveReceipt: cubit.removeReceipt,
+                            onViewReceipt: _viewReceipt,
                           ),
                           const SizedBox(height: 14),
 

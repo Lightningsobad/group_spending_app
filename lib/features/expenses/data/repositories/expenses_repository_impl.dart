@@ -4,6 +4,7 @@ import '../../domain/repositories/expenses_repository.dart';
 import '../datasources/expenses_remote_data_source.dart';
 import '../models/expense_enums.dart';
 import '../models/expense_models.dart';
+import '../models/receipt_scan_models.dart';
 
 class ExpensesRepositoryImpl implements ExpensesRepository {
   final ExpensesRemoteDataSource remoteDataSource;
@@ -92,9 +93,40 @@ class ExpensesRepositoryImpl implements ExpensesRepository {
     }
   }
 
+  @override
+  Future<ReceiptScanDataModel> scanReceipt(File file) async {
+    try {
+      return await remoteDataSource.scanReceipt(file);
+    } on AppException catch (e) {
+      throw _mapAppException(e);
+    }
+  }
+
   AppException _mapAppException(AppException error) {
     final code = error.errorCode?.toUpperCase() ?? '';
     final message = error.message;
+
+    if (code == 'RECEIPT_FILE_INVALID') {
+      return AppException(
+        message: 'Tệp tải lên không hợp lệ hoặc rỗng. Vui lòng chọn lại ảnh hóa đơn.',
+        errorCode: code,
+        statusCode: error.statusCode,
+      );
+    }
+    if (code == 'RECEIPT_OCR_FAILED') {
+      return AppException(
+        message: 'Không thể nhận diện nội dung hóa đơn. Vui lòng chụp góc thẳng và đủ sáng hơn.',
+        errorCode: code,
+        statusCode: error.statusCode,
+      );
+    }
+    if (code == 'AI_SERVICE_UNAVAILABLE') {
+      return AppException(
+        message: 'Dịch vụ AI tạm thời gián đoạn. Vui lòng thử lại sau hoặc nhập thông tin thủ công.',
+        errorCode: code,
+        statusCode: error.statusCode,
+      );
+    }
 
     if (code == 'EXPENSE_LIMIT_EXCEEDED' || message.contains('1.000.000k') || message.contains('1 tỷ')) {
       return AppException(
