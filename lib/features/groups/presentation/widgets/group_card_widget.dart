@@ -111,10 +111,6 @@ class GroupCardWidget extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(20),
                                       border: Border.all(
                                         color: colors.roleAdminBorder,
-                                      color: colors.adminBadgeBackground,
-                                      borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                        color: colors.adminBadgeBorder,
                                       ),
                                     ),
                                     child: Row(
@@ -124,7 +120,6 @@ class GroupCardWidget extends StatelessWidget {
                                           LucideIcons.shieldCheck,
                                           size: 12,
                                           color: colors.roleAdminText,
-                                          color: colors.adminBadgeText,
                                         ),
                                         const SizedBox(width: 3),
                                         Text(
@@ -132,7 +127,6 @@ class GroupCardWidget extends StatelessWidget {
                                           style: AppTextStyle.bold(
                                             fontSize: 11,
                                             color: colors.roleAdminText,
-                                            color: colors.adminBadgeText,
                                           ),
                                         ),
                                       ],
@@ -145,18 +139,14 @@ class GroupCardWidget extends StatelessWidget {
                                       vertical: 3,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: colors.memberBadgeBackground,
+                                      color: colors.surfaceMuted,
                                       borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                        color: colors.memberBadgeBorder,
-                                      ),
                                     ),
                                     child: Text(
                                       'THÀNH VIÊN',
                                       style: AppTextStyle.bold(
                                         fontSize: 11,
                                         color: colors.textSecondary,
-                                        color: colors.memberBadgeText,
                                       ),
                                     ),
                                   ),
@@ -170,18 +160,13 @@ class GroupCardWidget extends StatelessWidget {
                                     ),
                                     decoration: BoxDecoration(
                                       color: colors.statusActiveBg,
-                                      color: colors.activePillBackground,
                                       borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                        color: colors.activePillBorder,
-                                      ),
                                     ),
                                     child: Text(
                                       'Đang hoạt động',
                                       style: AppTextStyle.bold(
                                         fontSize: 11,
                                         color: colors.statusActiveText,
-                                        color: colors.activePillText,
                                       ),
                                     ),
                                   )
@@ -193,11 +178,7 @@ class GroupCardWidget extends StatelessWidget {
                                     ),
                                     decoration: BoxDecoration(
                                       color: colors.statusArchivedBg,
-                                      color: colors.memberBadgeBackground,
                                       borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(
-                                        color: colors.memberBadgeBorder,
-                                      ),
                                     ),
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
@@ -206,7 +187,6 @@ class GroupCardWidget extends StatelessWidget {
                                           LucideIcons.archive,
                                           size: 11,
                                           color: colors.statusArchivedText,
-                                          color: colors.memberBadgeText,
                                         ),
                                         const SizedBox(width: 3),
                                         Text(
@@ -214,7 +194,6 @@ class GroupCardWidget extends StatelessWidget {
                                           style: AppTextStyle.bold(
                                             fontSize: 11,
                                             color: colors.statusArchivedText,
-                                            color: colors.memberBadgeText,
                                           ),
                                         ),
                                       ],
@@ -243,8 +222,11 @@ class GroupCardWidget extends StatelessWidget {
                             tooltip: isArchived
                                 ? 'Bật thông báo'
                                 : 'Tắt thông báo',
+                            padding: const EdgeInsets.all(6),
+                            constraints: const BoxConstraints(),
                             onPressed: onToggleMute,
                           ),
+                          const SizedBox(width: 4),
                           Icon(
                             LucideIcons.chevronRight,
                             size: 18,
