@@ -14,6 +14,13 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color segmentActiveBackground;
   final Color activePillBackground;
   final Color activePillText;
+  final Color activePillBorder;
+  final Color adminBadgeBackground;
+  final Color adminBadgeBorder;
+  final Color adminBadgeText;
+  final Color memberBadgeBackground;
+  final Color memberBadgeBorder;
+  final Color memberBadgeText;
 
   // Lỗi & cảnh báo
   final Color errorSurface;
@@ -88,6 +95,13 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.segmentActiveBackground,
     required this.activePillBackground,
     required this.activePillText,
+    required this.activePillBorder,
+    required this.adminBadgeBackground,
+    required this.adminBadgeBorder,
+    required this.adminBadgeText,
+    required this.memberBadgeBackground,
+    required this.memberBadgeBorder,
+    required this.memberBadgeText,
     required this.errorSurface,
     required this.errorBorder,
     required this.divider,
@@ -143,6 +157,13 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     segmentActiveBackground: Colors.white,
     activePillBackground: Color(0xFFDCFCE7),
     activePillText: AppColors.emeraldForest,
+    activePillBorder: Colors.transparent,
+    adminBadgeBackground: AppColors.roleAdminBg,
+    adminBadgeBorder: Color(0xFFFDE68A),
+    adminBadgeText: AppColors.roleAdminText,
+    memberBadgeBackground: Color(0xFFF8FAFC),
+    memberBadgeBorder: AppColors.borderLight,
+    memberBadgeText: AppColors.textSecondary,
     errorSurface: AppColors.errorBg,
     errorBorder: AppColors.errorBorder,
     divider: Color(0xFFE2E8F0),
@@ -206,6 +227,13 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     segmentActiveBackground: AppColors.cardDark,
     activePillBackground: Color(0xFF064E3B),
     activePillText: AppColors.emeraldLight,
+    activePillBorder: Color(0xFF047857),
+    adminBadgeBackground: Color(0xFF451A03),
+    adminBadgeBorder: Color(0xFF92400E),
+    adminBadgeText: Color(0xFFFCD34D),
+    memberBadgeBackground: Color(0xFF1E293B),
+    memberBadgeBorder: AppColors.borderDark,
+    memberBadgeText: Color(0xFFCBD5E1),
     errorSurface: Color(0xFF450A0A),
     errorBorder: Color(0xFF991B1B),
     divider: AppColors.borderDark,
@@ -275,6 +303,13 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? segmentActiveBackground,
     Color? activePillBackground,
     Color? activePillText,
+    Color? activePillBorder,
+    Color? adminBadgeBackground,
+    Color? adminBadgeBorder,
+    Color? adminBadgeText,
+    Color? memberBadgeBackground,
+    Color? memberBadgeBorder,
+    Color? memberBadgeText,
     Color? errorSurface,
     Color? errorBorder,
     Color? divider,
@@ -329,6 +364,14 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           segmentActiveBackground ?? this.segmentActiveBackground,
       activePillBackground: activePillBackground ?? this.activePillBackground,
       activePillText: activePillText ?? this.activePillText,
+      activePillBorder: activePillBorder ?? this.activePillBorder,
+      adminBadgeBackground: adminBadgeBackground ?? this.adminBadgeBackground,
+      adminBadgeBorder: adminBadgeBorder ?? this.adminBadgeBorder,
+      adminBadgeText: adminBadgeText ?? this.adminBadgeText,
+      memberBadgeBackground:
+          memberBadgeBackground ?? this.memberBadgeBackground,
+      memberBadgeBorder: memberBadgeBorder ?? this.memberBadgeBorder,
+      memberBadgeText: memberBadgeText ?? this.memberBadgeText,
       errorSurface: errorSurface ?? this.errorSurface,
       errorBorder: errorBorder ?? this.errorBorder,
       divider: divider ?? this.divider,
@@ -398,6 +441,20 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       activePillBackground:
           Color.lerp(activePillBackground, other.activePillBackground, t)!,
       activePillText: Color.lerp(activePillText, other.activePillText, t)!,
+      activePillBorder:
+          Color.lerp(activePillBorder, other.activePillBorder, t)!,
+      adminBadgeBackground:
+          Color.lerp(adminBadgeBackground, other.adminBadgeBackground, t)!,
+      adminBadgeBorder:
+          Color.lerp(adminBadgeBorder, other.adminBadgeBorder, t)!,
+      adminBadgeText:
+          Color.lerp(adminBadgeText, other.adminBadgeText, t)!,
+      memberBadgeBackground:
+          Color.lerp(memberBadgeBackground, other.memberBadgeBackground, t)!,
+      memberBadgeBorder:
+          Color.lerp(memberBadgeBorder, other.memberBadgeBorder, t)!,
+      memberBadgeText:
+          Color.lerp(memberBadgeText, other.memberBadgeText, t)!,
       errorSurface: Color.lerp(errorSurface, other.errorSurface, t)!,
       errorBorder: Color.lerp(errorBorder, other.errorBorder, t)!,
       divider: Color.lerp(divider, other.divider, t)!,

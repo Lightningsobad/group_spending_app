@@ -127,8 +127,9 @@ class _SelectGroupForExpenseViewState extends State<SelectGroupForExpenseView> {
                     borderRadius: BorderRadius.circular(12),
                     onTap: widget.onBack,
                     child: Container(
-                      width: 40,
-                      height: 40,
+                      width: 48,
+                      height: 48,
+                      alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: colors.cardBackground,
                         borderRadius: BorderRadius.circular(12),
@@ -464,30 +465,30 @@ class _SelectGroupForExpenseViewState extends State<SelectGroupForExpenseView> {
                           const SizedBox(height: 4),
                           Container(
                             padding: const EdgeInsets.symmetric(
-                              horizontal: 7,
-                              vertical: 2,
+                              horizontal: 8,
+                              vertical: 3,
                             ),
                             decoration: BoxDecoration(
-                              color: AppColors.roleAdminBg,
+                              color: colors.adminBadgeBackground,
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
-                                color: const Color(0xFFFDE68A),
+                                color: colors.adminBadgeBorder,
                               ),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(
+                                Icon(
                                   LucideIcons.shieldCheck,
-                                  size: 11,
-                                  color: AppColors.roleAdminText,
+                                  size: 12,
+                                  color: colors.adminBadgeText,
                                 ),
                                 const SizedBox(width: 3),
                                 Text(
                                   'Admin',
                                   style: AppTextStyle.bold(
-                                    fontSize: 9,
-                                    color: AppColors.roleAdminText,
+                                    fontSize: 11,
+                                    color: colors.adminBadgeText,
                                   ),
                                 ),
                               ],
@@ -501,15 +502,15 @@ class _SelectGroupForExpenseViewState extends State<SelectGroupForExpenseView> {
 
                   // Trailing: Balance
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        tr.balanceLabel,
-                        style: AppTextStyle.regular(
-                          fontSize: 11,
-                          color: colors.textMuted,
-                        ),
-                      ),
+                     crossAxisAlignment: CrossAxisAlignment.end,
+                     children: [
+                       Text(
+                         tr.balanceLabel,
+                         style: AppTextStyle.regular(
+                           fontSize: 12,
+                           color: colors.textMuted,
+                         ),
+                       ),
                       const SizedBox(height: 2),
                       Text(
                         balanceText,

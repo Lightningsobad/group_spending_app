@@ -24,52 +24,67 @@ class DashboardGroupsHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          children: [
-            Icon(
-              LucideIcons.users,
-              size: 18,
-              color: colors.textSecondary,
-            ),
-            const SizedBox(width: 8),
-            Text(
-              tr.yourGroupsSection,
-              style: AppTextStyle.bold(
-                fontSize: 13,
-                color: colors.textPrimary,
+        Expanded(
+          child: Row(
+            children: [
+              Icon(
+                LucideIcons.users,
+                size: 18,
+                color: colors.textSecondary,
               ),
-            ),
-          ],
-        ),
-        if (!isLoading)
-          InkWell(
-          onTap: onSeeAll,
-          borderRadius: BorderRadius.circular(8),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 6,
-              vertical: 4,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  tr.seeAllGroupsCount(groupCount),
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  tr.yourGroupsSection,
                   style: AppTextStyle.bold(
-                    fontSize: 12,
-                    color: AppColors.emerald,
+                    fontSize: 14,
+                    color: colors.textPrimary,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(width: 2),
-                const Icon(
-                  LucideIcons.chevronRight,
-                  size: 14,
-                  color: AppColors.emerald,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
+        if (!isLoading)
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: onSeeAll,
+              borderRadius: BorderRadius.circular(8),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minHeight: 48,
+                  minWidth: 48,
+                ),
+                child: Container(
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 8,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        tr.seeAllGroupsCount(groupCount),
+                        style: AppTextStyle.bold(
+                          fontSize: 13,
+                          color: AppColors.emerald,
+                        ),
+                      ),
+                      const SizedBox(width: 2),
+                      const Icon(
+                        LucideIcons.chevronRight,
+                        size: 14,
+                        color: AppColors.emerald,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }
