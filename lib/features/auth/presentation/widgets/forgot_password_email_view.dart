@@ -46,6 +46,7 @@ class _ForgotPasswordEmailViewState extends State<ForgotPasswordEmailView> {
   @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
+    final colors = context.colors;
 
     return BlocBuilder<PasswordResetCubit, PasswordResetState>(
       builder: (context, state) {
@@ -55,8 +56,6 @@ class _ForgotPasswordEmailViewState extends State<ForgotPasswordEmailView> {
             const SizedBox(height: 12),
             const PasswordResetHeaderIcon(
               icon: LucideIcons.mail,
-              backgroundColor: AppColors.successBg,
-              iconColor: AppColors.emeraldForest,
               showShield: false,
             ),
             const SizedBox(height: 20),
@@ -64,8 +63,8 @@ class _ForgotPasswordEmailViewState extends State<ForgotPasswordEmailView> {
               tr.forgotPasswordTitle,
               textAlign: TextAlign.center,
               style: AppTextStyle.black(
-                fontSize: 24,
-                color: AppColors.textDark,
+                fontSize: AppFontSize.h2,
+                color: colors.textPrimary,
                 letterSpacing: -0.5,
               ),
             ),
@@ -76,8 +75,8 @@ class _ForgotPasswordEmailViewState extends State<ForgotPasswordEmailView> {
                 tr.forgotPasswordSubtitle,
                 textAlign: TextAlign.center,
                 style: AppTextStyle.medium(
-                  fontSize: 13.5,
-                  color: AppColors.textSecondary,
+                  fontSize: AppFontSize.secondary,
+                  color: colors.textSecondary,
                   height: 1.45,
                 ),
               ),
@@ -86,12 +85,12 @@ class _ForgotPasswordEmailViewState extends State<ForgotPasswordEmailView> {
             AppTextField(
               label: tr.emailLabel,
               controller: _emailController,
-              hintText: 'minh.nguyen@example.com',
+              hintText: tr.emailHint,
               keyboardType: TextInputType.emailAddress,
-              prefixIcon: const Icon(
+              prefixIcon: Icon(
                 LucideIcons.mail,
                 size: 19,
-                color: AppColors.textMuted,
+                color: colors.textMuted,
               ),
               errorText: state.fieldErrors?['email'],
             ),
@@ -111,13 +110,13 @@ class _ForgotPasswordEmailViewState extends State<ForgotPasswordEmailView> {
               child: TextButton(
                 onPressed: widget.onBackToLogin,
                 style: TextButton.styleFrom(
-                  foregroundColor: AppColors.textSecondary,
+                  foregroundColor: colors.textSecondary,
                 ),
                 child: Text(
                   tr.backToLogin,
                   style: AppTextStyle.semiBold(
-                    fontSize: 14,
-                    color: AppColors.textSecondary,
+                    fontSize: AppFontSize.secondary,
+                    color: colors.textSecondary,
                   ),
                 ),
               ),

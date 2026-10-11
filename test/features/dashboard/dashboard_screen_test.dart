@@ -201,5 +201,78 @@ void main() {
       expect(find.text('TỔNG QUAN SỐ DƯ TÀI CHÍNH'), findsOneWidget);
       expect(find.text('Chọn nhóm muốn thêm khoản chi'), findsNothing);
     });
+
+    testWidgets('tapping eye icon on FinancialBalanceCard masks and unmasks balances', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest(locale: const Locale('vi')));
+      await tester.pumpAndSettle();
+
+      // Initially shows numbers
+      expect(find.text('450.000 đ'), findsOneWidget);
+      expect(find.text('2.450.000 đ'), findsOneWidget);
+      expect(find.text('••••••••'), findsNothing);
+
+      // Tap Eye icon
+      await tester.tap(find.byIcon(LucideIcons.eye));
+      await tester.pumpAndSettle();
+
+      // Now masked
+      expect(find.text('450.000 đ'), findsNothing);
+      expect(find.text('2.450.000 đ'), findsNothing);
+      expect(find.text('••••••••'), findsNWidgets(2));
+      expect(find.byIcon(LucideIcons.eyeOff), findsOneWidget);
+
+      // Tap EyeOff icon to unmask
+      await tester.tap(find.byIcon(LucideIcons.eyeOff));
+      await tester.pumpAndSettle();
+
+      // Numbers restored
+      expect(find.text('450.000 đ'), findsOneWidget);
+      expect(find.text('2.450.000 đ'), findsOneWidget);
+      expect(find.text('••••••••'), findsNothing);
+    });
+
+    testWidgets('See all button in DashboardGroupsHeader has minimum 48px touch target height', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest(locale: const Locale('vi')));
+      await tester.pumpAndSettle();
+
+      final seeAllTextFinder = find.text('Xem tất cả (3)');
+      expect(seeAllTextFinder, findsOneWidget);
+
+      final inkWellFinder = find.ancestor(
+        of: seeAllTextFinder,
+        matching: find.byType(InkWell),
+      );
+      expect(inkWellFinder, findsOneWidget);
+      final size = tester.getSize(inkWellFinder);
+      expect(size.height, greaterThanOrEqualTo(48.0));
+      expect(size.width, greaterThanOrEqualTo(48.0));
+    });
+
+    testWidgets('renders cleanly without overflow under high text scale (1.5x)', (tester) async {
+      await tester.pumpWidget(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider<DashboardCubit>.value(value: dashboardCubit),
+            BlocProvider<GroupsCubit>.value(value: groupsCubit),
+          ],
+          child: MaterialApp(
+            theme: AppTheme.lightTheme,
+            locale: const Locale('vi'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: MediaQuery(
+              data: const MediaQueryData(
+                textScaler: TextScaler.linear(1.5),
+              ),
+              child: const Scaffold(body: DashboardScreen()),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(find.text('CÁC NHÓM CỦA BẠN'), findsOneWidget);
+    });
   });
 }

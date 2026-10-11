@@ -20,6 +20,7 @@ class ResendOtpSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
+    final colors = context.colors;
 
     return BlocSelector<AuthCubit, AuthState, int>(
       selector: (state) => state.resendCountdown,
@@ -28,30 +29,30 @@ class ResendOtpSection extends StatelessWidget {
           return Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
+              Icon(
                 Icons.access_time,
                 size: 15,
-                color: AppColors.textSecondary,
+                color: colors.textSecondary,
               ),
               const SizedBox(width: 6),
               Text(
                 tr.localeName == 'en' ? 'Resend code in ' : 'Gửi lại mã sau ',
                 style: AppTextStyle.medium(
-                  fontSize: 13,
-                  color: AppColors.textSecondary,
+                  fontSize: AppFontSize.secondary,
+                  color: colors.textSecondary,
                 ),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE2E8F0),
+                  color: colors.segmentBackground,
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
                   _formatCountdown(countdown),
                   style: AppTextStyle.bold(
-                    fontSize: 13,
-                    color: AppColors.emeraldForest,
+                    fontSize: AppFontSize.secondary,
+                    color: colors.activePillText,
                   ),
                 ),
               ),
@@ -73,7 +74,7 @@ class ResendOtpSection extends StatelessWidget {
               Text(
                 tr.resendOtpNow,
                 style: AppTextStyle.bold(
-                  fontSize: 13,
+                  fontSize: AppFontSize.secondary,
                   color: AppColors.emeraldDark,
                 ),
               ),

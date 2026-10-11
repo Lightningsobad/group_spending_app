@@ -19,11 +19,13 @@ import '../widgets/join_group_view.dart';
 class GroupsScreen extends StatefulWidget {
   final bool initialShowJoin;
   final VoidCallback? onNavigateToDebts;
+  final ValueChanged<bool>? onDeepViewChanged;
 
   const GroupsScreen({
     super.key,
     this.initialShowJoin = false,
     this.onNavigateToDebts,
+    this.onDeepViewChanged,
   });
 
   @override
@@ -35,6 +37,8 @@ class GroupsScreenState extends State<GroupsScreen> {
   late bool _isJoiningGroup;
   GroupModel? _selectedGroup;
 
+  bool get isDeepView => _selectedGroup != null || _isJoiningGroup;
+
   @override
   void initState() {
     super.initState();
@@ -43,6 +47,13 @@ class GroupsScreenState extends State<GroupsScreen> {
     if (cubit.state.status == GroupsStatus.initial) {
       cubit.loadGroups();
     }
+    if (_isJoiningGroup) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _notifyDeepView());
+    }
+  }
+
+  void _notifyDeepView() {
+    widget.onDeepViewChanged?.call(isDeepView);
   }
 
   void openGroupDetail(GroupModel group) {
@@ -50,24 +61,28 @@ class GroupsScreenState extends State<GroupsScreen> {
       _selectedGroup = group;
       _isJoiningGroup = false;
     });
+    _notifyDeepView();
   }
 
   void closeGroupDetail() {
     setState(() {
       _selectedGroup = null;
     });
+    _notifyDeepView();
   }
 
   void openJoinGroup() {
     setState(() {
       _isJoiningGroup = true;
     });
+    _notifyDeepView();
   }
 
   void closeJoinGroup() {
     setState(() {
       _isJoiningGroup = false;
     });
+    _notifyDeepView();
   }
 
   @override
@@ -117,14 +132,21 @@ class GroupsScreenState extends State<GroupsScreen> {
         if (_isJoiningGroup) {
           return JoinGroupView(
             onBack: closeJoinGroup,
-            onSuccess: closeJoinGroup,
+            onSuccess: () {
+              closeJoinGroup();
+              final latestGroup =
+                  context.read<GroupsCubit>().state.groups.firstOrNull;
+              if (latestGroup != null) {
+                openGroupDetail(latestGroup);
+              }
+            },
           );
         }
 
         final filteredGroups = state.filteredGroups;
 
         return RefreshIndicator(
-          color: AppColors.emerald,
+          color: colors.primaryButton,
           onRefresh: () => context.read<GroupsCubit>().loadGroups(),
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -139,20 +161,20 @@ class GroupsScreenState extends State<GroupsScreen> {
                       width: 44,
                       height: 44,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFDCFCE7),
+                        color: colors.primaryContainer,
                         borderRadius: BorderRadius.circular(14),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         LucideIcons.users,
                         size: 22,
-                        color: Color(0xFF15803D),
+                        color: colors.onPrimaryContainer,
                       ),
                     ),
                     const SizedBox(width: 12),
                     Text(
                       tr.groupListHeaderTitle,
                       style: AppTextStyle.bold(
-                        fontSize: 18,
+                        fontSize: 20,
                         color: colors.textPrimary,
                       ),
                     ),
@@ -179,19 +201,24 @@ class GroupsScreenState extends State<GroupsScreen> {
                     Expanded(
                       child: ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF166534),
-                          foregroundColor: Colors.white,
+                          backgroundColor: colors.primaryButton,
+                          foregroundColor: colors.onPrimaryButton,
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
                           elevation: 0,
                         ),
-                        onPressed: () => CreateGroupSheet.show(context),
+                        onPressed: () => CreateGroupSheet.show(
+                          context,
+                          onSuccessWithGroup: (newGroup) {
+                            openGroupDetail(newGroup);
+                          },
+                        ),
                         icon: const Icon(LucideIcons.plus, size: 18),
                         label: Text(
                           tr.createGroupAction,
-                          style: AppTextStyle.bold(fontSize: 13),
+                          style: AppTextStyle.bold(fontSize: 14),
                         ),
                       ),
                     ),
@@ -208,14 +235,14 @@ class GroupsScreenState extends State<GroupsScreen> {
                           side: BorderSide(color: colors.cardBorder),
                         ),
                         onPressed: openJoinGroup,
-                        icon: const Icon(
+                        icon: Icon(
                           LucideIcons.qrCode,
                           size: 18,
-                          color: Color(0xFF15803D),
+                          color: colors.onPrimaryContainer,
                         ),
                         label: Text(
                           tr.codeOrQrAction,
-                          style: AppTextStyle.bold(fontSize: 13),
+                          style: AppTextStyle.bold(fontSize: 14),
                         ),
                       ),
                     ),
@@ -241,7 +268,8 @@ class GroupsScreenState extends State<GroupsScreen> {
                 const SizedBox(height: 16),
 
                 // 5. Groups List or Skeletons or Empty State
-                if ((state.status == GroupsStatus.initial || state.isLoading) && state.groups.isEmpty)
+                if ((state.status == GroupsStatus.initial || state.isLoading) &&
+                    state.groups.isEmpty)
                   ...List.generate(3, (index) => const GroupCardSkeleton())
                 else if (filteredGroups.isEmpty)
                   GroupsEmptyView(

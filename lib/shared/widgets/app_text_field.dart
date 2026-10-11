@@ -40,6 +40,7 @@ class _AppTextFieldState extends State<AppTextField> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final hasError = widget.errorText != null && widget.errorText!.isNotEmpty;
 
     return Column(
@@ -51,8 +52,8 @@ class _AppTextFieldState extends State<AppTextField> {
             Text(
               widget.label,
               style: AppTextStyle.bold(
-                fontSize: 13.5,
-                color: AppColors.textDark,
+                fontSize: AppFontSize.secondary,
+                color: colors.textPrimary,
               ),
             ),
             if (widget.labelTrailing != null)
@@ -61,8 +62,8 @@ class _AppTextFieldState extends State<AppTextField> {
               Text(
                 widget.optionalTag!,
                 style: AppTextStyle.regular(
-                  fontSize: 11.5,
-                  color: AppColors.textSecondary,
+                  fontSize: AppFontSize.caption,
+                  color: colors.textSecondary,
                 ),
               ),
           ],
@@ -74,12 +75,15 @@ class _AppTextFieldState extends State<AppTextField> {
           obscureText: widget.isPassword && _obscureText,
           autofocus: widget.autofocus,
           onChanged: widget.onChanged,
-          style: AppTextStyle.semiBold(fontSize: 14, color: AppColors.textDark),
+          style: AppTextStyle.semiBold(
+            fontSize: AppFontSize.body,
+            color: colors.textPrimary,
+          ),
           decoration: InputDecoration(
             hintText: widget.hintText,
             hintStyle: AppTextStyle.regular(
-              fontSize: 14,
-              color: AppColors.textMuted,
+              fontSize: AppFontSize.secondary,
+              color: colors.textMuted,
             ),
             prefixIcon: widget.prefixIcon != null
                 ? Padding(
@@ -96,7 +100,7 @@ class _AppTextFieldState extends State<AppTextField> {
                     icon: Icon(
                       _obscureText ? LucideIcons.eye : LucideIcons.eyeOff,
                       size: 19,
-                      color: AppColors.textMuted,
+                      color: colors.textMuted,
                     ),
                     onPressed: () {
                       setState(() {
@@ -106,7 +110,7 @@ class _AppTextFieldState extends State<AppTextField> {
                   )
                 : null,
             filled: true,
-            fillColor: AppColors.inputBg,
+            fillColor: colors.inputFill,
             contentPadding: const EdgeInsets.symmetric(
               vertical: 13,
               horizontal: 14,
@@ -114,7 +118,7 @@ class _AppTextFieldState extends State<AppTextField> {
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
               borderSide: BorderSide(
-                color: hasError ? AppColors.error : AppColors.borderLight,
+                color: hasError ? AppColors.error : colors.cardBorder,
                 width: 1.2,
               ),
             ),
@@ -140,7 +144,7 @@ class _AppTextFieldState extends State<AppTextField> {
           Text(
             widget.errorText!,
             style: AppTextStyle.semiBold(
-              fontSize: 11.5,
+              fontSize: AppFontSize.caption,
               color: AppColors.error,
             ),
           ),

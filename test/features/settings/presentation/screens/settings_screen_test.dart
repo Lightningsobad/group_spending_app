@@ -136,12 +136,39 @@ void main() {
       expect(find.text('Log out account'), findsOneWidget);
     });
 
-    testWidgets('tapping LogoutButton triggers auth logout', (tester) async {
+    testWidgets('tapping LogoutButton shows confirmation dialog; canceling preserves session', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       final logoutBtn = find.text('Đăng xuất tài khoản');
       await tester.ensureVisible(logoutBtn);
       await tester.tap(logoutBtn);
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.text('Bạn có chắc chắn muốn đăng xuất?'), findsOneWidget);
+
+      // Tap Cancel
+      await tester.tap(find.text('Hủy'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AlertDialog), findsNothing);
+      expect(authCubit.state.status, equals(AuthStatus.initial));
+    });
+
+    testWidgets('confirming logout in dialog triggers auth logout', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      final logoutBtn = find.text('Đăng xuất tài khoản');
+      await tester.ensureVisible(logoutBtn);
+      await tester.tap(logoutBtn);
+      await tester.pumpAndSettle();
+
+      // Find the confirm button inside the AlertDialog
+      final confirmBtn = find.descendant(
+        of: find.byType(AlertDialog),
+        matching: find.widgetWithText(ElevatedButton, 'Đăng xuất tài khoản'),
+      );
+      await tester.tap(confirmBtn);
       await tester.pumpAndSettle();
 
       expect(authCubit.state.status, equals(AuthStatus.unauthenticated));

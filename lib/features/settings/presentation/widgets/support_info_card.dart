@@ -34,7 +34,7 @@ class SupportInfoCard extends StatelessWidget {
             style: AppTextStyle.bold(
               fontSize: 12,
               color: colors.textSlate800,
-              letterSpacing: 0.4,
+              letterSpacing: 0.5,
             ),
           ),
           const SizedBox(height: 14),
@@ -44,10 +44,9 @@ class SupportInfoCard extends StatelessWidget {
             itemBg: colors.surfaceMuted,
             borderColor: colors.cardBorder,
             icon: LucideIcons.info,
-            iconBg: const Color(0xFFDCFCE7),
-            iconColor: const Color(0xFF16A34A),
+            iconBg: colors.badgeSuccessBg,
+            iconColor: colors.badgeSuccess,
             title: tr.aboutAppTitle,
-            subtitle: tr.aboutAppSubtitle,
             textColor: colors.textPrimary,
             onTap: () {
               context.push('/onboarding');
@@ -61,10 +60,9 @@ class SupportInfoCard extends StatelessWidget {
             itemBg: colors.surfaceMuted,
             borderColor: colors.cardBorder,
             icon: LucideIcons.shieldCheck,
-            iconBg: const Color(0xFFE0E7FF),
-            iconColor: const Color(0xFF4F46E5),
+            iconBg: colors.badgeIndigoBg,
+            iconColor: colors.badgeIndigo,
             title: tr.privacyPolicyTitle,
-            subtitle: tr.privacyPolicySubtitle,
             textColor: colors.textPrimary,
             onTap: () {
               if (onOpenPrivacyPolicy != null) {
@@ -87,7 +85,6 @@ class _SupportTile extends StatelessWidget {
   final Color iconBg;
   final Color iconColor;
   final String title;
-  final String subtitle;
   final Color textColor;
   final VoidCallback onTap;
 
@@ -98,13 +95,14 @@ class _SupportTile extends StatelessWidget {
     required this.iconBg,
     required this.iconColor,
     required this.title,
-    required this.subtitle,
     required this.textColor,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return Material(
       color: itemBg,
       borderRadius: BorderRadius.circular(16),
@@ -130,29 +128,15 @@ class _SupportTile extends StatelessWidget {
               ),
               const SizedBox(width: 14),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: AppTextStyle.bold(fontSize: 13, color: textColor),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      subtitle,
-                      style: AppTextStyle.medium(
-                        fontSize: 11,
-                        color: AppColors.textSecondary,
-                        height: 1.3,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  title,
+                  style: AppTextStyle.bold(fontSize: 14, color: textColor),
                 ),
               ),
-              const Icon(
+              Icon(
                 Icons.chevron_right_rounded,
                 size: 20,
-                color: AppColors.textMuted,
+                color: colors.textMuted,
               ),
             ],
           ),

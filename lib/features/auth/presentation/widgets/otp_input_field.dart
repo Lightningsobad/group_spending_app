@@ -76,6 +76,7 @@ class _OtpInputFieldState extends State<OtpInputField> {
     final isAlphanumeric = widget.isAlphanumeric;
     final controller = widget.controller;
     final focusNode = widget.focusNode;
+    final colors = context.colors;
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -137,8 +138,8 @@ class _OtpInputFieldState extends State<OtpInputField> {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: index < controller.text.length
-                              ? AppColors.successBg
-                              : Colors.white,
+                              ? colors.otpBoxFilledBg
+                              : colors.otpBoxBg,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
                             color:
@@ -146,7 +147,7 @@ class _OtpInputFieldState extends State<OtpInputField> {
                                         (focusNode.hasFocus &&
                                             index == controller.text.length)
                                     ? AppColors.emerald
-                                    : const Color(0xFFCBD5E1),
+                                    : colors.otpBoxBorder,
                             width:
                                 (focusNode.hasFocus &&
                                         index == controller.text.length)
@@ -174,8 +175,8 @@ class _OtpInputFieldState extends State<OtpInputField> {
                           style: AppTextStyle.extraBold(
                             fontSize: fontSize,
                             color: index < controller.text.length
-                                ? const Color(0xFF065F46)
-                                : AppColors.textDark,
+                                ? colors.activePillText
+                                : colors.textPrimary,
                           ),
                         ),
                       ),

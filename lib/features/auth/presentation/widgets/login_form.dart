@@ -27,6 +27,7 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
+    final colors = context.colors;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -34,12 +35,12 @@ class LoginForm extends StatelessWidget {
         AppTextField(
           label: tr.emailLabel,
           controller: emailController,
-          hintText: 'minh.nguyen@example.com',
+          hintText: tr.emailHint,
           keyboardType: TextInputType.emailAddress,
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             LucideIcons.mail,
             size: 19,
-            color: AppColors.textMuted,
+            color: colors.textMuted,
           ),
           errorText: fieldErrors?['email'],
         ),
@@ -47,22 +48,26 @@ class LoginForm extends StatelessWidget {
         AppTextField(
           label: tr.passwordLabel,
           labelTrailing: GestureDetector(
+            behavior: HitTestBehavior.opaque,
             onTap: onForgotPassword,
-            child: Text(
-              tr.forgotPassword,
-              style: AppTextStyle.semiBold(
-                fontSize: 12.5,
-                color: AppColors.emeraldForest,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+              child: Text(
+                tr.forgotPassword,
+                style: AppTextStyle.bold(
+                  fontSize: AppFontSize.secondary,
+                  color: AppColors.emeraldForest,
+                ),
               ),
             ),
           ),
           controller: passwordController,
           hintText: '••••••••',
           isPassword: true,
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             LucideIcons.lock,
             size: 19,
-            color: AppColors.textMuted,
+            color: colors.textMuted,
           ),
           errorText: fieldErrors?['password'],
         ),

@@ -24,6 +24,10 @@ class GroupsSearchBar extends StatelessWidget {
     return TextField(
       controller: controller,
       onChanged: onChanged,
+      style: AppTextStyle.medium(
+        fontSize: 14,
+        color: colors.textPrimary,
+      ),
       decoration: InputDecoration(
         hintText: tr.searchGroupPlaceholder,
         hintStyle: AppTextStyle.regular(
@@ -35,16 +39,20 @@ class GroupsSearchBar extends StatelessWidget {
           size: 18,
           color: colors.textMuted,
         ),
-        suffixIcon: controller.text.isNotEmpty
-            ? IconButton(
-                icon: Icon(
-                  LucideIcons.x,
-                  size: 16,
-                  color: colors.textMuted,
-                ),
-                onPressed: onClear,
-              )
-            : null,
+        suffixIcon: ValueListenableBuilder<TextEditingValue>(
+          valueListenable: controller,
+          builder: (context, value, _) {
+            if (value.text.isEmpty) return const SizedBox.shrink();
+            return IconButton(
+              icon: Icon(
+                LucideIcons.x,
+                size: 16,
+                color: colors.textMuted,
+              ),
+              onPressed: onClear,
+            );
+          },
+        ),
         filled: true,
         fillColor: colors.cardBackground,
         contentPadding: const EdgeInsets.symmetric(
@@ -61,8 +69,8 @@ class GroupsSearchBar extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(
-            color: AppColors.emerald,
+          borderSide: BorderSide(
+            color: colors.primaryButton,
             width: 1.5,
           ),
         ),

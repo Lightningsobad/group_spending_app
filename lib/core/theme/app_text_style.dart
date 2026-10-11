@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+/// Thang tỷ lệ cỡ chữ chuẩn hóa cho thiết bị di động theo tiêu chuẩn UI/UX và WCAG (sàn tối thiểu 12px).
+abstract final class AppFontSize {
+  static const double hero = 32.0;
+  static const double h1 = 28.0;
+  static const double h2 = 24.0;
+  static const double h3 = 20.0;
+  static const double h4 = 18.0;
+  static const double body = 16.0;
+  static const double secondary = 14.0;
+  static const double caption = 12.0;
+}
+
 class AppTextStyle {
   AppTextStyle._();
 

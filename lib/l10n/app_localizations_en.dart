@@ -31,11 +31,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Transparent expense sharing & smart debt reminders';
 
   @override
-  String get authHeaderTitle => 'Group Expense Management\n& Reminders';
+  String get authHeaderTitle => 'FairShare';
 
   @override
-  String get authHeaderSubtitle =>
-      'Transparent sharing, gentle reminders, easy fund pooling.';
+  String get authHeaderSubtitle => 'Group expense management & reminders';
 
   @override
   String get loginTab => 'Log In';
@@ -50,7 +49,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emailLabel => 'Email Address';
 
   @override
-  String get emailHint => 'Enter your email';
+  String get emailHint => 'Your email';
 
   @override
   String get passwordLabel => 'Password';
@@ -77,7 +76,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fullNameLabel => 'Full name';
 
   @override
-  String get fullNameHint => 'Enter your full name';
+  String get fullNameHint => 'Your name';
 
   @override
   String get phoneLabel => 'Phone number';
@@ -86,7 +85,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneOptionalTag => '(Optional)';
 
   @override
-  String get phoneHint => 'Enter phone number (optional)';
+  String get phoneHint => 'Phone number';
 
   @override
   String get registerButton => 'Create New Account';
@@ -251,12 +250,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeModeTitle => 'Theme Mode';
 
   @override
-  String get themeLightSubtitle => 'Light surface #F8FAFC';
-
-  @override
-  String get themeDarkSubtitle => 'Dark surface #0F172A';
-
-  @override
   String get lightThemeLabel => 'Light';
 
   @override
@@ -266,24 +259,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get displayLanguageTitle => 'Display Language';
 
   @override
-  String get displayLanguageSubtitle => 'English (All labels)';
-
-  @override
   String get infoSupportSection => 'INFO & SUPPORT';
 
   @override
   String get aboutAppTitle => 'About FairShare';
 
   @override
-  String get aboutAppSubtitle =>
-      'Replay onboarding feature introduction slides';
-
-  @override
   String get privacyPolicyTitle => 'Privacy Policy & Data Safety';
-
-  @override
-  String get privacyPolicySubtitle =>
-      'Commitment to encryption and account protection (Details)';
 
   @override
   String get privacyPolicyCommitmentSubtitle =>
@@ -1615,12 +1597,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bankAccountNameHint => 'NGUYEN VAN A (uppercase without accents)';
 
   @override
-  String get tapToViewQrHint => 'Tap to view VietQR';
-
-  @override
-  String get tapToSetupBankHint => 'Tap to set up account';
-
-  @override
   String get changeAvatarPrompt => 'Change avatar';
 
   @override
@@ -1753,4 +1729,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get expenseGroupLabel => 'Group';
+  String get loadingBanksMessage => 'Loading bank list...';
+
+  @override
+  String get clearBankPrompt => 'Clear bank selection';
+
+  @override
+  String get imagePickerGenericError =>
+      'Could not select image. Please try again.';
+
+  @override
+  String get updateProfileGenericError =>
+      'Failed to update profile. Please try again later.';
+
+  @override
+  String get otpResentSuccessMessage =>
+      'A new verification code has been sent to your email.';
 }

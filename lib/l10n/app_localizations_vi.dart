@@ -30,11 +30,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get splashSlogan => 'Chia tiền minh bạch & nhắc nợ thông minh';
 
   @override
-  String get authHeaderTitle => 'Quản lý & Nhắc nhở Chi tiêu\nNhóm';
+  String get authHeaderTitle => 'FairShare';
 
   @override
-  String get authHeaderSubtitle =>
-      'Chia tiền minh bạch, nhắc nợ tế nhị, đóng quỹ dễ dàng.';
+  String get authHeaderSubtitle => 'Quản lý chi tiêu nhóm & nhắc nhở';
 
   @override
   String get loginTab => 'Đăng nhập';
@@ -49,7 +48,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get emailLabel => 'Địa chỉ Email';
 
   @override
-  String get emailHint => 'Nhập địa chỉ email của bạn';
+  String get emailHint => 'Email của bạn';
 
   @override
   String get passwordLabel => 'Mật khẩu';
@@ -76,7 +75,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get fullNameLabel => 'Họ và tên';
 
   @override
-  String get fullNameHint => 'Nhập họ và tên của bạn';
+  String get fullNameHint => 'Tên của bạn';
 
   @override
   String get phoneLabel => 'Số điện thoại';
@@ -85,7 +84,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get phoneOptionalTag => '(Không bắt buộc / Tùy chọn)';
 
   @override
-  String get phoneHint => 'Nhập số điện thoại (tùy chọn)';
+  String get phoneHint => 'Số điện thoại';
 
   @override
   String get registerButton => 'Tạo tài khoản mới';
@@ -249,12 +248,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get themeModeTitle => 'Chế độ giao diện (Theme)';
 
   @override
-  String get themeLightSubtitle => 'Nền sáng #F8FAFC';
-
-  @override
-  String get themeDarkSubtitle => 'Nền tối #0F172A';
-
-  @override
   String get lightThemeLabel => 'Light';
 
   @override
@@ -264,24 +257,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get displayLanguageTitle => 'Ngôn ngữ hiển thị';
 
   @override
-  String get displayLanguageSubtitle => 'Tiếng Việt (Toàn bộ nhãn)';
-
-  @override
   String get infoSupportSection => 'THÔNG TIN & HỖ TRỢ';
 
   @override
   String get aboutAppTitle => 'Giới thiệu về FairShare';
 
   @override
-  String get aboutAppSubtitle =>
-      'Xem lại toàn bộ slide giới thiệu tính năng ứng dụng (Onboarding)';
-
-  @override
   String get privacyPolicyTitle => 'Chính sách bảo mật & Quyền riêng tư';
-
-  @override
-  String get privacyPolicySubtitle =>
-      'Cam kết mã hóa thông tin & bảo vệ tài khoản (Xem chi tiết)';
 
   @override
   String get privacyPolicyCommitmentSubtitle =>
@@ -1613,12 +1595,6 @@ class AppLocalizationsVi extends AppLocalizations {
   String get bankAccountNameHint => 'NGUYEN VAN A (in hoa không dấu)';
 
   @override
-  String get tapToViewQrHint => 'Chạm để xem mã VietQR';
-
-  @override
-  String get tapToSetupBankHint => 'Chạm để thiết lập tài khoản';
-
-  @override
   String get changeAvatarPrompt => 'Đổi ảnh đại diện';
 
   @override
@@ -1750,4 +1726,19 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get expenseGroupLabel => 'Nhóm chi tiêu';
+  String get loadingBanksMessage => 'Đang tải danh sách ngân hàng...';
+
+  @override
+  String get clearBankPrompt => 'Xóa liên kết ngân hàng';
+
+  @override
+  String get imagePickerGenericError => 'Không thể chọn ảnh. Vui lòng thử lại.';
+
+  @override
+  String get updateProfileGenericError =>
+      'Cập nhật thông tin thất bại. Vui lòng thử lại sau.';
+
+  @override
+  String get otpResentSuccessMessage =>
+      'Mã xác thực mới đã được gửi đến email của bạn.';
 }
