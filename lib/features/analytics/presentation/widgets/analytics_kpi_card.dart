@@ -61,21 +61,27 @@ class AnalyticsKpiCard extends StatelessWidget {
                 ),
                 child: Icon(icon, size: 20, color: iconColor),
               ),
-              if (badgeText != null)
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: badgeBgColor ?? colors.badgeSuccessBg,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    badgeText!,
-                    style: AppTextStyle.bold(
-                      color: badgeTextColor ?? colors.badgeSuccessText,
-                      fontSize: 11,
+              if (badgeText != null) ...[
+                const SizedBox(width: 6),
+                Flexible(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: badgeBgColor ?? colors.badgeSuccessBg,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      badgeText!,
+                      style: AppTextStyle.bold(
+                        color: badgeTextColor ?? colors.badgeSuccessText,
+                        fontSize: 11,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),
+              ],
             ],
           ),
           const SizedBox(height: 12),
@@ -125,21 +131,32 @@ class AnalyticsKpiCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 if (progressSubtitleLeft != null)
-                  Text(
-                    progressSubtitleLeft!,
-                    style: AppTextStyle.medium(
-                      color: colors.textSecondary,
-                      fontSize: 12,
+                  Expanded(
+                    child: Text(
+                      progressSubtitleLeft!,
+                      style: AppTextStyle.medium(
+                        color: colors.textSecondary,
+                        fontSize: 11,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                if (progressSubtitleRight != null)
-                  Text(
-                    progressSubtitleRight!,
-                    style: AppTextStyle.medium(
-                      color: colors.textSecondary,
-                      fontSize: 12,
+                if (progressSubtitleRight != null) ...[
+                  const SizedBox(width: 4),
+                  Expanded(
+                    child: Text(
+                      progressSubtitleRight!,
+                      style: AppTextStyle.medium(
+                        color: colors.textSecondary,
+                        fontSize: 11,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.end,
                     ),
                   ),
+                ],
               ],
             ),
           ] else if (subtitle != null) ...[

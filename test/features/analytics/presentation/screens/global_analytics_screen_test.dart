@@ -81,6 +81,16 @@ void main() {
       expect(cubit.state.period.name, 'lastMonth');
     });
 
+    testWidgets('renders on standard mobile screen without overflow', (tester) async {
+      tester.view.physicalSize = const Size(360 * 2, 800 * 2);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
+
+      await tester.pumpWidget(createWidgetUnderTest());
+      cubit.loadAnalytics();
+      await tester.pumpAndSettle();
+    });
+
     testWidgets('tapping back button pops the screen', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
       cubit.loadAnalytics();
