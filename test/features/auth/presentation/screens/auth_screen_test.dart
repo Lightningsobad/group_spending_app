@@ -55,7 +55,8 @@ void main() {
     expect(alignRegister.alignment, Alignment.centerRight);
     expect(find.text('Họ và tên'), findsOneWidget);
     expect(find.text('Tạo tài khoản mới'), findsOneWidget);
-    expect(find.text('Số điện thoại'), findsOneWidget);
+    // Label và hint của trường số điện thoại đều là "Số điện thoại"
+    expect(find.text('Số điện thoại'), findsNWidgets(2));
     expect(find.text('Quên mật khẩu?'), findsNothing);
     expect(find.text('Đã có tài khoản? '), findsOneWidget);
 

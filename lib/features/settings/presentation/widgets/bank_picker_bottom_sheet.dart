@@ -109,7 +109,6 @@ class _BankPickerBottomSheetState extends State<BankPickerBottomSheet> {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final tr = context.l10n;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.78,
@@ -127,7 +126,7 @@ class _BankPickerBottomSheetState extends State<BankPickerBottomSheet> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: colors.textSecondary.withValues(alpha: 0.3),
+                color: colors.dragHandle,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -160,7 +159,7 @@ class _BankPickerBottomSheetState extends State<BankPickerBottomSheet> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
                 decoration: BoxDecoration(
-                  color: isDark ? colors.surfaceMuted : const Color(0xFFF3F4F6),
+                  color: colors.inputBackground,
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(color: colors.cardBorder),
                 ),
@@ -222,13 +221,13 @@ class _BankPickerBottomSheetState extends State<BankPickerBottomSheet> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const CircularProgressIndicator(
-              color: AppColors.emeraldForest,
+            CircularProgressIndicator(
+              color: colors.brandEmerald,
               strokeWidth: 2.5,
             ),
             const SizedBox(height: 12),
             Text(
-              'Đang tải danh sách ngân hàng...',
+              tr.loadingBanksMessage,
               style: AppTextStyle.regular(
                 fontSize: 13,
                 color: colors.textSecondary,
@@ -360,7 +359,7 @@ class _BankPickerBottomSheetState extends State<BankPickerBottomSheet> {
                 bank.shortName,
                 style: AppTextStyle.bold(
                   fontSize: 14,
-                  color: isSelected ? AppColors.emeraldForest : colors.textPrimary,
+                  color: isSelected ? colors.brandEmerald : colors.textPrimary,
                 ),
               ),
               if (bank.code != bank.shortName) ...[
@@ -380,15 +379,15 @@ class _BankPickerBottomSheetState extends State<BankPickerBottomSheet> {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: AppTextStyle.regular(
-              fontSize: 11.5,
+              fontSize: 12,
               color: colors.textSecondary,
             ),
           ),
           trailing: isSelected
-              ? const Icon(
+              ? Icon(
                   LucideIcons.checkCircle2,
                   size: 20,
-                  color: AppColors.emerald,
+                  color: colors.brandEmerald,
                 )
               : Text(
                   bank.bin,

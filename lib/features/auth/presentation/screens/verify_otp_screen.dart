@@ -5,6 +5,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/widgets/app_primary_button.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
 import '../widgets/otp_input_field.dart';
@@ -58,11 +59,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
     final tr = context.l10n;
     final otp = _otpController.text.trim();
     if (otp.length < 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(tr.enterFullOtpPrompt),
-        ),
-      );
+      AppSnackBar.showWarning(context, tr.enterFullOtpPrompt);
       return;
     }
 
@@ -71,11 +68,13 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
 
   void _onResend() {
     context.read<AuthCubit>().resendOtp(email: widget.email);
+    AppSnackBar.showSuccess(context, context.l10n.otpResentSuccessMessage);
   }
 
   @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
+    final colors = context.colors;
 
     return PopScope(
       canPop: true,
@@ -94,18 +93,14 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
           if (state.isAuthenticated) {
             context.go('/onboarding');
           } else if (state.hasError && state.errorMessage != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage!),
-                backgroundColor: AppColors.error,
-              ),
-            );
+            AppSnackBar.showError(context, state.errorMessage!);
           }
         },
         child: Scaffold(
-          backgroundColor: AppColors.backgroundLight,
+          backgroundColor: colors.background,
           body: SafeArea(
             child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -115,12 +110,12 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     child: IconButton(
                       onPressed: _onBack,
                       icon: const Icon(Icons.arrow_back_ios_new, size: 20),
-                      color: AppColors.textSlate800,
+                      color: colors.iconPrimary,
                       style: IconButton.styleFrom(
-                        backgroundColor: Colors.white,
+                        backgroundColor: colors.cardBackground,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
-                          side: const BorderSide(color: AppColors.borderLight),
+                          side: BorderSide(color: colors.cardBorder),
                         ),
                       ),
                     ),
@@ -164,13 +159,11 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                               child: Container(
                                 padding: const EdgeInsets.all(4),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: colors.cardBackground,
                                   shape: BoxShape.circle,
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withValues(
-                                        alpha: 0.1,
-                                      ),
+                                      color: colors.cardShadowColor,
                                       blurRadius: 4,
                                     ),
                                   ],
@@ -188,8 +181,8 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                         Text(
                           tr.otpTitle,
                           style: AppTextStyle.black(
-                            fontSize: 22,
-                            color: AppColors.textDark,
+                            fontSize: AppFontSize.h2,
+                            color: colors.textPrimary,
                             letterSpacing: -0.5,
                           ),
                         ),
@@ -198,8 +191,8 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                           tr.otpSubtitle,
                           textAlign: TextAlign.center,
                           style: AppTextStyle.medium(
-                            fontSize: 13,
-                            color: AppColors.textSecondary,
+                            fontSize: AppFontSize.secondary,
+                            color: colors.textSecondary,
                             height: 1.4,
                           ),
                         ),
@@ -210,9 +203,9 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFF1F5F9),
+                            color: colors.segmentBackground,
                             borderRadius: BorderRadius.circular(9999),
-                            border: Border.all(color: AppColors.borderLight),
+                            border: Border.all(color: colors.cardBorder),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
@@ -220,12 +213,13 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                               Text(
                                 widget.email,
                                 style: AppTextStyle.bold(
-                                  fontSize: 12,
-                                  color: AppColors.textDark,
+                                  fontSize: AppFontSize.caption,
+                                  color: colors.textPrimary,
                                 ),
                               ),
                               const SizedBox(width: 6),
                               GestureDetector(
+                                behavior: HitTestBehavior.opaque,
                                 onTap: _onBack,
                                 child: const Icon(
                                   Icons.edit_outlined,
@@ -247,8 +241,8 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                         child: Text(
                           tr.otpInputLabel,
                           style: AppTextStyle.bold(
-                            fontSize: 12,
-                            color: AppColors.textSlate800,
+                            fontSize: AppFontSize.caption,
+                            color: colors.textPrimary,
                           ),
                         ),
                       ),
@@ -256,8 +250,8 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                       Text(
                         tr.otpDigitsHint,
                         style: AppTextStyle.medium(
-                          fontSize: 12,
-                          color: AppColors.textSecondary,
+                          fontSize: AppFontSize.caption,
+                          color: colors.textSecondary,
                         ),
                       ),
                     ],

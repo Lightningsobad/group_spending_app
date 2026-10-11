@@ -89,108 +89,140 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     final tr = context.l10n;
 
-    return BlocBuilder<DashboardCubit, DashboardState>(
-      builder: (context, state) {
-        List<GroupModel> groups = state.groups;
-        try {
-          final groupsFromCubit = context.watch<GroupsCubit>().state.groups;
-          if (groupsFromCubit.isNotEmpty) {
-            groups = groupsFromCubit;
-          }
-        } catch (_) {}
-
-        if (_isSelectingGroupForExpense) {
-          return SelectGroupForExpenseView(
-            groups: groups,
-            onBack: () => setState(() => _isSelectingGroupForExpense = false),
-            onGroupSelected: _handleGroupSelectedForExpense,
-            onCreateGroup: _openCreateGroup,
-          );
+    return PopScope(
+      canPop: !_isSelectingGroupForExpense,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop && _isSelectingGroupForExpense) {
+          setState(() {
+            _isSelectingGroupForExpense = false;
+          });
         }
+      },
+      child: MediaQuery.withClampedTextScaling(
+        maxScaleFactor: 1.35,
+        child: BlocBuilder<DashboardCubit, DashboardState>(
+          builder: (context, state) {
+            // ponytail: Syncing groups from GroupsCubit in build() as fallback until unified in a shared repository stream.
+            List<GroupModel> groups = state.groups;
+            try {
+              final groupsFromCubit = context.watch<GroupsCubit>().state.groups;
+              if (groupsFromCubit.isNotEmpty) {
+                groups = groupsFromCubit;
+              }
+            } catch (_) {}
 
-        final isLoadingInitial =
-            (state.status == DashboardStatus.initial || state.isLoading) &&
-                groups.isEmpty;
-
-        return RefreshIndicator(
-          color: AppColors.emerald,
-          onRefresh: () async {
-            await context.read<DashboardCubit>().loadDashboard(isRefresh: true);
-            if (context.mounted) {
-              await context.read<GroupsCubit>().loadGroups(silent: true);
+            if (_isSelectingGroupForExpense) {
+              return SelectGroupForExpenseView(
+                groups: groups,
+                onBack: () => setState(() => _isSelectingGroupForExpense = false),
+                onGroupSelected: _handleGroupSelectedForExpense,
+                onCreateGroup: _openCreateGroup,
+              );
             }
-          },
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 90),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // 1. Financial balance card or skeleton
-                if (isLoadingInitial)
-                  const FinancialBalanceCardSkeleton()
-                else
-                  FinancialBalanceCard(
-                    totalOwedVnd: state.debtOverview.totalOwedVnd,
-                    totalReceivableVnd: state.debtOverview.totalReceivableVnd,
-                  ),
 
-                const SizedBox(height: 16),
+            final isLoadingInitial =
+                (state.status == DashboardStatus.initial || state.isLoading) &&
+                    groups.isEmpty;
 
-                // 2. Quick action buttons
-                DashboardQuickActions(
-                  onAddExpense: _onAddExpensePressed,
-                  onCreateGroup: _openCreateGroup,
-                  onJoinGroup: _openJoinGroup,
-                ),
-
-                const SizedBox(height: 20),
-
-                // 3. Section Header
-                DashboardGroupsHeader(
-                  groupCount: groups.length,
-                  isLoading: isLoadingInitial,
-                  onSeeAll: widget.onNavigateToGroups,
-                ),
-
-                const SizedBox(height: 12),
-
-                // 4. Groups list, skeleton, or empty state
-                if (isLoadingInitial) ...[
-                  const GroupCardSkeleton(),
-                  const GroupCardSkeleton(),
-                ] else if (groups.isEmpty)
-                  DashboardEmptyGroupsView(
-                    onCreateGroup: _openCreateGroup,
-                  )
-                else
-                  ...groups.map(
-                    (group) => GroupCardWidget(
-                      group: group,
-                      onTap: () {
-                        if (widget.onNavigateToGroupDetail != null) {
-                          widget.onNavigateToGroupDetail!(group);
-                        } else {
-                          GroupDetailSheet.show(context, group);
-                        }
-                      },
-                      onToggleMute: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              tr.notificationsToggledForGroup(group.name),
+            return RefreshIndicator(
+              color: AppColors.emerald,
+              onRefresh: () async {
+                await context.read<DashboardCubit>().loadDashboard(isRefresh: true);
+                if (context.mounted) {
+                  try {
+                    await context.read<GroupsCubit>().loadGroups(silent: true);
+                  } catch (_) {}
+                }
+              },
+              child: CustomScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                slivers: [
+                  SliverPadding(
+                    padding: EdgeInsets.fromLTRB(16, 12, 16, groups.isEmpty ? 90 : 0),
+                    sliver: SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // 1. Financial balance card or skeleton
+                          if (isLoadingInitial)
+                            const FinancialBalanceCardSkeleton()
+                          else
+                            FinancialBalanceCard(
+                              totalOwedVnd: state.debtOverview.totalOwedVnd,
+                              totalReceivableVnd: state.debtOverview.totalReceivableVnd,
                             ),
-                            duration: const Duration(seconds: 1),
+
+                          const SizedBox(height: 16),
+
+                          // 2. Quick action buttons
+                          DashboardQuickActions(
+                            onAddExpense: _onAddExpensePressed,
+                            onCreateGroup: _openCreateGroup,
+                            onJoinGroup: _openJoinGroup,
                           ),
-                        );
-                      },
+
+                          const SizedBox(height: 20),
+
+                          // 3. Section Header
+                          DashboardGroupsHeader(
+                            groupCount: groups.length,
+                            isLoading: isLoadingInitial,
+                            onSeeAll: widget.onNavigateToGroups,
+                          ),
+
+                          const SizedBox(height: 12),
+
+                          // 4. Skeleton or empty state
+                          if (isLoadingInitial) ...[
+                            const GroupCardSkeleton(),
+                            const GroupCardSkeleton(),
+                          ] else if (groups.isEmpty)
+                            DashboardEmptyGroupsView(
+                              onCreateGroup: _openCreateGroup,
+                            ),
+                        ],
+                      ),
                     ),
                   ),
-              ],
-            ),
-          ),
-        );
-      },
+
+                  // 5. Lazy list of groups
+                  if (!isLoadingInitial && groups.isNotEmpty)
+                    SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 90),
+                      sliver: SliverList.builder(
+                        itemCount: groups.length,
+                        itemBuilder: (context, index) {
+                          final group = groups[index];
+                          return GroupCardWidget(
+                            key: ValueKey(group.id),
+                            group: group,
+                            onTap: () {
+                              if (widget.onNavigateToGroupDetail != null) {
+                                widget.onNavigateToGroupDetail!(group);
+                              } else {
+                                GroupDetailSheet.show(context, group);
+                              }
+                            },
+                            onToggleMute: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    tr.notificationsToggledForGroup(group.name),
+                                  ),
+                                  duration: const Duration(seconds: 1),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                ],
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

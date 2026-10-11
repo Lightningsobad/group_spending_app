@@ -17,6 +17,7 @@ import '../../data/models/group_model.dart';
 import '../../domain/repositories/groups_repository.dart';
 import '../cubit/group_members_cubit.dart';
 import '../cubit/groups_cubit.dart';
+import 'create_group_sheet.dart';
 import 'group_category_helper.dart';
 import 'group_invite_qr_sheet.dart';
 import '../../../funds/presentation/cubit/funds_cubit.dart';
@@ -123,6 +124,17 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     GroupInviteQrSheet.show(context, _group);
   }
 
+  void _openEditGroupSheet() {
+    CreateGroupSheet.show(
+      context,
+      groupToEdit: _group,
+      onSuccessWithGroup: (updated) {
+        setState(() => _group = updated);
+        _fetchLatestDetail();
+      },
+    );
+  }
+
   Future<void> _confirmArchive() async {
     final tr = context.l10n;
     final confirmed = await showDialog<bool>(
@@ -211,85 +223,6 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     }
   }
 
-  void _showEditDialog() {
-    final tr = context.l10n;
-    final nameCtrl = TextEditingController(text: _group.name);
-    final descCtrl = TextEditingController(text: _group.description ?? '');
-    String category = _group.category;
-
-    showDialog(
-      context: context,
-      builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setDialogState) {
-          return AlertDialog(
-            title: Text(tr.editGroupTitle),
-            content: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  TextField(
-                    controller: nameCtrl,
-                    decoration: InputDecoration(labelText: tr.groupNameLabel),
-                  ),
-                  const SizedBox(height: 12),
-                  TextField(
-                    controller: descCtrl,
-                    decoration: InputDecoration(labelText: tr.groupDescLabel),
-                  ),
-                  const SizedBox(height: 12),
-                  DropdownButtonFormField<String>(
-                    initialValue: category,
-                    decoration: InputDecoration(labelText: tr.groupCategoryLabel),
-                    items: GroupCategoryHelper.categories.map((c) {
-                      return DropdownMenuItem(
-                        value: c,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            GroupCategoryHelper.buildIcon(c, width: 20, height: 20),
-                            const SizedBox(width: 8),
-                            Text(GroupCategoryHelper.getLabel(c)),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (val) {
-                      if (val != null) setDialogState(() => category = val);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(ctx).pop(),
-                child: Text(tr.cancel),
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: AppColors.emerald),
-                onPressed: () async {
-                  if (nameCtrl.text.trim().isEmpty) return;
-                  Navigator.of(ctx).pop();
-                  final success = await context.read<GroupsCubit>().updateGroup(
-                        _group.id,
-                        name: nameCtrl.text.trim(),
-                        description: descCtrl.text.trim().isEmpty ? null : descCtrl.text.trim(),
-                        category: category,
-                      );
-                  if (success && mounted) {
-                    _fetchLatestDetail();
-                  }
-                },
-                child: Text(tr.saveChanges, style: const TextStyle(color: Colors.white)),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
   void _showSettingsBottomSheet(bool isOwner) {
     final tr = context.l10n;
     final colors = context.colors;
@@ -317,7 +250,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                   title: Text(tr.editGroupAction),
                   onTap: () {
                     Navigator.of(ctx).pop();
-                    _showEditDialog();
+                    _openEditGroupSheet();
                   },
                 ),
               if (_group.isAdmin && !_group.isArchived)
@@ -466,7 +399,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                       child: Text(
                         _group.name,
                         style: AppTextStyle.bold(
-                          fontSize: 18,
+                          fontSize: 20,
                           color: colors.textPrimary,
                         ),
                         maxLines: 1,
@@ -538,15 +471,15 @@ class _GroupDetailViewState extends State<GroupDetailView> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF14532D) : colors.cardBackground,
+          color: isSelected ? colors.tabPillActiveBg : colors.cardBackground,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: isSelected ? const Color(0xFF14532D) : colors.cardBorder,
+            color: isSelected ? colors.tabPillActiveBg : colors.cardBorder,
           ),
           boxShadow: isSelected
               ? [
                   BoxShadow(
-                    color: const Color(0xFF14532D).withValues(alpha: 0.25),
+                    color: (colors.tabPillActiveBg as Color).withValues(alpha: 0.25),
                     blurRadius: 6,
                     offset: const Offset(0, 2),
                   ),
@@ -557,7 +490,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
           label,
           style: AppTextStyle.bold(
             fontSize: 13,
-            color: isSelected ? Colors.white : colors.textPrimary,
+            color: isSelected ? colors.tabPillActiveText : colors.textPrimary,
           ),
         ),
       ),
@@ -642,13 +575,13 @@ class _GroupDetailViewState extends State<GroupDetailView> {
               ),
               const SizedBox(height: 14),
 
-              // Mint Green Invite Banner
+              // Theme-adaptive Invite Banner
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF0FDF4),
+                  color: colors.primaryContainer,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFFA7F3D0)),
+                  border: Border.all(color: colors.cardBorder),
                 ),
                 child: Row(
                   children: [
@@ -659,8 +592,8 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                           Text(
                             tr.inviteCodeCardTitle,
                             style: AppTextStyle.bold(
-                              fontSize: 10,
-                              color: const Color(0xFF047857),
+                              fontSize: 11,
+                              color: colors.onPrimaryContainer,
                             ),
                           ),
                           const SizedBox(height: 3),
@@ -678,9 +611,9 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                     // Action 1: Sao chép mã mời
                     OutlinedButton.icon(
                       style: OutlinedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: const Color(0xFF047857),
-                        side: const BorderSide(color: Color(0xFF10B981)),
+                        backgroundColor: colors.secondaryActionBg,
+                        foregroundColor: colors.secondaryActionText,
+                        side: BorderSide(color: colors.secondaryActionBorder),
                         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -690,7 +623,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                       icon: const Icon(LucideIcons.copy, size: 14),
                       label: Text(
                         tr.copyInviteCodeAction,
-                        style: AppTextStyle.bold(fontSize: 11),
+                        style: AppTextStyle.bold(fontSize: 12),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -702,13 +635,13 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                         width: 38,
                         height: 38,
                         decoration: BoxDecoration(
-                          color: const Color(0xFF14532D),
+                          color: colors.primaryButton,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.qrCode,
                           size: 18,
-                          color: Colors.white,
+                          color: colors.onPrimaryButton,
                         ),
                       ),
                     ),
@@ -746,13 +679,13 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                       Container(
                         padding: const EdgeInsets.all(6),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFD1FAE5),
+                          color: colors.primaryContainer,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Icon(
+                        child: Icon(
                           LucideIcons.wallet,
                           size: 16,
-                          color: Color(0xFF047857),
+                          color: colors.onPrimaryContainer,
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -811,7 +744,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                           style: AppTextStyle.bold(
                             fontSize: 22,
                             color: _group.userBalance > 0
-                                ? const Color(0xFF047857)
+                                ? colors.onPrimaryContainer
                                 : _group.userBalance < 0
                                     ? AppColors.error
                                     : colors.textPrimary,
@@ -821,11 +754,18 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                           decoration: BoxDecoration(
                             color: _group.userBalance > 0
-                                ? const Color(0xFFD1FAE5)
+                                ? colors.primaryContainer
                                 : _group.userBalance < 0
-                                    ? Colors.red.shade100
+                                    ? colors.errorSurface
                                     : colors.cardBackground,
                             borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: _group.userBalance > 0
+                                  ? colors.cardBorder
+                                  : _group.userBalance < 0
+                                      ? colors.errorBorder
+                                      : colors.cardBorder,
+                            ),
                           ),
                           child: Text(
                             _group.userBalance > 0
@@ -836,9 +776,9 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                             style: AppTextStyle.bold(
                               fontSize: 11,
                               color: _group.userBalance > 0
-                                  ? const Color(0xFF065F46)
+                                  ? colors.onPrimaryContainer
                                   : _group.userBalance < 0
-                                      ? Colors.red.shade800
+                                      ? AppColors.error
                                       : colors.textSecondary,
                             ),
                           ),
@@ -858,9 +798,9 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFEFF6FF),
+                        color: colors.surfaceMuted,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: const Color(0xFFDBEAFE)),
+                        border: Border.all(color: colors.cardBorder),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -872,13 +812,13 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                                 tr.totalSpendingCard,
                                 style: AppTextStyle.medium(
                                   fontSize: 11,
-                                  color: const Color(0xFF1E40AF),
+                                  color: colors.textSecondary,
                                 ),
                               ),
                               const Icon(
                                 LucideIcons.trendingUp,
                                 size: 14,
-                                color: Color(0xFF2563EB),
+                                color: Color(0xFF3B82F6),
                               ),
                             ],
                           ),
@@ -889,7 +829,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                             ),
                             style: AppTextStyle.bold(
                               fontSize: 15,
-                              color: const Color(0xFF1E3A8A),
+                              color: colors.textPrimary,
                             ),
                           ),
                           const SizedBox(height: 6),
@@ -903,7 +843,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                               '${tr.viewReportAction} →',
                               style: AppTextStyle.bold(
                                 fontSize: 11,
-                                color: const Color(0xFF2563EB),
+                                color: const Color(0xFF3B82F6),
                               ),
                             ),
                           ),
@@ -918,9 +858,9 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                     child: Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFFAF5FF),
+                        color: colors.surfaceMuted,
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: const Color(0xFFF3E8FF)),
+                        border: Border.all(color: colors.cardBorder),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -932,20 +872,21 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                                 tr.fundCollectedCard,
                                 style: AppTextStyle.medium(
                                   fontSize: 11,
-                                  color: const Color(0xFF6B21A8),
+                                  color: colors.textSecondary,
                                 ),
                               ),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFFF3E8FF),
+                                  color: colors.cardBackground,
                                   borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: colors.cardBorder),
                                 ),
                                 child: Text(
                                   '$memberCount tv',
                                   style: AppTextStyle.bold(
-                                    fontSize: 9,
-                                    color: const Color(0xFF7E22CE),
+                                    fontSize: 10,
+                                    color: colors.textSecondary,
                                   ),
                                 ),
                               ),
@@ -958,7 +899,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                             ),
                             style: AppTextStyle.bold(
                               fontSize: 15,
-                              color: const Color(0xFF581C87),
+                              color: colors.textPrimary,
                             ),
                           ),
                           const SizedBox(height: 6),
@@ -966,7 +907,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                             'VNĐ • ${tr.fundGeneralSubtitle}',
                             style: AppTextStyle.regular(
                               fontSize: 11,
-                              color: const Color(0xFF7E22CE),
+                              color: colors.textMuted,
                             ),
                           ),
                         ],
@@ -997,8 +938,8 @@ class _GroupDetailViewState extends State<GroupDetailView> {
             Expanded(
               child: _buildActionTile(
                 icon: LucideIcons.arrowLeftRight,
-                iconBg: const Color(0xFFDCFCE7),
-                iconColor: const Color(0xFF15803D),
+                iconBg: colors.primaryContainer,
+                iconColor: colors.onPrimaryContainer,
                 title: tr.viewDebtsAction,
                 subtitle: tr.settleDebtsSubtitle,
                 colors: colors,
@@ -1015,8 +956,8 @@ class _GroupDetailViewState extends State<GroupDetailView> {
             Expanded(
               child: _buildActionTile(
                 icon: LucideIcons.piggyBank,
-                iconBg: const Color(0xFFDBEAFE),
-                iconColor: const Color(0xFF2563EB),
+                iconBg: colors.surfaceMuted,
+                iconColor: const Color(0xFF3B82F6),
                 title: tr.generalFundAction,
                 subtitle: tr.collectFundSubtitle,
                 colors: colors,
@@ -1031,7 +972,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
             Expanded(
               child: _buildActionTile(
                 icon: LucideIcons.plusCircle,
-                iconBg: const Color(0xFFFFEDD5),
+                iconBg: colors.surfaceMuted,
                 iconColor: const Color(0xFFEA580C),
                 title: tr.addExpenseAction,
                 subtitle: tr.splitBillSubtitle,
@@ -1043,8 +984,8 @@ class _GroupDetailViewState extends State<GroupDetailView> {
             Expanded(
               child: _buildActionTile(
                 icon: LucideIcons.settings,
-                iconBg: const Color(0xFFE2E8F0),
-                iconColor: const Color(0xFF475569),
+                iconBg: colors.surfaceMuted,
+                iconColor: colors.textSecondary,
                 title: tr.groupSettingsAction,
                 subtitle: tr.accountAndInterfaceSubtitle,
                 colors: colors,
@@ -1078,7 +1019,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                       ),
                       side: BorderSide(color: colors.cardBorder),
                     ),
-                    onPressed: _showEditDialog,
+                    onPressed: _openEditGroupSheet,
                     icon: const Icon(LucideIcons.pencil, size: 16),
                     label: Text(
                       tr.editGroupInfo,

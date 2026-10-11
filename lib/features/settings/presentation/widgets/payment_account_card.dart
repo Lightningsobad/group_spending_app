@@ -83,10 +83,10 @@ class PaymentAccountCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           LucideIcons.creditCard,
                           size: 18,
-                          color: AppColors.emeraldForest,
+                          color: colors.brandEmerald,
                         ),
                         const SizedBox(width: 8),
                         Text(
@@ -94,18 +94,22 @@ class PaymentAccountCard extends StatelessWidget {
                           style: AppTextStyle.bold(
                             fontSize: 12,
                             color: colors.textSlate800,
-                            letterSpacing: 0.2,
+                            letterSpacing: 0.5,
                           ),
                         ),
                       ],
                     ),
                     GestureDetector(
+                      behavior: HitTestBehavior.opaque,
                       onTap: onEdit ?? () => EditProfileDialog.show(context),
-                      child: Text(
-                        tr.edit,
-                        style: AppTextStyle.bold(
-                          fontSize: 12,
-                          color: AppColors.emeraldForest,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        child: Text(
+                          tr.edit,
+                          style: AppTextStyle.bold(
+                            fontSize: 13,
+                            color: colors.brandEmerald,
+                          ),
                         ),
                       ),
                     ),
@@ -142,9 +146,9 @@ class PaymentAccountCard extends StatelessWidget {
                               Text(
                                 accountNameText,
                                 style: AppTextStyle.semiBold(
-                                  fontSize: 11,
+                                  fontSize: 12,
                                   color: colors.textMuted,
-                                  letterSpacing: 0.6,
+                                  letterSpacing: 0.5,
                                 ),
                               ),
                             ],
@@ -155,7 +159,7 @@ class PaymentAccountCard extends StatelessWidget {
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: hasBankInfo
-                              ? AppColors.emeraldForest.withValues(alpha: 0.1)
+                              ? colors.brandEmeraldMuted
                               : colors.divider.withValues(alpha: 0.3),
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -163,30 +167,12 @@ class PaymentAccountCard extends StatelessWidget {
                           hasBankInfo ? LucideIcons.qrCode : LucideIcons.creditCard,
                           size: 20,
                           color: hasBankInfo
-                              ? AppColors.emeraldForest
+                              ? colors.brandEmerald
                               : colors.textMuted,
                         ),
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Icon(
-                      LucideIcons.sparkles,
-                      size: 13,
-                      color: colors.textSecondary.withValues(alpha: 0.8),
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      hasBankInfo ? tr.tapToViewQrHint : tr.tapToSetupBankHint,
-                      style: AppTextStyle.regular(
-                        fontSize: 11,
-                        color: colors.textSecondary,
-                      ),
-                    ),
-                  ],
                 ),
               ],
             ),

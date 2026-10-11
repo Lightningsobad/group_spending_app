@@ -72,7 +72,7 @@ class AppPrimaryButton extends StatelessWidget {
                       Text(
                         text,
                         style: AppTextStyle.bold(
-                          fontSize: 15,
+                          fontSize: AppFontSize.body,
                           color: Colors.white,
                           letterSpacing: -0.1,
                         ),

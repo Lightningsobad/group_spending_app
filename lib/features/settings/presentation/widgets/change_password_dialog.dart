@@ -23,9 +23,10 @@ class ChangePasswordDialog extends StatefulWidget {
     VoidCallback? onSuccess,
   }) {
     final repo = authRepository ?? context.read<AuthRepository>();
-    return showDialog<bool>(
+    return showModalBottomSheet<bool>(
       context: context,
-      barrierDismissible: false,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
       builder: (_) => ChangePasswordDialog(
         authRepository: repo,
         onSuccess: onSuccess,
@@ -128,47 +129,57 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
   Widget build(BuildContext context) {
     final tr = context.l10n;
     final colors = context.colors;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
 
-    return Dialog(
-      insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(24),
-        side: BorderSide(color: colors.cardBorder, width: 1.2),
+    return Container(
+      decoration: BoxDecoration(
+        color: colors.cardBackground,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      backgroundColor: colors.cardBackground,
-      clipBehavior: Clip.antiAlias,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 420),
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Header Row
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 44,
-                      height: 44,
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: bottomInset),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Drag handle
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
                       decoration: BoxDecoration(
-                        color: isDark
-                            ? const Color(0xFF312E81).withValues(alpha: 0.35)
-                            : const Color(0xFFEEF2FF),
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: const Center(
-                        child: Icon(
-                          LucideIcons.keyRound,
-                          size: 22,
-                          color: Color(0xFF6366F1),
-                        ),
+                        color: colors.dragHandle,
+                        borderRadius: BorderRadius.circular(2),
                       ),
                     ),
+                  ),
+                  const SizedBox(height: 14),
+
+                  // Header Row
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 44,
+                        height: 44,
+                        decoration: BoxDecoration(
+                          color: colors.badgeIndigoBg,
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                        child: Center(
+                          child: Icon(
+                            LucideIcons.keyRound,
+                            size: 22,
+                            color: colors.badgeIndigo,
+                          ),
+                        ),
+                      ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
@@ -411,8 +422,9 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildLabel(String text, dynamic colors) {
     return RichText(
@@ -471,7 +483,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
           onPressed: onToggleObscure,
         ),
         filled: true,
-        fillColor: colors.surfaceMuted,
+        fillColor: colors.inputBackground,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 12,
           horizontal: 14,
@@ -485,8 +497,8 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: Color(0xFF6366F1),
+          borderSide: BorderSide(
+            color: colors.badgeIndigo,
             width: 1.5,
           ),
         ),

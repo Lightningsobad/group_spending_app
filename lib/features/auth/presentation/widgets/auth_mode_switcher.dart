@@ -16,14 +16,15 @@ class AuthModeSwitcher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
+    final colors = context.colors;
 
     return Container(
       height: 48,
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: const Color(0xFFF1F5F9),
+        color: colors.segmentBackground,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.borderLight, width: 1.2),
+        border: Border.all(color: colors.cardBorder, width: 1.2),
       ),
       child: Stack(
         children: [
@@ -38,11 +39,11 @@ class AuthModeSwitcher extends StatelessWidget {
               heightFactor: 1.0,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: colors.segmentActiveBackground,
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.06),
+                      color: colors.cardShadowColor,
                       blurRadius: 6,
                       offset: const Offset(0, 2),
                     ),
@@ -61,10 +62,10 @@ class AuthModeSwitcher extends StatelessWidget {
                     child: AnimatedDefaultTextStyle(
                       duration: const Duration(milliseconds: 200),
                       style: AppTextStyle.extraBold(
-                        fontSize: 15,
+                        fontSize: AppFontSize.secondary,
                         color: isLoginMode
                             ? AppColors.emeraldForest
-                            : AppColors.textSecondary,
+                            : colors.textSecondary,
                       ),
                       child: Text(tr.loginTab),
                     ),
@@ -79,10 +80,10 @@ class AuthModeSwitcher extends StatelessWidget {
                     child: AnimatedDefaultTextStyle(
                       duration: const Duration(milliseconds: 200),
                       style: AppTextStyle.extraBold(
-                        fontSize: 15,
+                        fontSize: AppFontSize.secondary,
                         color: !isLoginMode
                             ? AppColors.emeraldForest
-                            : AppColors.textSecondary,
+                            : colors.textSecondary,
                       ),
                       child: Text(tr.registerTab),
                     ),

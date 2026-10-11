@@ -132,5 +132,25 @@ void main() {
 
       expect(find.text('Số điện thoại không hợp lệ'), findsOneWidget);
     });
+
+    testWidgets('tapping clear bank button resets selected bank and account inputs', (tester) async {
+      setupScreen(tester);
+      await tester.pumpWidget(buildWidget(cubit: authCubit));
+      await tester.pumpAndSettle();
+
+      expect(find.text('MBBank'), findsOneWidget);
+      expect(find.text('123456789'), findsOneWidget);
+      expect(find.text('NGUYEN VAN A'), findsOneWidget);
+
+      final clearBankBtn = find.byTooltip('Xóa liên kết ngân hàng');
+      await tester.ensureVisible(clearBankBtn);
+      await tester.tap(clearBankBtn);
+      await tester.pumpAndSettle();
+
+      expect(find.text('MBBank'), findsNothing);
+      expect(find.text('Chọn ngân hàng từ danh sách'), findsOneWidget);
+      expect(find.text('123456789'), findsNothing);
+      expect(find.text('NGUYEN VAN A'), findsNothing);
+    });
   });
 }

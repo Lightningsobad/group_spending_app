@@ -17,6 +17,7 @@ class SocialAuthButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
+    final colors = context.colors;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -24,9 +25,9 @@ class SocialAuthButtons extends StatelessWidget {
         OutlinedButton(
           onPressed: isLoading ? null : onGoogleAuth,
           style: OutlinedButton.styleFrom(
-            backgroundColor: Colors.white,
-            foregroundColor: AppColors.textDark,
-            side: const BorderSide(color: Color(0xFFCBD5E1), width: 1.2),
+            backgroundColor: colors.socialButtonBg,
+            foregroundColor: colors.textPrimary,
+            side: BorderSide(color: colors.socialButtonBorder, width: 1.2),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),
             ),
@@ -53,8 +54,8 @@ class SocialAuthButtons extends StatelessWidget {
               Text(
                 tr.continueWithGoogle,
                 style: AppTextStyle.semiBold(
-                  fontSize: 14,
-                  color: isLoading ? AppColors.textSecondary : AppColors.textDark,
+                  fontSize: AppFontSize.secondary,
+                  color: isLoading ? colors.textSecondary : colors.textPrimary,
                 ),
               ),
             ],
@@ -63,22 +64,22 @@ class SocialAuthButtons extends StatelessWidget {
         const SizedBox(height: 18),
         Row(
           children: [
-            const Expanded(
-              child: Divider(color: AppColors.borderLight, thickness: 1),
+            Expanded(
+              child: Divider(color: colors.divider, thickness: 1),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Text(
                 tr.orLoginWithEmail,
                 style: AppTextStyle.bold(
-                  fontSize: 10.5,
-                  color: AppColors.textSecondary,
-                  letterSpacing: 0.6,
+                  fontSize: AppFontSize.caption,
+                  color: colors.textSecondary,
+                  letterSpacing: 0.8,
                 ),
               ),
             ),
-            const Expanded(
-              child: Divider(color: AppColors.borderLight, thickness: 1),
+            Expanded(
+              child: Divider(color: colors.divider, thickness: 1),
             ),
           ],
         ),
