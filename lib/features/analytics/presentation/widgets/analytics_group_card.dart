@@ -51,7 +51,7 @@ class AnalyticsGroupCard extends StatelessWidget {
                       height: 44,
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: colors.background,
+                        color: colors.surfaceMuted,
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: GroupCategoryHelper.buildIcon(
@@ -61,14 +61,52 @@ class AnalyticsGroupCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     Expanded(
-                      child: Text(
-                        group.name,
-                        style: AppTextStyle.bold(
-                          color: colors.textPrimary,
-                          fontSize: 16,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  group.name,
+                                  style: AppTextStyle.bold(
+                                    color: colors.textPrimary,
+                                    fontSize: 16,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              if (group.isArchived) ...[
+                                const SizedBox(width: 6),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: colors.badgeWarningBg,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Text(
+                                    tr.filterArchivedTab,
+                                    style: AppTextStyle.bold(
+                                      color: colors.badgeWarningText,
+                                      fontSize: 10,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ],
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            '${group.category} • ${tr.membersCountSubtitle(group.memberCount)}',
+                            style: AppTextStyle.regular(
+                              color: colors.textSecondary,
+                              fontSize: 12,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -76,7 +114,7 @@ class AnalyticsGroupCard extends StatelessWidget {
                       width: 32,
                       height: 32,
                       decoration: BoxDecoration(
-                        color: colors.background,
+                        color: colors.surfaceMuted,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Icon(

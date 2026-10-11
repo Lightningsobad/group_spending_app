@@ -95,7 +95,7 @@ class _GroupAnalyticsView extends StatelessWidget {
           builder: (context, state) {
             final effectiveGroupName = groupName ??
                 state.groupStatistics.groupName ??
-                'Thống kê nhóm #${state.groupId}';
+                tr.groupAnalyticsFallbackTitle(state.groupId);
             final effectiveMembers = memberCount ??
                 state.groupStatistics.totalUniqueMembers;
 
@@ -120,7 +120,7 @@ class _GroupAnalyticsView extends StatelessWidget {
                     onRefresh: () => context
                         .read<GroupAnalyticsCubit>()
                         .loadGroupAnalytics(isRefresh: true),
-                    color: const Color(0xFF6366F1),
+                    color: colors.analyticsAccent,
                     child: SingleChildScrollView(
                       physics: const AlwaysScrollableScrollPhysics(
                         parent: BouncingScrollPhysics(),
@@ -240,6 +240,7 @@ class _GroupAnalyticsView extends StatelessWidget {
     GroupAnalyticsState state,
   ) {
     final tr = context.l10n;
+    final colors = context.colors;
     final stats = state.groupStatistics;
 
     final remainingDebt = (100 - stats.debtSettlementRate)
@@ -254,13 +255,18 @@ class _GroupAnalyticsView extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Text('✨', style: TextStyle(fontSize: 16)),
+                Icon(
+                  LucideIcons.sparkles,
+                  size: 18,
+                  color: colors.analyticsAccent,
+                ),
                 const SizedBox(width: 8),
                 Text(
                   tr.financialMetricsTitle,
                   style: AppTextStyle.bold(
-                    color: context.colors.textPrimary,
+                    color: colors.textPrimary,
                     fontSize: 13,
+                    letterSpacing: 0.3,
                   ),
                 ),
               ],
@@ -274,13 +280,10 @@ class _GroupAnalyticsView extends StatelessWidget {
             Expanded(
               child: AnalyticsKpiCard(
                 icon: LucideIcons.trendingUp,
-                iconColor: const Color(0xFF6366F1),
-                iconBgColor: const Color(0xFFEEF2FF),
+                iconColor: colors.analyticsAccent,
+                iconBgColor: colors.analyticsIconBg,
                 label: tr.totalSpendingMetric,
                 value: CurrencyUtils.formatVnd(stats.totalSpendingVnd),
-                badgeText: '↑ 4.5%',
-                badgeBgColor: const Color(0xFFDCFCE7),
-                badgeTextColor: const Color(0xFF15803D),
                 subtitle: tr.commonGroupSpendingSubtitle,
               ),
             ),
@@ -288,13 +291,13 @@ class _GroupAnalyticsView extends StatelessWidget {
             Expanded(
               child: AnalyticsKpiCard(
                 icon: LucideIcons.users,
-                iconColor: const Color(0xFF10B981),
-                iconBgColor: const Color(0xFFD1FAE5),
+                iconColor: colors.badgeSuccessText,
+                iconBgColor: colors.badgeSuccessBg,
                 label: tr.averagePerPersonMetric,
                 value: CurrencyUtils.formatVnd(stats.averageSpendingPerPersonVnd),
                 badgeText: tr.friendsCountBadge(stats.totalUniqueMembers),
-                badgeBgColor: const Color(0xFFDCFCE7),
-                badgeTextColor: const Color(0xFF15803D),
+                badgeBgColor: colors.badgeSuccessBg,
+                badgeTextColor: colors.badgeSuccessText,
                 subtitle: tr.splitEquallySubtitle,
               ),
             ),
@@ -306,13 +309,13 @@ class _GroupAnalyticsView extends StatelessWidget {
             Expanded(
               child: AnalyticsKpiCard(
                 icon: LucideIcons.receipt,
-                iconColor: const Color(0xFFF59E0B),
-                iconBgColor: const Color(0xFFFEF3C7),
+                iconColor: colors.badgeWarningText,
+                iconBgColor: colors.badgeWarningBg,
                 label: tr.expenseCountMetric,
                 value: '${stats.totalExpenseCount} ${tr.expensesUnit}',
                 badgeText: tr.invoicesBadge,
-                badgeBgColor: const Color(0xFFFEF3C7),
-                badgeTextColor: const Color(0xFFB45309),
+                badgeBgColor: colors.badgeWarningBg,
+                badgeTextColor: colors.badgeWarningText,
                 subtitle: tr.recordedAndAuditedSubtitle,
               ),
             ),
@@ -320,13 +323,13 @@ class _GroupAnalyticsView extends StatelessWidget {
             Expanded(
               child: AnalyticsKpiCard(
                 icon: LucideIcons.checkCircle,
-                iconColor: const Color(0xFF06B6D4),
-                iconBgColor: const Color(0xFFCFFAFE),
+                iconColor: colors.badgeInfoText,
+                iconBgColor: colors.badgeInfoBg,
                 label: tr.settlementRateMetric,
                 value: '${stats.debtSettlementRate.toInt()}% ${tr.paidRateSuffix}',
                 badgeText: '${stats.debtSettlementRate.toInt()}%',
-                badgeBgColor: const Color(0xFFCFFAFE),
-                badgeTextColor: const Color(0xFF0E7490),
+                badgeBgColor: colors.badgeInfoBg,
+                badgeTextColor: colors.badgeInfoText,
                 progressBarPercent: stats.debtSettlementRate / 100,
                 progressSubtitleLeft: tr.groupDebtLabel,
                 progressSubtitleRight: tr.remainingDebtRate(remainingDebt),
@@ -353,13 +356,18 @@ class _GroupAnalyticsView extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Text('🕒', style: TextStyle(fontSize: 16)),
+                Icon(
+                  LucideIcons.pieChart,
+                  size: 18,
+                  color: colors.analyticsAccent,
+                ),
                 const SizedBox(width: 8),
                 Text(
                   tr.categoryDistributionTitle,
                   style: AppTextStyle.bold(
                     color: colors.textPrimary,
                     fontSize: 13,
+                    letterSpacing: 0.3,
                   ),
                 ),
               ],
@@ -407,6 +415,7 @@ class _GroupAnalyticsView extends StatelessWidget {
 
   Widget _buildErrorView(BuildContext context, GroupAnalyticsState state) {
     final tr = context.l10n;
+    final colors = context.colors;
 
     return Center(
       child: Padding(
@@ -423,7 +432,7 @@ class _GroupAnalyticsView extends StatelessWidget {
               onPressed: () =>
                   context.read<GroupAnalyticsCubit>().loadGroupAnalytics(),
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF6366F1),
+                backgroundColor: colors.analyticsAccent,
                 foregroundColor: Colors.white,
               ),
               child: Text(tr.retryAction),

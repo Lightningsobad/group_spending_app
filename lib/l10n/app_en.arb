@@ -858,5 +858,19 @@
   "paymentAmountLabel": "Payment Amount",
   "transferContentLabel": "Transfer Memo",
   "copiedTransferContent": "Copied transfer memo",
-  "iHavePaidAction": "I Have Transferred"
+  "iHavePaidAction": "I Have Transferred",
+  "groupAnalyticsFallbackTitle": "Group #{id} Analytics",
+  "@groupAnalyticsFallbackTitle": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "expenseDetailModalTitle": "Expense Details",
+  "viewGroupAnalyticsAction": "View Group Analytics",
+  "clearSearchAction": "Clear Search",
+  "expenseCategoryLabel": "Category",
+  "expenseDateLabel": "Date & Time",
+  "expenseGroupLabel": "Group"
 }

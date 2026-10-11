@@ -41,6 +41,28 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color bottomNavBorder;
   final Color bottomNavInactive;
 
+  // Analytics & Thống kê
+  final Color analyticsAccent;
+  final Color analyticsIconBg;
+  final Color bannerBackground;
+  final Color bannerBorder;
+
+  // Badges & Chỉ số
+  final Color badgeSuccessBg;
+  final Color badgeSuccessText;
+  final Color badgeWarningBg;
+  final Color badgeWarningText;
+  final Color badgeInfoBg;
+  final Color badgeInfoText;
+
+  // Xếp hạng (Leaderboard Ranks)
+  final Color rankGoldBg;
+  final Color rankGoldText;
+  final Color rankSilverBg;
+  final Color rankSilverText;
+  final Color rankBronzeBg;
+  final Color rankBronzeText;
+
   const AppThemeColors({
     required this.background,
     required this.cardBackground,
@@ -66,6 +88,22 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.bottomNavBackground,
     required this.bottomNavBorder,
     required this.bottomNavInactive,
+    required this.analyticsAccent,
+    required this.analyticsIconBg,
+    required this.bannerBackground,
+    required this.bannerBorder,
+    required this.badgeSuccessBg,
+    required this.badgeSuccessText,
+    required this.badgeWarningBg,
+    required this.badgeWarningText,
+    required this.badgeInfoBg,
+    required this.badgeInfoText,
+    required this.rankGoldBg,
+    required this.rankGoldText,
+    required this.rankSilverBg,
+    required this.rankSilverText,
+    required this.rankBronzeBg,
+    required this.rankBronzeText,
   });
 
   /// Bảng màu cho Light Theme
@@ -102,6 +140,22 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     bottomNavBackground: Colors.white,
     bottomNavBorder: Color(0xFFE2E8F0),
     bottomNavInactive: AppColors.textSecondary,
+    analyticsAccent: AppColors.emerald,
+    analyticsIconBg: Color(0xFFECFDF5),
+    bannerBackground: Color(0xFFF0FDF4),
+    bannerBorder: Color(0xFFBBF7D0),
+    badgeSuccessBg: Color(0xFFDCFCE7),
+    badgeSuccessText: Color(0xFF15803D),
+    badgeWarningBg: Color(0xFFFEF3C7),
+    badgeWarningText: Color(0xFFB45309),
+    badgeInfoBg: Color(0xFFCFFAFE),
+    badgeInfoText: Color(0xFF0E7490),
+    rankGoldBg: Color(0xFFFEF3C7),
+    rankGoldText: Color(0xFFD97706),
+    rankSilverBg: Color(0xFFF1F5F9),
+    rankSilverText: Color(0xFF64748B),
+    rankBronzeBg: Color(0xFFFFEDD5),
+    rankBronzeText: Color(0xFFC2410C),
   );
 
   /// Bảng màu cho Dark Theme
@@ -138,6 +192,22 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     bottomNavBackground: AppColors.cardDark,
     bottomNavBorder: AppColors.borderDark,
     bottomNavInactive: AppColors.textLightSecondary,
+    analyticsAccent: AppColors.emeraldLight,
+    analyticsIconBg: Color(0xFF064E3B),
+    bannerBackground: Color(0xFF0F172A),
+    bannerBorder: AppColors.borderDark,
+    badgeSuccessBg: Color(0xFF064E3B),
+    badgeSuccessText: Color(0xFF34D399),
+    badgeWarningBg: Color(0xFF451A03),
+    badgeWarningText: Color(0xFFFBBF24),
+    badgeInfoBg: Color(0xFF083344),
+    badgeInfoText: Color(0xFF22D3EE),
+    rankGoldBg: Color(0xFF451A03),
+    rankGoldText: Color(0xFFFBBF24),
+    rankSilverBg: Color(0xFF1E293B),
+    rankSilverText: Color(0xFF94A3B8),
+    rankBronzeBg: Color(0xFF431407),
+    rankBronzeText: Color(0xFFFB923C),
   );
 
   /// Lấy bảng màu tương ứng với Theme hiện tại
@@ -172,6 +242,22 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? bottomNavBackground,
     Color? bottomNavBorder,
     Color? bottomNavInactive,
+    Color? analyticsAccent,
+    Color? analyticsIconBg,
+    Color? bannerBackground,
+    Color? bannerBorder,
+    Color? badgeSuccessBg,
+    Color? badgeSuccessText,
+    Color? badgeWarningBg,
+    Color? badgeWarningText,
+    Color? badgeInfoBg,
+    Color? badgeInfoText,
+    Color? rankGoldBg,
+    Color? rankGoldText,
+    Color? rankSilverBg,
+    Color? rankSilverText,
+    Color? rankBronzeBg,
+    Color? rankBronzeText,
   }) {
     return AppThemeColors(
       background: background ?? this.background,
@@ -199,6 +285,22 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       bottomNavBackground: bottomNavBackground ?? this.bottomNavBackground,
       bottomNavBorder: bottomNavBorder ?? this.bottomNavBorder,
       bottomNavInactive: bottomNavInactive ?? this.bottomNavInactive,
+      analyticsAccent: analyticsAccent ?? this.analyticsAccent,
+      analyticsIconBg: analyticsIconBg ?? this.analyticsIconBg,
+      bannerBackground: bannerBackground ?? this.bannerBackground,
+      bannerBorder: bannerBorder ?? this.bannerBorder,
+      badgeSuccessBg: badgeSuccessBg ?? this.badgeSuccessBg,
+      badgeSuccessText: badgeSuccessText ?? this.badgeSuccessText,
+      badgeWarningBg: badgeWarningBg ?? this.badgeWarningBg,
+      badgeWarningText: badgeWarningText ?? this.badgeWarningText,
+      badgeInfoBg: badgeInfoBg ?? this.badgeInfoBg,
+      badgeInfoText: badgeInfoText ?? this.badgeInfoText,
+      rankGoldBg: rankGoldBg ?? this.rankGoldBg,
+      rankGoldText: rankGoldText ?? this.rankGoldText,
+      rankSilverBg: rankSilverBg ?? this.rankSilverBg,
+      rankSilverText: rankSilverText ?? this.rankSilverText,
+      rankBronzeBg: rankBronzeBg ?? this.rankBronzeBg,
+      rankBronzeText: rankBronzeText ?? this.rankBronzeText,
     );
   }
 
@@ -242,6 +344,22 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       bottomNavBorder: Color.lerp(bottomNavBorder, other.bottomNavBorder, t)!,
       bottomNavInactive:
           Color.lerp(bottomNavInactive, other.bottomNavInactive, t)!,
+      analyticsAccent: Color.lerp(analyticsAccent, other.analyticsAccent, t)!,
+      analyticsIconBg: Color.lerp(analyticsIconBg, other.analyticsIconBg, t)!,
+      bannerBackground: Color.lerp(bannerBackground, other.bannerBackground, t)!,
+      bannerBorder: Color.lerp(bannerBorder, other.bannerBorder, t)!,
+      badgeSuccessBg: Color.lerp(badgeSuccessBg, other.badgeSuccessBg, t)!,
+      badgeSuccessText: Color.lerp(badgeSuccessText, other.badgeSuccessText, t)!,
+      badgeWarningBg: Color.lerp(badgeWarningBg, other.badgeWarningBg, t)!,
+      badgeWarningText: Color.lerp(badgeWarningText, other.badgeWarningText, t)!,
+      badgeInfoBg: Color.lerp(badgeInfoBg, other.badgeInfoBg, t)!,
+      badgeInfoText: Color.lerp(badgeInfoText, other.badgeInfoText, t)!,
+      rankGoldBg: Color.lerp(rankGoldBg, other.rankGoldBg, t)!,
+      rankGoldText: Color.lerp(rankGoldText, other.rankGoldText, t)!,
+      rankSilverBg: Color.lerp(rankSilverBg, other.rankSilverBg, t)!,
+      rankSilverText: Color.lerp(rankSilverText, other.rankSilverText, t)!,
+      rankBronzeBg: Color.lerp(rankBronzeBg, other.rankBronzeBg, t)!,
+      rankBronzeText: Color.lerp(rankBronzeText, other.rankBronzeText, t)!,
     );
   }
 }

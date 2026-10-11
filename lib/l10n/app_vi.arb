@@ -858,5 +858,19 @@
   "paymentAmountLabel": "Số tiền thanh toán",
   "transferContentLabel": "Nội dung chuyển khoản",
   "copiedTransferContent": "Đã sao chép nội dung chuyển khoản",
-  "iHavePaidAction": "Tôi đã chuyển khoản"
+  "iHavePaidAction": "Tôi đã chuyển khoản",
+  "groupAnalyticsFallbackTitle": "Thống kê nhóm #{id}",
+  "@groupAnalyticsFallbackTitle": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "expenseDetailModalTitle": "Chi tiết hóa đơn",
+  "viewGroupAnalyticsAction": "Xem thống kê nhóm",
+  "clearSearchAction": "Xóa tìm kiếm",
+  "expenseCategoryLabel": "Danh mục",
+  "expenseDateLabel": "Thời gian",
+  "expenseGroupLabel": "Nhóm chi tiêu"
 }

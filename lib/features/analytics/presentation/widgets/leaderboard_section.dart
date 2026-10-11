@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
@@ -21,22 +22,69 @@ class LeaderboardSection extends StatelessWidget {
   });
 
   Widget _buildRankBadge(BuildContext context, int rank) {
+    final colors = context.colors;
+
     if (rank == 1) {
-      return const Text('🥇', style: TextStyle(fontSize: 20));
+      return Container(
+        width: 28,
+        height: 28,
+        decoration: BoxDecoration(
+          color: colors.rankGoldBg,
+          shape: BoxShape.circle,
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          '1',
+          style: AppTextStyle.bold(
+            color: colors.rankGoldText,
+            fontSize: 14,
+          ),
+        ),
+      );
     }
     if (rank == 2) {
-      return const Text('🥈', style: TextStyle(fontSize: 20));
+      return Container(
+        width: 28,
+        height: 28,
+        decoration: BoxDecoration(
+          color: colors.rankSilverBg,
+          shape: BoxShape.circle,
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          '2',
+          style: AppTextStyle.bold(
+            color: colors.rankSilverText,
+            fontSize: 14,
+          ),
+        ),
+      );
     }
     if (rank == 3) {
-      return const Text('🥉', style: TextStyle(fontSize: 20));
+      return Container(
+        width: 28,
+        height: 28,
+        decoration: BoxDecoration(
+          color: colors.rankBronzeBg,
+          shape: BoxShape.circle,
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          '3',
+          style: AppTextStyle.bold(
+            color: colors.rankBronzeText,
+            fontSize: 14,
+          ),
+        ),
+      );
     }
     return Container(
-      width: 24,
+      width: 28,
       alignment: Alignment.center,
       child: Text(
         '$rank',
         style: AppTextStyle.bold(
-          color: context.colors.textSecondary,
+          color: colors.textSecondary,
           fontSize: 14,
         ),
       ),
@@ -57,7 +105,11 @@ class LeaderboardSection extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Text('🏅', style: TextStyle(fontSize: 16)),
+                Icon(
+                  LucideIcons.trophy,
+                  size: 18,
+                  color: colors.rankGoldText,
+                ),
                 const SizedBox(width: 8),
                 Text(
                   title,
@@ -103,7 +155,7 @@ class LeaderboardSection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: isCurrentUser
-                      ? const Color(0xFF6366F1).withValues(alpha: 0.5)
+                      ? colors.analyticsAccent.withValues(alpha: 0.7)
                       : colors.cardBorder,
                   width: isCurrentUser ? 1.5 : 1,
                 ),
@@ -115,7 +167,7 @@ class LeaderboardSection extends StatelessWidget {
                   // Avatar
                   CircleAvatar(
                     radius: 18,
-                    backgroundColor: const Color(0xFFDCFCE7),
+                    backgroundColor: colors.badgeSuccessBg,
                     backgroundImage: member.avatarUrl != null &&
                             member.avatarUrl!.isNotEmpty
                         ? NetworkImage(member.avatarUrl!)
@@ -124,7 +176,7 @@ class LeaderboardSection extends StatelessWidget {
                         ? Text(
                             NameUtils.getInitials(member.fullName),
                             style: AppTextStyle.bold(
-                              color: AppColors.emeraldForest,
+                              color: colors.badgeSuccessText,
                               fontSize: 12,
                             ),
                           )

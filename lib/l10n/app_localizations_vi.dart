@@ -1727,4 +1727,27 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get iHavePaidAction => 'Tôi đã chuyển khoản';
+
+  @override
+  String groupAnalyticsFallbackTitle(int id) {
+    return 'Thống kê nhóm #$id';
+  }
+
+  @override
+  String get expenseDetailModalTitle => 'Chi tiết hóa đơn';
+
+  @override
+  String get viewGroupAnalyticsAction => 'Xem thống kê nhóm';
+
+  @override
+  String get clearSearchAction => 'Xóa tìm kiếm';
+
+  @override
+  String get expenseCategoryLabel => 'Danh mục';
+
+  @override
+  String get expenseDateLabel => 'Thời gian';
+
+  @override
+  String get expenseGroupLabel => 'Nhóm chi tiêu';
 }

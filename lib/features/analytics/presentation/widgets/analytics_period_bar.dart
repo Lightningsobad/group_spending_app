@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../core/theme/app_theme_colors.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/entities/analytics_enums.dart';
 
@@ -47,18 +49,21 @@ class AnalyticsPeriodBar extends StatelessWidget {
             padding: const EdgeInsets.only(right: 8),
             child: InkWell(
               borderRadius: BorderRadius.circular(24),
-              onTap: () => onPeriodChanged(period),
+              onTap: () {
+                HapticFeedback.selectionClick();
+                onPeriodChanged(period);
+              },
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? const Color(0xFF6366F1) // Indigo/Purple accent
+                      ? colors.analyticsAccent
                       : colors.cardBackground,
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
                     color: isSelected
-                        ? const Color(0xFF6366F1)
+                        ? colors.analyticsAccent
                         : colors.cardBorder,
                     width: 1,
                   ),

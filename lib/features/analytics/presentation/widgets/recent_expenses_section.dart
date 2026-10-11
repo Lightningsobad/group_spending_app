@@ -30,7 +30,11 @@ class RecentExpensesSection extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Text('💵', style: TextStyle(fontSize: 16)),
+                Icon(
+                  LucideIcons.receiptText,
+                  size: 18,
+                  color: colors.analyticsAccent,
+                ),
                 const SizedBox(width: 8),
                 Text(
                   tr.recentExpensesTitle,
@@ -64,82 +68,92 @@ class RecentExpensesSection extends StatelessWidget {
           ...expenses.map((expense) {
             return Container(
               margin: const EdgeInsets.only(bottom: 8),
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               decoration: BoxDecoration(
                 color: colors.cardBackground,
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: colors.cardBorder),
               ),
-              child: Row(
-                children: [
-                  // Receipt icon in green rounded box
-                  Container(
-                    width: 38,
-                    height: 38,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFDCFCE7),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Icon(
-                      LucideIcons.receipt,
-                      size: 20,
-                      color: AppColors.emeraldForest,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  // Title & Subtitle
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+              child: Material(
+                color: Colors.transparent,
+                borderRadius: BorderRadius.circular(16),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(16),
+                  onTap: () => onTapItem?.call(expense),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                    child: Row(
                       children: [
-                        Text(
-                          expense.title,
-                          style: AppTextStyle.bold(
-                            color: colors.textPrimary,
-                            fontSize: 14,
+                        // Receipt icon in theme rounded box
+                        Container(
+                          width: 38,
+                          height: 38,
+                          decoration: BoxDecoration(
+                            color: colors.badgeSuccessBg,
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                          child: Icon(
+                            LucideIcons.receipt,
+                            size: 20,
+                            color: colors.badgeSuccessText,
+                          ),
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '${expense.expenseDate} • ${tr.paidByPrefix(expense.paidByUserName)}',
-                          style: AppTextStyle.regular(
-                            color: colors.textSecondary,
-                            fontSize: 11,
+                        const SizedBox(width: 12),
+                        // Title & Subtitle
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                expense.title,
+                                style: AppTextStyle.bold(
+                                  color: colors.textPrimary,
+                                  fontSize: 14,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${expense.expenseDate} • ${tr.paidByPrefix(expense.paidByUserName)}',
+                                style: AppTextStyle.regular(
+                                  color: colors.textSecondary,
+                                  fontSize: 12,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(width: 8),
+                        // Amount & Detail link
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              CurrencyUtils.formatVnd(expense.totalAmountVnd),
+                              style: AppTextStyle.bold(
+                                color: colors.textPrimary,
+                                fontSize: 14,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 2),
+                              child: Text(
+                                tr.viewExpenseDetailAction,
+                                style: AppTextStyle.bold(
+                                  color: colors.analyticsAccent,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(width: 8),
-                  // Amount & Detail link
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text(
-                        CurrencyUtils.formatVnd(expense.totalAmountVnd),
-                        style: AppTextStyle.bold(
-                          color: colors.textPrimary,
-                          fontSize: 14,
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      InkWell(
-                        onTap: () => onTapItem?.call(expense),
-                        child: Text(
-                          tr.viewExpenseDetailAction,
-                          style: AppTextStyle.bold(
-                            color: const Color(0xFF6366F1),
-                            fontSize: 11,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                ),
               ),
             );
           }),
