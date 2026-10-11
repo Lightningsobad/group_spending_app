@@ -48,6 +48,18 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color bottomNavBorder;
   final Color bottomNavInactive;
 
+  // Semantic Brand & Badges (Centralized Light / Dark Tokens)
+  final Color brandEmerald;
+  final Color brandEmeraldBorder;
+  final Color brandEmeraldMuted;
+  final Color badgeAmber;
+  final Color badgeAmberBg;
+  final Color badgeIndigo;
+  final Color badgeIndigoBg;
+  final Color badgeSuccess;
+  final Color badgeSuccessBg;
+  final Color inputBackground;
+  final Color dragHandle;
   // Semantic UI Containers & Actions
   final Color primaryContainer;
   final Color onPrimaryContainer;
@@ -139,6 +151,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.bottomNavBackground,
     required this.bottomNavBorder,
     required this.bottomNavInactive,
+    required this.brandEmerald,
+    required this.brandEmeraldBorder,
+    required this.brandEmeraldMuted,
+    required this.badgeAmber,
+    required this.badgeAmberBg,
+    required this.badgeIndigo,
+    required this.badgeIndigoBg,
+    required this.badgeSuccess,
+    required this.badgeSuccessBg,
+    required this.inputBackground,
+    required this.dragHandle,
     required this.primaryContainer,
     required this.onPrimaryContainer,
     required this.primaryButton,
@@ -225,6 +248,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     bottomNavBackground: Colors.white,
     bottomNavBorder: Color(0xFFE2E8F0),
     bottomNavInactive: AppColors.textSecondary,
+    brandEmerald: AppColors.emeraldForest,
+    brandEmeraldBorder: AppColors.emerald,
+    brandEmeraldMuted: Color(0xFFD1FAE5),
+    badgeAmber: Color(0xFFD97706),
+    badgeAmberBg: Color(0xFFFEF3C7),
+    badgeIndigo: Color(0xFF4F46E5),
+    badgeIndigoBg: Color(0xFFEEF2FF),
+    badgeSuccess: Color(0xFF16A34A),
+    badgeSuccessBg: Color(0xFFDCFCE7),
+    inputBackground: Color(0xFFF8FAFC),
+    dragHandle: Color(0xFFCBD5E1),
     primaryContainer: Color(0xFFDCFCE7),
     onPrimaryContainer: Color(0xFF15803D),
     primaryButton: Color(0xFF166534),
@@ -311,6 +345,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     bottomNavBackground: AppColors.cardDark,
     bottomNavBorder: AppColors.borderDark,
     bottomNavInactive: AppColors.textLightSecondary,
+    brandEmerald: AppColors.emeraldLight,
+    brandEmeraldBorder: Color(0x9934D399),
+    brandEmeraldMuted: Color(0xFF064E3B),
+    badgeAmber: Color(0xFFFBBF24),
+    badgeAmberBg: Color(0x5978350F),
+    badgeIndigo: Color(0xFF818CF8),
+    badgeIndigoBg: Color(0x59312E81),
+    badgeSuccess: Color(0xFF4ADE80),
+    badgeSuccessBg: Color(0x66064E3B),
+    inputBackground: Color(0xFF090D16),
+    dragHandle: Color(0xFF475569),
     primaryContainer: Color(0xFF064E3B),
     onPrimaryContainer: Color(0xFF6EE7B7),
     primaryButton: Color(0xFF059669),
@@ -395,6 +440,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? bottomNavBackground,
     Color? bottomNavBorder,
     Color? bottomNavInactive,
+    Color? brandEmerald,
+    Color? brandEmeraldBorder,
+    Color? brandEmeraldMuted,
+    Color? badgeAmber,
+    Color? badgeAmberBg,
+    Color? badgeIndigo,
+    Color? badgeIndigoBg,
+    Color? badgeSuccess,
+    Color? badgeSuccessBg,
+    Color? inputBackground,
+    Color? dragHandle,
     Color? primaryContainer,
     Color? onPrimaryContainer,
     Color? primaryButton,
@@ -473,6 +529,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       bottomNavBackground: bottomNavBackground ?? this.bottomNavBackground,
       bottomNavBorder: bottomNavBorder ?? this.bottomNavBorder,
       bottomNavInactive: bottomNavInactive ?? this.bottomNavInactive,
+      brandEmerald: brandEmerald ?? this.brandEmerald,
+      brandEmeraldBorder: brandEmeraldBorder ?? this.brandEmeraldBorder,
+      brandEmeraldMuted: brandEmeraldMuted ?? this.brandEmeraldMuted,
+      badgeAmber: badgeAmber ?? this.badgeAmber,
+      badgeAmberBg: badgeAmberBg ?? this.badgeAmberBg,
+      badgeIndigo: badgeIndigo ?? this.badgeIndigo,
+      badgeIndigoBg: badgeIndigoBg ?? this.badgeIndigoBg,
+      badgeSuccess: badgeSuccess ?? this.badgeSuccess,
+      badgeSuccessBg: badgeSuccessBg ?? this.badgeSuccessBg,
+      inputBackground: inputBackground ?? this.inputBackground,
+      dragHandle: dragHandle ?? this.dragHandle,
       primaryContainer: primaryContainer ?? this.primaryContainer,
       onPrimaryContainer: onPrimaryContainer ?? this.onPrimaryContainer,
       primaryButton: primaryButton ?? this.primaryButton,
@@ -576,6 +643,19 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       bottomNavBorder: Color.lerp(bottomNavBorder, other.bottomNavBorder, t)!,
       bottomNavInactive:
           Color.lerp(bottomNavInactive, other.bottomNavInactive, t)!,
+      brandEmerald: Color.lerp(brandEmerald, other.brandEmerald, t)!,
+      brandEmeraldBorder:
+          Color.lerp(brandEmeraldBorder, other.brandEmeraldBorder, t)!,
+      brandEmeraldMuted:
+          Color.lerp(brandEmeraldMuted, other.brandEmeraldMuted, t)!,
+      badgeAmber: Color.lerp(badgeAmber, other.badgeAmber, t)!,
+      badgeAmberBg: Color.lerp(badgeAmberBg, other.badgeAmberBg, t)!,
+      badgeIndigo: Color.lerp(badgeIndigo, other.badgeIndigo, t)!,
+      badgeIndigoBg: Color.lerp(badgeIndigoBg, other.badgeIndigoBg, t)!,
+      badgeSuccess: Color.lerp(badgeSuccess, other.badgeSuccess, t)!,
+      badgeSuccessBg: Color.lerp(badgeSuccessBg, other.badgeSuccessBg, t)!,
+      inputBackground: Color.lerp(inputBackground, other.inputBackground, t)!,
+      dragHandle: Color.lerp(dragHandle, other.dragHandle, t)!,
       primaryContainer:
           Color.lerp(primaryContainer, other.primaryContainer, t)!,
       onPrimaryContainer:

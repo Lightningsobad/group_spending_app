@@ -554,18 +554,6 @@ abstract class AppLocalizations {
   /// **'Chế độ giao diện (Theme)'**
   String get themeModeTitle;
 
-  /// No description provided for @themeLightSubtitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Nền sáng #F8FAFC'**
-  String get themeLightSubtitle;
-
-  /// No description provided for @themeDarkSubtitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Nền tối #0F172A'**
-  String get themeDarkSubtitle;
-
   /// No description provided for @lightThemeLabel.
   ///
   /// In vi, this message translates to:
@@ -584,12 +572,6 @@ abstract class AppLocalizations {
   /// **'Ngôn ngữ hiển thị'**
   String get displayLanguageTitle;
 
-  /// No description provided for @displayLanguageSubtitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Tiếng Việt (Toàn bộ nhãn)'**
-  String get displayLanguageSubtitle;
-
   /// No description provided for @infoSupportSection.
   ///
   /// In vi, this message translates to:
@@ -602,23 +584,11 @@ abstract class AppLocalizations {
   /// **'Giới thiệu về FairShare'**
   String get aboutAppTitle;
 
-  /// No description provided for @aboutAppSubtitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Xem lại toàn bộ slide giới thiệu tính năng ứng dụng (Onboarding)'**
-  String get aboutAppSubtitle;
-
   /// No description provided for @privacyPolicyTitle.
   ///
   /// In vi, this message translates to:
   /// **'Chính sách bảo mật & Quyền riêng tư'**
   String get privacyPolicyTitle;
-
-  /// No description provided for @privacyPolicySubtitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Cam kết mã hóa thông tin & bảo vệ tài khoản (Xem chi tiết)'**
-  String get privacyPolicySubtitle;
 
   /// No description provided for @privacyPolicyCommitmentSubtitle.
   ///
@@ -3014,18 +2984,6 @@ abstract class AppLocalizations {
   /// **'NGUYEN VAN A (in hoa không dấu)'**
   String get bankAccountNameHint;
 
-  /// No description provided for @tapToViewQrHint.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chạm để xem mã VietQR'**
-  String get tapToViewQrHint;
-
-  /// No description provided for @tapToSetupBankHint.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chạm để thiết lập tài khoản'**
-  String get tapToSetupBankHint;
-
   /// No description provided for @changeAvatarPrompt.
   ///
   /// In vi, this message translates to:
@@ -3224,6 +3182,29 @@ abstract class AppLocalizations {
   /// **'Tôi đã chuyển khoản'**
   String get iHavePaidAction;
 
+  /// No description provided for @loadingBanksMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang tải danh sách ngân hàng...'**
+  String get loadingBanksMessage;
+
+  /// No description provided for @clearBankPrompt.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa liên kết ngân hàng'**
+  String get clearBankPrompt;
+
+  /// No description provided for @imagePickerGenericError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể chọn ảnh. Vui lòng thử lại.'**
+  String get imagePickerGenericError;
+
+  /// No description provided for @updateProfileGenericError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Cập nhật thông tin thất bại. Vui lòng thử lại sau.'**
+  String get updateProfileGenericError;
   /// No description provided for @otpResentSuccessMessage.
   ///
   /// In vi, this message translates to:

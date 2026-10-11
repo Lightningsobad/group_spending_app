@@ -36,7 +36,7 @@ class AppearanceLanguageCard extends StatelessWidget {
             style: AppTextStyle.bold(
               fontSize: 12,
               color: colors.textSlate800,
-              letterSpacing: 0.4,
+              letterSpacing: 0.5,
             ),
           ),
           const SizedBox(height: 16),
@@ -48,33 +48,20 @@ class AppearanceLanguageCard extends StatelessWidget {
                 width: 38,
                 height: 38,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFEF3C7),
+                  color: colors.badgeAmberBg,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(
+                child: Icon(
                   LucideIcons.sun,
                   size: 20,
-                  color: Color(0xFFD97706),
+                  color: colors.badgeAmber,
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      tr.themeModeTitle,
-                      style: AppTextStyle.bold(fontSize: 13, color: colors.textPrimary),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      isDark ? tr.themeDarkSubtitle : tr.themeLightSubtitle,
-                      style: AppTextStyle.medium(
-                        fontSize: 11,
-                        color: colors.textMuted,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  tr.themeModeTitle,
+                  style: AppTextStyle.bold(fontSize: 14, color: colors.textPrimary),
                 ),
               ),
               // Segmented theme control
@@ -91,14 +78,14 @@ class AppearanceLanguageCard extends StatelessWidget {
                       label: tr.lightThemeLabel,
                       icon: LucideIcons.sun,
                       isActive: !isDark,
-                      activeColor: const Color(0xFFD97706),
+                      activeColor: colors.badgeAmber,
                       onTap: () => themeCubit.setThemeMode(ThemeMode.light),
                     ),
                     _SegmentItem(
                       label: tr.darkThemeLabel,
                       icon: LucideIcons.moon,
                       isActive: isDark,
-                      activeColor: AppColors.emeraldLight,
+                      activeColor: colors.brandEmerald,
                       onTap: () => themeCubit.setThemeMode(ThemeMode.dark),
                     ),
                   ],
@@ -118,33 +105,20 @@ class AppearanceLanguageCard extends StatelessWidget {
                 width: 38,
                 height: 38,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFD1FAE5),
+                  color: colors.brandEmeraldMuted,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Icon(
+                child: Icon(
                   LucideIcons.globe,
                   size: 20,
-                  color: AppColors.emeraldForest,
+                  color: colors.brandEmerald,
                 ),
               ),
               const SizedBox(width: 12),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      tr.displayLanguageTitle,
-                      style: AppTextStyle.bold(fontSize: 13, color: colors.textPrimary),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      tr.displayLanguageSubtitle,
-                      style: AppTextStyle.medium(
-                        fontSize: 11,
-                        color: colors.textMuted,
-                      ),
-                    ),
-                  ],
+                child: Text(
+                  tr.displayLanguageTitle,
+                  style: AppTextStyle.bold(fontSize: 14, color: colors.textPrimary),
                 ),
               ),
               // Segmented language control
@@ -160,13 +134,13 @@ class AppearanceLanguageCard extends StatelessWidget {
                     _SegmentItem(
                       label: 'VN VI',
                       isActive: !isEn,
-                      activeColor: AppColors.emeraldForest,
+                      activeColor: colors.brandEmerald,
                       onTap: () => localeCubit.setLocale(const Locale('vi')),
                     ),
                     _SegmentItem(
                       label: 'GB EN',
                       isActive: isEn,
-                      activeColor: AppColors.emeraldForest,
+                      activeColor: colors.brandEmerald,
                       onTap: () => localeCubit.setLocale(const Locale('en')),
                     ),
                   ],
@@ -197,14 +171,16 @@ class _SegmentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
         decoration: BoxDecoration(
           color: isActive
-              ? context.colors.segmentActiveBackground
+              ? colors.segmentActiveBackground
               : Colors.transparent,
           borderRadius: BorderRadius.circular(9),
           boxShadow: isActive
@@ -223,16 +199,16 @@ class _SegmentItem extends StatelessWidget {
             if (icon != null) ...[
               Icon(
                 icon,
-                size: 13,
-                color: isActive ? activeColor : AppColors.textSecondary,
+                size: 14,
+                color: isActive ? activeColor : colors.textSecondary,
               ),
               const SizedBox(width: 4),
             ],
             Text(
               label,
               style: AppTextStyle.bold(
-                fontSize: 11,
-                color: isActive ? activeColor : AppColors.textSecondary,
+                fontSize: 12,
+                color: isActive ? activeColor : colors.textSecondary,
               ),
             ),
           ],

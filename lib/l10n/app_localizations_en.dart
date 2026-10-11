@@ -250,12 +250,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get themeModeTitle => 'Theme Mode';
 
   @override
-  String get themeLightSubtitle => 'Light surface #F8FAFC';
-
-  @override
-  String get themeDarkSubtitle => 'Dark surface #0F172A';
-
-  @override
   String get lightThemeLabel => 'Light';
 
   @override
@@ -265,24 +259,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get displayLanguageTitle => 'Display Language';
 
   @override
-  String get displayLanguageSubtitle => 'English (All labels)';
-
-  @override
   String get infoSupportSection => 'INFO & SUPPORT';
 
   @override
   String get aboutAppTitle => 'About FairShare';
 
   @override
-  String get aboutAppSubtitle =>
-      'Replay onboarding feature introduction slides';
-
-  @override
   String get privacyPolicyTitle => 'Privacy Policy & Data Safety';
-
-  @override
-  String get privacyPolicySubtitle =>
-      'Commitment to encryption and account protection (Details)';
 
   @override
   String get privacyPolicyCommitmentSubtitle =>
@@ -1614,12 +1597,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bankAccountNameHint => 'NGUYEN VAN A (uppercase without accents)';
 
   @override
-  String get tapToViewQrHint => 'Tap to view VietQR';
-
-  @override
-  String get tapToSetupBankHint => 'Tap to set up account';
-
-  @override
   String get changeAvatarPrompt => 'Change avatar';
 
   @override
@@ -1731,6 +1708,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get iHavePaidAction => 'I Have Transferred';
 
   @override
+  String get loadingBanksMessage => 'Loading bank list...';
+
+  @override
+  String get clearBankPrompt => 'Clear bank selection';
+
+  @override
+  String get imagePickerGenericError =>
+      'Could not select image. Please try again.';
+
+  @override
+  String get updateProfileGenericError =>
+      'Failed to update profile. Please try again later.';
   String get otpResentSuccessMessage =>
       'A new verification code has been sent to your email.';
 }
