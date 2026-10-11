@@ -855,6 +855,6 @@
   "loadingBanksMessage": "Đang tải danh sách ngân hàng...",
   "clearBankPrompt": "Xóa liên kết ngân hàng",
   "imagePickerGenericError": "Không thể chọn ảnh. Vui lòng thử lại.",
-  "updateProfileGenericError": "Cập nhật thông tin thất bại. Vui lòng thử lại sau."
+  "updateProfileGenericError": "Cập nhật thông tin thất bại. Vui lòng thử lại sau.",
   "otpResentSuccessMessage": "Mã xác thực mới đã được gửi đến email của bạn."
 }

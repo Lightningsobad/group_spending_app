@@ -855,6 +855,6 @@
   "loadingBanksMessage": "Loading bank list...",
   "clearBankPrompt": "Clear bank selection",
   "imagePickerGenericError": "Could not select image. Please try again.",
-  "updateProfileGenericError": "Failed to update profile. Please try again later."
+  "updateProfileGenericError": "Failed to update profile. Please try again later.",
   "otpResentSuccessMessage": "A new verification code has been sent to your email."
 }

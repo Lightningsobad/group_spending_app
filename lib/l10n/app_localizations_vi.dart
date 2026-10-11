@@ -1716,6 +1716,8 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get updateProfileGenericError =>
       'Cập nhật thông tin thất bại. Vui lòng thử lại sau.';
+
+  @override
   String get otpResentSuccessMessage =>
       'Mã xác thực mới đã được gửi đến email của bạn.';
 }

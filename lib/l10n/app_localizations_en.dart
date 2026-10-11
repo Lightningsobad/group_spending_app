@@ -1720,6 +1720,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get updateProfileGenericError =>
       'Failed to update profile. Please try again later.';
+
+  @override
   String get otpResentSuccessMessage =>
       'A new verification code has been sent to your email.';
 }

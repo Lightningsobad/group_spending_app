@@ -3205,6 +3205,7 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Cập nhật thông tin thất bại. Vui lòng thử lại sau.'**
   String get updateProfileGenericError;
+
   /// No description provided for @otpResentSuccessMessage.
   ///
   /// In vi, this message translates to:
