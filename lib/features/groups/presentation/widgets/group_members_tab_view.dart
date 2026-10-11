@@ -75,10 +75,10 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
               children: [
                 Row(
                   children: [
-                    const Icon(
+                    Icon(
                       LucideIcons.users,
                       size: 20,
-                      color: Color(0xFF14532D),
+                      color: colors.primaryButton,
                     ),
                     const SizedBox(width: 8),
                     Text(
@@ -93,8 +93,8 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                 ),
                 OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
-                    backgroundColor: const Color(0xFFF0FDF4),
-                    side: const BorderSide(color: Color(0xFF86EFAC)),
+                    backgroundColor: colors.secondaryActionBg,
+                    side: BorderSide(color: colors.secondaryActionBorder),
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     shape: RoundedRectangleBorder(
@@ -102,13 +102,13 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                     ),
                   ),
                   onPressed: widget.onInviteMore,
-                  icon: const Icon(LucideIcons.share2,
-                      size: 14, color: Color(0xFF14532D)),
+                  icon: Icon(LucideIcons.share2,
+                      size: 14, color: colors.secondaryActionText),
                   label: Text(
                     '+ ${tr.inviteMoreAction}',
                     style: AppTextStyle.bold(
                       fontSize: 12,
-                      color: const Color(0xFF14532D),
+                      color: colors.secondaryActionText,
                     ),
                   ),
                 ),
@@ -126,13 +126,13 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
               child: TextField(
                 controller: _searchController,
                 style: AppTextStyle.regular(
-                  fontSize: 13,
+                  fontSize: 14,
                   color: colors.textPrimary,
                 ),
                 decoration: InputDecoration(
                   hintText: tr.searchMemberPlaceholder,
                   hintStyle: AppTextStyle.regular(
-                    fontSize: 13,
+                    fontSize: 14,
                     color: colors.textMuted,
                   ),
                   prefixIcon: Icon(
@@ -248,9 +248,9 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFFBEB),
+        color: colors.roleAdminBg,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFFDE68A)),
+        border: Border.all(color: colors.roleAdminBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -260,33 +260,34 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFEF3C7),
+                  color: colors.cardBackground,
                   borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: colors.roleAdminBorder),
                 ),
-                child: const Icon(LucideIcons.userCheck,
-                    size: 16, color: Color(0xFFB45309)),
+                child: Icon(LucideIcons.userCheck,
+                    size: 16, color: colors.roleAdminText),
               ),
               const SizedBox(width: 8),
               Text(
                 tr.pendingMembersSectionTitle,
                 style: AppTextStyle.bold(
                   fontSize: 13,
-                  color: const Color(0xFF92400E),
+                  color: colors.roleAdminText,
                 ),
               ),
               const SizedBox(width: 8),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFEF3C7),
+                  color: colors.cardBackground,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFFFCD34D)),
+                  border: Border.all(color: colors.roleAdminBorder),
                 ),
                 child: Text(
                   tr.pendingRequestsCountBadge(requests.length),
                   style: AppTextStyle.bold(
                     fontSize: 10,
-                    color: const Color(0xFFB45309),
+                    color: colors.roleAdminText,
                   ),
                 ),
               ),
@@ -297,7 +298,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
             tr.pendingRequestsSubtitle,
             style: AppTextStyle.regular(
               fontSize: 11,
-              color: const Color(0xFFB45309),
+              color: colors.roleAdminText.withValues(alpha: 0.8),
             ),
           ),
           const SizedBox(height: 12),
@@ -308,9 +309,9 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
               margin: const EdgeInsets.only(bottom: 10),
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: colors.cardBackground,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFFFDE68A)),
+                border: Border.all(color: colors.roleAdminBorder),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: 0.02),
@@ -409,8 +410,8 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF14532D),
-                            foregroundColor: Colors.white,
+                            backgroundColor: colors.primaryButton,
+                            foregroundColor: colors.onPrimaryButton,
                             padding: const EdgeInsets.symmetric(vertical: 10),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -435,14 +436,14 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(LucideIcons.check,
-                                  size: 14, color: Colors.white),
+                              Icon(LucideIcons.check,
+                                  size: 14, color: colors.onPrimaryButton),
                               const SizedBox(width: 6),
                               Text(
                                 tr.approveAction,
                                 style: AppTextStyle.bold(
                                   fontSize: 12,
-                                  color: Colors.white,
+                                  color: colors.onPrimaryButton,
                                 ),
                               ),
                             ],
@@ -522,7 +523,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                       decoration: BoxDecoration(
                         color: const Color(0xFF22C55E),
                         shape: BoxShape.circle,
-                        border: Border.all(color: Colors.white, width: 1.5),
+                        border: Border.all(color: colors.avatarDotBorder, width: 1.5),
                       ),
                     ),
                   ),
@@ -551,14 +552,14 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFDCFCE7),
+                          color: colors.primaryContainer,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
                           tr.youPill,
                           style: AppTextStyle.bold(
-                            fontSize: 10,
-                            color: const Color(0xFF15803D),
+                            fontSize: 11,
+                            color: colors.onPrimaryContainer,
                           ),
                         ),
                       ),
@@ -573,24 +574,29 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: member.isAdmin
-                      ? const Color(0xFFFEF3C7)
+                      ? colors.roleAdminBg
                       : colors.surfaceMuted,
                   borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: member.isAdmin
+                        ? colors.roleAdminBorder
+                        : colors.cardBorder,
+                  ),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (member.isAdmin) ...[
-                      const Icon(LucideIcons.shieldCheck,
-                          size: 12, color: Color(0xFFB45309)),
+                      Icon(LucideIcons.shieldCheck,
+                          size: 12, color: colors.roleAdminText),
                       const SizedBox(width: 4),
                     ],
                     Text(
                       member.isAdmin ? tr.roleLeaderBadge : tr.roleMemberBadge,
                       style: AppTextStyle.bold(
-                        fontSize: 10,
+                        fontSize: 11,
                         color: member.isAdmin
-                            ? const Color(0xFFB45309)
+                            ? colors.roleAdminText
                             : colors.textSecondary,
                       ),
                     ),
@@ -614,13 +620,14 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
 
   Widget _buildDeleteGroupCard(BuildContext context) {
     final tr = context.l10n;
+    final colors = context.colors;
 
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFF1F2),
+        color: colors.errorSurface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFFFE4E6)),
+        border: Border.all(color: colors.errorBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -630,7 +637,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.red.shade100,
+                  color: colors.errorBorder.withValues(alpha: 0.3),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(LucideIcons.trash2,
@@ -644,7 +651,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                     Text(
                       tr.deleteGroupSectionTitle,
                       style: AppTextStyle.bold(
-                        fontSize: 13,
+                        fontSize: 14,
                         color: AppColors.error,
                       ),
                     ),
@@ -652,8 +659,8 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                     Text(
                       tr.deleteGroupSectionSubtitle,
                       style: AppTextStyle.regular(
-                        fontSize: 11,
-                        color: Colors.red.shade800,
+                        fontSize: 12,
+                        color: colors.textSecondary,
                       ),
                     ),
                   ],
@@ -677,7 +684,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
             icon: const Icon(LucideIcons.trash2, size: 16),
             label: Text(
               tr.deleteGroupAction,
-              style: AppTextStyle.bold(fontSize: 13),
+              style: AppTextStyle.bold(fontSize: 14),
             ),
           ),
         ],
@@ -687,13 +694,14 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
 
   Widget _buildLeaveGroupCard(BuildContext context) {
     final tr = context.l10n;
+    final colors = context.colors;
 
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFFFFF1F2),
+        color: colors.errorSurface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFFFE4E6)),
+        border: Border.all(color: colors.errorBorder),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -703,7 +711,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.red.shade100,
+                  color: colors.errorBorder.withValues(alpha: 0.3),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(LucideIcons.logOut,
@@ -717,7 +725,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                     Text(
                       tr.leaveGroupSectionTitle,
                       style: AppTextStyle.bold(
-                        fontSize: 13,
+                        fontSize: 14,
                         color: AppColors.error,
                       ),
                     ),
@@ -725,8 +733,8 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                     Text(
                       tr.leaveGroupSectionSubtitle,
                       style: AppTextStyle.regular(
-                        fontSize: 11,
-                        color: Colors.red.shade800,
+                        fontSize: 12,
+                        color: colors.textSecondary,
                       ),
                     ),
                   ],
@@ -750,7 +758,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
             icon: const Icon(LucideIcons.logOut, size: 16),
             label: Text(
               tr.leaveGroupButton,
-              style: AppTextStyle.bold(fontSize: 13),
+              style: AppTextStyle.bold(fontSize: 14),
             ),
           ),
         ],

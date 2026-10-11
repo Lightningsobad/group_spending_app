@@ -47,6 +47,7 @@ class MainShellScreen extends StatefulWidget {
 
 class _MainShellScreenState extends State<MainShellScreen> {
   late int _currentIndex;
+  bool _isGroupsDeepView = false;
   final GlobalKey<GroupsScreenState> _groupsKey = GlobalKey<GroupsScreenState>();
 
   @override
@@ -64,6 +65,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
   @override
   Widget build(BuildContext context) {
     final bg = context.colors.background;
+    final hideHeader = _currentIndex == 1 && _isGroupsDeepView;
 
     final shellScaffold = BlocListener<AuthCubit, AuthState>(
       listenWhen: (previous, current) => previous.status != current.status,
@@ -78,8 +80,12 @@ class _MainShellScreenState extends State<MainShellScreen> {
           bottom: false,
           child: Column(
             children: [
-              // Pinned App Header across tabs
-              const AppHeader(),
+              // Pinned App Header across tabs (tự động ẩn khi vào sâu chi tiết nhóm)
+              AnimatedSize(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+                child: hideHeader ? const SizedBox.shrink() : const AppHeader(),
+              ),
               // Shell body with IndexedStack to preserve tab states
               Expanded(
                 child: IndexedStack(
@@ -106,6 +112,13 @@ class _MainShellScreenState extends State<MainShellScreen> {
                     ),
                     GroupsScreen(
                       key: _groupsKey,
+                      onDeepViewChanged: (isDeep) {
+                        if (mounted && _isGroupsDeepView != isDeep) {
+                          setState(() {
+                            _isGroupsDeepView = isDeep;
+                          });
+                        }
+                      },
                       onNavigateToDebts: () {
                         setState(() {
                           _currentIndex = 2;
@@ -124,6 +137,10 @@ class _MainShellScreenState extends State<MainShellScreen> {
         bottomNavigationBar: MainBottomNavBar(
           currentIndex: _currentIndex,
           onTap: (index) {
+            if (_currentIndex == index && index == 1) {
+              _groupsKey.currentState?.closeGroupDetail();
+              _groupsKey.currentState?.closeJoinGroup();
+            }
             setState(() {
               _currentIndex = index;
             });

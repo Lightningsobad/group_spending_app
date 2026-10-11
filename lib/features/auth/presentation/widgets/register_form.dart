@@ -28,6 +28,7 @@ class RegisterForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
+    final colors = context.colors;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -35,11 +36,11 @@ class RegisterForm extends StatelessWidget {
         AppTextField(
           label: tr.fullNameLabel,
           controller: nameController,
-          hintText: 'Nguyễn Nhật Minh',
-          prefixIcon: const Icon(
+          hintText: tr.fullNameHint,
+          prefixIcon: Icon(
             LucideIcons.user,
             size: 19,
-            color: AppColors.textMuted,
+            color: colors.textMuted,
           ),
           errorText: fieldErrors?['fullName'],
         ),
@@ -47,12 +48,12 @@ class RegisterForm extends StatelessWidget {
         AppTextField(
           label: tr.emailLabel,
           controller: emailController,
-          hintText: 'minh.nguyen@example.com',
+          hintText: tr.emailHint,
           keyboardType: TextInputType.emailAddress,
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             LucideIcons.mail,
             size: 19,
-            color: AppColors.textMuted,
+            color: colors.textMuted,
           ),
           errorText: fieldErrors?['email'],
         ),
@@ -61,12 +62,12 @@ class RegisterForm extends StatelessWidget {
           label: tr.phoneLabel,
           optionalTag: tr.phoneOptionalTag,
           controller: phoneController,
-          hintText: 'VD: 0912 345 678',
+          hintText: tr.phoneHint,
           keyboardType: TextInputType.phone,
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             LucideIcons.phone,
             size: 19,
-            color: AppColors.textMuted,
+            color: colors.textMuted,
           ),
           errorText: fieldErrors?['phone'],
         ),
@@ -76,10 +77,10 @@ class RegisterForm extends StatelessWidget {
           controller: passwordController,
           hintText: '••••••••',
           isPassword: true,
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             LucideIcons.lock,
             size: 19,
-            color: AppColors.textMuted,
+            color: colors.textMuted,
           ),
           errorText: fieldErrors?['password'],
         ),

@@ -143,13 +143,13 @@ abstract class AppLocalizations {
   /// No description provided for @authHeaderTitle.
   ///
   /// In vi, this message translates to:
-  /// **'Quản lý & Nhắc nhở Chi tiêu\nNhóm'**
+  /// **'FairShare'**
   String get authHeaderTitle;
 
   /// No description provided for @authHeaderSubtitle.
   ///
   /// In vi, this message translates to:
-  /// **'Chia tiền minh bạch, nhắc nợ tế nhị, đóng quỹ dễ dàng.'**
+  /// **'Quản lý chi tiêu nhóm & nhắc nhở'**
   String get authHeaderSubtitle;
 
   /// No description provided for @loginTab.
@@ -179,7 +179,7 @@ abstract class AppLocalizations {
   /// No description provided for @emailHint.
   ///
   /// In vi, this message translates to:
-  /// **'Nhập địa chỉ email của bạn'**
+  /// **'Email của bạn'**
   String get emailHint;
 
   /// No description provided for @passwordLabel.
@@ -233,7 +233,7 @@ abstract class AppLocalizations {
   /// No description provided for @fullNameHint.
   ///
   /// In vi, this message translates to:
-  /// **'Nhập họ và tên của bạn'**
+  /// **'Tên của bạn'**
   String get fullNameHint;
 
   /// No description provided for @phoneLabel.
@@ -251,7 +251,7 @@ abstract class AppLocalizations {
   /// No description provided for @phoneHint.
   ///
   /// In vi, this message translates to:
-  /// **'Nhập số điện thoại (tùy chọn)'**
+  /// **'Số điện thoại'**
   String get phoneHint;
 
   /// No description provided for @registerButton.
@@ -3205,6 +3205,11 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Cập nhật thông tin thất bại. Vui lòng thử lại sau.'**
   String get updateProfileGenericError;
+  /// No description provided for @otpResentSuccessMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mã xác thực mới đã được gửi đến email của bạn.'**
+  String get otpResentSuccessMessage;
 }
 
 class _AppLocalizationsDelegate

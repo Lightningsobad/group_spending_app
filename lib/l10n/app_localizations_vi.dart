@@ -30,11 +30,10 @@ class AppLocalizationsVi extends AppLocalizations {
   String get splashSlogan => 'Chia tiền minh bạch & nhắc nợ thông minh';
 
   @override
-  String get authHeaderTitle => 'Quản lý & Nhắc nhở Chi tiêu\nNhóm';
+  String get authHeaderTitle => 'FairShare';
 
   @override
-  String get authHeaderSubtitle =>
-      'Chia tiền minh bạch, nhắc nợ tế nhị, đóng quỹ dễ dàng.';
+  String get authHeaderSubtitle => 'Quản lý chi tiêu nhóm & nhắc nhở';
 
   @override
   String get loginTab => 'Đăng nhập';
@@ -49,7 +48,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get emailLabel => 'Địa chỉ Email';
 
   @override
-  String get emailHint => 'Nhập địa chỉ email của bạn';
+  String get emailHint => 'Email của bạn';
 
   @override
   String get passwordLabel => 'Mật khẩu';
@@ -76,7 +75,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get fullNameLabel => 'Họ và tên';
 
   @override
-  String get fullNameHint => 'Nhập họ và tên của bạn';
+  String get fullNameHint => 'Tên của bạn';
 
   @override
   String get phoneLabel => 'Số điện thoại';
@@ -85,7 +84,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get phoneOptionalTag => '(Không bắt buộc / Tùy chọn)';
 
   @override
-  String get phoneHint => 'Nhập số điện thoại (tùy chọn)';
+  String get phoneHint => 'Số điện thoại';
 
   @override
   String get registerButton => 'Tạo tài khoản mới';
@@ -1717,4 +1716,6 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get updateProfileGenericError =>
       'Cập nhật thông tin thất bại. Vui lòng thử lại sau.';
+  String get otpResentSuccessMessage =>
+      'Mã xác thực mới đã được gửi đến email của bạn.';
 }

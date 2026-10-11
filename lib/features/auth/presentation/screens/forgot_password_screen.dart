@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../cubit/password_reset_cubit.dart';
 import '../cubit/password_reset_state.dart';
@@ -53,6 +54,7 @@ class _ForgotPasswordContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
+    final colors = context.colors;
 
     return PopScope(
       canPop: false,
@@ -67,27 +69,21 @@ class _ForgotPasswordContent extends StatelessWidget {
             (prev.errorMessage != curr.errorMessage && curr.errorMessage != null),
         listener: (context, state) {
           if (state.isSuccessStep) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(tr.resetPasswordSuccessMessage),
-                backgroundColor: AppColors.emeraldForest,
-                duration: const Duration(seconds: 4),
-              ),
+            AppSnackBar.showSuccess(
+              context,
+              tr.resetPasswordSuccessMessage,
+              duration: const Duration(seconds: 4),
             );
             context.go('/auth?mode=login');
           } else if (state.errorMessage != null && state.errorMessage!.isNotEmpty) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage!),
-                backgroundColor: AppColors.error,
-              ),
-            );
+            AppSnackBar.showError(context, state.errorMessage!);
           }
         },
         child: Scaffold(
-          backgroundColor: AppColors.backgroundLight,
+          backgroundColor: colors.background,
           body: SafeArea(
             child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -97,12 +93,12 @@ class _ForgotPasswordContent extends StatelessWidget {
                     child: IconButton(
                       onPressed: () => _onBack(context),
                       icon: const Icon(Icons.arrow_back_ios_new, size: 19),
-                      color: AppColors.textSlate800,
+                      color: colors.iconPrimary,
                       style: IconButton.styleFrom(
-                        backgroundColor: Colors.white,
+                        backgroundColor: colors.cardBackground,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
-                          side: const BorderSide(color: AppColors.borderLight),
+                          side: BorderSide(color: colors.cardBorder),
                         ),
                       ),
                     ),

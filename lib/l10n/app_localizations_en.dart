@@ -31,11 +31,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Transparent expense sharing & smart debt reminders';
 
   @override
-  String get authHeaderTitle => 'Group Expense Management\n& Reminders';
+  String get authHeaderTitle => 'FairShare';
 
   @override
-  String get authHeaderSubtitle =>
-      'Transparent sharing, gentle reminders, easy fund pooling.';
+  String get authHeaderSubtitle => 'Group expense management & reminders';
 
   @override
   String get loginTab => 'Log In';
@@ -50,7 +49,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emailLabel => 'Email Address';
 
   @override
-  String get emailHint => 'Enter your email';
+  String get emailHint => 'Your email';
 
   @override
   String get passwordLabel => 'Password';
@@ -77,7 +76,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fullNameLabel => 'Full name';
 
   @override
-  String get fullNameHint => 'Enter your full name';
+  String get fullNameHint => 'Your name';
 
   @override
   String get phoneLabel => 'Phone number';
@@ -86,7 +85,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get phoneOptionalTag => '(Optional)';
 
   @override
-  String get phoneHint => 'Enter phone number (optional)';
+  String get phoneHint => 'Phone number';
 
   @override
   String get registerButton => 'Create New Account';
@@ -1721,4 +1720,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get updateProfileGenericError =>
       'Failed to update profile. Please try again later.';
+  String get otpResentSuccessMessage =>
+      'A new verification code has been sent to your email.';
 }
