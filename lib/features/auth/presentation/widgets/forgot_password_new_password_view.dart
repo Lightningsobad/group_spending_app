@@ -43,6 +43,7 @@ class _ForgotPasswordNewPasswordViewState
   @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
+    final colors = context.colors;
 
     return BlocBuilder<PasswordResetCubit, PasswordResetState>(
       builder: (context, state) {
@@ -61,8 +62,8 @@ class _ForgotPasswordNewPasswordViewState
               tr.setNewPasswordTitle,
               textAlign: TextAlign.center,
               style: AppTextStyle.black(
-                fontSize: 22,
-                color: AppColors.textDark,
+                fontSize: AppFontSize.h2,
+                color: colors.textPrimary,
                 letterSpacing: -0.4,
               ),
             ),
@@ -73,8 +74,8 @@ class _ForgotPasswordNewPasswordViewState
                 tr.setNewPasswordSubtitle,
                 textAlign: TextAlign.center,
                 style: AppTextStyle.medium(
-                  fontSize: 13,
-                  color: AppColors.textSecondary,
+                  fontSize: AppFontSize.secondary,
+                  color: colors.textSecondary,
                   height: 1.4,
                 ),
               ),
@@ -84,24 +85,24 @@ class _ForgotPasswordNewPasswordViewState
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF1F5F9),
+                  color: colors.segmentBackground,
                   borderRadius: BorderRadius.circular(9999),
-                  border: Border.all(color: AppColors.borderLight),
+                  border: Border.all(color: colors.cardBorder),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
+                    Icon(
                       LucideIcons.mail,
                       size: 14,
-                      color: AppColors.emeraldForest,
+                      color: colors.activePillText,
                     ),
                     const SizedBox(width: 6),
                     Text(
                       state.email,
                       style: AppTextStyle.bold(
-                        fontSize: 12.5,
-                        color: AppColors.textDark,
+                        fontSize: AppFontSize.caption,
+                        color: colors.textPrimary,
                       ),
                     ),
                   ],
@@ -114,10 +115,10 @@ class _ForgotPasswordNewPasswordViewState
               controller: _newPasswordController,
               hintText: tr.newPasswordHint,
               isPassword: true,
-              prefixIcon: const Icon(
+              prefixIcon: Icon(
                 LucideIcons.lock,
                 size: 19,
-                color: AppColors.textMuted,
+                color: colors.textMuted,
               ),
               errorText: state.fieldErrors?['newPassword'],
             ),
@@ -127,10 +128,10 @@ class _ForgotPasswordNewPasswordViewState
               controller: _confirmPasswordController,
               hintText: tr.confirmNewPasswordHint,
               isPassword: true,
-              prefixIcon: const Icon(
+              prefixIcon: Icon(
                 LucideIcons.lock,
                 size: 19,
-                color: AppColors.textMuted,
+                color: colors.textMuted,
               ),
               errorText: state.fieldErrors?['confirmPassword'],
             ),

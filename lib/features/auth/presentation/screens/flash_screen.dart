@@ -126,7 +126,7 @@ class _FlashScreenState extends State<FlashScreen>
                   Text(
                     'FairShare',
                     style: AppTextStyle.style(
-                      fontSize: 32,
+                      fontSize: AppFontSize.hero,
                       fontWeight: FontWeight.w900,
                       color: Colors.white,
                       letterSpacing: -0.5,
@@ -144,7 +144,7 @@ class _FlashScreenState extends State<FlashScreen>
                     context.l10n.splashSlogan,
                     textAlign: TextAlign.center,
                     style: AppTextStyle.style(
-                      fontSize: 13,
+                      fontSize: AppFontSize.secondary,
                       fontWeight: FontWeight.w500,
                       color: AppColors.textLightMint,
                       height: 1.5,

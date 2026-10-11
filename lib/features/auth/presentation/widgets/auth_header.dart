@@ -10,6 +10,7 @@ class AuthHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
+    final colors = context.colors;
 
     return Column(
       children: [
@@ -24,8 +25,8 @@ class AuthHeader extends StatelessWidget {
           tr.authHeaderTitle,
           textAlign: TextAlign.center,
           style: AppTextStyle.black(
-            fontSize: 28,
-            color: AppColors.textDark,
+            fontSize: AppFontSize.h1,
+            color: colors.textPrimary,
             letterSpacing: -0.4,
             height: 1.25,
           ),
@@ -35,8 +36,9 @@ class AuthHeader extends StatelessWidget {
           tr.authHeaderSubtitle,
           textAlign: TextAlign.center,
           style: AppTextStyle.medium(
-            fontSize: 13,
-            color: AppColors.textSecondary,
+            fontSize: AppFontSize.secondary,
+            color: colors.textSecondary,
+            height: 1.35,
           ),
         ),
       ],

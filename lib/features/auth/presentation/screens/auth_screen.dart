@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../cubit/auth_cubit.dart';
 import '../cubit/auth_state.dart';
 import '../widgets/auth_header.dart';
@@ -55,15 +56,11 @@ class _AuthScreenState extends State<AuthScreen> {
     final password = _loginPasswordController.text;
 
     if (email.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(tr.enterEmailPrompt)),
-      );
+      AppSnackBar.showWarning(context, tr.enterEmailPrompt);
       return;
     }
     if (password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(tr.enterPasswordPrompt)),
-      );
+      AppSnackBar.showWarning(context, tr.enterPasswordPrompt);
       return;
     }
 
@@ -78,21 +75,15 @@ class _AuthScreenState extends State<AuthScreen> {
     final password = _regPasswordController.text;
 
     if (name.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(tr.enterFullNamePrompt)),
-      );
+      AppSnackBar.showWarning(context, tr.enterFullNamePrompt);
       return;
     }
     if (email.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(tr.enterEmailPrompt)),
-      );
+      AppSnackBar.showWarning(context, tr.enterEmailPrompt);
       return;
     }
     if (password.length < 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(tr.passwordMinLengthPrompt)),
-      );
+      AppSnackBar.showWarning(context, tr.passwordMinLengthPrompt);
       return;
     }
 
@@ -114,6 +105,8 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return BlocConsumer<AuthCubit, AuthState>(
       listenWhen: (previous, current) {
         return previous.status != current.status ||
@@ -131,19 +124,15 @@ class _AuthScreenState extends State<AuthScreen> {
         } else if (state.isAuthenticated) {
           context.go('/dashboard');
         } else if (state.hasError && state.errorMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage!),
-              backgroundColor: AppColors.error,
-            ),
-          );
+          AppSnackBar.showError(context, state.errorMessage!);
         }
       },
       builder: (context, state) {
         return Scaffold(
-          backgroundColor: AppColors.backgroundLight,
+          backgroundColor: colors.background,
           body: SafeArea(
             child: SingleChildScrollView(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -166,15 +155,15 @@ class _AuthScreenState extends State<AuthScreen> {
                       vertical: 22,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: colors.cardBackground,
                       borderRadius: BorderRadius.circular(22),
                       border: Border.all(
-                        color: AppColors.borderLight,
+                        color: colors.cardBorder,
                         width: 1.2,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.04),
+                          color: colors.cardShadowColor,
                           blurRadius: 16,
                           offset: const Offset(0, 4),
                         ),
@@ -219,23 +208,30 @@ class _AuthScreenState extends State<AuthScreen> {
                             ? context.l10n.noAccountPrompt
                             : context.l10n.hasAccountPrompt,
                         style: AppTextStyle.medium(
-                          fontSize: 13,
-                          color: AppColors.textSecondary,
+                          fontSize: AppFontSize.secondary,
+                          color: colors.textSecondary,
                         ),
                       ),
                       GestureDetector(
+                        behavior: HitTestBehavior.opaque,
                         onTap: () {
                           setState(() {
                             _isLoginMode = !_isLoginMode;
                           });
                         },
-                        child: Text(
-                          _isLoginMode
-                              ? context.l10n.registerNow
-                              : context.l10n.loginNow,
-                          style: AppTextStyle.bold(
-                            fontSize: 13,
-                            color: AppColors.emeraldForest,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                            vertical: 8,
+                          ),
+                          child: Text(
+                            _isLoginMode
+                                ? context.l10n.registerNow
+                                : context.l10n.loginNow,
+                            style: AppTextStyle.bold(
+                              fontSize: AppFontSize.secondary,
+                              color: AppColors.emeraldForest,
+                            ),
                           ),
                         ),
                       ),
