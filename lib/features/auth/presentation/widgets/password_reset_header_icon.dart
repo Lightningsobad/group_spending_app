@@ -4,22 +4,26 @@ import '../../../../core/constants/app_colors.dart';
 
 class PasswordResetHeaderIcon extends StatelessWidget {
   final IconData icon;
-  final Color iconColor;
-  final Color backgroundColor;
+  final Color? iconColor;
+  final Color? backgroundColor;
   final List<Color>? gradientColors;
   final bool showShield;
 
   const PasswordResetHeaderIcon({
     super.key,
     required this.icon,
-    this.iconColor = AppColors.emeraldForest,
-    this.backgroundColor = AppColors.successBg,
+    this.iconColor,
+    this.backgroundColor,
     this.gradientColors,
     this.showShield = false,
   });
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final resolvedIconColor = iconColor ?? colors.activePillText;
+    final resolvedBgColor = backgroundColor ?? colors.activePillBackground;
+
     return Center(
       child: Stack(
         clipBehavior: Clip.none,
@@ -28,7 +32,7 @@ class PasswordResetHeaderIcon extends StatelessWidget {
             width: 68,
             height: 68,
             decoration: BoxDecoration(
-              color: gradientColors == null ? backgroundColor : null,
+              color: gradientColors == null ? resolvedBgColor : null,
               gradient: gradientColors != null
                   ? LinearGradient(
                       colors: gradientColors!,
@@ -38,12 +42,12 @@ class PasswordResetHeaderIcon extends StatelessWidget {
                   : null,
               borderRadius: BorderRadius.circular(22),
               border: Border.all(
-                color: AppColors.borderLight,
+                color: colors.cardBorder,
                 width: 1.0,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.04),
+                  color: colors.cardShadowColor,
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -52,7 +56,7 @@ class PasswordResetHeaderIcon extends StatelessWidget {
             child: Icon(
               icon,
               size: 32,
-              color: iconColor,
+              color: resolvedIconColor,
             ),
           ),
           if (showShield)
@@ -62,12 +66,12 @@ class PasswordResetHeaderIcon extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: colors.cardBackground,
                   shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.borderLight, width: 1.0),
+                  border: Border.all(color: colors.cardBorder, width: 1.0),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
+                      color: colors.cardShadowColor,
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     ),
