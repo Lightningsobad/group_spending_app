@@ -253,23 +253,29 @@ class _GroupAnalyticsView extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Icon(
-                  LucideIcons.sparkles,
-                  size: 18,
-                  color: colors.analyticsAccent,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  tr.financialMetricsTitle,
-                  style: AppTextStyle.bold(
-                    color: colors.textPrimary,
-                    fontSize: 13,
-                    letterSpacing: 0.3,
+            Expanded(
+              child: Row(
+                children: [
+                  Icon(
+                    LucideIcons.sparkles,
+                    size: 18,
+                    color: colors.analyticsAccent,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      tr.financialMetricsTitle,
+                      style: AppTextStyle.bold(
+                        color: colors.textPrimary,
+                        fontSize: 13,
+                        letterSpacing: 0.3,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -354,24 +360,31 @@ class _GroupAnalyticsView extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Icon(
-                  LucideIcons.pieChart,
-                  size: 18,
-                  color: colors.analyticsAccent,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  tr.categoryDistributionTitle,
-                  style: AppTextStyle.bold(
-                    color: colors.textPrimary,
-                    fontSize: 13,
-                    letterSpacing: 0.3,
+            Expanded(
+              child: Row(
+                children: [
+                  Icon(
+                    LucideIcons.pieChart,
+                    size: 18,
+                    color: colors.analyticsAccent,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      tr.categoryDistributionTitle,
+                      style: AppTextStyle.bold(
+                        color: colors.textPrimary,
+                        fontSize: 13,
+                        letterSpacing: 0.3,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
             ),
+            const SizedBox(width: 8),
             Text(
               '100%',
               style: AppTextStyle.regular(

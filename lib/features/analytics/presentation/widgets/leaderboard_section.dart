@@ -103,24 +103,31 @@ class LeaderboardSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Icon(
-                  LucideIcons.trophy,
-                  size: 18,
-                  color: colors.rankGoldText,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: AppTextStyle.bold(
-                    color: colors.textPrimary,
-                    fontSize: 14,
+            Expanded(
+              child: Row(
+                children: [
+                  Icon(
+                    LucideIcons.trophy,
+                    size: 18,
+                    color: colors.rankGoldText,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: AppTextStyle.bold(
+                        color: colors.textPrimary,
+                        fontSize: 14,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            if (memberCount != null)
+            if (memberCount != null) ...[
+              const SizedBox(width: 8),
               Text(
                 tr.membersCountSubtitle(memberCount!),
                 style: AppTextStyle.regular(
@@ -128,6 +135,7 @@ class LeaderboardSection extends StatelessWidget {
                   fontSize: 12,
                 ),
               ),
+            ],
           ],
         ),
         const SizedBox(height: 12),

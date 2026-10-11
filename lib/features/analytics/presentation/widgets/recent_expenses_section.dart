@@ -28,23 +28,30 @@ class RecentExpensesSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Icon(
-                  LucideIcons.receiptText,
-                  size: 18,
-                  color: colors.analyticsAccent,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  tr.recentExpensesTitle,
-                  style: AppTextStyle.bold(
-                    color: colors.textPrimary,
-                    fontSize: 14,
+            Expanded(
+              child: Row(
+                children: [
+                  Icon(
+                    LucideIcons.receiptText,
+                    size: 18,
+                    color: colors.analyticsAccent,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      tr.recentExpensesTitle,
+                      style: AppTextStyle.bold(
+                        color: colors.textPrimary,
+                        fontSize: 14,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
             ),
+            const SizedBox(width: 8),
             Text(
               tr.expensesCountBadge(expenses.length),
               style: AppTextStyle.regular(
