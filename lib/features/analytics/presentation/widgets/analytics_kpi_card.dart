@@ -65,13 +65,13 @@ class AnalyticsKpiCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: badgeBgColor ?? const Color(0xFFDCFCE7),
+                    color: badgeBgColor ?? colors.badgeSuccessBg,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     badgeText!,
                     style: AppTextStyle.bold(
-                      color: badgeTextColor ?? const Color(0xFF15803D),
+                      color: badgeTextColor ?? colors.badgeSuccessText,
                       fontSize: 11,
                     ),
                   ),
@@ -91,14 +91,17 @@ class AnalyticsKpiCard extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           // Value
-          Text(
-            value,
-            style: AppTextStyle.extraBold(
-              color: colors.textPrimary,
-              fontSize: 18,
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              value,
+              style: AppTextStyle.extraBold(
+                color: colors.textPrimary,
+                fontSize: 20,
+              ),
+              maxLines: 1,
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
           // Optional progress bar
           if (progressBarPercent != null) ...[
@@ -109,8 +112,8 @@ class AnalyticsKpiCard extends StatelessWidget {
                 value: progressBarPercent!.clamp(0.0, 1.0),
                 minHeight: 6,
                 backgroundColor: colors.cardBorder,
-                valueColor: const AlwaysStoppedAnimation<Color>(
-                  AppColors.emerald,
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  colors.analyticsAccent,
                 ),
               ),
             ),
@@ -124,17 +127,17 @@ class AnalyticsKpiCard extends StatelessWidget {
                 if (progressSubtitleLeft != null)
                   Text(
                     progressSubtitleLeft!,
-                    style: AppTextStyle.regular(
-                      color: colors.textMuted,
-                      fontSize: 11,
+                    style: AppTextStyle.medium(
+                      color: colors.textSecondary,
+                      fontSize: 12,
                     ),
                   ),
                 if (progressSubtitleRight != null)
                   Text(
                     progressSubtitleRight!,
-                    style: AppTextStyle.regular(
-                      color: colors.textMuted,
-                      fontSize: 11,
+                    style: AppTextStyle.medium(
+                      color: colors.textSecondary,
+                      fontSize: 12,
                     ),
                   ),
               ],
@@ -143,9 +146,9 @@ class AnalyticsKpiCard extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               subtitle!,
-              style: AppTextStyle.regular(
-                color: colors.textMuted,
-                fontSize: 11,
+              style: AppTextStyle.medium(
+                color: colors.textSecondary,
+                fontSize: 12,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

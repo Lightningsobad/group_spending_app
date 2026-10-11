@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/theme/app_theme_colors.dart';
 import '../../domain/entities/expense_statistics_entity.dart';
 
 class CategoryDistributionColors {
@@ -29,7 +30,7 @@ class CategoryDistributionBar extends StatelessWidget {
       return Container(
         height: 10,
         decoration: BoxDecoration(
-          color: Colors.grey.withValues(alpha: 0.2),
+          color: context.colors.surfaceMuted,
           borderRadius: BorderRadius.circular(6),
         ),
       );

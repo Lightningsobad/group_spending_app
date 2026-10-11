@@ -852,6 +852,20 @@
   "transferContentLabel": "Transfer Memo",
   "copiedTransferContent": "Copied transfer memo",
   "iHavePaidAction": "I Have Transferred",
+  "groupAnalyticsFallbackTitle": "Group #{id} Analytics",
+  "@groupAnalyticsFallbackTitle": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "expenseDetailModalTitle": "Expense Details",
+  "viewGroupAnalyticsAction": "View Group Analytics",
+  "clearSearchAction": "Clear Search",
+  "expenseCategoryLabel": "Category",
+  "expenseDateLabel": "Date & Time",
+  "expenseGroupLabel": "Group",
   "loadingBanksMessage": "Loading bank list...",
   "clearBankPrompt": "Clear bank selection",
   "imagePickerGenericError": "Could not select image. Please try again.",

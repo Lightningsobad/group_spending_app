@@ -79,7 +79,7 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
           backgroundColor: colors.background,
           body: RefreshIndicator(
             onRefresh: () => context.read<AnalyticsTabCubit>().loadOverview(isRefresh: true),
-            color: const Color(0xFF6366F1),
+            color: colors.analyticsAccent,
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(
                 parent: BouncingScrollPhysics(),
@@ -149,13 +149,13 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
           width: 40,
           height: 40,
           decoration: BoxDecoration(
-            color: const Color(0xFFEEF2FF),
+            color: colors.analyticsIconBg,
             borderRadius: BorderRadius.circular(12),
           ),
-          child: const Icon(
+          child: Icon(
             LucideIcons.barChart3,
             size: 22,
-            color: Color(0xFF6366F1),
+            color: colors.analyticsAccent,
           ),
         ),
         const SizedBox(width: 12),
@@ -192,7 +192,7 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
             context,
             label: tr.activeGroupsJoinedCount,
             value: '${state.overview.activeGroupCount} ${tr.groupsUnit}',
-            valueColor: const Color(0xFF6366F1),
+            valueColor: colors.analyticsAccent,
           ),
         ),
         const SizedBox(width: 8),
@@ -202,7 +202,7 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
             context,
             label: tr.totalInvoicesRecorded,
             value: '${state.overview.totalExpenses} ${tr.invoicesUnit}',
-            valueColor: AppColors.emerald,
+            valueColor: colors.badgeSuccessText,
           ),
         ),
       ],
@@ -230,23 +230,26 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
         children: [
           Text(
             label,
-            style: AppTextStyle.regular(
+            style: AppTextStyle.semiBold(
               color: colors.textSecondary,
-              fontSize: 11,
-              height: 1.2,
+              fontSize: 12,
+              height: 1.3,
             ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 6),
-          Text(
-            value,
-            style: AppTextStyle.extraBold(
-              color: valueColor,
-              fontSize: 13,
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              value,
+              style: AppTextStyle.extraBold(
+                color: valueColor,
+                fontSize: 16,
+              ),
+              maxLines: 1,
             ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
@@ -280,51 +283,57 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
     final colors = context.colors;
 
     return Container(
-      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFFFAF5FF),
+        color: colors.bannerBackground,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
-          color: const Color(0xFFE9D5FF),
+          color: colors.bannerBorder,
           width: 1,
         ),
       ),
-      child: InkWell(
+      child: Material(
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(20),
-        onTap: _onGlobalOverviewTap,
-        child: Row(
-          children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: const Color(0xFF6366F1),
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: const Icon(
-                LucideIcons.layers,
-                size: 22,
-                color: Colors.white,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(
-                tr.overallReportBannerTitle,
-                style: AppTextStyle.bold(
-                  color: colors.textPrimary,
-                  fontSize: 15,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(20),
+          onTap: _onGlobalOverviewTap,
+          child: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: colors.analyticsAccent,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Icon(
+                    LucideIcons.layers,
+                    size: 22,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    tr.overallReportBannerTitle,
+                    style: AppTextStyle.bold(
+                      color: colors.textPrimary,
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+                Text(
+                  '${tr.viewOverallReportAction} >',
+                  style: AppTextStyle.bold(
+                    color: colors.analyticsAccent,
+                    fontSize: 13,
+                  ),
+                ),
+              ],
             ),
-            Text(
-              '${tr.viewOverallReportAction} >',
-              style: AppTextStyle.bold(
-                color: const Color(0xFF6366F1),
-                fontSize: 13,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -393,12 +402,12 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? const Color(0xFF6366F1)
+                      ? colors.analyticsAccent
                       : colors.cardBackground,
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
                     color: isSelected
-                        ? const Color(0xFF6366F1)
+                        ? colors.analyticsAccent
                         : colors.cardBorder,
                     width: 1,
                   ),
@@ -435,6 +444,7 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
           style: AppTextStyle.bold(
             color: colors.textSecondary,
             fontSize: 13,
+            letterSpacing: 0.3,
           ),
         ),
         Text(
@@ -471,6 +481,7 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
   Widget _buildEmptyGroupsState(BuildContext context) {
     final tr = context.l10n;
     final colors = context.colors;
+    final hasSearch = _searchController.text.trim().isNotEmpty;
 
     return Container(
       width: double.infinity,
@@ -489,6 +500,23 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
             tr.noMatchingGroupsSubtitle,
             style: AppTextStyle.regular(color: colors.textMuted),
           ),
+          if (hasSearch) ...[
+            const SizedBox(height: 12),
+            TextButton.icon(
+              onPressed: () {
+                _searchController.clear();
+                context.read<AnalyticsTabCubit>().setSearchQuery('');
+              },
+              icon: Icon(LucideIcons.x, size: 16, color: colors.analyticsAccent),
+              label: Text(
+                tr.clearSearchAction,
+                style: AppTextStyle.bold(
+                  color: colors.analyticsAccent,
+                  fontSize: 13,
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
@@ -517,7 +545,7 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
           ElevatedButton(
             onPressed: () => context.read<AnalyticsTabCubit>().loadOverview(),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF6366F1),
+              backgroundColor: colors.analyticsAccent,
               foregroundColor: Colors.white,
             ),
             child: Text(tr.retryAction),

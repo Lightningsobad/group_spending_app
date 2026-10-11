@@ -1708,6 +1708,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get iHavePaidAction => 'I Have Transferred';
 
   @override
+  String groupAnalyticsFallbackTitle(int id) {
+    return 'Group #$id Analytics';
+  }
+
+  @override
+  String get expenseDetailModalTitle => 'Expense Details';
+
+  @override
+  String get viewGroupAnalyticsAction => 'View Group Analytics';
+
+  @override
+  String get clearSearchAction => 'Clear Search';
+
+  @override
+  String get expenseCategoryLabel => 'Category';
+
+  @override
+  String get expenseDateLabel => 'Date & Time';
+
+  @override
+  String get expenseGroupLabel => 'Group';
   String get loadingBanksMessage => 'Loading bank list...';
 
   @override

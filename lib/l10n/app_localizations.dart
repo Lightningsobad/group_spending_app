@@ -3182,6 +3182,47 @@ abstract class AppLocalizations {
   /// **'Tôi đã chuyển khoản'**
   String get iHavePaidAction;
 
+  /// No description provided for @groupAnalyticsFallbackTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thống kê nhóm #{id}'**
+  String groupAnalyticsFallbackTitle(int id);
+
+  /// No description provided for @expenseDetailModalTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chi tiết hóa đơn'**
+  String get expenseDetailModalTitle;
+
+  /// No description provided for @viewGroupAnalyticsAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem thống kê nhóm'**
+  String get viewGroupAnalyticsAction;
+
+  /// No description provided for @clearSearchAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa tìm kiếm'**
+  String get clearSearchAction;
+
+  /// No description provided for @expenseCategoryLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Danh mục'**
+  String get expenseCategoryLabel;
+
+  /// No description provided for @expenseDateLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thời gian'**
+  String get expenseDateLabel;
+
+  /// No description provided for @expenseGroupLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhóm chi tiêu'**
+  String get expenseGroupLabel;
   /// No description provided for @loadingBanksMessage.
   ///
   /// In vi, this message translates to:

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
+import '../../../expenses/data/models/expense_enums.dart';
 import '../../domain/entities/expense_statistics_entity.dart';
 import 'category_distribution_bar.dart';
 
@@ -10,26 +10,6 @@ class CategoryDistributionList extends StatelessWidget {
   final List<CategoryDistributionEntity> categories;
 
   const CategoryDistributionList({super.key, required this.categories});
-
-  IconData _getIconForCategory(String name) {
-    final lower = name.toLowerCase();
-    if (lower.contains('ăn') || lower.contains('uống') || lower.contains('food')) {
-      return LucideIcons.utensils;
-    }
-    if (lower.contains('siêu thị') || lower.contains('thực phẩm') || lower.contains('mart')) {
-      return LucideIcons.shoppingCart;
-    }
-    if (lower.contains('nhà') || lower.contains('điện') || lower.contains('nước')) {
-      return LucideIcons.lightbulb;
-    }
-    if (lower.contains('xe') || lower.contains('chuyển') || lower.contains('xăng')) {
-      return LucideIcons.bike;
-    }
-    if (lower.contains('giải trí') || lower.contains('phim') || lower.contains('chơi')) {
-      return LucideIcons.film;
-    }
-    return LucideIcons.package;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +24,7 @@ class CategoryDistributionList extends StatelessWidget {
         final index = entry.key;
         final cat = entry.value;
         final color = CategoryDistributionColors.getColor(index);
-        final iconData = _getIconForCategory(cat.categoryName);
+        final categoryType = ExpenseCategoryType.fromString(cat.categoryName);
 
         return Container(
           margin: const EdgeInsets.only(bottom: 8),
@@ -61,13 +41,13 @@ class CategoryDistributionList extends StatelessWidget {
                 width: 34,
                 height: 34,
                 decoration: BoxDecoration(
-                  color: colors.background,
+                  color: colors.surfaceMuted,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
-                  iconData,
+                  categoryType.icon,
                   size: 18,
-                  color: colors.textSecondary,
+                  color: categoryType.themeColor,
                 ),
               ),
               const SizedBox(width: 10),
