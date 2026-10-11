@@ -3223,6 +3223,7 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Nhóm chi tiêu'**
   String get expenseGroupLabel;
+
   /// No description provided for @loadingBanksMessage.
   ///
   /// In vi, this message translates to:

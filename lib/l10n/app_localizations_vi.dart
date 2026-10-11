@@ -1726,6 +1726,8 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get expenseGroupLabel => 'Nhóm chi tiêu';
+
+  @override
   String get loadingBanksMessage => 'Đang tải danh sách ngân hàng...';
 
   @override

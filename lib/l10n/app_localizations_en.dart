@@ -1729,6 +1729,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get expenseGroupLabel => 'Group';
+
+  @override
   String get loadingBanksMessage => 'Loading bank list...';
 
   @override
