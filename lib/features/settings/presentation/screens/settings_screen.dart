@@ -78,7 +78,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               const SizedBox(width: 10),
               Text(
                 tr.settingsTitle,
-                style: AppTextStyle.black(
+                style: AppTextStyle.bold(
                   fontSize: 18,
                   color: colors.textPrimary,
                   letterSpacing: -0.3,

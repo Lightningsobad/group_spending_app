@@ -120,7 +120,7 @@ class UserProfileCard extends StatelessWidget {
                   children: [
                     Text(
                       name,
-                      style: AppTextStyle.black(
+                      style: AppTextStyle.bold(
                         fontSize: 17,
                         color: colors.textPrimary,
                         letterSpacing: -0.3,
@@ -133,7 +133,7 @@ class UserProfileCard extends StatelessWidget {
                     Text(
                       email,
                       style: AppTextStyle.medium(
-                        fontSize: 12,
+                        fontSize: 13,
                         color: colors.textSecondary,
                       ),
                       maxLines: 1,
@@ -157,8 +157,8 @@ class UserProfileCard extends StatelessWidget {
                     style: AppTextStyle.bold(fontSize: 13),
                   ),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.emeraldForest,
-                    side: const BorderSide(color: AppColors.emerald, width: 1.2),
+                    foregroundColor: colors.brandEmerald,
+                    side: BorderSide(color: colors.brandEmeraldBorder, width: 1.2),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

@@ -25,8 +25,57 @@ class LogoutButton extends StatelessWidget {
             child: InkWell(
               onTap: state.isLoading
                   ? null
-                  : () {
-                      context.read<AuthCubit>().logout();
+                  : () async {
+                      final confirmed = await showDialog<bool>(
+                        context: context,
+                        builder: (dialogContext) => AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          backgroundColor: colors.cardBackground,
+                          title: Text(
+                            tr.logoutConfirmTitle,
+                            style: AppTextStyle.bold(
+                              fontSize: 16,
+                              color: colors.textPrimary,
+                            ),
+                          ),
+                          actionsPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.of(dialogContext).pop(false),
+                              child: Text(
+                                tr.cancel,
+                                style: AppTextStyle.medium(
+                                  fontSize: 14,
+                                  color: colors.textSecondary,
+                                ),
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.error,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              onPressed: () => Navigator.of(dialogContext).pop(true),
+                              child: Text(
+                                tr.logoutButton,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+
+                      if (confirmed == true && context.mounted) {
+                        context.read<AuthCubit>().logout();
+                      }
                     },
               borderRadius: BorderRadius.circular(16),
               child: Container(
