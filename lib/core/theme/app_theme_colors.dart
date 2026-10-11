@@ -41,6 +41,44 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color bottomNavBorder;
   final Color bottomNavInactive;
 
+  // Form & Ô nhập liệu (Auth & Dialogs)
+  final Color inputFill;
+  final Color inputBorder;
+
+  // Nút mạng xã hội (Social Auth)
+  final Color socialButtonBg;
+  final Color socialButtonBorder;
+
+  // Ô nhập mã OTP
+  final Color otpBoxBg;
+  final Color otpBoxFilledBg;
+  final Color otpBoxBorder;
+
+  // SnackBar Tokens (Success, Error, Warning, Info)
+  final Color snackBarSuccessBg;
+  final Color snackBarSuccessBorder;
+  final Color snackBarSuccessBadge;
+  final Color snackBarSuccessIcon;
+  final Color snackBarSuccessText;
+
+  final Color snackBarErrorBg;
+  final Color snackBarErrorBorder;
+  final Color snackBarErrorBadge;
+  final Color snackBarErrorIcon;
+  final Color snackBarErrorText;
+
+  final Color snackBarWarningBg;
+  final Color snackBarWarningBorder;
+  final Color snackBarWarningBadge;
+  final Color snackBarWarningIcon;
+  final Color snackBarWarningText;
+
+  final Color snackBarInfoBg;
+  final Color snackBarInfoBorder;
+  final Color snackBarInfoBadge;
+  final Color snackBarInfoIcon;
+  final Color snackBarInfoText;
+
   const AppThemeColors({
     required this.background,
     required this.cardBackground,
@@ -66,6 +104,33 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.bottomNavBackground,
     required this.bottomNavBorder,
     required this.bottomNavInactive,
+    required this.inputFill,
+    required this.inputBorder,
+    required this.socialButtonBg,
+    required this.socialButtonBorder,
+    required this.otpBoxBg,
+    required this.otpBoxFilledBg,
+    required this.otpBoxBorder,
+    required this.snackBarSuccessBg,
+    required this.snackBarSuccessBorder,
+    required this.snackBarSuccessBadge,
+    required this.snackBarSuccessIcon,
+    required this.snackBarSuccessText,
+    required this.snackBarErrorBg,
+    required this.snackBarErrorBorder,
+    required this.snackBarErrorBadge,
+    required this.snackBarErrorIcon,
+    required this.snackBarErrorText,
+    required this.snackBarWarningBg,
+    required this.snackBarWarningBorder,
+    required this.snackBarWarningBadge,
+    required this.snackBarWarningIcon,
+    required this.snackBarWarningText,
+    required this.snackBarInfoBg,
+    required this.snackBarInfoBorder,
+    required this.snackBarInfoBadge,
+    required this.snackBarInfoIcon,
+    required this.snackBarInfoText,
   });
 
   /// Bảng màu cho Light Theme
@@ -102,6 +167,33 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     bottomNavBackground: Colors.white,
     bottomNavBorder: Color(0xFFE2E8F0),
     bottomNavInactive: AppColors.textSecondary,
+    inputFill: Color(0xFFF8FAFC),
+    inputBorder: Color(0xFFE2E8F0),
+    socialButtonBg: Colors.white,
+    socialButtonBorder: Color(0xFFE2E8F0),
+    otpBoxBg: Colors.white,
+    otpBoxFilledBg: Color(0xFFEFFDF5),
+    otpBoxBorder: Color(0xFFE2E8F0),
+    snackBarSuccessBg: AppColors.successBg,
+    snackBarSuccessBorder: Color(0xFFA7F3D0),
+    snackBarSuccessBadge: Color(0xFFD1FAE5),
+    snackBarSuccessIcon: AppColors.emeraldDark,
+    snackBarSuccessText: AppColors.textDark,
+    snackBarErrorBg: AppColors.errorBg,
+    snackBarErrorBorder: AppColors.errorBorder,
+    snackBarErrorBadge: Color(0xFFFEE2E2),
+    snackBarErrorIcon: AppColors.error,
+    snackBarErrorText: AppColors.textDark,
+    snackBarWarningBg: Color(0xFFFFFBEB),
+    snackBarWarningBorder: Color(0xFFFDE68A),
+    snackBarWarningBadge: Color(0xFFFEF3C7),
+    snackBarWarningIcon: Color(0xFFD97706),
+    snackBarWarningText: AppColors.textDark,
+    snackBarInfoBg: Color(0xFFF8FAFC),
+    snackBarInfoBorder: Color(0xFFE2E8F0),
+    snackBarInfoBadge: Color(0xFFE2E8F0),
+    snackBarInfoIcon: AppColors.emeraldForest,
+    snackBarInfoText: AppColors.textDark,
   );
 
   /// Bảng màu cho Dark Theme
@@ -138,6 +230,33 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     bottomNavBackground: AppColors.cardDark,
     bottomNavBorder: AppColors.borderDark,
     bottomNavInactive: AppColors.textLightSecondary,
+    inputFill: Color(0xFF0F172A),
+    inputBorder: Color(0xFF334155),
+    socialButtonBg: AppColors.cardDark,
+    socialButtonBorder: Color(0xFF334155),
+    otpBoxBg: Color(0xFF0F172A),
+    otpBoxFilledBg: Color(0xFF064E3B),
+    otpBoxBorder: Color(0xFF334155),
+    snackBarSuccessBg: AppColors.cardDark,
+    snackBarSuccessBorder: Color(0xFF065F46),
+    snackBarSuccessBadge: Color(0xFF064E3B),
+    snackBarSuccessIcon: AppColors.emeraldLight,
+    snackBarSuccessText: AppColors.textLight,
+    snackBarErrorBg: AppColors.cardDark,
+    snackBarErrorBorder: Color(0xFF991B1B),
+    snackBarErrorBadge: Color(0xFF7F1D1D),
+    snackBarErrorIcon: Color(0xFFF87171),
+    snackBarErrorText: AppColors.textLight,
+    snackBarWarningBg: AppColors.cardDark,
+    snackBarWarningBorder: Color(0xFF92400E),
+    snackBarWarningBadge: Color(0xFF78350F),
+    snackBarWarningIcon: Color(0xFFFBBF24),
+    snackBarWarningText: AppColors.textLight,
+    snackBarInfoBg: AppColors.cardDark,
+    snackBarInfoBorder: AppColors.borderDark,
+    snackBarInfoBadge: Color(0xFF334155),
+    snackBarInfoIcon: AppColors.emeraldLight,
+    snackBarInfoText: AppColors.textLight,
   );
 
   /// Lấy bảng màu tương ứng với Theme hiện tại
@@ -172,6 +291,33 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? bottomNavBackground,
     Color? bottomNavBorder,
     Color? bottomNavInactive,
+    Color? inputFill,
+    Color? inputBorder,
+    Color? socialButtonBg,
+    Color? socialButtonBorder,
+    Color? otpBoxBg,
+    Color? otpBoxFilledBg,
+    Color? otpBoxBorder,
+    Color? snackBarSuccessBg,
+    Color? snackBarSuccessBorder,
+    Color? snackBarSuccessBadge,
+    Color? snackBarSuccessIcon,
+    Color? snackBarSuccessText,
+    Color? snackBarErrorBg,
+    Color? snackBarErrorBorder,
+    Color? snackBarErrorBadge,
+    Color? snackBarErrorIcon,
+    Color? snackBarErrorText,
+    Color? snackBarWarningBg,
+    Color? snackBarWarningBorder,
+    Color? snackBarWarningBadge,
+    Color? snackBarWarningIcon,
+    Color? snackBarWarningText,
+    Color? snackBarInfoBg,
+    Color? snackBarInfoBorder,
+    Color? snackBarInfoBadge,
+    Color? snackBarInfoIcon,
+    Color? snackBarInfoText,
   }) {
     return AppThemeColors(
       background: background ?? this.background,
@@ -199,6 +345,35 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       bottomNavBackground: bottomNavBackground ?? this.bottomNavBackground,
       bottomNavBorder: bottomNavBorder ?? this.bottomNavBorder,
       bottomNavInactive: bottomNavInactive ?? this.bottomNavInactive,
+      inputFill: inputFill ?? this.inputFill,
+      inputBorder: inputBorder ?? this.inputBorder,
+      socialButtonBg: socialButtonBg ?? this.socialButtonBg,
+      socialButtonBorder: socialButtonBorder ?? this.socialButtonBorder,
+      otpBoxBg: otpBoxBg ?? this.otpBoxBg,
+      otpBoxFilledBg: otpBoxFilledBg ?? this.otpBoxFilledBg,
+      otpBoxBorder: otpBoxBorder ?? this.otpBoxBorder,
+      snackBarSuccessBg: snackBarSuccessBg ?? this.snackBarSuccessBg,
+      snackBarSuccessBorder:
+          snackBarSuccessBorder ?? this.snackBarSuccessBorder,
+      snackBarSuccessBadge: snackBarSuccessBadge ?? this.snackBarSuccessBadge,
+      snackBarSuccessIcon: snackBarSuccessIcon ?? this.snackBarSuccessIcon,
+      snackBarSuccessText: snackBarSuccessText ?? this.snackBarSuccessText,
+      snackBarErrorBg: snackBarErrorBg ?? this.snackBarErrorBg,
+      snackBarErrorBorder: snackBarErrorBorder ?? this.snackBarErrorBorder,
+      snackBarErrorBadge: snackBarErrorBadge ?? this.snackBarErrorBadge,
+      snackBarErrorIcon: snackBarErrorIcon ?? this.snackBarErrorIcon,
+      snackBarErrorText: snackBarErrorText ?? this.snackBarErrorText,
+      snackBarWarningBg: snackBarWarningBg ?? this.snackBarWarningBg,
+      snackBarWarningBorder:
+          snackBarWarningBorder ?? this.snackBarWarningBorder,
+      snackBarWarningBadge: snackBarWarningBadge ?? this.snackBarWarningBadge,
+      snackBarWarningIcon: snackBarWarningIcon ?? this.snackBarWarningIcon,
+      snackBarWarningText: snackBarWarningText ?? this.snackBarWarningText,
+      snackBarInfoBg: snackBarInfoBg ?? this.snackBarInfoBg,
+      snackBarInfoBorder: snackBarInfoBorder ?? this.snackBarInfoBorder,
+      snackBarInfoBadge: snackBarInfoBadge ?? this.snackBarInfoBadge,
+      snackBarInfoIcon: snackBarInfoIcon ?? this.snackBarInfoIcon,
+      snackBarInfoText: snackBarInfoText ?? this.snackBarInfoText,
     );
   }
 
@@ -242,6 +417,52 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       bottomNavBorder: Color.lerp(bottomNavBorder, other.bottomNavBorder, t)!,
       bottomNavInactive:
           Color.lerp(bottomNavInactive, other.bottomNavInactive, t)!,
+      inputFill: Color.lerp(inputFill, other.inputFill, t)!,
+      inputBorder: Color.lerp(inputBorder, other.inputBorder, t)!,
+      socialButtonBg: Color.lerp(socialButtonBg, other.socialButtonBg, t)!,
+      socialButtonBorder:
+          Color.lerp(socialButtonBorder, other.socialButtonBorder, t)!,
+      otpBoxBg: Color.lerp(otpBoxBg, other.otpBoxBg, t)!,
+      otpBoxFilledBg: Color.lerp(otpBoxFilledBg, other.otpBoxFilledBg, t)!,
+      otpBoxBorder: Color.lerp(otpBoxBorder, other.otpBoxBorder, t)!,
+      snackBarSuccessBg:
+          Color.lerp(snackBarSuccessBg, other.snackBarSuccessBg, t)!,
+      snackBarSuccessBorder:
+          Color.lerp(snackBarSuccessBorder, other.snackBarSuccessBorder, t)!,
+      snackBarSuccessBadge:
+          Color.lerp(snackBarSuccessBadge, other.snackBarSuccessBadge, t)!,
+      snackBarSuccessIcon:
+          Color.lerp(snackBarSuccessIcon, other.snackBarSuccessIcon, t)!,
+      snackBarSuccessText:
+          Color.lerp(snackBarSuccessText, other.snackBarSuccessText, t)!,
+      snackBarErrorBg: Color.lerp(snackBarErrorBg, other.snackBarErrorBg, t)!,
+      snackBarErrorBorder:
+          Color.lerp(snackBarErrorBorder, other.snackBarErrorBorder, t)!,
+      snackBarErrorBadge:
+          Color.lerp(snackBarErrorBadge, other.snackBarErrorBadge, t)!,
+      snackBarErrorIcon:
+          Color.lerp(snackBarErrorIcon, other.snackBarErrorIcon, t)!,
+      snackBarErrorText:
+          Color.lerp(snackBarErrorText, other.snackBarErrorText, t)!,
+      snackBarWarningBg:
+          Color.lerp(snackBarWarningBg, other.snackBarWarningBg, t)!,
+      snackBarWarningBorder:
+          Color.lerp(snackBarWarningBorder, other.snackBarWarningBorder, t)!,
+      snackBarWarningBadge:
+          Color.lerp(snackBarWarningBadge, other.snackBarWarningBadge, t)!,
+      snackBarWarningIcon:
+          Color.lerp(snackBarWarningIcon, other.snackBarWarningIcon, t)!,
+      snackBarWarningText:
+          Color.lerp(snackBarWarningText, other.snackBarWarningText, t)!,
+      snackBarInfoBg: Color.lerp(snackBarInfoBg, other.snackBarInfoBg, t)!,
+      snackBarInfoBorder:
+          Color.lerp(snackBarInfoBorder, other.snackBarInfoBorder, t)!,
+      snackBarInfoBadge:
+          Color.lerp(snackBarInfoBadge, other.snackBarInfoBadge, t)!,
+      snackBarInfoIcon:
+          Color.lerp(snackBarInfoIcon, other.snackBarInfoIcon, t)!,
+      snackBarInfoText:
+          Color.lerp(snackBarInfoText, other.snackBarInfoText, t)!,
     );
   }
 }

@@ -5,6 +5,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/widgets/app_primary_button.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../cubit/password_reset_cubit.dart';
 import '../cubit/password_reset_state.dart';
 import 'otp_input_field.dart';
@@ -51,11 +52,13 @@ class _ForgotPasswordOtpViewState extends State<ForgotPasswordOtpView> {
 
   void _onResend() {
     context.read<PasswordResetCubit>().resendResetCode();
+    AppSnackBar.showSuccess(context, context.l10n.otpResentSuccessMessage);
   }
 
   @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
+    final colors = context.colors;
 
     return BlocBuilder<PasswordResetCubit, PasswordResetState>(
       builder: (context, state) {
@@ -76,8 +79,8 @@ class _ForgotPasswordOtpViewState extends State<ForgotPasswordOtpView> {
               tr.verifyResetPasswordTitle,
               textAlign: TextAlign.center,
               style: AppTextStyle.black(
-                fontSize: 22,
-                color: AppColors.textDark,
+                fontSize: AppFontSize.h2,
+                color: colors.textPrimary,
                 letterSpacing: -0.4,
               ),
             ),
@@ -88,8 +91,8 @@ class _ForgotPasswordOtpViewState extends State<ForgotPasswordOtpView> {
                 tr.verifyResetPasswordSubtitle,
                 textAlign: TextAlign.center,
                 style: AppTextStyle.medium(
-                  fontSize: 13,
-                  color: AppColors.textSecondary,
+                  fontSize: AppFontSize.secondary,
+                  color: colors.textSecondary,
                   height: 1.4,
                 ),
               ),
@@ -99,35 +102,36 @@ class _ForgotPasswordOtpViewState extends State<ForgotPasswordOtpView> {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF1F5F9),
+                  color: colors.segmentBackground,
                   borderRadius: BorderRadius.circular(9999),
-                  border: Border.all(color: AppColors.borderLight),
+                  border: Border.all(color: colors.cardBorder),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(
+                    Icon(
                       LucideIcons.mail,
                       size: 14,
-                      color: AppColors.emeraldForest,
+                      color: colors.activePillText,
                     ),
                     const SizedBox(width: 6),
                     Text(
                       state.email,
                       style: AppTextStyle.bold(
-                        fontSize: 12.5,
-                        color: AppColors.textDark,
+                        fontSize: AppFontSize.caption,
+                        color: colors.textPrimary,
                       ),
                     ),
                     const SizedBox(width: 8),
                     GestureDetector(
+                      behavior: HitTestBehavior.opaque,
                       onTap: () {
                         context.read<PasswordResetCubit>().backToEmailStep();
                       },
-                      child: const Icon(
+                      child: Icon(
                         LucideIcons.pencil,
                         size: 13,
-                        color: AppColors.emeraldDark,
+                        color: colors.activePillText,
                       ),
                     ),
                   ],
@@ -142,8 +146,8 @@ class _ForgotPasswordOtpViewState extends State<ForgotPasswordOtpView> {
                   child: Text(
                     tr.resetOtpInputLabel,
                     style: AppTextStyle.bold(
-                      fontSize: 12,
-                      color: AppColors.textSlate800,
+                      fontSize: AppFontSize.caption,
+                      color: colors.textPrimary,
                     ),
                   ),
                 ),
@@ -153,8 +157,8 @@ class _ForgotPasswordOtpViewState extends State<ForgotPasswordOtpView> {
                     tr.resetOtpInputHint,
                     textAlign: TextAlign.end,
                     style: AppTextStyle.medium(
-                      fontSize: 11,
-                      color: AppColors.textSecondary,
+                      fontSize: AppFontSize.caption,
+                      color: colors.textSecondary,
                     ),
                   ),
                 ),
@@ -189,17 +193,18 @@ class _ForgotPasswordOtpViewState extends State<ForgotPasswordOtpView> {
                         Text(
                           tr.resendCodeIn,
                           style: AppTextStyle.medium(
-                            fontSize: 13,
-                            color: AppColors.textSecondary,
+                            fontSize: AppFontSize.secondary,
+                            color: colors.textSecondary,
                           ),
                         ),
+                        const SizedBox(width: 6),
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 8,
                             vertical: 3,
                           ),
                           decoration: BoxDecoration(
-                            color: AppColors.successBg,
+                            color: colors.activePillBackground,
                             borderRadius: BorderRadius.circular(6),
                             border: Border.all(
                               color: AppColors.emerald.withValues(alpha: 0.3),
@@ -208,8 +213,8 @@ class _ForgotPasswordOtpViewState extends State<ForgotPasswordOtpView> {
                           child: Text(
                             _formatCountdown(state.resendCountdown),
                             style: AppTextStyle.bold(
-                              fontSize: 13,
-                              color: AppColors.emeraldForest,
+                              fontSize: AppFontSize.secondary,
+                              color: colors.activePillText,
                             ),
                           ),
                         ),
@@ -236,7 +241,7 @@ class _ForgotPasswordOtpViewState extends State<ForgotPasswordOtpView> {
                           Text(
                             tr.resendCodeNow,
                             style: AppTextStyle.bold(
-                              fontSize: 13,
+                              fontSize: AppFontSize.secondary,
                               color: AppColors.emeraldDark,
                             ),
                           ),
