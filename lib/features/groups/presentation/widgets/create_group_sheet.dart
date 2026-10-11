@@ -4,22 +4,40 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../l10n/l10n.dart';
+import '../../data/models/group_model.dart';
 import '../cubit/groups_cubit.dart';
 import 'group_category_helper.dart';
 
+/// Form Bottom Sheet dùng chung cho cả Tạo mới và Chỉnh sửa nhóm
 class CreateGroupSheet extends StatefulWidget {
+  final GroupModel? groupToEdit;
+  final ValueChanged<GroupModel>? onSuccessWithGroup;
   final VoidCallback? onSuccess;
 
-  const CreateGroupSheet({super.key, this.onSuccess});
+  const CreateGroupSheet({
+    super.key,
+    this.groupToEdit,
+    this.onSuccessWithGroup,
+    this.onSuccess,
+  });
 
-  static Future<void> show(BuildContext context, {VoidCallback? onSuccess}) {
+  static Future<void> show(
+    BuildContext context, {
+    GroupModel? groupToEdit,
+    ValueChanged<GroupModel>? onSuccessWithGroup,
+    VoidCallback? onSuccess,
+  }) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => BlocProvider.value(
         value: context.read<GroupsCubit>(),
-        child: CreateGroupSheet(onSuccess: onSuccess),
+        child: CreateGroupSheet(
+          groupToEdit: groupToEdit,
+          onSuccessWithGroup: onSuccessWithGroup,
+          onSuccess: onSuccess,
+        ),
       ),
     );
   }
@@ -30,11 +48,25 @@ class CreateGroupSheet extends StatefulWidget {
 
 class _CreateGroupSheetState extends State<CreateGroupSheet> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _descController = TextEditingController();
-  String _selectedCategory = 'Other';
+  late final TextEditingController _nameController;
+  late final TextEditingController _descController;
+  late String _selectedCategory;
   bool _isLoading = false;
   String? _errorMessage;
+
+  bool get _isEdit => widget.groupToEdit != null;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(
+      text: widget.groupToEdit?.name ?? '',
+    );
+    _descController = TextEditingController(
+      text: widget.groupToEdit?.description ?? '',
+    );
+    _selectedCategory = widget.groupToEdit?.category ?? 'Other';
+  }
 
   @override
   void dispose() {
@@ -51,28 +83,69 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
       _errorMessage = null;
     });
 
-    final success = await context.read<GroupsCubit>().createGroup(
-          name: _nameController.text.trim(),
-          description: _descController.text.trim().isEmpty
-              ? null
-              : _descController.text.trim(),
-          category: _selectedCategory,
-        );
+    final name = _nameController.text.trim();
+    final description = _descController.text.trim().isEmpty
+        ? null
+        : _descController.text.trim();
+    final category = _selectedCategory;
 
-    if (!mounted) return;
+    if (_isEdit) {
+      final success = await context.read<GroupsCubit>().updateGroup(
+            widget.groupToEdit!.id,
+            name: name,
+            description: description,
+            category: category,
+          );
 
-    setState(() {
-      _isLoading = false;
-    });
+      if (!mounted) return;
 
-    if (success) {
-      widget.onSuccess?.call();
-      Navigator.of(context).pop();
-    } else {
       setState(() {
-        _errorMessage = context.read<GroupsCubit>().state.errorMessage ??
-            context.l10n.loadGroupsFailed;
+        _isLoading = false;
       });
+
+      if (success) {
+        final updatedGroup = context.read<GroupsCubit>().state.selectedGroup ??
+            widget.groupToEdit!.copyWith(
+              name: name,
+              description: description,
+              category: category,
+            );
+        widget.onSuccessWithGroup?.call(updatedGroup);
+        widget.onSuccess?.call();
+        Navigator.of(context).pop();
+      } else {
+        setState(() {
+          _errorMessage = context.read<GroupsCubit>().state.errorMessage ??
+              context.l10n.loadGroupsFailed;
+        });
+      }
+    } else {
+      final success = await context.read<GroupsCubit>().createGroup(
+            name: name,
+            description: description,
+            category: category,
+          );
+
+      if (!mounted) return;
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (success) {
+        final createdGroup =
+            context.read<GroupsCubit>().state.groups.firstOrNull;
+        if (createdGroup != null) {
+          widget.onSuccessWithGroup?.call(createdGroup);
+        }
+        widget.onSuccess?.call();
+        Navigator.of(context).pop();
+      } else {
+        setState(() {
+          _errorMessage = context.read<GroupsCubit>().state.errorMessage ??
+              context.l10n.loadGroupsFailed;
+        });
+      }
     }
   }
 
@@ -107,7 +180,7 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
                           height: 44,
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: colors.surfaceMuted,
+                            color: colors.primaryContainer,
                             borderRadius: BorderRadius.circular(14),
                             border: Border.all(color: colors.cardBorder),
                           ),
@@ -123,9 +196,9 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                tr.createGroupTitle,
+                                _isEdit ? tr.editGroupTitle : tr.createGroupTitle,
                                 style: AppTextStyle.bold(
-                                  fontSize: 17,
+                                  fontSize: 18,
                                   color: colors.textPrimary,
                                 ),
                                 maxLines: 1,
@@ -135,7 +208,7 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
                               Text(
                                 GroupCategoryHelper.getLabel(_selectedCategory),
                                 style: AppTextStyle.medium(
-                                  fontSize: 12,
+                                  fontSize: 13,
                                   color: colors.textSecondary,
                                 ),
                                 maxLines: 1,
@@ -177,13 +250,18 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
               Text(
                 tr.groupNameLabel.toUpperCase(),
                 style: AppTextStyle.bold(
-                  fontSize: 11,
+                  fontSize: 12,
                   color: colors.textSecondary,
+                  letterSpacing: 0.5,
                 ),
               ),
               const SizedBox(height: 6),
               TextFormField(
                 controller: _nameController,
+                style: AppTextStyle.medium(
+                  fontSize: 14,
+                  color: colors.textPrimary,
+                ),
                 decoration: InputDecoration(
                   hintText: tr.groupNameHint,
                   hintStyle: AppTextStyle.regular(
@@ -206,8 +284,8 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(
-                      color: AppColors.emerald,
+                    borderSide: BorderSide(
+                      color: colors.primaryButton,
                       width: 1.5,
                     ),
                   ),
@@ -225,14 +303,19 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
               Text(
                 tr.groupDescLabel.toUpperCase(),
                 style: AppTextStyle.bold(
-                  fontSize: 11,
+                  fontSize: 12,
                   color: colors.textSecondary,
+                  letterSpacing: 0.5,
                 ),
               ),
               const SizedBox(height: 6),
               TextFormField(
                 controller: _descController,
                 maxLines: 2,
+                style: AppTextStyle.medium(
+                  fontSize: 14,
+                  color: colors.textPrimary,
+                ),
                 decoration: InputDecoration(
                   hintText: tr.groupDescHint,
                   hintStyle: AppTextStyle.regular(
@@ -255,8 +338,8 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(
-                      color: AppColors.emerald,
+                    borderSide: BorderSide(
+                      color: colors.primaryButton,
                       width: 1.5,
                     ),
                   ),
@@ -268,8 +351,9 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
               Text(
                 tr.groupCategoryLabel.toUpperCase(),
                 style: AppTextStyle.bold(
-                  fontSize: 11,
+                  fontSize: 12,
                   color: colors.textSecondary,
+                  letterSpacing: 0.5,
                 ),
               ),
               const SizedBox(height: 8),
@@ -303,13 +387,13 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
                       ],
                     ),
                     selected: isSelected,
-                    selectedColor: AppColors.emeraldDark,
+                    selectedColor: colors.primaryButton,
                     backgroundColor: colors.surfaceMuted,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                       side: BorderSide(
                         color: isSelected
-                            ? AppColors.emeraldDark
+                            ? colors.primaryButton
                             : colors.cardBorder,
                       ),
                     ),
@@ -352,7 +436,8 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
                     flex: 2,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.emerald,
+                        backgroundColor: colors.primaryButton,
+                        foregroundColor: colors.onPrimaryButton,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(14),
@@ -370,10 +455,10 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
                               ),
                             )
                           : Text(
-                              tr.createGroupAction,
+                              _isEdit ? tr.saveChanges : tr.createGroupAction,
                               style: AppTextStyle.bold(
                                 fontSize: 14,
-                                color: Colors.white,
+                                color: colors.onPrimaryButton,
                               ),
                             ),
                     ),

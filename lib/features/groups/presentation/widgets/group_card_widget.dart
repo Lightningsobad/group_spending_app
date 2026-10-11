@@ -51,6 +51,7 @@ class GroupCardWidget extends StatelessWidget {
           child: InkWell(
             onTap: onTap,
             borderRadius: BorderRadius.circular(20),
+            splashColor: colors.primaryContainer.withValues(alpha: 0.2),
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -86,7 +87,7 @@ class GroupCardWidget extends StatelessWidget {
                             Text(
                               group.name,
                               style: AppTextStyle.bold(
-                                fontSize: 15,
+                                fontSize: 16,
                                 color: colors.textPrimary,
                               ),
                               maxLines: 1,
@@ -106,6 +107,10 @@ class GroupCardWidget extends StatelessWidget {
                                       vertical: 3,
                                     ),
                                     decoration: BoxDecoration(
+                                      color: colors.roleAdminBg,
+                                      borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(
+                                        color: colors.roleAdminBorder,
                                       color: colors.adminBadgeBackground,
                                       borderRadius: BorderRadius.circular(20),
                                       border: Border.all(
@@ -118,6 +123,7 @@ class GroupCardWidget extends StatelessWidget {
                                         Icon(
                                           LucideIcons.shieldCheck,
                                           size: 12,
+                                          color: colors.roleAdminText,
                                           color: colors.adminBadgeText,
                                         ),
                                         const SizedBox(width: 3),
@@ -125,6 +131,7 @@ class GroupCardWidget extends StatelessWidget {
                                           'ADMIN',
                                           style: AppTextStyle.bold(
                                             fontSize: 11,
+                                            color: colors.roleAdminText,
                                             color: colors.adminBadgeText,
                                           ),
                                         ),
@@ -148,6 +155,7 @@ class GroupCardWidget extends StatelessWidget {
                                       'THÀNH VIÊN',
                                       style: AppTextStyle.bold(
                                         fontSize: 11,
+                                        color: colors.textSecondary,
                                         color: colors.memberBadgeText,
                                       ),
                                     ),
@@ -161,6 +169,7 @@ class GroupCardWidget extends StatelessWidget {
                                       vertical: 3,
                                     ),
                                     decoration: BoxDecoration(
+                                      color: colors.statusActiveBg,
                                       color: colors.activePillBackground,
                                       borderRadius: BorderRadius.circular(20),
                                       border: Border.all(
@@ -171,6 +180,7 @@ class GroupCardWidget extends StatelessWidget {
                                       'Đang hoạt động',
                                       style: AppTextStyle.bold(
                                         fontSize: 11,
+                                        color: colors.statusActiveText,
                                         color: colors.activePillText,
                                       ),
                                     ),
@@ -182,6 +192,7 @@ class GroupCardWidget extends StatelessWidget {
                                       vertical: 3,
                                     ),
                                     decoration: BoxDecoration(
+                                      color: colors.statusArchivedBg,
                                       color: colors.memberBadgeBackground,
                                       borderRadius: BorderRadius.circular(20),
                                       border: Border.all(
@@ -194,13 +205,15 @@ class GroupCardWidget extends StatelessWidget {
                                         Icon(
                                           LucideIcons.archive,
                                           size: 11,
+                                          color: colors.statusArchivedText,
                                           color: colors.memberBadgeText,
                                         ),
                                         const SizedBox(width: 3),
                                         Text(
-                                          'Đã lưu trữ (Chỉ đọc)',
+                                          'Đã lưu trữ',
                                           style: AppTextStyle.bold(
                                             fontSize: 11,
+                                            color: colors.statusArchivedText,
                                             color: colors.memberBadgeText,
                                           ),
                                         ),
@@ -225,7 +238,7 @@ class GroupCardWidget extends StatelessWidget {
                               size: 18,
                               color: isArchived
                                   ? colors.textMuted
-                                  : AppColors.emerald,
+                                  : colors.primaryButton,
                             ),
                             tooltip: isArchived
                                 ? 'Bật thông báo'
@@ -259,14 +272,14 @@ class GroupCardWidget extends StatelessWidget {
                       Text(
                         'Số dư của bạn:',
                         style: AppTextStyle.regular(
-                          fontSize: 13,
+                          fontSize: 14,
                           color: colors.textSecondary,
                         ),
                       ),
                       Text(
                         balanceText,
                         style: AppTextStyle.bold(
-                          fontSize: 14,
+                          fontSize: 15,
                           color: balanceColor,
                         ),
                       ),

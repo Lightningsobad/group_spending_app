@@ -48,6 +48,27 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color bottomNavBorder;
   final Color bottomNavInactive;
 
+  // Semantic UI Containers & Actions
+  final Color primaryContainer;
+  final Color onPrimaryContainer;
+  final Color primaryButton;
+  final Color onPrimaryButton;
+  final Color secondaryActionBg;
+  final Color secondaryActionBorder;
+  final Color secondaryActionText;
+
+  // Pill Tabs
+  final Color tabPillActiveBg;
+  final Color tabPillActiveText;
+
+  // Role & Status Badges
+  final Color roleAdminBg;
+  final Color roleAdminText;
+  final Color roleAdminBorder;
+  final Color statusActiveBg;
+  final Color statusActiveText;
+  final Color statusArchivedBg;
+  final Color statusArchivedText;
   // Form & Ô nhập liệu (Auth & Dialogs)
   final Color inputFill;
   final Color inputBorder;
@@ -118,6 +139,22 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.bottomNavBackground,
     required this.bottomNavBorder,
     required this.bottomNavInactive,
+    required this.primaryContainer,
+    required this.onPrimaryContainer,
+    required this.primaryButton,
+    required this.onPrimaryButton,
+    required this.secondaryActionBg,
+    required this.secondaryActionBorder,
+    required this.secondaryActionText,
+    required this.tabPillActiveBg,
+    required this.tabPillActiveText,
+    required this.roleAdminBg,
+    required this.roleAdminText,
+    required this.roleAdminBorder,
+    required this.statusActiveBg,
+    required this.statusActiveText,
+    required this.statusArchivedBg,
+    required this.statusArchivedText,
     required this.inputFill,
     required this.inputBorder,
     required this.socialButtonBg,
@@ -188,6 +225,22 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     bottomNavBackground: Colors.white,
     bottomNavBorder: Color(0xFFE2E8F0),
     bottomNavInactive: AppColors.textSecondary,
+    primaryContainer: Color(0xFFDCFCE7),
+    onPrimaryContainer: Color(0xFF15803D),
+    primaryButton: Color(0xFF166534),
+    onPrimaryButton: Colors.white,
+    secondaryActionBg: Color(0xFFF0FDF4),
+    secondaryActionBorder: Color(0xFF86EFAC),
+    secondaryActionText: Color(0xFF14532D),
+    tabPillActiveBg: Color(0xFF14532D),
+    tabPillActiveText: Colors.white,
+    roleAdminBg: Color(0xFFFEF3C7),
+    roleAdminText: Color(0xFFB45309),
+    roleAdminBorder: Color(0xFFFDE68A),
+    statusActiveBg: Color(0xFFDCFCE7),
+    statusActiveText: Color(0xFF15803D),
+    statusArchivedBg: Color(0xFFF1F5F9),
+    statusArchivedText: Color(0xFF64748B),
     inputFill: Color(0xFFF8FAFC),
     inputBorder: Color(0xFFE2E8F0),
     socialButtonBg: Colors.white,
@@ -258,6 +311,22 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     bottomNavBackground: AppColors.cardDark,
     bottomNavBorder: AppColors.borderDark,
     bottomNavInactive: AppColors.textLightSecondary,
+    primaryContainer: Color(0xFF064E3B),
+    onPrimaryContainer: Color(0xFF6EE7B7),
+    primaryButton: Color(0xFF059669),
+    onPrimaryButton: Colors.white,
+    secondaryActionBg: Color(0x2610B981),
+    secondaryActionBorder: Color(0xFF059669),
+    secondaryActionText: Color(0xFF34D399),
+    tabPillActiveBg: Color(0xFF047857),
+    tabPillActiveText: Colors.white,
+    roleAdminBg: Color(0xFF451A03),
+    roleAdminText: Color(0xFFFDE047),
+    roleAdminBorder: Color(0xFF92400E),
+    statusActiveBg: Color(0xFF064E3B),
+    statusActiveText: Color(0xFF34D399),
+    statusArchivedBg: Color(0xFF334155),
+    statusArchivedText: Color(0xFF94A3B8),
     inputFill: Color(0xFF0F172A),
     inputBorder: Color(0xFF334155),
     socialButtonBg: AppColors.cardDark,
@@ -326,6 +395,22 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? bottomNavBackground,
     Color? bottomNavBorder,
     Color? bottomNavInactive,
+    Color? primaryContainer,
+    Color? onPrimaryContainer,
+    Color? primaryButton,
+    Color? onPrimaryButton,
+    Color? secondaryActionBg,
+    Color? secondaryActionBorder,
+    Color? secondaryActionText,
+    Color? tabPillActiveBg,
+    Color? tabPillActiveText,
+    Color? roleAdminBg,
+    Color? roleAdminText,
+    Color? roleAdminBorder,
+    Color? statusActiveBg,
+    Color? statusActiveText,
+    Color? statusArchivedBg,
+    Color? statusArchivedText,
     Color? inputFill,
     Color? inputBorder,
     Color? socialButtonBg,
@@ -388,6 +473,23 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       bottomNavBackground: bottomNavBackground ?? this.bottomNavBackground,
       bottomNavBorder: bottomNavBorder ?? this.bottomNavBorder,
       bottomNavInactive: bottomNavInactive ?? this.bottomNavInactive,
+      primaryContainer: primaryContainer ?? this.primaryContainer,
+      onPrimaryContainer: onPrimaryContainer ?? this.onPrimaryContainer,
+      primaryButton: primaryButton ?? this.primaryButton,
+      onPrimaryButton: onPrimaryButton ?? this.onPrimaryButton,
+      secondaryActionBg: secondaryActionBg ?? this.secondaryActionBg,
+      secondaryActionBorder:
+          secondaryActionBorder ?? this.secondaryActionBorder,
+      secondaryActionText: secondaryActionText ?? this.secondaryActionText,
+      tabPillActiveBg: tabPillActiveBg ?? this.tabPillActiveBg,
+      tabPillActiveText: tabPillActiveText ?? this.tabPillActiveText,
+      roleAdminBg: roleAdminBg ?? this.roleAdminBg,
+      roleAdminText: roleAdminText ?? this.roleAdminText,
+      roleAdminBorder: roleAdminBorder ?? this.roleAdminBorder,
+      statusActiveBg: statusActiveBg ?? this.statusActiveBg,
+      statusActiveText: statusActiveText ?? this.statusActiveText,
+      statusArchivedBg: statusArchivedBg ?? this.statusArchivedBg,
+      statusArchivedText: statusArchivedText ?? this.statusArchivedText,
       inputFill: inputFill ?? this.inputFill,
       inputBorder: inputBorder ?? this.inputBorder,
       socialButtonBg: socialButtonBg ?? this.socialButtonBg,
@@ -474,6 +576,31 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       bottomNavBorder: Color.lerp(bottomNavBorder, other.bottomNavBorder, t)!,
       bottomNavInactive:
           Color.lerp(bottomNavInactive, other.bottomNavInactive, t)!,
+      primaryContainer:
+          Color.lerp(primaryContainer, other.primaryContainer, t)!,
+      onPrimaryContainer:
+          Color.lerp(onPrimaryContainer, other.onPrimaryContainer, t)!,
+      primaryButton: Color.lerp(primaryButton, other.primaryButton, t)!,
+      onPrimaryButton: Color.lerp(onPrimaryButton, other.onPrimaryButton, t)!,
+      secondaryActionBg:
+          Color.lerp(secondaryActionBg, other.secondaryActionBg, t)!,
+      secondaryActionBorder:
+          Color.lerp(secondaryActionBorder, other.secondaryActionBorder, t)!,
+      secondaryActionText:
+          Color.lerp(secondaryActionText, other.secondaryActionText, t)!,
+      tabPillActiveBg: Color.lerp(tabPillActiveBg, other.tabPillActiveBg, t)!,
+      tabPillActiveText:
+          Color.lerp(tabPillActiveText, other.tabPillActiveText, t)!,
+      roleAdminBg: Color.lerp(roleAdminBg, other.roleAdminBg, t)!,
+      roleAdminText: Color.lerp(roleAdminText, other.roleAdminText, t)!,
+      roleAdminBorder: Color.lerp(roleAdminBorder, other.roleAdminBorder, t)!,
+      statusActiveBg: Color.lerp(statusActiveBg, other.statusActiveBg, t)!,
+      statusActiveText:
+          Color.lerp(statusActiveText, other.statusActiveText, t)!,
+      statusArchivedBg:
+          Color.lerp(statusArchivedBg, other.statusArchivedBg, t)!,
+      statusArchivedText:
+          Color.lerp(statusArchivedText, other.statusArchivedText, t)!,
       inputFill: Color.lerp(inputFill, other.inputFill, t)!,
       inputBorder: Color.lerp(inputBorder, other.inputBorder, t)!,
       socialButtonBg: Color.lerp(socialButtonBg, other.socialButtonBg, t)!,
