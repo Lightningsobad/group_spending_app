@@ -4,7 +4,7 @@ import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
 
-class FinancialBalanceCard extends StatelessWidget {
+class FinancialBalanceCard extends StatefulWidget {
   final num totalOwedVnd;
   final num totalReceivableVnd;
 
@@ -15,8 +15,21 @@ class FinancialBalanceCard extends StatelessWidget {
   });
 
   @override
+  State<FinancialBalanceCard> createState() => _FinancialBalanceCardState();
+}
+
+class _FinancialBalanceCardState extends State<FinancialBalanceCard> {
+  bool _isBalanceHidden = false;
+
+  @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
+    final owedText = _isBalanceHidden
+        ? '••••••••'
+        : CurrencyUtils.formatVnd(widget.totalOwedVnd);
+    final receivableText = _isBalanceHidden
+        ? '••••••••'
+        : CurrencyUtils.formatVnd(widget.totalReceivableVnd);
 
     return Container(
       padding: const EdgeInsets.all(18),
@@ -42,28 +55,47 @@ class FinancialBalanceCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header Row
+          // Header Row with Title and Eye Toggle (48x48 touch target)
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(
-                  LucideIcons.wallet,
-                  size: 18,
-                  color: Color(0xFF34D399),
-                ),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(
+                      LucideIcons.wallet,
+                      size: 18,
+                      color: Color(0xFF34D399),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    tr.financialOverviewTitle,
+                    style: AppTextStyle.bold(
+                      fontSize: 12,
+                      color: const Color(0xFFCBD5E1),
+                    ),
+                  ),
+                ],
               ),
-              const SizedBox(width: 10),
-              Text(
-                tr.financialOverviewTitle,
-                style: AppTextStyle.bold(
-                  fontSize: 12,
+              IconButton(
+                icon: Icon(
+                  _isBalanceHidden ? LucideIcons.eyeOff : LucideIcons.eye,
+                  size: 18,
                   color: const Color(0xFFCBD5E1),
                 ),
+                tooltip: _isBalanceHidden ? 'Hiện số dư' : 'Ẩn số dư',
+                onPressed: () {
+                  setState(() {
+                    _isBalanceHidden = !_isBalanceHidden;
+                  });
+                },
               ),
             ],
           ),
@@ -108,7 +140,7 @@ class FinancialBalanceCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        CurrencyUtils.formatVnd(totalOwedVnd),
+                        owedText,
                         style: AppTextStyle.bold(
                           fontSize: 18,
                           color: const Color(0xFFF87171),
@@ -120,7 +152,7 @@ class FinancialBalanceCard extends StatelessWidget {
                       Text(
                         tr.paySoonSubtitle,
                         style: AppTextStyle.regular(
-                          fontSize: 10,
+                          fontSize: 12,
                           color: const Color(0xFF94A3B8),
                         ),
                       ),
@@ -166,7 +198,7 @@ class FinancialBalanceCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        CurrencyUtils.formatVnd(totalReceivableVnd),
+                        receivableText,
                         style: AppTextStyle.bold(
                           fontSize: 18,
                           color: const Color(0xFF34D399),
@@ -178,7 +210,7 @@ class FinancialBalanceCard extends StatelessWidget {
                       Text(
                         tr.friendsOweYouSubtitle,
                         style: AppTextStyle.regular(
-                          fontSize: 10,
+                          fontSize: 12,
                           color: const Color(0xFF94A3B8),
                         ),
                       ),
