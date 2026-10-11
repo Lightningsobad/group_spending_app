@@ -78,7 +78,6 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color badgeIndigo;
   final Color badgeIndigoBg;
   final Color badgeSuccess;
-  final Color badgeSuccessBg;
   final Color inputBackground;
   final Color dragHandle;
   // Semantic UI Containers & Actions
@@ -196,7 +195,6 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.badgeIndigo,
     required this.badgeIndigoBg,
     required this.badgeSuccess,
-    required this.badgeSuccessBg,
     required this.inputBackground,
     required this.dragHandle,
     required this.primaryContainer,
@@ -309,7 +307,6 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     badgeIndigo: Color(0xFF4F46E5),
     badgeIndigoBg: Color(0xFFEEF2FF),
     badgeSuccess: Color(0xFF16A34A),
-    badgeSuccessBg: Color(0xFFDCFCE7),
     inputBackground: Color(0xFFF8FAFC),
     dragHandle: Color(0xFFCBD5E1),
     primaryContainer: Color(0xFFDCFCE7),
@@ -422,7 +419,6 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     badgeIndigo: Color(0xFF818CF8),
     badgeIndigoBg: Color(0x59312E81),
     badgeSuccess: Color(0xFF4ADE80),
-    badgeSuccessBg: Color(0x66064E3B),
     inputBackground: Color(0xFF090D16),
     dragHandle: Color(0xFF475569),
     primaryContainer: Color(0xFF064E3B),
@@ -533,7 +529,6 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? badgeIndigo,
     Color? badgeIndigoBg,
     Color? badgeSuccess,
-    Color? badgeSuccessBg,
     Color? inputBackground,
     Color? dragHandle,
     Color? primaryContainer,
@@ -638,7 +633,6 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       badgeIndigo: badgeIndigo ?? this.badgeIndigo,
       badgeIndigoBg: badgeIndigoBg ?? this.badgeIndigoBg,
       badgeSuccess: badgeSuccess ?? this.badgeSuccess,
-      badgeSuccessBg: badgeSuccessBg ?? this.badgeSuccessBg,
       inputBackground: inputBackground ?? this.inputBackground,
       dragHandle: dragHandle ?? this.dragHandle,
       primaryContainer: primaryContainer ?? this.primaryContainer,
@@ -770,7 +764,6 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       badgeIndigo: Color.lerp(badgeIndigo, other.badgeIndigo, t)!,
       badgeIndigoBg: Color.lerp(badgeIndigoBg, other.badgeIndigoBg, t)!,
       badgeSuccess: Color.lerp(badgeSuccess, other.badgeSuccess, t)!,
-      badgeSuccessBg: Color.lerp(badgeSuccessBg, other.badgeSuccessBg, t)!,
       inputBackground: Color.lerp(inputBackground, other.inputBackground, t)!,
       dragHandle: Color.lerp(dragHandle, other.dragHandle, t)!,
       primaryContainer:
