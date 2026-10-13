@@ -43,11 +43,11 @@ class GroupOverviewSkeleton extends StatelessWidget {
                 const AppShimmerBox(width: 220, height: 14, borderRadius: 4),
                 const SizedBox(height: 16),
 
-                // 3 Mini info chips
+                // Bento Grid Metadata Skeleton (1 + 2)
+                _buildCategorySkeleton(colors),
+                const SizedBox(height: 8),
                 Row(
                   children: [
-                    Expanded(child: _buildChipSkeleton(colors)),
-                    const SizedBox(width: 8),
                     Expanded(child: _buildChipSkeleton(colors)),
                     const SizedBox(width: 8),
                     Expanded(child: _buildChipSkeleton(colors)),
@@ -75,7 +75,8 @@ class GroupOverviewSkeleton extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const AppShimmerBox(width: 100, height: 48, borderRadius: 10),
+                      const SizedBox(width: 8),
+                      const AppShimmerBox(width: 48, height: 48, borderRadius: 10),
                       const SizedBox(width: 8),
                       const AppShimmerBox(width: 48, height: 48, borderRadius: 10),
                     ],
@@ -174,6 +175,34 @@ class GroupOverviewSkeleton extends StatelessWidget {
               const SizedBox(width: 10),
               Expanded(child: _buildActionTileSkeleton(colors)),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCategorySkeleton(AppThemeColors colors) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: colors.surfaceMuted,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colors.cardBorder),
+      ),
+      child: const Row(
+        children: [
+          AppShimmerBox(width: 32, height: 32, borderRadius: 8),
+          SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                AppShimmerBox(width: 60, height: 10, borderRadius: 4),
+                SizedBox(height: 6),
+                AppShimmerBox(width: 120, height: 14, borderRadius: 4),
+              ],
+            ),
           ),
         ],
       ),

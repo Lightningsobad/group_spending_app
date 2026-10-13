@@ -186,8 +186,10 @@ void main() {
       // Invite Code Banner
       expect(find.text('MÃ MỜI THAM GIA NHÓM'), findsOneWidget);
       expect(find.text('SUN402-VIP'), findsOneWidget);
-      expect(find.text('Sao chép mã mời'), findsOneWidget);
+      expect(find.byIcon(LucideIcons.copy), findsOneWidget);
+      expect(find.byTooltip('Sao chép mã mời'), findsOneWidget);
       expect(find.byIcon(LucideIcons.qrCode), findsOneWidget);
+      expect(find.byTooltip('Xem mã QR'), findsOneWidget);
 
       // Card 2: TỔNG QUAN TÀI CHÍNH NHÓM
       expect(find.text('TỔNG QUAN TÀI CHÍNH NHÓM'), findsOneWidget);
@@ -325,9 +327,13 @@ void main() {
       expect(qrSize.width, greaterThanOrEqualTo(48.0));
       expect(qrSize.height, greaterThanOrEqualTo(48.0));
 
-      // Copy invite code button: height at least 48
-      final copyBtnFinder = find.widgetWithText(OutlinedButton, 'Sao chép mã mời');
+      // Copy invite code button: touch target at least 48x48
+      final copyBtnFinder = find.ancestor(
+        of: find.byIcon(LucideIcons.copy),
+        matching: find.byType(InkWell),
+      );
       final copySize = tester.getSize(copyBtnFinder);
+      expect(copySize.width, greaterThanOrEqualTo(48.0));
       expect(copySize.height, greaterThanOrEqualTo(48.0));
 
       // Tab pills: height at least 48
