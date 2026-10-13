@@ -13,7 +13,6 @@ class SettleDebtDialogs {
   }) {
     final tr = context.l10n;
     final colors = context.colors;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return showDialog<void>(
       context: context,
@@ -27,15 +26,13 @@ class SettleDebtDialogs {
             Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: isDark
-                    ? const Color(0xFF78350F).withValues(alpha: 0.4)
-                    : const Color(0xFFFEF3C7),
+                color: colors.badgeWarningBg,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: const Icon(
+              child: Icon(
                 LucideIcons.triangleAlert,
                 size: 20,
-                color: Color(0xFFD97706),
+                color: colors.badgeWarningText,
               ),
             ),
             const SizedBox(width: 10),
@@ -43,7 +40,7 @@ class SettleDebtDialogs {
               child: Text(
                 tr.noCreditorBankInfoTitle,
                 style: AppTextStyle.bold(
-                  fontSize: 16,
+                  fontSize: AppFontSize.body,
                   color: colors.textPrimary,
                 ),
               ),
@@ -53,14 +50,14 @@ class SettleDebtDialogs {
         content: Text(
           tr.noCreditorBankInfoMessage(creditorName),
           style: AppTextStyle.regular(
-            fontSize: 13,
+            fontSize: AppFontSize.secondary,
             color: colors.textSecondary,
           ),
         ),
         actions: [
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF15803D),
+              backgroundColor: colors.debtActionPayBg,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -69,7 +66,7 @@ class SettleDebtDialogs {
             onPressed: () => Navigator.of(ctx).pop(),
             child: Text(
               tr.close,
-              style: AppTextStyle.bold(fontSize: 13),
+              style: AppTextStyle.bold(fontSize: AppFontSize.secondary),
             ),
           ),
         ],
@@ -95,14 +92,14 @@ class SettleDebtDialogs {
         title: Text(
           tr.confirmPayDebtTitle,
           style: AppTextStyle.bold(
-            fontSize: 16,
+            fontSize: AppFontSize.body,
             color: colors.textPrimary,
           ),
         ),
         content: Text(
           tr.confirmPayDebtMessage(creditorName, formattedAmount),
           style: AppTextStyle.regular(
-            fontSize: 13,
+            fontSize: AppFontSize.secondary,
             color: colors.textSecondary,
           ),
         ),
@@ -112,14 +109,14 @@ class SettleDebtDialogs {
             child: Text(
               tr.cancel,
               style: AppTextStyle.bold(
-                fontSize: 13,
+                fontSize: AppFontSize.secondary,
                 color: colors.textMuted,
               ),
             ),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF15803D),
+              backgroundColor: colors.debtActionPayBg,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -128,7 +125,7 @@ class SettleDebtDialogs {
             onPressed: () => Navigator.of(ctx).pop(true),
             child: Text(
               tr.confirm,
-              style: AppTextStyle.bold(fontSize: 13),
+              style: AppTextStyle.bold(fontSize: AppFontSize.secondary),
             ),
           ),
         ],
@@ -157,8 +154,8 @@ class SettleDebtDialogs {
               ? tr.confirmReceiveDebtTitle
               : tr.rejectReceiveDebtTitle,
           style: AppTextStyle.bold(
-            fontSize: 16,
-            color: confirmed ? const Color(0xFF15803D) : const Color(0xFFE11D48),
+            fontSize: AppFontSize.body,
+            color: confirmed ? colors.debtReceiveText : colors.debtOweText,
           ),
         ),
         content: Text(
@@ -166,7 +163,7 @@ class SettleDebtDialogs {
               ? tr.confirmReceiveDebtMessage(debtorName, formattedAmount)
               : tr.rejectReceiveDebtMessage(debtorName),
           style: AppTextStyle.regular(
-            fontSize: 13,
+            fontSize: AppFontSize.secondary,
             color: colors.textSecondary,
           ),
         ),
@@ -176,7 +173,7 @@ class SettleDebtDialogs {
             child: Text(
               tr.cancel,
               style: AppTextStyle.bold(
-                fontSize: 13,
+                fontSize: AppFontSize.secondary,
                 color: colors.textMuted,
               ),
             ),
@@ -184,8 +181,8 @@ class SettleDebtDialogs {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: confirmed
-                  ? const Color(0xFF15803D)
-                  : const Color(0xFFE11D48),
+                  ? colors.debtActionConfirmBg
+                  : colors.debtOweText,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -194,7 +191,7 @@ class SettleDebtDialogs {
             onPressed: () => Navigator.of(ctx).pop(true),
             child: Text(
               tr.confirm,
-              style: AppTextStyle.bold(fontSize: 13),
+              style: AppTextStyle.bold(fontSize: AppFontSize.secondary),
             ),
           ),
         ],
@@ -220,14 +217,14 @@ class SettleDebtDialogs {
         title: Text(
           tr.confirmRemindDebtTitle,
           style: AppTextStyle.bold(
-            fontSize: 16,
+            fontSize: AppFontSize.body,
             color: colors.textPrimary,
           ),
         ),
         content: Text(
           tr.confirmRemindDebtMessage(debtorName, formattedAmount),
           style: AppTextStyle.regular(
-            fontSize: 13,
+            fontSize: AppFontSize.secondary,
             color: colors.textSecondary,
           ),
         ),
@@ -237,14 +234,14 @@ class SettleDebtDialogs {
             child: Text(
               tr.cancel,
               style: AppTextStyle.bold(
-                fontSize: 13,
+                fontSize: AppFontSize.secondary,
                 color: colors.textMuted,
               ),
             ),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFD97706),
+              backgroundColor: colors.debtActionRemindIcon,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -253,7 +250,7 @@ class SettleDebtDialogs {
             onPressed: () => Navigator.of(ctx).pop(true),
             child: Text(
               tr.confirm,
-              style: AppTextStyle.bold(fontSize: 13),
+              style: AppTextStyle.bold(fontSize: AppFontSize.secondary),
             ),
           ),
         ],

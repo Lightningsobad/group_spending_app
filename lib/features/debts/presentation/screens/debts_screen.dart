@@ -8,6 +8,7 @@ import '../widgets/debts_filter_bar.dart';
 import '../widgets/debts_header_title.dart';
 import '../widgets/debts_search_bar.dart';
 import '../widgets/debts_summary_cards.dart';
+import '../widgets/group_debt_card_skeleton.dart';
 import '../widgets/group_debt_card_widget.dart';
 import 'group_debt_detail_view.dart';
 
@@ -71,11 +72,12 @@ class _DebtsScreenState extends State<DebtsScreen> {
         }
 
         final cubit = context.read<DebtsCubit>();
+        final colors = context.colors;
         final filteredGroups = state.filteredGroupBalances;
         final overview = state.overview;
 
         return RefreshIndicator(
-          color: AppColors.emerald,
+          color: colors.brandEmerald,
           onRefresh: () => cubit.loadOverview(),
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -91,6 +93,7 @@ class _DebtsScreenState extends State<DebtsScreen> {
                 DebtsSummaryCards(
                   totalOwedVnd: overview?.totalOwedVnd ?? 0,
                   totalReceivableVnd: overview?.totalReceivableVnd ?? 0,
+                  isLoading: state.isLoading && overview == null,
                 ),
                 const SizedBox(height: 14),
 
@@ -115,15 +118,11 @@ class _DebtsScreenState extends State<DebtsScreen> {
                 ),
                 const SizedBox(height: 16),
 
-                // 5. Group Debt List or Loading / Empty View
+                // 5. Group Debt List or Loading Skeletons / Empty View
                 if (state.isLoading && overview == null)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 40),
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.emerald,
-                      ),
-                    ),
+                  ...List.generate(
+                    4,
+                    (index) => const GroupDebtCardSkeleton(),
                   )
                 else if (filteredGroups.isEmpty)
                   DebtsEmptyView(isSearching: state.searchQuery.isNotEmpty)

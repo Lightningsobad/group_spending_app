@@ -7,12 +7,14 @@ import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../groups/domain/repositories/groups_repository.dart';
+import '../../../groups/presentation/widgets/group_category_helper.dart';
 import '../../../groups/presentation/widgets/viet_qr_modal_sheet.dart';
 import '../../domain/entities/debt_enums.dart';
 import '../../domain/entities/group_debt_entity.dart';
 import '../cubit/debts_cubit.dart';
 import '../cubit/debts_state.dart';
 import '../widgets/actual_debt_card_widget.dart';
+import '../widgets/group_debt_card_skeleton.dart';
 import '../widgets/group_debt_segmented_tab.dart';
 import '../widgets/group_debt_summary_card.dart';
 import '../widgets/settle_debt_dialogs.dart';
@@ -32,7 +34,6 @@ class GroupDebtDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     final tr = context.l10n;
     final colors = context.colors;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final currentUserId = context.read<AuthCubit>().state.currentUser?.id;
 
@@ -54,7 +55,7 @@ class GroupDebtDetailView extends StatelessWidget {
         final actualList = state.actualDebts?.actualDebts ?? const [];
 
         return RefreshIndicator(
-          color: AppColors.emerald,
+          color: colors.brandEmerald,
           onRefresh: () => cubit.loadGroupDebts(groupId),
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
@@ -94,7 +95,7 @@ class GroupDebtDetailView extends StatelessWidget {
                               Text(
                                 tr.backAction,
                                 style: AppTextStyle.bold(
-                                  fontSize: 13,
+                                  fontSize: AppFontSize.secondary,
                                   color: colors.textPrimary,
                                 ),
                               ),
@@ -112,29 +113,28 @@ class GroupDebtDetailView extends StatelessWidget {
                           vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color: isDark
-                              ? const Color(0xFF064E3B).withValues(alpha: 0.3)
-                              : const Color(0xFFECFDF5),
+                          color: colors.debtReceiveBg,
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                            color: isDark
-                                ? const Color(0xFF065F46)
-                                : const Color(0xFFA7F3D0),
+                            color: colors.debtReceiveBorder,
                           ),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Text('🏢', style: TextStyle(fontSize: 14)),
+                            GroupCategoryHelper.buildIcon(
+                              userBalance.category,
+                              width: 14,
+                              height: 14,
+                              fit: BoxFit.contain,
+                            ),
                             const SizedBox(width: 6),
                             Flexible(
                               child: Text(
                                 userBalance.groupName,
                                 style: AppTextStyle.bold(
-                                  fontSize: 12,
-                                  color: isDark
-                                      ? const Color(0xFF6EE7B7)
-                                      : const Color(0xFF15803D),
+                                  fontSize: AppFontSize.caption,
+                                  color: colors.debtReceiveText,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -168,14 +168,10 @@ class GroupDebtDetailView extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: isDark
-                          ? const Color(0xFF064E3B).withValues(alpha: 0.25)
-                          : const Color(0xFFF0FDF4),
+                      color: colors.debtReceiveBg,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: isDark
-                            ? const Color(0xFF065F46)
-                            : const Color(0xFFBBF7D0),
+                        color: colors.debtReceiveBorder,
                       ),
                     ),
                     child: Row(
@@ -184,19 +180,15 @@ class GroupDebtDetailView extends StatelessWidget {
                         Icon(
                           LucideIcons.info,
                           size: 16,
-                          color: isDark
-                              ? const Color(0xFF6EE7B7)
-                              : const Color(0xFF16A34A),
+                          color: colors.debtReceiveText,
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text(
                             tr.simplifiedDebtsBanner,
                             style: AppTextStyle.medium(
-                              fontSize: 12,
-                              color: isDark
-                                  ? const Color(0xFFA7F3D0)
-                                  : const Color(0xFF166534),
+                              fontSize: AppFontSize.caption,
+                              color: colors.debtReceiveText,
                             ),
                           ),
                         ),
@@ -216,15 +208,15 @@ class GroupDebtDetailView extends StatelessWidget {
                         Text(
                           tr.debtsToHandleCount(simplifiedList.length),
                           style: AppTextStyle.bold(
-                            fontSize: 12,
+                            fontSize: AppFontSize.caption,
                             color: colors.textPrimary,
                           ),
                         ),
                         Text(
                           tr.simplifiedDebtAlgorithm,
                           style: AppTextStyle.semiBold(
-                            fontSize: 11,
-                            color: const Color(0xFF15803D),
+                            fontSize: AppFontSize.caption,
+                            color: colors.debtReceiveText,
                           ),
                         ),
                       ],
@@ -235,13 +227,9 @@ class GroupDebtDetailView extends StatelessWidget {
                 if (isDetailLoading &&
                     simplifiedList.isEmpty &&
                     actualList.isEmpty)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 40),
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.emerald,
-                      ),
-                    ),
+                  ...List.generate(
+                    3,
+                    (index) => const GroupDebtCardSkeleton(),
                   )
                 else if (activeTab == 0) ...[
                   if (simplifiedList.isEmpty)
@@ -358,20 +346,21 @@ class GroupDebtDetailView extends StatelessWidget {
               width: 52,
               height: 52,
               decoration: BoxDecoration(
-                color: const Color(0xFFDCFCE7),
+                color: colors.debtIconContainerBg,
                 borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: colors.debtIconContainerBorder),
               ),
-              child: const Icon(
+              child: Icon(
                 LucideIcons.checkCheck,
                 size: 26,
-                color: Color(0xFF15803D),
+                color: colors.debtIconContainerFg,
               ),
             ),
             const SizedBox(height: 14),
             Text(
               tr.noDebtsInGroupTitle,
               style: AppTextStyle.bold(
-                fontSize: 14,
+                fontSize: AppFontSize.secondary,
                 color: colors.textPrimary,
               ),
               textAlign: TextAlign.center,
@@ -380,7 +369,7 @@ class GroupDebtDetailView extends StatelessWidget {
             Text(
               tr.noDebtsInGroupSubtitle,
               style: AppTextStyle.regular(
-                fontSize: 12,
+                fontSize: AppFontSize.caption,
                 color: colors.textSecondary,
               ),
               textAlign: TextAlign.center,
