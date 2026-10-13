@@ -25,6 +25,7 @@ class DebtOverviewEntity {
 class GroupDebtBalanceEntity {
   final int groupId;
   final String groupName;
+  final String category;
   final num youOwe;
   final num youOweVnd;
   final num youAreOwed;
@@ -36,6 +37,7 @@ class GroupDebtBalanceEntity {
   const GroupDebtBalanceEntity({
     required this.groupId,
     required this.groupName,
+    this.category = 'Other',
     this.youOwe = 0,
     this.youOweVnd = 0,
     this.youAreOwed = 0,

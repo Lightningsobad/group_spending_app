@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,6 +10,7 @@ import 'package:group_spending_app/features/debts/domain/entities/group_debt_ent
 import 'package:group_spending_app/features/debts/domain/repositories/debts_repository.dart';
 import 'package:group_spending_app/features/debts/presentation/cubit/debts_cubit.dart';
 import 'package:group_spending_app/features/debts/presentation/screens/debts_screen.dart';
+import 'package:group_spending_app/features/debts/presentation/widgets/group_debt_card_skeleton.dart';
 import 'package:group_spending_app/l10n/app_localizations.dart';
 import '../../../auth/presentation/cubit/auth_cubit_test.dart';
 
@@ -176,5 +178,44 @@ void main() {
       // Back to main screen
       expect(find.text('Công nợ theo nhóm'), findsOneWidget);
     });
+
+    testWidgets('renders shimmer skeletons when loading and overview is null', (tester) async {
+      final slowRepo = _SlowDebtsRepo();
+      final loadingCubit = DebtsCubit(slowRepo);
+      addTearDown(() {
+        if (!slowRepo.completer.isCompleted) {
+          slowRepo.completer.complete(const DebtOverviewEntity());
+        }
+        loadingCubit.close();
+      });
+
+      await tester.pumpWidget(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider<DebtsCubit>.value(value: loadingCubit),
+            BlocProvider<AuthCubit>.value(value: authCubit),
+          ],
+          child: MaterialApp(
+            theme: AppTheme.lightTheme,
+            locale: const Locale('vi'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: const Scaffold(
+              body: DebtsScreen(),
+            ),
+          ),
+        ),
+      );
+      await tester.pump(); // Pump frame while loading
+
+      expect(find.byType(GroupDebtCardSkeleton), findsWidgets);
+    });
   });
+}
+
+class _SlowDebtsRepo extends FakeDebtsRepo {
+  final completer = Completer<DebtOverviewEntity>();
+
+  @override
+  Future<DebtOverviewEntity> getDebtOverview() => completer.future;
 }
