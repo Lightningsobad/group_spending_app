@@ -223,6 +223,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
           BlocProvider<DebtsCubit>(
             create: (context) => DebtsCubit(
               context.read<DebtsRepository>(),
+              groupsRepository: context.read<GroupsRepository>(),
               sessionCoordinator: context.read<SessionCoordinator>(),
               dataSyncCoordinator: context.read<DataSyncCoordinator>(),
             ),

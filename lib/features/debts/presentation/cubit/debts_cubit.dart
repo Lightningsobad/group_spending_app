@@ -2,17 +2,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/session/session_coordinator.dart';
 import '../../../../core/sync/data_sync_coordinator.dart';
+import '../../../groups/data/models/group_model.dart';
+import '../../../groups/domain/repositories/groups_repository.dart';
 import '../../domain/entities/debt_enums.dart';
+import '../../domain/entities/debt_overview_entity.dart';
+import '../../domain/entities/group_debt_entity.dart';
 import '../../domain/repositories/debts_repository.dart';
 import 'debts_state.dart';
 
 class DebtsCubit extends Cubit<DebtsState> {
   final DebtsRepository _repository;
+  final GroupsRepository? groupsRepository;
   final SessionCoordinator? sessionCoordinator;
   final DataSyncCoordinator? dataSyncCoordinator;
 
   DebtsCubit(
     this._repository, {
+    this.groupsRepository,
     this.sessionCoordinator,
     this.dataSyncCoordinator,
   }) : super(const DebtsState()) {
@@ -46,16 +52,97 @@ class DebtsCubit extends Cubit<DebtsState> {
     }
 
     try {
-      final overview = await _repository.getDebtOverview();
+      final futures = <Future<dynamic>>[
+        _repository.getDebtOverview(),
+      ];
+      if (groupsRepository != null) {
+        futures.add(groupsRepository!.getMyGroups(filter: 'ALL'));
+      }
+
+      final results = await Future.wait(futures);
       if (isClosed ||
           (sessionCoordinator != null &&
               sessionCoordinator!.sessionEpoch != requestEpoch)) {
         return;
       }
+
+      var overview = results[0] as DebtOverviewEntity;
+      List<GroupModel> groups = state.userGroups;
+      if (results.length > 1 && results[1] is List<GroupModel>) {
+        groups = results[1] as List<GroupModel>;
+      }
+
+      if (groups.isNotEmpty) {
+        final groupBalancesMap = {
+          for (final gb in overview.groupBalances) gb.groupId: gb,
+        };
+        final updatedGroupBalances = groups.map((g) {
+          final existing = groupBalancesMap[g.id];
+          final netVnd = existing != null && existing.netBalanceVnd != 0
+              ? existing.netBalanceVnd
+              : g.userBalance;
+          final net = existing != null && existing.netBalance != 0
+              ? existing.netBalance
+              : (netVnd / 1000);
+          final oweVnd = netVnd < 0 ? netVnd.abs() : 0;
+          final owe = oweVnd / 1000;
+          final owedVnd = netVnd > 0 ? netVnd : 0;
+          final owed = owedVnd / 1000;
+          final pendingCount = existing != null && existing.pendingDebtCount > 0
+              ? existing.pendingDebtCount
+              : g.pendingDebtCount;
+
+          return GroupDebtBalanceEntity(
+            groupId: g.id,
+            groupName: g.name.isNotEmpty
+                ? g.name
+                : (existing?.groupName ?? ''),
+            category: g.category.isNotEmpty
+                ? g.category
+                : (existing?.category ?? 'Other'),
+            youOwe: existing != null && existing.youOwe != 0 ? existing.youOwe : owe,
+            youOweVnd: existing != null && existing.youOweVnd != 0 ? existing.youOweVnd : oweVnd,
+            youAreOwed: existing != null && existing.youAreOwed != 0 ? existing.youAreOwed : owed,
+            youAreOwedVnd: existing != null && existing.youAreOwedVnd != 0 ? existing.youAreOwedVnd : owedVnd,
+            netBalance: net,
+            netBalanceVnd: netVnd,
+            pendingDebtCount: pendingCount,
+          );
+        }).toList();
+
+        final groupIds = {for (final g in groups) g.id};
+        for (final gb in overview.groupBalances) {
+          if (!groupIds.contains(gb.groupId)) {
+            updatedGroupBalances.add(gb);
+          }
+        }
+
+        num totalOwedVnd = overview.totalOwedVnd;
+        num totalReceivableVnd = overview.totalReceivableVnd;
+        if (totalOwedVnd == 0 && totalReceivableVnd == 0) {
+          for (final gb in updatedGroupBalances) {
+            totalOwedVnd += gb.youOweVnd;
+            totalReceivableVnd += gb.youAreOwedVnd;
+          }
+        }
+
+        overview = DebtOverviewEntity(
+          totalOwed: overview.totalOwed != 0 ? overview.totalOwed : (totalOwedVnd / 1000),
+          totalOwedVnd: totalOwedVnd,
+          totalReceivable: overview.totalReceivable != 0 ? overview.totalReceivable : (totalReceivableVnd / 1000),
+          totalReceivableVnd: totalReceivableVnd,
+          netBalance: overview.netBalance != 0 ? overview.netBalance : ((totalReceivableVnd - totalOwedVnd) / 1000),
+          netBalanceVnd: overview.netBalanceVnd != 0 ? overview.netBalanceVnd : (totalReceivableVnd - totalOwedVnd),
+          groupBalances: updatedGroupBalances,
+          details: overview.details,
+        );
+      }
+
       emit(
         state.copyWith(
           status: DebtsStatus.success,
           overview: overview,
+          userGroups: groups,
           clearMessages: !silent,
         ),
       );
@@ -110,11 +197,38 @@ class DebtsCubit extends Cubit<DebtsState> {
     }
 
     try {
-      final simplified = await _repository.getGroupSimplifiedDebts(groupId);
-      final actual = await _repository.getGroupActualDebts(
+      var simplified = await _repository.getGroupSimplifiedDebts(groupId);
+      var actual = await _repository.getGroupActualDebts(
         groupId,
         status: state.actualDebtStatusFilter,
       );
+
+      final matchedGroup =
+          state.userGroups.where((g) => g.id == groupId).firstOrNull;
+      if (matchedGroup != null) {
+        final enrichedUserBalance = DebtUserBalanceEntity(
+          groupId: simplified.userBalance.groupId,
+          groupName: matchedGroup.name.isNotEmpty
+              ? matchedGroup.name
+              : simplified.userBalance.groupName,
+          category: matchedGroup.category,
+          youOwe: simplified.userBalance.youOwe,
+          youOweVnd: simplified.userBalance.youOweVnd,
+          youAreOwed: simplified.userBalance.youAreOwed,
+          youAreOwedVnd: simplified.userBalance.youAreOwedVnd,
+          netBalance: simplified.userBalance.netBalance,
+          netBalanceVnd: simplified.userBalance.netBalanceVnd,
+        );
+
+        simplified = GroupSimplifiedDebtsEntity(
+          userBalance: enrichedUserBalance,
+          simplifiedDebts: simplified.simplifiedDebts,
+        );
+        actual = GroupActualDebtsEntity(
+          userBalance: enrichedUserBalance,
+          actualDebts: actual.actualDebts,
+        );
+      }
 
       if (isClosed ||
           (sessionCoordinator != null &&
