@@ -90,86 +90,210 @@ class _GroupFundsTabViewState extends State<GroupFundsTabView> {
         final filteredFunds = state.filteredFunds;
         final isLoading = state.isLoading && overview == null;
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // 1. Overview Card ("TỔNG TIỀN QUỸ CHUNG")
-            FundOverviewCard(
-              overview: overview,
-              isAdmin: widget.group.isAdmin,
-              onNewFundTap: _openCreateFund,
-            ),
-            const SizedBox(height: 14),
-
-            // 2. Search Bar
-            Container(
-              decoration: BoxDecoration(
-                color: colors.cardBackground,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: colors.cardBorder),
+        return SafeArea(
+          top: false,
+          bottom: true,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // 1. Overview Card ("TỔNG TIỀN QUỸ CHUNG")
+              FundOverviewCard(
+                overview: overview,
+                isAdmin: widget.group.isAdmin,
+                onNewFundTap: _openCreateFund,
+                isLoading: isLoading,
               ),
-              child: TextField(
-                controller: _searchController,
-                onChanged: (val) => context.read<FundsCubit>().setSearchQuery(val),
-                style: AppTextStyle.medium(fontSize: 13, color: colors.textPrimary),
-                decoration: InputDecoration(
-                  hintText: tr.searchFundPlaceholder,
-                  hintStyle: AppTextStyle.regular(fontSize: 13, color: colors.textMuted),
-                  prefixIcon: Icon(LucideIcons.search, size: 18, color: colors.textMuted),
-                  suffixIcon: _searchController.text.isNotEmpty
-                      ? IconButton(
-                          icon: Icon(LucideIcons.x, size: 16, color: colors.textMuted),
-                          onPressed: () {
-                            _searchController.clear();
-                            context.read<FundsCubit>().setSearchQuery('');
-                          },
-                        )
-                      : null,
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              const SizedBox(height: 14),
+
+              // 2. Search Bar
+              if (isLoading)
+                _buildSearchSkeleton(colors)
+              else
+                _buildSearchBar(colors, tr),
+              const SizedBox(height: 14),
+
+              // 3. Filter Bar (Status & Time)
+              if (isLoading)
+                _buildFilterSkeleton(colors)
+              else
+                FundFilterBar(
+                  selectedStatus: state.selectedStatusFilter,
+                  selectedTime: state.selectedTimeFilter,
+                  totalCount: state.totalFundsCount,
+                  collectingCount: state.collectingCount,
+                  completedCount: state.completedCount,
+                  filteredCount: filteredFunds.length,
+                  onStatusChanged: (status) =>
+                      context.read<FundsCubit>().setStatusFilter(status),
+                  onTimeChanged: (time) =>
+                      context.read<FundsCubit>().setTimeFilter(time),
                 ),
-              ),
-            ),
-            const SizedBox(height: 14),
+              const SizedBox(height: 16),
 
-            // 3. Filter Bar (Status & Time)
-            FundFilterBar(
-              selectedStatus: state.selectedStatusFilter,
-              selectedTime: state.selectedTimeFilter,
-              totalCount: state.totalFundsCount,
-              collectingCount: state.collectingCount,
-              completedCount: state.completedCount,
-              filteredCount: filteredFunds.length,
-              onStatusChanged: (status) =>
-                  context.read<FundsCubit>().setStatusFilter(status),
-              onTimeChanged: (time) =>
-                  context.read<FundsCubit>().setTimeFilter(time),
-            ),
-            const SizedBox(height: 16),
-
-            // 4. Fund Collection Items List
-            if (isLoading) ...[
-              _buildShimmerList(colors),
-            ] else if (filteredFunds.isEmpty) ...[
-              _buildEmptyState(colors, tr),
-            ] else ...[
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: filteredFunds.length,
-                separatorBuilder: (_, _) => const SizedBox(height: 10),
-                itemBuilder: (ctx, index) {
-                  final fund = filteredFunds[index];
-                  return FundCardWidget(
-                    fund: fund,
-                    onTap: () => _openFundDetails(fund.id),
-                  );
-                },
-              ),
+              // 4. Fund Collection Items List
+              if (isLoading) ...[
+                _buildShimmerList(colors),
+              ] else if (filteredFunds.isEmpty) ...[
+                _buildEmptyState(colors, tr),
+              ] else ...[
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: filteredFunds.length,
+                  separatorBuilder: (_, _) => const SizedBox(height: 10),
+                  itemBuilder: (ctx, index) {
+                    final fund = filteredFunds[index];
+                    return FundCardWidget(
+                      fund: fund,
+                      onTap: () => _openFundDetails(fund.id),
+                    );
+                  },
+                ),
+              ],
             ],
-          ],
+          ),
         );
       },
+    );
+  }
+
+  Widget _buildSearchBar(dynamic colors, dynamic tr) {
+    return Container(
+      constraints: const BoxConstraints(minHeight: 48),
+      decoration: BoxDecoration(
+        color: colors.cardBackground,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: colors.cardBorder),
+      ),
+      child: TextField(
+        controller: _searchController,
+        onChanged: (val) => context.read<FundsCubit>().setSearchQuery(val),
+        style: AppTextStyle.medium(fontSize: 14, color: colors.textPrimary),
+        decoration: InputDecoration(
+          hintText: tr.searchFundPlaceholder,
+          hintStyle: AppTextStyle.regular(fontSize: 14, color: colors.textMuted),
+          prefixIcon: Icon(LucideIcons.search, size: 18, color: colors.textMuted),
+          suffixIcon: _searchController.text.isNotEmpty
+              ? IconButton(
+                  icon: Icon(LucideIcons.x, size: 16, color: colors.textMuted),
+                  constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                  padding: const EdgeInsets.all(12),
+                  onPressed: () {
+                    _searchController.clear();
+                    context.read<FundsCubit>().setSearchQuery('');
+                  },
+                )
+              : null,
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSearchSkeleton(dynamic colors) {
+    return Container(
+      height: 48,
+      padding: const EdgeInsets.symmetric(horizontal: 14),
+      decoration: BoxDecoration(
+        color: colors.cardBackground,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: colors.cardBorder),
+      ),
+      child: AppShimmer(
+        child: Row(
+          children: [
+            Container(
+              width: 18,
+              height: 18,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Container(
+              width: 140,
+              height: 14,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilterSkeleton(dynamic colors) {
+    return AppShimmer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 80,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                width: 100,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                width: 90,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Container(
+                width: 70,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                width: 90,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                width: 85,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -185,21 +309,21 @@ class _GroupFundsTabViewState extends State<GroupFundsTabView> {
         children: [
           Container(
             padding: const EdgeInsets.all(16),
-            decoration: const BoxDecoration(
-              color: Color(0xFFEFF6FF),
+            decoration: BoxDecoration(
+              color: colors.fundPiggyBg,
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               LucideIcons.piggyBank,
               size: 36,
-              color: Color(0xFF2563EB),
+              color: colors.fundPiggyIcon,
             ),
           ),
           const SizedBox(height: 14),
           Text(
             tr.fundEmptyList,
             style: AppTextStyle.bold(
-              fontSize: 15,
+              fontSize: 16,
               color: colors.textPrimary,
             ),
             textAlign: TextAlign.center,
@@ -208,7 +332,7 @@ class _GroupFundsTabViewState extends State<GroupFundsTabView> {
           Text(
             tr.fundEmptySubtitle,
             style: AppTextStyle.regular(
-              fontSize: 12,
+              fontSize: 13,
               color: colors.textSecondary,
             ),
             textAlign: TextAlign.center,
@@ -223,16 +347,16 @@ class _GroupFundsTabViewState extends State<GroupFundsTabView> {
       children: List.generate(3, (index) {
         return Container(
           margin: const EdgeInsets.only(bottom: 10),
-          padding: const EdgeInsets.all(14),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           decoration: BoxDecoration(
             color: colors.cardBackground,
             borderRadius: BorderRadius.circular(18),
             border: Border.all(color: colors.cardBorder),
           ),
-          child: Row(
-            children: [
-              AppShimmer(
-                child: Container(
+          child: AppShimmer(
+            child: Row(
+              children: [
+                Container(
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
@@ -240,37 +364,42 @@ class _GroupFundsTabViewState extends State<GroupFundsTabView> {
                     borderRadius: BorderRadius.circular(14),
                   ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AppShimmer(
-                      child: Container(
-                        width: 160,
-                        height: 14,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 140,
+                        height: 15,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 8),
-                    AppShimmer(
-                      child: Container(
+                      const SizedBox(height: 8),
+                      Container(
                         width: 100,
-                        height: 12,
+                        height: 13,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                const SizedBox(width: 8),
+                Container(
+                  width: 60,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       }),

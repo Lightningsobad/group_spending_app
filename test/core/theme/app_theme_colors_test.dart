@@ -10,11 +10,17 @@ void main() {
       expect(AppThemeColors.light.cardBackground, equals(Colors.white));
       expect(AppThemeColors.light.textPrimary, isNotNull);
       expect(AppThemeColors.light.textSecondary, isNotNull);
+      expect(AppThemeColors.light.shimmerBase, isNotNull);
+      expect(AppThemeColors.light.fundPiggyBg, isNotNull);
+      expect(AppThemeColors.light.fundStatusCollectingBg, isNotNull);
 
       expect(AppThemeColors.dark.background, isNotNull);
       expect(AppThemeColors.dark.cardBackground, isNot(equals(Colors.white)));
       expect(AppThemeColors.dark.textPrimary, isNotNull);
       expect(AppThemeColors.dark.textSecondary, isNotNull);
+      expect(AppThemeColors.dark.shimmerBase, isNotNull);
+      expect(AppThemeColors.dark.fundPiggyBg, isNotNull);
+      expect(AppThemeColors.dark.fundStatusCollectingBg, isNotNull);
     });
 
     testWidgets('context.colors resolves light and dark palettes accurately', (tester) async {
