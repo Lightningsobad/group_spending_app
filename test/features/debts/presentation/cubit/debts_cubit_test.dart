@@ -8,6 +8,8 @@ import 'package:group_spending_app/features/debts/domain/entities/group_debt_ent
 import 'package:group_spending_app/features/debts/domain/repositories/debts_repository.dart';
 import 'package:group_spending_app/features/debts/presentation/cubit/debts_cubit.dart';
 import 'package:group_spending_app/features/debts/presentation/cubit/debts_state.dart';
+import 'package:group_spending_app/features/groups/data/models/group_model.dart';
+import '../../../groups/groups_cubit_test.dart';
 
 class MockDebtsRepository implements DebtsRepository {
   DebtOverviewEntity overviewResult = const DebtOverviewEntity(
@@ -237,6 +239,38 @@ void main() {
       expect(success, isTrue);
       expect(repository.remindCalls, 1);
       expect(cubit.state.successMessage, isNotNull);
+    });
+
+    test('loadOverview with GroupsRepository enriches group category from api', () async {
+      final fakeGroupsRepo = FakeGroupsRepo()
+        ..groups = [
+          const GroupModel(
+            id: 10,
+            name: 'Chung cư Sunrise Room',
+            category: 'Apartment',
+            ownerId: 1,
+          ),
+          const GroupModel(
+            id: 11,
+            name: 'Đội Cầu Lông Ba Đình',
+            category: 'Sport & Clubs',
+            ownerId: 1,
+          ),
+        ];
+      final cubitWithGroups =
+          DebtsCubit(repository, groupsRepository: fakeGroupsRepo);
+      addTearDown(cubitWithGroups.close);
+
+      await cubitWithGroups.loadOverview();
+
+      expect(cubitWithGroups.state.isSuccess, isTrue);
+      expect(cubitWithGroups.state.userGroups.length, 2);
+      final g10 = cubitWithGroups.state.overview!.groupBalances
+          .firstWhere((g) => g.groupId == 10);
+      expect(g10.category, 'Apartment');
+      final g11 = cubitWithGroups.state.overview!.groupBalances
+          .firstWhere((g) => g.groupId == 11);
+      expect(g11.category, 'Sport & Clubs');
     });
   });
 }

@@ -24,13 +24,14 @@ class DebtsEmptyView extends StatelessWidget {
               width: 64,
               height: 64,
               decoration: BoxDecoration(
-                color: const Color(0xFFDCFCE7),
+                color: colors.debtIconContainerBg,
                 borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: colors.debtIconContainerBorder),
               ),
-              child: const Icon(
+              child: Icon(
                 LucideIcons.arrowLeftRight,
                 size: 32,
-                color: Color(0xFF15803D),
+                color: colors.debtIconContainerFg,
               ),
             ),
             const SizedBox(height: 16),
@@ -39,7 +40,7 @@ class DebtsEmptyView extends StatelessWidget {
                   ? tr.noMatchingDebtGroupsTitle
                   : tr.noDebtGroupsTitle,
               style: AppTextStyle.bold(
-                fontSize: 16,
+                fontSize: AppFontSize.body,
                 color: colors.textPrimary,
               ),
               textAlign: TextAlign.center,
@@ -50,7 +51,7 @@ class DebtsEmptyView extends StatelessWidget {
                   ? tr.noMatchingDebtGroupsSubtitle
                   : tr.noDebtGroupsSubtitle,
               style: AppTextStyle.regular(
-                fontSize: 13,
+                fontSize: AppFontSize.secondary,
                 color: colors.textSecondary,
               ),
               textAlign: TextAlign.center,
