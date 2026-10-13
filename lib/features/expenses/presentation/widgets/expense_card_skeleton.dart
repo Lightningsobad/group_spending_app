@@ -36,13 +36,10 @@ class ExpenseCardSkeleton extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
+                  const AppShimmerBox(
                     width: 44,
                     height: 44,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(14),
-                    ),
+                    borderRadius: 14,
                   ),
                   const SizedBox(width: 12),
                   const Expanded(

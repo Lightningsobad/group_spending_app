@@ -12,6 +12,7 @@ import 'package:group_spending_app/features/expenses/presentation/widgets/expens
 import 'package:group_spending_app/features/expenses/presentation/widgets/expense_card_widget.dart';
 import 'package:group_spending_app/features/expenses/presentation/widgets/group_expenses_tab_view.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
+import 'package:group_spending_app/shared/widgets/app_shimmer.dart';
 import 'dart:io';
 
 class FakeExpensesRepository implements ExpensesRepository {
@@ -98,6 +99,7 @@ void main() {
 
   Widget createTestWidget({
     required ExpensesCubit cubit,
+    GroupModel? group,
     ThemeData? theme,
     double? textScale,
     Size? surfaceSize,
@@ -108,7 +110,7 @@ void main() {
         body: BlocProvider.value(
           value: cubit,
           child: SingleChildScrollView(
-            child: GroupExpensesTabView(group: testGroup),
+            child: GroupExpensesTabView(group: group ?? testGroup),
           ),
         ),
       ),
@@ -204,6 +206,83 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('chuyển từ nhóm A sang nhóm B không làm rò rỉ dữ liệu cũ của nhóm A', (tester) async {
+      // 1. Nhóm A tải xong
+      await tester.pumpWidget(createTestWidget(cubit: cubit, group: testGroup));
+      await tester.pumpAndSettle();
+      expect(find.text('Ăn tối lẩu Haidilao'), findsOneWidget);
+      expect(find.text('1.500.000 đ'), findsOneWidget);
+
+      // 2. Chuyển sang nhóm B (đang tải)
+      const groupB = GroupModel(
+        id: 2,
+        name: 'Nhóm Ăn Trưa Văn Phòng',
+        description: 'Cơm trưa',
+        category: 'FOOD',
+        ownerId: 11,
+        memberCount: 3,
+        userBalance: 0,
+      );
+
+      final completerB = Completer<GroupExpensesResponseModel>();
+      repo.delayCompleter = completerB;
+
+      await tester.pumpWidget(createTestWidget(cubit: cubit, group: groupB));
+      await tester.pump(); // Frame đầu tiên sau khi chuyển nhóm
+
+      // Tuyệt đối không hiển thị dữ liệu của nhóm A
+      expect(find.text('Ăn tối lẩu Haidilao'), findsNothing);
+      expect(find.text('1.500.000 đ'), findsNothing);
+      // Hiển thị skeleton và shimmer cho nhóm B
+      expect(find.byType(ExpenseCardSkeleton), findsNWidgets(4));
+
+      // 3. Nhóm B hoàn tất tải dữ liệu
+      repo.response = const GroupExpensesResponseModel(
+        totalSpending: 200000,
+        totalSpendingVnd: 200000,
+        expenseCount: 1,
+        expenses: [
+          ExpenseListItemModel(
+            id: 99,
+            title: 'Cơm tấm Sài Gòn',
+            amount: 200000,
+            amountVnd: 200000,
+            categoryName: 'food',
+            expenseDate: '2026-10-14T12:00:00Z',
+            paidBy: 'Lê Văn C',
+            paidByUserId: 3,
+            status: 'PAID_BY_OTHERS',
+            myAmountOwed: 50000,
+            myAmountOwedVnd: 50000,
+          ),
+        ],
+      );
+      completerB.complete(repo.response);
+      await tester.pumpAndSettle();
+
+      // Hiển thị dữ liệu chính xác của nhóm B (cả ở thẻ tổng chi tiêu và thẻ hóa đơn)
+      expect(find.text('Cơm tấm Sài Gòn'), findsOneWidget);
+      expect(find.text('200.000 đ'), findsNWidgets(2));
+      expect(find.text('Ăn tối lẩu Haidilao'), findsNothing);
+    });
+
+    testWidgets('hiệu ứng shimmer ở tổng tiền sử dụng AppShimmer trong Dark Mode', (tester) async {
+      repo.delayCompleter = Completer<GroupExpensesResponseModel>();
+
+      await tester.pumpWidget(createTestWidget(
+        cubit: cubit,
+        theme: AppTheme.darkTheme,
+      ));
+      await tester.pump();
+
+      // Tổng tiền và danh sách đều được bọc trong AppShimmer
+      expect(find.byType(AppShimmer), findsWidgets);
+      expect(find.byType(ExpenseCardSkeleton), findsNWidgets(4));
+
+      repo.delayCompleter!.complete(repo.response);
+      await tester.pumpAndSettle();
     });
   });
 }

@@ -32,9 +32,25 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    final cubit = context.read<ExpensesCubit>();
+    if (cubit.state.activeGroupId != widget.group.id) {
+      cubit.loadGroupExpenses(widget.group.id);
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          context.read<ExpensesCubit>().loadGroupExpenses(widget.group.id, silent: true);
+        }
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant GroupExpensesTabView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.group.id != widget.group.id) {
+      _searchCtrl.clear();
       context.read<ExpensesCubit>().loadGroupExpenses(widget.group.id);
-    });
+    }
   }
 
   @override
@@ -147,7 +163,11 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
           }
         },
         builder: (context, state) {
-          final expenses = state.expenses;
+          final isCurrentGroup = state.activeGroupId == widget.group.id;
+          final isLoading = state.isLoading || !isCurrentGroup;
+          final expenses = isCurrentGroup ? state.expenses : const [];
+          final totalSpendingVnd = isCurrentGroup ? state.totalSpendingVnd : 0;
+          final expenseCount = isCurrentGroup ? state.expenseCount : 0;
           final cubit = context.read<ExpensesCubit>();
 
           return Column(
@@ -183,37 +203,44 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
                             ),
                           ),
                           const SizedBox(height: 6),
-                          if (state.isLoading && expenses.isEmpty)
-                            const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 4),
-                              child: AppShimmerBox(width: 140, height: 26, borderRadius: 6),
+                          if (isLoading)
+                            const AppShimmer(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 4),
+                                    child: AppShimmerBox(width: 140, height: 26, borderRadius: 6),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 4),
+                                    child: AppShimmerBox(width: 100, height: 14, borderRadius: 4),
+                                  ),
+                                ],
+                              ),
                             )
-                          else
+                          else ...[
                             FittedBox(
                               fit: BoxFit.scaleDown,
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                CurrencyUtils.formatVnd(state.totalSpendingVnd),
+                                CurrencyUtils.formatVnd(totalSpendingVnd),
                                 style: AppTextStyle.bold(
                                   fontSize: 24,
                                   color: colors.textPrimary,
                                 ),
                               ),
                             ),
-                          const SizedBox(height: 4),
-                          if (state.isLoading && expenses.isEmpty)
-                            const Padding(
-                              padding: EdgeInsets.only(top: 4),
-                              child: AppShimmerBox(width: 100, height: 14, borderRadius: 4),
-                            )
-                          else
+                            const SizedBox(height: 4),
                             Text(
-                              '${state.expenseCount} hóa đơn phát sinh',
+                              '$expenseCount hóa đơn phát sinh',
                               style: AppTextStyle.regular(
                                 fontSize: 12,
                                 color: colors.textMuted,
                               ),
                             ),
+                          ],
                         ],
                       ),
                     ),
@@ -315,7 +342,7 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
               child: Row(
                 children: [
                   _buildFilterPill(
-                    label: 'Tất cả chủ đề (${state.expenseCount})',
+                    label: 'Tất cả chủ đề ($expenseCount)',
                     isSelected: state.categoryFilter == ExpenseCategoryFilter.all,
                     onTap: () => cubit.setCategoryFilter(ExpenseCategoryFilter.all),
                     colors: colors,
@@ -407,7 +434,7 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
                   ),
                 ),
                 Text(
-                  '${expenses.length} / ${state.expenseCount} khoản chi',
+                  '${expenses.length} / $expenseCount khoản chi',
                   style: AppTextStyle.bold(fontSize: 12, color: colors.textMuted),
                 ),
               ],
@@ -415,7 +442,7 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
             const SizedBox(height: 14),
 
             // 6. Expense List / Loading / Empty
-            if (state.isLoading && expenses.isEmpty)
+            if (isLoading && expenses.isEmpty)
               ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
