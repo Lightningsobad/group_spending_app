@@ -358,7 +358,6 @@ class _GroupDetailViewState extends State<GroupDetailView> {
       child: SafeArea(
         bottom: false,
         child: RefreshIndicator(
-          color: AppColors.emerald,
           color: colors.primaryButton,
           onRefresh: _fetchLatestDetail,
           child: SingleChildScrollView(
@@ -376,7 +375,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                     border: Border.all(color: colors.cardBorder),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.03),
+                        color: colors.cardShadowColor,
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -384,36 +383,23 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                   ),
                   child: Row(
                     children: [
-                      // Back button (Touch target tối thiểu 48x48)
+                      // Back button (Touch target 48x48px)
                       InkWell(
                         borderRadius: BorderRadius.circular(12),
                         onTap: widget.onBack,
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
-                          child: Center(
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: colors.surfaceMuted,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Icon(
-                                LucideIcons.arrowLeft,
-                                size: 18,
-                                color: colors.textPrimary,
-                              ),
-                            ),
+                        child: Container(
+                          width: 48,
+                          height: 48,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: colors.surfaceMuted,
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      // Group name
-                    Expanded(
-                      child: Text(
-                        _group.name,
-                        style: AppTextStyle.bold(
-                          fontSize: 20,
-                          color: colors.textPrimary,
+                          child: Icon(
+                            LucideIcons.arrowLeft,
+                            size: 20,
+                            color: colors.textPrimary,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 14),
@@ -483,9 +469,8 @@ class _GroupDetailViewState extends State<GroupDetailView> {
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildTabPill({
     required int index,
@@ -493,38 +478,34 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     required AppThemeColors colors,
   }) {
     final isSelected = _selectedTabIndex == index;
-    return ConstrainedBox(
-      constraints: const BoxConstraints(minHeight: 48),
-      child: Center(
-        child: InkWell(
+    return GestureDetector(
+      onTap: () => setState(() => _selectedTabIndex = index),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        constraints: const BoxConstraints(minHeight: 48),
+        alignment: Alignment.center,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        decoration: BoxDecoration(
+          color: isSelected ? colors.tabPillActiveBg : colors.cardBackground,
           borderRadius: BorderRadius.circular(24),
-          onTap: () => setState(() => _selectedTabIndex = index),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            decoration: BoxDecoration(
-              color: isSelected ? colors.tabPillActiveBg : colors.cardBackground,
-              borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: isSelected ? colors.tabPillActiveBg : colors.cardBorder,
-              ),
-              boxShadow: isSelected
-                  ? [
-                      BoxShadow(
-                        color: (colors.tabPillActiveBg as Color).withValues(alpha: 0.25),
-                        blurRadius: 6,
-                        offset: const Offset(0, 2),
-                      ),
-                    ]
-                  : null,
-            ),
-            child: Text(
-              label,
-              style: AppTextStyle.bold(
-                fontSize: 13,
-                color: isSelected ? colors.tabPillActiveText : colors.textPrimary,
-              ),
-            ),
+          border: Border.all(
+            color: isSelected ? colors.tabPillActiveBg : colors.cardBorder,
+          ),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: colors.tabPillActiveBg.withValues(alpha: 0.25),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : null,
+        ),
+        child: Text(
+          label,
+          style: AppTextStyle.bold(
+            fontSize: AppFontSize.secondary,
+            color: isSelected ? colors.tabPillActiveText : colors.textPrimary,
           ),
         ),
       ),
@@ -1324,11 +1305,11 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     );
   }
 
-  Widget _buildExpensesTab(dynamic colors, dynamic tr) {
+  Widget _buildExpensesTab(AppThemeColors colors, AppLocalizations tr) {
     return GroupExpensesTabView(group: _group);
   }
 
-  Widget _buildFundsTab(dynamic colors, dynamic tr) {
+  Widget _buildFundsTab(AppThemeColors colors, AppLocalizations tr) {
     return GroupFundsTabView(
       group: _group,
       onCreateFund: () => setState(() => _isCreatingFund = true),
@@ -1336,8 +1317,8 @@ class _GroupDetailViewState extends State<GroupDetailView> {
   }
 
   Widget _buildMembersTab(
-    dynamic colors,
-    dynamic tr,
+    AppThemeColors colors,
+    AppLocalizations tr,
     bool isOwner,
     int? currentUserId,
   ) {
