@@ -14,6 +14,7 @@ import 'package:group_spending_app/features/groups/data/models/group_model.dart'
 import 'package:group_spending_app/features/groups/presentation/cubit/groups_cubit.dart';
 import 'package:group_spending_app/features/groups/presentation/widgets/group_detail_view.dart';
 import 'package:group_spending_app/features/groups/presentation/widgets/group_invite_qr_sheet.dart';
+import 'package:group_spending_app/features/groups/presentation/widgets/group_overview_skeleton.dart';
 import 'package:group_spending_app/l10n/app_localizations.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -288,6 +289,52 @@ void main() {
       // Should be back to funds tab
       expect(find.byType(FundFormScreen), findsNothing);
       expect(find.byType(GroupFundsTabView), findsOneWidget);
+    });
+
+    testWidgets('wraps body in SafeArea and shows GroupOverviewSkeleton during initial load', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      // Before pumpAndSettle, initial frame has _isLoadingDetail = true
+      expect(find.byType(SafeArea), findsWidgets);
+      expect(find.byType(GroupOverviewSkeleton), findsOneWidget);
+
+      await tester.pumpAndSettle();
+      // After data resolves, skeleton is replaced by actual content
+      expect(find.byType(GroupOverviewSkeleton), findsNothing);
+      expect(find.text('THÔNG TIN NHÓM'), findsOneWidget);
+    });
+
+    testWidgets('interactive elements satisfy minimum touch target size 48x48px', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Back button touch target: at least 48x48
+      final backButtonFinder = find.ancestor(
+        of: find.byIcon(LucideIcons.arrowLeft),
+        matching: find.byType(InkWell),
+      );
+      final backSize = tester.getSize(backButtonFinder);
+      expect(backSize.width, greaterThanOrEqualTo(48.0));
+      expect(backSize.height, greaterThanOrEqualTo(48.0));
+
+      // QR button touch target: at least 48x48
+      final qrFinder = find.ancestor(
+        of: find.byIcon(LucideIcons.qrCode),
+        matching: find.byType(InkWell),
+      );
+      final qrSize = tester.getSize(qrFinder);
+      expect(qrSize.width, greaterThanOrEqualTo(48.0));
+      expect(qrSize.height, greaterThanOrEqualTo(48.0));
+
+      // Copy invite code button: height at least 48
+      final copyBtnFinder = find.widgetWithText(OutlinedButton, 'Sao chép mã mời');
+      final copySize = tester.getSize(copyBtnFinder);
+      expect(copySize.height, greaterThanOrEqualTo(48.0));
+
+      // Tab pills: height at least 48
+      final tabFinder = find.text('Tổng quan');
+      final tabGesture = find.ancestor(of: tabFinder, matching: find.byType(GestureDetector)).first;
+      final tabSize = tester.getSize(tabGesture);
+      expect(tabSize.height, greaterThanOrEqualTo(48.0));
     });
   });
 }

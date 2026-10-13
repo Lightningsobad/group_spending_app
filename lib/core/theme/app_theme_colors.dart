@@ -139,6 +139,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color snackBarInfoIcon;
   final Color snackBarInfoText;
 
+  // Shimmer Tokens
+  final Color shimmerBase;
+  final Color shimmerHighlight;
+
+  // Accent Actions & Status Tokens
+  final Color warningAccent;
+  final Color warningAccentBorder;
+  final Color infoAccent;
+  final Color orangeAccent;
+  final Color errorAccent;
+
   const AppThemeColors({
     required this.background,
     required this.cardBackground,
@@ -240,6 +251,13 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.snackBarInfoBadge,
     required this.snackBarInfoIcon,
     required this.snackBarInfoText,
+    required this.shimmerBase,
+    required this.shimmerHighlight,
+    required this.warningAccent,
+    required this.warningAccentBorder,
+    required this.infoAccent,
+    required this.orangeAccent,
+    required this.errorAccent,
   });
 
   /// Bảng màu cho Light Theme
@@ -352,6 +370,13 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     snackBarInfoBadge: Color(0xFFE2E8F0),
     snackBarInfoIcon: AppColors.emeraldForest,
     snackBarInfoText: AppColors.textDark,
+    shimmerBase: Color(0xFFE2E8F0),
+    shimmerHighlight: Color(0xFFF8FAFC),
+    warningAccent: Color(0xFFD97706),
+    warningAccentBorder: Color(0xFFFCD34D),
+    infoAccent: Color(0xFF3B82F6),
+    orangeAccent: Color(0xFFEA580C),
+    errorAccent: AppColors.error,
   );
 
   /// Bảng màu cho Dark Theme
@@ -464,6 +489,13 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     snackBarInfoBadge: Color(0xFF334155),
     snackBarInfoIcon: AppColors.emeraldLight,
     snackBarInfoText: AppColors.textLight,
+    shimmerBase: Color(0xFF1E293B),
+    shimmerHighlight: Color(0xFF334155),
+    warningAccent: Color(0xFFFBBF24),
+    warningAccentBorder: Color(0xFF78350F),
+    infoAccent: Color(0xFF60A5FA),
+    orangeAccent: Color(0xFFFB923C),
+    errorAccent: Color(0xFFF87171),
   );
 
   /// Lấy bảng màu tương ứng với Theme hiện tại
@@ -574,6 +606,13 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? snackBarInfoBadge,
     Color? snackBarInfoIcon,
     Color? snackBarInfoText,
+    Color? shimmerBase,
+    Color? shimmerHighlight,
+    Color? warningAccent,
+    Color? warningAccentBorder,
+    Color? infoAccent,
+    Color? orangeAccent,
+    Color? errorAccent,
   }) {
     return AppThemeColors(
       background: background ?? this.background,
@@ -681,6 +720,13 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       snackBarInfoBadge: snackBarInfoBadge ?? this.snackBarInfoBadge,
       snackBarInfoIcon: snackBarInfoIcon ?? this.snackBarInfoIcon,
       snackBarInfoText: snackBarInfoText ?? this.snackBarInfoText,
+      shimmerBase: shimmerBase ?? this.shimmerBase,
+      shimmerHighlight: shimmerHighlight ?? this.shimmerHighlight,
+      warningAccent: warningAccent ?? this.warningAccent,
+      warningAccentBorder: warningAccentBorder ?? this.warningAccentBorder,
+      infoAccent: infoAccent ?? this.infoAccent,
+      orangeAccent: orangeAccent ?? this.orangeAccent,
+      errorAccent: errorAccent ?? this.errorAccent,
     );
   }
 
@@ -837,6 +883,15 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           Color.lerp(snackBarInfoIcon, other.snackBarInfoIcon, t)!,
       snackBarInfoText:
           Color.lerp(snackBarInfoText, other.snackBarInfoText, t)!,
+      shimmerBase: Color.lerp(shimmerBase, other.shimmerBase, t)!,
+      shimmerHighlight:
+          Color.lerp(shimmerHighlight, other.shimmerHighlight, t)!,
+      warningAccent: Color.lerp(warningAccent, other.warningAccent, t)!,
+      warningAccentBorder:
+          Color.lerp(warningAccentBorder, other.warningAccentBorder, t)!,
+      infoAccent: Color.lerp(infoAccent, other.infoAccent, t)!,
+      orangeAccent: Color.lerp(orangeAccent, other.orangeAccent, t)!,
+      errorAccent: Color.lerp(errorAccent, other.errorAccent, t)!,
     );
   }
 }
