@@ -25,13 +25,13 @@ class DebtsSearchBar extends StatelessWidget {
       controller: controller,
       onChanged: onChanged,
       style: AppTextStyle.medium(
-        fontSize: 13,
+        fontSize: AppFontSize.secondary,
         color: colors.textPrimary,
       ),
       decoration: InputDecoration(
         hintText: tr.searchDebtGroupPlaceholder,
         hintStyle: AppTextStyle.regular(
-          fontSize: 13,
+          fontSize: AppFontSize.secondary,
           color: colors.textMuted,
         ),
         prefixIcon: Icon(
@@ -65,8 +65,8 @@ class DebtsSearchBar extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),
-          borderSide: const BorderSide(
-            color: AppColors.emerald,
+          borderSide: BorderSide(
+            color: colors.brandEmerald,
             width: 1.5,
           ),
         ),

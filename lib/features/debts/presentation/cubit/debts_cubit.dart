@@ -2,17 +2,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/session/session_coordinator.dart';
 import '../../../../core/sync/data_sync_coordinator.dart';
+import '../../../groups/data/models/group_model.dart';
+import '../../../groups/domain/repositories/groups_repository.dart';
 import '../../domain/entities/debt_enums.dart';
+import '../../domain/entities/debt_overview_entity.dart';
+import '../../domain/entities/group_debt_entity.dart';
 import '../../domain/repositories/debts_repository.dart';
 import 'debts_state.dart';
 
 class DebtsCubit extends Cubit<DebtsState> {
   final DebtsRepository _repository;
+  final GroupsRepository? groupsRepository;
   final SessionCoordinator? sessionCoordinator;
   final DataSyncCoordinator? dataSyncCoordinator;
 
   DebtsCubit(
     this._repository, {
+    this.groupsRepository,
     this.sessionCoordinator,
     this.dataSyncCoordinator,
   }) : super(const DebtsState()) {
@@ -46,16 +52,63 @@ class DebtsCubit extends Cubit<DebtsState> {
     }
 
     try {
-      final overview = await _repository.getDebtOverview();
+      final futures = <Future<dynamic>>[
+        _repository.getDebtOverview(),
+      ];
+      if (groupsRepository != null) {
+        futures.add(groupsRepository!.getMyGroups(filter: 'ALL'));
+      }
+
+      final results = await Future.wait(futures);
       if (isClosed ||
           (sessionCoordinator != null &&
               sessionCoordinator!.sessionEpoch != requestEpoch)) {
         return;
       }
+
+      var overview = results[0] as DebtOverviewEntity;
+      List<GroupModel> groups = state.userGroups;
+      if (results.length > 1 && results[1] is List<GroupModel>) {
+        groups = results[1] as List<GroupModel>;
+      }
+
+      if (groups.isNotEmpty) {
+        final groupMap = {for (final g in groups) g.id: g};
+        final updatedGroupBalances = overview.groupBalances.map((gb) {
+          final matchedGroup = groupMap[gb.groupId];
+          return GroupDebtBalanceEntity(
+            groupId: gb.groupId,
+            groupName: (matchedGroup?.name.isNotEmpty ?? false)
+                ? matchedGroup!.name
+                : gb.groupName,
+            category: matchedGroup?.category ?? gb.category,
+            youOwe: gb.youOwe,
+            youOweVnd: gb.youOweVnd,
+            youAreOwed: gb.youAreOwed,
+            youAreOwedVnd: gb.youAreOwedVnd,
+            netBalance: gb.netBalance,
+            netBalanceVnd: gb.netBalanceVnd,
+            pendingDebtCount: gb.pendingDebtCount,
+          );
+        }).toList();
+
+        overview = DebtOverviewEntity(
+          totalOwed: overview.totalOwed,
+          totalOwedVnd: overview.totalOwedVnd,
+          totalReceivable: overview.totalReceivable,
+          totalReceivableVnd: overview.totalReceivableVnd,
+          netBalance: overview.netBalance,
+          netBalanceVnd: overview.netBalanceVnd,
+          groupBalances: updatedGroupBalances,
+          details: overview.details,
+        );
+      }
+
       emit(
         state.copyWith(
           status: DebtsStatus.success,
           overview: overview,
+          userGroups: groups,
           clearMessages: !silent,
         ),
       );
@@ -110,11 +163,38 @@ class DebtsCubit extends Cubit<DebtsState> {
     }
 
     try {
-      final simplified = await _repository.getGroupSimplifiedDebts(groupId);
-      final actual = await _repository.getGroupActualDebts(
+      var simplified = await _repository.getGroupSimplifiedDebts(groupId);
+      var actual = await _repository.getGroupActualDebts(
         groupId,
         status: state.actualDebtStatusFilter,
       );
+
+      final matchedGroup =
+          state.userGroups.where((g) => g.id == groupId).firstOrNull;
+      if (matchedGroup != null) {
+        final enrichedUserBalance = DebtUserBalanceEntity(
+          groupId: simplified.userBalance.groupId,
+          groupName: matchedGroup.name.isNotEmpty
+              ? matchedGroup.name
+              : simplified.userBalance.groupName,
+          category: matchedGroup.category,
+          youOwe: simplified.userBalance.youOwe,
+          youOweVnd: simplified.userBalance.youOweVnd,
+          youAreOwed: simplified.userBalance.youAreOwed,
+          youAreOwedVnd: simplified.userBalance.youAreOwedVnd,
+          netBalance: simplified.userBalance.netBalance,
+          netBalanceVnd: simplified.userBalance.netBalanceVnd,
+        );
+
+        simplified = GroupSimplifiedDebtsEntity(
+          userBalance: enrichedUserBalance,
+          simplifiedDebts: simplified.simplifiedDebts,
+        );
+        actual = GroupActualDebtsEntity(
+          userBalance: enrichedUserBalance,
+          actualDebts: actual.actualDebts,
+        );
+      }
 
       if (isClosed ||
           (sessionCoordinator != null &&

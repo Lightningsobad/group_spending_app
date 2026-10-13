@@ -22,7 +22,6 @@ class GroupDebtSegmentedTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final tr = context.l10n;
     final colors = context.colors;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       padding: const EdgeInsets.all(4),
@@ -42,7 +41,6 @@ class GroupDebtSegmentedTab extends StatelessWidget {
               count: simplifiedCount,
               isSelected: activeTab == 0,
               onTap: () => onTabChanged(0),
-              isDark: isDark,
               colors: colors,
             ),
           ),
@@ -57,7 +55,6 @@ class GroupDebtSegmentedTab extends StatelessWidget {
               count: actualCount,
               isSelected: activeTab == 1,
               onTap: () => onTabChanged(1),
-              isDark: isDark,
               colors: colors,
             ),
           ),
@@ -73,7 +70,6 @@ class GroupDebtSegmentedTab extends StatelessWidget {
     required int count,
     required bool isSelected,
     required VoidCallback onTap,
-    required bool isDark,
     required AppThemeColors colors,
   }) {
     return Material(
@@ -93,7 +89,7 @@ class GroupDebtSegmentedTab extends StatelessWidget {
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.05),
+                      color: colors.cardShadowColor,
                       blurRadius: 4,
                       offset: const Offset(0, 1),
                     ),
@@ -107,7 +103,7 @@ class GroupDebtSegmentedTab extends StatelessWidget {
                 icon,
                 size: 15,
                 color: isSelected
-                    ? const Color(0xFF15803D)
+                    ? colors.debtTabBadgeActiveText
                     : colors.textSecondary,
               ),
               const SizedBox(width: 6),
@@ -115,7 +111,7 @@ class GroupDebtSegmentedTab extends StatelessWidget {
                 child: Text(
                   title,
                   style: AppTextStyle.bold(
-                    fontSize: 12,
+                    fontSize: AppFontSize.caption,
                     color: isSelected ? colors.textPrimary : colors.textSecondary,
                   ),
                   maxLines: 1,
@@ -127,23 +123,17 @@ class GroupDebtSegmentedTab extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? (isDark
-                          ? const Color(0xFF064E3B)
-                          : const Color(0xFFDCFCE7))
-                      : (isDark
-                          ? const Color(0xFF334155)
-                          : const Color(0xFFE2E8F0)),
+                      ? colors.debtTabBadgeActiveBg
+                      : colors.debtTabBadgeInactiveBg,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Text(
                   '$count',
                   style: AppTextStyle.bold(
-                    fontSize: 11,
+                    fontSize: AppFontSize.caption,
                     color: isSelected
-                        ? (isDark
-                            ? const Color(0xFF6EE7B7)
-                            : const Color(0xFF15803D))
-                        : colors.textSecondary,
+                        ? colors.debtTabBadgeActiveText
+                        : colors.debtTabBadgeInactiveText,
                   ),
                 ),
               ),
