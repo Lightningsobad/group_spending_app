@@ -5,8 +5,11 @@ import 'package:group_spending_app/core/sync/data_sync_coordinator.dart';
 import 'package:group_spending_app/core/theme/app_theme.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
 import 'package:group_spending_app/features/groups/presentation/cubit/group_members_cubit.dart';
+import 'package:group_spending_app/features/groups/presentation/cubit/group_members_state.dart';
 import 'package:group_spending_app/features/groups/presentation/widgets/group_members_tab_view.dart';
 import 'package:group_spending_app/l10n/app_localizations.dart';
+
+import 'package:group_spending_app/features/groups/presentation/widgets/group_members_tab_skeleton.dart';
 
 import 'groups_cubit_test.dart';
 
@@ -137,6 +140,22 @@ void main() {
 
       await tester.tap(find.text('Rời nhóm'));
       expect(leaveTapped, isTrue);
+    });
+
+    testWidgets('renders shimmer skeleton when loading members', (tester) async {
+      membersCubit.emit(const GroupMembersState(status: GroupMembersStatus.loading));
+      await tester.pumpWidget(createWidgetUnderTest());
+      expect(find.byType(GroupMembersTabSkeleton), findsOneWidget);
+    });
+
+    testWidgets('invite button has at least 48px touch target height', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      final inviteButtonFinder = find.widgetWithText(OutlinedButton, '+ Mời thêm');
+      expect(inviteButtonFinder, findsOneWidget);
+      final size = tester.getSize(inviteButtonFinder);
+      expect(size.height, greaterThanOrEqualTo(48.0));
     });
   });
 }

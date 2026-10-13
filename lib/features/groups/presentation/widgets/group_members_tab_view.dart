@@ -9,6 +9,7 @@ import '../../data/models/group_model.dart';
 import '../cubit/group_members_cubit.dart';
 import '../cubit/group_members_state.dart';
 import 'review_join_request_sheet.dart';
+import 'group_members_tab_skeleton.dart';
 
 class GroupMembersTabView extends StatefulWidget {
   final GroupModel group;
@@ -66,6 +67,10 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
             !widget.group.isArchived &&
             pendingRequests.isNotEmpty;
 
+        if (state.isLoading && members.isEmpty) {
+          return const GroupMembersTabSkeleton();
+        }
+
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -73,30 +78,38 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Icon(
-                      LucideIcons.users,
-                      size: 20,
-                      color: colors.primaryButton,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      tr.memberListSectionHeader,
-                      style: AppTextStyle.bold(
-                        fontSize: 14,
-                        color: colors.textPrimary,
-                        letterSpacing: 0.5,
+                Expanded(
+                  child: Row(
+                    children: [
+                      Icon(
+                        LucideIcons.users,
+                        size: 20,
+                        color: colors.primaryButton,
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          tr.memberListSectionHeader,
+                          style: AppTextStyle.bold(
+                            fontSize: 14,
+                            color: colors.textPrimary,
+                            letterSpacing: 0.5,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
+                const SizedBox(width: 8),
                 OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
                     backgroundColor: colors.secondaryActionBg,
                     side: BorderSide(color: colors.secondaryActionBorder),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    minimumSize: const Size(0, 48),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -107,7 +120,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                   label: Text(
                     '+ ${tr.inviteMoreAction}',
                     style: AppTextStyle.bold(
-                      fontSize: 12,
+                      fontSize: 13,
                       color: colors.secondaryActionText,
                     ),
                   ),
@@ -142,6 +155,10 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                   ),
                   suffixIcon: _searchController.text.isNotEmpty
                       ? IconButton(
+                          constraints: const BoxConstraints(
+                            minWidth: 48,
+                            minHeight: 48,
+                          ),
                           icon: Icon(LucideIcons.x,
                               size: 16, color: colors.textMuted),
                           onPressed: () {
@@ -198,14 +215,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
             const SizedBox(height: 10),
 
             // 5. Danh sách thành viên (Image 2)
-            if (state.isLoading && members.isEmpty)
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 40),
-                child: Center(
-                  child: CircularProgressIndicator(color: AppColors.emerald),
-                ),
-              )
-            else if (members.isEmpty)
+            if (members.isEmpty)
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
@@ -277,7 +287,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
               ),
               const SizedBox(width: 8),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
                   color: colors.cardBackground,
                   borderRadius: BorderRadius.circular(12),
@@ -286,7 +296,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                 child: Text(
                   tr.pendingRequestsCountBadge(requests.length),
                   style: AppTextStyle.bold(
-                    fontSize: 10,
+                    fontSize: 12,
                     color: colors.roleAdminText,
                   ),
                 ),
@@ -297,7 +307,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
           Text(
             tr.pendingRequestsSubtitle,
             style: AppTextStyle.regular(
-              fontSize: 11,
+              fontSize: 12,
               color: colors.roleAdminText.withValues(alpha: 0.8),
             ),
           ),
@@ -360,7 +370,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                             Text(
                               tr.joinRequestLabel,
                               style: AppTextStyle.regular(
-                                fontSize: 11,
+                                fontSize: 12,
                                 color: colors.textSecondary,
                               ),
                             ),
@@ -375,7 +385,8 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                       Expanded(
                         child: OutlinedButton(
                           style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            minimumSize: const Size(0, 48),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
                             side: BorderSide(color: colors.cardBorder),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -390,20 +401,20 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                                 );
                           },
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(LucideIcons.x,
-                                  size: 14, color: colors.textSecondary),
-                              const SizedBox(width: 6),
-                              Text(
-                                tr.rejectAction,
-                                style: AppTextStyle.bold(
-                                  fontSize: 12,
-                                  color: colors.textSecondary,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(LucideIcons.x,
+                                    size: 14, color: colors.textSecondary),
+                                const SizedBox(width: 6),
+                                Text(
+                                  tr.rejectAction,
+                                  style: AppTextStyle.bold(
+                                    fontSize: 13,
+                                    color: colors.textSecondary,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
+                              ],
+                            ),
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -412,7 +423,8 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: colors.primaryButton,
                             foregroundColor: colors.onPrimaryButton,
-                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            minimumSize: const Size(0, 48),
+                            padding: const EdgeInsets.symmetric(vertical: 12),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
@@ -434,20 +446,20 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                             );
                           },
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(LucideIcons.check,
-                                  size: 14, color: colors.onPrimaryButton),
-                              const SizedBox(width: 6),
-                              Text(
-                                tr.approveAction,
-                                style: AppTextStyle.bold(
-                                  fontSize: 12,
-                                  color: colors.onPrimaryButton,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(LucideIcons.check,
+                                    size: 14, color: colors.onPrimaryButton),
+                                const SizedBox(width: 6),
+                                Text(
+                                  tr.approveAction,
+                                  style: AppTextStyle.bold(
+                                    fontSize: 13,
+                                    color: colors.onPrimaryButton,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
+                              ],
+                            ),
                         ),
                       ),
                     ],
@@ -478,7 +490,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
         border: Border.all(color: colors.cardBorder),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
+            color: colors.cardShadowColor,
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -521,7 +533,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                       width: 10,
                       height: 10,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF22C55E),
+                        color: colors.memberOnlineDot,
                         shape: BoxShape.circle,
                         border: Border.all(color: colors.avatarDotBorder, width: 1.5),
                       ),
@@ -550,7 +562,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                       const SizedBox(width: 6),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
+                            horizontal: 7, vertical: 3),
                         decoration: BoxDecoration(
                           color: colors.primaryContainer,
                           borderRadius: BorderRadius.circular(10),
@@ -558,7 +570,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                         child: Text(
                           tr.youPill,
                           style: AppTextStyle.bold(
-                            fontSize: 11,
+                            fontSize: 12,
                             color: colors.onPrimaryContainer,
                           ),
                         ),
@@ -594,7 +606,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
                     Text(
                       member.isAdmin ? tr.roleLeaderBadge : tr.roleMemberBadge,
                       style: AppTextStyle.bold(
-                        fontSize: 11,
+                        fontSize: 12,
                         color: member.isAdmin
                             ? colors.roleAdminText
                             : colors.textSecondary,
@@ -674,7 +686,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
               backgroundColor: AppColors.error,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 12),
-              minimumSize: const Size.fromHeight(44),
+              minimumSize: const Size.fromHeight(48),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -748,7 +760,7 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
               backgroundColor: AppColors.error,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 12),
-              minimumSize: const Size.fromHeight(44),
+              minimumSize: const Size.fromHeight(48),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

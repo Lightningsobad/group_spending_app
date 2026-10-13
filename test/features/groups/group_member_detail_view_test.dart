@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:group_spending_app/core/sync/data_sync_coordinator.dart';
 import 'package:group_spending_app/core/theme/app_theme.dart';
 import 'package:group_spending_app/features/groups/presentation/cubit/group_members_cubit.dart';
+import 'package:group_spending_app/features/groups/presentation/cubit/group_members_state.dart';
+import 'package:group_spending_app/features/groups/presentation/widgets/group_member_detail_skeleton.dart';
 import 'package:group_spending_app/features/groups/presentation/widgets/group_member_detail_view.dart';
 import 'package:group_spending_app/features/groups/presentation/widgets/viet_qr_modal_sheet.dart';
 import 'package:group_spending_app/l10n/app_localizations.dart';
@@ -207,6 +209,34 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(kickedCallbackCalled, isTrue);
+    });
+
+    testWidgets('renders shimmer skeleton when loading member detail', (tester) async {
+      membersCubit.emit(const GroupMembersState(isLoadingDetail: true));
+      await tester.pumpWidget(createWidgetUnderTest(targetUserId: 2));
+      expect(find.byType(GroupMemberDetailSkeleton), findsOneWidget);
+    });
+
+    testWidgets('back button has at least 48px touch target height', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest(targetUserId: 2));
+      await tester.pumpAndSettle();
+
+      final backButtonFinder = find.ancestor(
+        of: find.text('Quay lại nhóm'),
+        matching: find.byType(ConstrainedBox),
+      ).first;
+      final size = tester.getSize(backButtonFinder);
+      expect(size.height, greaterThanOrEqualTo(48.0));
+      expect(size.width, greaterThanOrEqualTo(48.0));
+    });
+
+    testWidgets('VietQR button has at least 48px touch target height', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest(targetUserId: 2));
+      await tester.pumpAndSettle();
+
+      final vietQrButtonFinder = find.widgetWithText(OutlinedButton, 'Mã VietQR');
+      final size = tester.getSize(vietQrButtonFinder);
+      expect(size.height, greaterThanOrEqualTo(48.0));
     });
   });
 }
