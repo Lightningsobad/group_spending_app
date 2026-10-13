@@ -215,7 +215,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get tabSettings => 'Cài đặt';
 
   @override
-  String get notificationsTitle => 'Tổng hợp thông báo';
+  String get notificationsTitle => 'Thông báo';
 
   @override
   String get noNotifications => 'Hiện bạn chưa có thông báo mới nào.';
@@ -236,7 +236,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get changePassword => 'Đổi mật khẩu';
 
   @override
-  String get vietqrTitle => 'TÀI KHOẢN NHẬN TIỀN NỢ (VIETQR)';
+  String get vietqrTitle => 'TÀI KHOẢN NGÂN HÀNG';
 
   @override
   String get noBankData => 'Chưa có dữ liệu';
@@ -245,7 +245,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get appearanceLanguageSection => 'GIAO DIỆN & NGÔN NGỮ';
 
   @override
-  String get themeModeTitle => 'Chế độ giao diện (Theme)';
+  String get themeModeTitle => 'Chế độ giao diện';
 
   @override
   String get lightThemeLabel => 'Light';
@@ -254,7 +254,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get darkThemeLabel => 'Dark';
 
   @override
-  String get displayLanguageTitle => 'Ngôn ngữ hiển thị';
+  String get displayLanguageTitle => 'Ngôn ngữ';
 
   @override
   String get infoSupportSection => 'THÔNG TIN & HỖ TRỢ';
@@ -411,7 +411,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get createGroupAction => 'Tạo nhóm';
 
   @override
-  String get codeOrQrAction => 'Mã / QR';
+  String get codeOrQrAction => 'Gia nhập nhóm';
 
   @override
   String get yourGroupsSection => 'CÁC NHÓM CỦA BẠN';
@@ -487,15 +487,13 @@ class AppLocalizationsVi extends AppLocalizations {
   String get groupNameLabel => 'Tên nhóm chi tiêu *';
 
   @override
-  String get groupNameHint =>
-      'Nhập tên nhóm (VD: Chuyến đi Đà Lạt, Chung cư 402...)';
+  String get groupNameHint => 'Nhập tên nhóm của bạn';
 
   @override
   String get groupDescLabel => 'Mô tả nhóm (Tùy chọn)';
 
   @override
-  String get groupDescHint =>
-      'Nhập mô tả ngắn về mục đích chi tiêu của nhóm...';
+  String get groupDescHint => 'Nhập mô tả ngắn';
 
   @override
   String get groupCategoryLabel => 'Danh mục nhóm';
@@ -511,13 +509,13 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get joinGroupSubtitle =>
-      'Nhập mã mời gồm 6-12 ký tự để tham gia nhóm chi tiêu của bạn bè.';
+      'Nhập mã mời để tham gia nhóm chi tiêu cùng bạn bè';
 
   @override
   String get inviteCodeLabel => 'Mã mời nhóm *';
 
   @override
-  String get inviteCodeHint => 'VD: DALAT2024, ROOM402...';
+  String get inviteCodeHint => 'Mã nhóm của bạn';
 
   @override
   String get inviteCodeRequired => 'Vui lòng nhập mã mời.';
@@ -645,9 +643,6 @@ class AppLocalizationsVi extends AppLocalizations {
       'Hướng camera vào mã QR của nhóm để gửi yêu cầu gia nhập';
 
   @override
-  String get testScanQrAction => 'Quét thử mã QR';
-
-  @override
   String get uploadQrImageAction => 'Tải ảnh mã QR';
 
   @override
@@ -717,13 +712,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get totalSpendingMetric => 'Tổng tiền chi tiêu';
 
   @override
-  String get commonGroupSpendingSubtitle => 'Chi tiêu chung cả nhóm';
-
-  @override
   String get averagePerPersonMetric => 'Bình quân đầu người';
-
-  @override
-  String get splitEquallySubtitle => 'Mỗi thành viên chia đều';
 
   @override
   String friendsCountBadge(int count) {
@@ -738,9 +727,6 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get expensesUnit => 'khoản chi';
-
-  @override
-  String get recordedAndAuditedSubtitle => 'Đã ghi nhận & đối soát';
 
   @override
   String get settlementRateMetric => 'Tỷ lệ tất toán';
@@ -825,7 +811,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get debtsYouOwe => 'Bạn đang nợ';
 
   @override
-  String get debtsYouOweSubtitle => 'Tổng tiền bạn cần thanh toán';
+  String get debtsYouOweSubtitle => 'Cần thanh toán ngay';
 
   @override
   String get debtsYouReceive => 'Bạn nhận';
@@ -867,7 +853,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get badgeYouReceive => 'Bạn nhận';
 
   @override
-  String get badgeYouMustPay => 'Bạn cần thanh toán';
+  String get badgeYouMustPay => 'Bạn nợ';
 
   @override
   String get badgeBalanced => 'Đã cân bằng';

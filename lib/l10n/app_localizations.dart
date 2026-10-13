@@ -491,7 +491,7 @@ abstract class AppLocalizations {
   /// No description provided for @notificationsTitle.
   ///
   /// In vi, this message translates to:
-  /// **'Tổng hợp thông báo'**
+  /// **'Thông báo'**
   String get notificationsTitle;
 
   /// No description provided for @noNotifications.
@@ -533,7 +533,7 @@ abstract class AppLocalizations {
   /// No description provided for @vietqrTitle.
   ///
   /// In vi, this message translates to:
-  /// **'TÀI KHOẢN NHẬN TIỀN NỢ (VIETQR)'**
+  /// **'TÀI KHOẢN NGÂN HÀNG'**
   String get vietqrTitle;
 
   /// No description provided for @noBankData.
@@ -551,7 +551,7 @@ abstract class AppLocalizations {
   /// No description provided for @themeModeTitle.
   ///
   /// In vi, this message translates to:
-  /// **'Chế độ giao diện (Theme)'**
+  /// **'Chế độ giao diện'**
   String get themeModeTitle;
 
   /// No description provided for @lightThemeLabel.
@@ -569,7 +569,7 @@ abstract class AppLocalizations {
   /// No description provided for @displayLanguageTitle.
   ///
   /// In vi, this message translates to:
-  /// **'Ngôn ngữ hiển thị'**
+  /// **'Ngôn ngữ'**
   String get displayLanguageTitle;
 
   /// No description provided for @infoSupportSection.
@@ -851,7 +851,7 @@ abstract class AppLocalizations {
   /// No description provided for @codeOrQrAction.
   ///
   /// In vi, this message translates to:
-  /// **'Mã / QR'**
+  /// **'Gia nhập nhóm'**
   String get codeOrQrAction;
 
   /// No description provided for @yourGroupsSection.
@@ -971,7 +971,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupNameHint.
   ///
   /// In vi, this message translates to:
-  /// **'Nhập tên nhóm (VD: Chuyến đi Đà Lạt, Chung cư 402...)'**
+  /// **'Nhập tên nhóm của bạn'**
   String get groupNameHint;
 
   /// No description provided for @groupDescLabel.
@@ -983,7 +983,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupDescHint.
   ///
   /// In vi, this message translates to:
-  /// **'Nhập mô tả ngắn về mục đích chi tiêu của nhóm...'**
+  /// **'Nhập mô tả ngắn'**
   String get groupDescHint;
 
   /// No description provided for @groupCategoryLabel.
@@ -1013,7 +1013,7 @@ abstract class AppLocalizations {
   /// No description provided for @joinGroupSubtitle.
   ///
   /// In vi, this message translates to:
-  /// **'Nhập mã mời gồm 6-12 ký tự để tham gia nhóm chi tiêu của bạn bè.'**
+  /// **'Nhập mã mời để tham gia nhóm chi tiêu cùng bạn bè'**
   String get joinGroupSubtitle;
 
   /// No description provided for @inviteCodeLabel.
@@ -1025,7 +1025,7 @@ abstract class AppLocalizations {
   /// No description provided for @inviteCodeHint.
   ///
   /// In vi, this message translates to:
-  /// **'VD: DALAT2024, ROOM402...'**
+  /// **'Mã nhóm của bạn'**
   String get inviteCodeHint;
 
   /// No description provided for @inviteCodeRequired.
@@ -1262,12 +1262,6 @@ abstract class AppLocalizations {
   /// **'Hướng camera vào mã QR của nhóm để gửi yêu cầu gia nhập'**
   String get scanQrInstruction;
 
-  /// No description provided for @testScanQrAction.
-  ///
-  /// In vi, this message translates to:
-  /// **'Quét thử mã QR'**
-  String get testScanQrAction;
-
   /// No description provided for @uploadQrImageAction.
   ///
   /// In vi, this message translates to:
@@ -1400,23 +1394,11 @@ abstract class AppLocalizations {
   /// **'Tổng tiền chi tiêu'**
   String get totalSpendingMetric;
 
-  /// No description provided for @commonGroupSpendingSubtitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Chi tiêu chung cả nhóm'**
-  String get commonGroupSpendingSubtitle;
-
   /// No description provided for @averagePerPersonMetric.
   ///
   /// In vi, this message translates to:
   /// **'Bình quân đầu người'**
   String get averagePerPersonMetric;
-
-  /// No description provided for @splitEquallySubtitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Mỗi thành viên chia đều'**
-  String get splitEquallySubtitle;
 
   /// No description provided for @friendsCountBadge.
   ///
@@ -1441,12 +1423,6 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'khoản chi'**
   String get expensesUnit;
-
-  /// No description provided for @recordedAndAuditedSubtitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Đã ghi nhận & đối soát'**
-  String get recordedAndAuditedSubtitle;
 
   /// No description provided for @settlementRateMetric.
   ///
@@ -1595,7 +1571,7 @@ abstract class AppLocalizations {
   /// No description provided for @debtsYouOweSubtitle.
   ///
   /// In vi, this message translates to:
-  /// **'Tổng tiền bạn cần thanh toán'**
+  /// **'Cần thanh toán ngay'**
   String get debtsYouOweSubtitle;
 
   /// No description provided for @debtsYouReceive.
@@ -1661,7 +1637,7 @@ abstract class AppLocalizations {
   /// No description provided for @badgeYouMustPay.
   ///
   /// In vi, this message translates to:
-  /// **'Bạn cần thanh toán'**
+  /// **'Bạn nợ'**
   String get badgeYouMustPay;
 
   /// No description provided for @badgeBalanced.

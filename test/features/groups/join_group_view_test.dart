@@ -57,7 +57,6 @@ void main() {
 
       // Default active tab: Quét mã QR
       expect(find.text('Hướng camera vào mã QR của nhóm để gửi yêu cầu gia nhập'), findsOneWidget);
-      expect(find.text('Quét thử mã QR'), findsOneWidget);
       expect(find.text('Tải ảnh mã QR'), findsOneWidget);
     });
 
@@ -81,14 +80,14 @@ void main() {
       await tester.pump();
 
       expect(find.text('MÃ MỜI NHÓM *'), findsOneWidget);
-      expect(find.text('VD: DALAT2024, ROOM402...'), findsOneWidget);
+      expect(find.text('Mã nhóm của bạn'), findsOneWidget);
       expect(find.text('Tham gia nhóm'), findsOneWidget);
 
       // Switch back to Quét mã QR tab
       await tester.tap(find.text('Quét mã QR'));
       await tester.pump();
 
-      expect(find.text('Quét thử mã QR'), findsOneWidget);
+      expect(find.text('Tải ảnh mã QR'), findsOneWidget);
     });
 
     testWidgets('submitting manual invite code calls GroupsCubit.joinGroup and invokes onSuccess', (tester) async {
@@ -113,18 +112,6 @@ void main() {
       expect(successCalled, isTrue);
     });
 
-    testWidgets('test scan button joins group with test invite code', (tester) async {
-      bool successCalled = false;
-      await tester.pumpWidget(createWidgetUnderTest(onSuccess: () => successCalled = true));
-      await tester.pump();
-
-      // Tap Quét thử mã QR
-      await tester.tap(find.text('Quét thử mã QR'));
-      await tester.pump();
-      await tester.pump(const Duration(milliseconds: 100));
-
-      expect(successCalled, isTrue);
-    });
 
     testWidgets('initialInviteCode switches automatically to tab 1 and pre-fills text', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest(initialInviteCode: 'E93KLA'));

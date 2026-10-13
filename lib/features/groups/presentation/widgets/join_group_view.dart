@@ -166,11 +166,6 @@ class _JoinGroupViewState extends State<JoinGroupView> {
     }
   }
 
-  void _runTestScan() {
-    // Cho phép test nhanh với mã mời mẫu từ backend (hoặc mã trong mô tả bài toán: 634636)
-    _handleInviteCode('634636');
-  }
-
   Future<void> _pasteFromClipboard() async {
     final data = await Clipboard.getData(Clipboard.kTextPlain);
     if (data?.text != null && data!.text!.trim().isNotEmpty) {
@@ -516,26 +511,6 @@ class _JoinGroupViewState extends State<JoinGroupView> {
           ),
         ),
         const SizedBox(height: 18),
-
-        // Primary Action: Quét thử mã QR
-        ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF065F46),
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 14),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(14),
-            ),
-            elevation: 0,
-          ),
-          onPressed: _isSubmitting ? null : _runTestScan,
-          icon: const Icon(LucideIcons.camera, size: 18),
-          label: Text(
-            tr.testScanQrAction,
-            style: AppTextStyle.bold(fontSize: 14),
-          ),
-        ),
-        const SizedBox(height: 10),
 
         // Secondary Action: Tải ảnh mã QR
         OutlinedButton.icon(

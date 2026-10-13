@@ -198,9 +198,11 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
       },
       builder: (context, state) {
         final detail = state.selectedMemberDetail;
-        final isSelf = widget.currentUserId != null &&
+        final isSelf =
+            widget.currentUserId != null &&
             widget.currentUserId == widget.targetUserId;
-        final canKick = widget.isGroupAdmin &&
+        final canKick =
+            widget.isGroupAdmin &&
             !isSelf &&
             !widget.isGroupArchived &&
             detail != null &&
@@ -222,16 +224,23 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                       borderRadius: BorderRadius.circular(10),
                       onTap: widget.onBack,
                       child: ConstrainedBox(
-                        constraints:
-                            const BoxConstraints(minHeight: 48, minWidth: 48),
+                        constraints: const BoxConstraints(
+                          minHeight: 48,
+                          minWidth: 48,
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 8),
+                            vertical: 12,
+                            horizontal: 8,
+                          ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(LucideIcons.arrowLeft,
-                                  size: 18, color: colors.textPrimary),
+                              Icon(
+                                LucideIcons.arrowLeft,
+                                size: 18,
+                                color: colors.textPrimary,
+                              ),
                               const SizedBox(width: 6),
                               Text(
                                 tr.backToGroup,
@@ -265,33 +274,33 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                 if (state.isLoadingDetail)
                   const GroupMemberDetailSkeleton()
                 else if (detail != null) ...[
-                // 2. Profile Hero Card (Image 3)
-                _buildHeroCard(context, detail, isSelf),
-                const SizedBox(height: 16),
+                  // 2. Profile Hero Card (Image 3)
+                  _buildHeroCard(context, detail, isSelf),
+                  const SizedBox(height: 16),
 
-                // 3. THÔNG TIN CÁ NHÂN & TÀI KHOẢN (Image 3)
-                _buildContactAndBankCard(context, detail),
-                const SizedBox(height: 16),
+                  // 3. THÔNG TIN CÁ NHÂN & TÀI KHOẢN (Image 3)
+                  _buildContactAndBankCard(context, detail),
+                  const SizedBox(height: 16),
 
-                // 4. TRẠNG THÁI CÔNG NỢ TRONG NHÓM (Image 4)
-                _buildDebtStatusCard(context, detail),
-                const SizedBox(height: 16),
+                  // 4. TRẠNG THÁI CÔNG NỢ TRONG NHÓM (Image 4)
+                  _buildDebtStatusCard(context, detail),
+                  const SizedBox(height: 16),
 
-                // 5. CÁC KHOẢN CHI ĐÃ THAM GIA (Image 4)
-                _buildParticipatedExpensesCard(context, detail),
+                  // 5. CÁC KHOẢN CHI ĐÃ THAM GIA (Image 4)
+                  _buildParticipatedExpensesCard(context, detail),
 
-                // 6. XÓA THÀNH VIÊN KHỎI NHÓM (Dành cho Admin)
-                if (canKick) ...[
-                  const SizedBox(height: 20),
-                  _buildKickMemberCard(context, detail),
+                  // 6. XÓA THÀNH VIÊN KHỎI NHÓM (Dành cho Admin)
+                  if (canKick) ...[
+                    const SizedBox(height: 20),
+                    _buildKickMemberCard(context, detail),
+                  ],
                 ],
               ],
-            ],
+            ),
           ),
-        ),
-      );
-    },
-  );
+        );
+      },
+    );
   }
 
   Widget _buildHeroCard(
@@ -326,13 +335,16 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  border: Border.all(color: colors.memberAvatarBorder, width: 3),
+                  border: Border.all(
+                    color: colors.memberAvatarBorder,
+                    width: 3,
+                  ),
                 ),
                 child: CircleAvatar(
                   radius: 38,
                   backgroundColor: AppColors.emerald.withValues(alpha: 0.2),
-                  backgroundImage: detail.avatarUrl != null &&
-                          detail.avatarUrl!.isNotEmpty
+                  backgroundImage:
+                      detail.avatarUrl != null && detail.avatarUrl!.isNotEmpty
                       ? NetworkImage(detail.avatarUrl!)
                       : null,
                   child: detail.avatarUrl == null
@@ -371,7 +383,9 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
             children: [
               Flexible(
                 child: Text(
-                  isSelf ? '${detail.fullName} (${tr.youPill})' : detail.fullName,
+                  isSelf
+                      ? '${detail.fullName} (${tr.youPill})'
+                      : detail.fullName,
                   style: AppTextStyle.bold(
                     fontSize: 17,
                     color: colors.textPrimary,
@@ -384,8 +398,10 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
               if (isSelf) ...[
                 const SizedBox(width: 8),
                 Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: colors.primaryContainer,
                     borderRadius: BorderRadius.circular(12),
@@ -419,8 +435,11 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     if (detail.isAdmin) ...[
-                      Icon(LucideIcons.shieldCheck,
-                          size: 12, color: colors.badgeWarningIcon),
+                      Icon(
+                        LucideIcons.shieldCheck,
+                        size: 12,
+                        color: colors.badgeWarningIcon,
+                      ),
                       const SizedBox(width: 4),
                     ],
                     Text(
@@ -436,8 +455,10 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                 ),
               ),
               const SizedBox(width: 6),
-              Text('•',
-                  style: TextStyle(color: colors.textMuted, fontSize: 12)),
+              Text(
+                '•',
+                style: TextStyle(color: colors.textMuted, fontSize: 12),
+              ),
               const SizedBox(width: 6),
               Flexible(
                 child: Text(
@@ -481,24 +502,24 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                       FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
-                          CurrencyUtils.formatVnd(detail.netBalanceVnd,
-                              showSign: true),
+                          CurrencyUtils.formatVnd(
+                            detail.netBalanceVnd,
+                            showSign: true,
+                          ),
                           style: AppTextStyle.bold(
                             fontSize: 13,
                             color: detail.netBalanceVnd > 0
                                 ? colors.onPrimaryContainer
                                 : detail.netBalanceVnd < 0
-                                    ? AppColors.error
-                                    : colors.textPrimary,
+                                ? AppColors.error
+                                : colors.textPrimary,
                           ),
                           maxLines: 1,
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        detail.netBalanceVnd >= 0
-                            ? 'Thu về'
-                            : 'Cần trả',
+                        detail.netBalanceVnd >= 0 ? 'Thu về' : 'Cần trả',
                         style: AppTextStyle.regular(
                           fontSize: 12,
                           color: colors.textSecondary,
@@ -507,8 +528,7 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                     ],
                   ),
                 ),
-                Container(
-                    width: 1, height: 32, color: colors.divider),
+                Container(width: 1, height: 32, color: colors.divider),
 
                 // Col 2: Trả đúng hạn
                 Expanded(
@@ -529,8 +549,11 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(LucideIcons.star,
-                                size: 12, color: colors.badgeWarningIcon),
+                            Icon(
+                              LucideIcons.star,
+                              size: 12,
+                              color: colors.badgeWarningIcon,
+                            ),
                             const SizedBox(width: 3),
                             Text(
                               '${detail.debtSettlementRate.toStringAsFixed(detail.debtSettlementRate.truncateToDouble() == detail.debtSettlementRate ? 0 : 1)}%',
@@ -553,8 +576,7 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                     ],
                   ),
                 ),
-                Container(
-                    width: 1, height: 32, color: colors.divider),
+                Container(width: 1, height: 32, color: colors.divider),
 
                 // Col 3: Đóng quỹ đúng hạn
                 Expanded(
@@ -575,8 +597,11 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(LucideIcons.target,
-                                size: 12, color: colors.onPrimaryContainer),
+                            Icon(
+                              LucideIcons.target,
+                              size: 12,
+                              color: colors.onPrimaryContainer,
+                            ),
                             const SizedBox(width: 3),
                             Text(
                               '${detail.fundContributionOnTimeRate.toStringAsFixed(detail.fundContributionOnTimeRate.truncateToDouble() == detail.fundContributionOnTimeRate ? 0 : 1)}%',
@@ -650,14 +675,19 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                   color: colors.infoIconBg,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(LucideIcons.mail,
-                    size: 16, color: colors.infoIconColor),
+                child: Icon(
+                  LucideIcons.mail,
+                  size: 16,
+                  color: colors.infoIconColor,
+                ),
               ),
               const SizedBox(width: 12),
               Text(
                 'Email',
                 style: AppTextStyle.medium(
-                    fontSize: 13, color: colors.textSecondary),
+                  fontSize: 13,
+                  color: colors.textSecondary,
+                ),
               ),
               const Spacer(),
               Flexible(
@@ -665,7 +695,9 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                 child: Text(
                   detail.email,
                   style: AppTextStyle.bold(
-                      fontSize: 13, color: colors.textPrimary),
+                    fontSize: 13,
+                    color: colors.textPrimary,
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -673,8 +705,7 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
               IconButton(
                 constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                 icon: Icon(LucideIcons.copy, size: 14, color: colors.textMuted),
-                onPressed: () =>
-                    _copyToClipboard(detail.email, tr.copiedEmail),
+                onPressed: () => _copyToClipboard(detail.email, tr.copiedEmail),
               ),
             ],
           ),
@@ -689,29 +720,41 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                   color: colors.primaryContainer,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(LucideIcons.phone,
-                    size: 16, color: colors.onPrimaryContainer),
+                child: Icon(
+                  LucideIcons.phone,
+                  size: 16,
+                  color: colors.onPrimaryContainer,
+                ),
               ),
               const SizedBox(width: 12),
               Text(
                 'Số điện thoại',
                 style: AppTextStyle.medium(
-                    fontSize: 13, color: colors.textSecondary),
+                  fontSize: 13,
+                  color: colors.textSecondary,
+                ),
               ),
               const Spacer(),
               Text(
                 detail.phone != null && detail.phone!.isNotEmpty
                     ? detail.phone!
                     : '---',
-                style:
-                    AppTextStyle.bold(fontSize: 13, color: colors.textPrimary),
+                style: AppTextStyle.bold(
+                  fontSize: 13,
+                  color: colors.textPrimary,
+                ),
               ),
               if (detail.phone != null && detail.phone!.isNotEmpty)
                 IconButton(
-                  constraints:
-                      const BoxConstraints(minWidth: 48, minHeight: 48),
-                  icon:
-                      Icon(LucideIcons.copy, size: 14, color: colors.textMuted),
+                  constraints: const BoxConstraints(
+                    minWidth: 48,
+                    minHeight: 48,
+                  ),
+                  icon: Icon(
+                    LucideIcons.copy,
+                    size: 14,
+                    color: colors.textMuted,
+                  ),
                   onPressed: () =>
                       _copyToClipboard(detail.phone!, tr.copiedPhone),
                 )
@@ -730,19 +773,26 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                   color: colors.badgeWarningBg,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(LucideIcons.shieldAlert,
-                    size: 16, color: colors.badgeWarningIcon),
+                child: Icon(
+                  LucideIcons.shieldAlert,
+                  size: 16,
+                  color: colors.badgeWarningIcon,
+                ),
               ),
               const SizedBox(width: 12),
               Text(
-                'Vai trò trong nhóm',
+                'Vai trò',
                 style: AppTextStyle.medium(
-                    fontSize: 13, color: colors.textSecondary),
+                  fontSize: 13,
+                  color: colors.textSecondary,
+                ),
               ),
               const Spacer(),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: detail.isAdmin
                       ? colors.badgeWarningBg
@@ -776,15 +826,20 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                         color: colors.primaryContainer,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Icon(LucideIcons.creditCard,
-                          size: 16, color: colors.onPrimaryContainer),
+                      child: Icon(
+                        LucideIcons.creditCard,
+                        size: 16,
+                        color: colors.onPrimaryContainer,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Flexible(
                       child: Text(
                         tr.bankAccountTitle,
                         style: AppTextStyle.medium(
-                            fontSize: 13, color: colors.textSecondary),
+                          fontSize: 13,
+                          color: colors.textSecondary,
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -796,8 +851,10 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
               if (detail.hasBankInfo)
                 OutlinedButton.icon(
                   style: OutlinedButton.styleFrom(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 8,
+                    ),
                     minimumSize: const Size(0, 48),
                     side: BorderSide(color: colors.secondaryActionBorder),
                     shape: RoundedRectangleBorder(
@@ -812,8 +869,11 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                       accountName: detail.bankAccountName ?? detail.fullName,
                     );
                   },
-                  icon: Icon(LucideIcons.qrCode,
-                      size: 14, color: colors.secondaryActionText),
+                  icon: Icon(
+                    LucideIcons.qrCode,
+                    size: 14,
+                    color: colors.secondaryActionText,
+                  ),
                   label: Text(
                     tr.vietQrCodeButton,
                     style: AppTextStyle.bold(
@@ -854,7 +914,9 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                       const SizedBox(width: 8),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 3),
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
                         decoration: BoxDecoration(
                           color: colors.memberStatsBoxBg,
                           borderRadius: BorderRadius.circular(8),
@@ -877,16 +939,23 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                           tr.copiedAccountNumber,
                         ),
                         child: ConstrainedBox(
-                          constraints:
-                              const BoxConstraints(minHeight: 48, minWidth: 48),
+                          constraints: const BoxConstraints(
+                            minHeight: 48,
+                            minWidth: 48,
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 12),
+                              horizontal: 8,
+                              vertical: 12,
+                            ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(LucideIcons.copy,
-                                    size: 14, color: colors.secondaryActionText),
+                                Icon(
+                                  LucideIcons.copy,
+                                  size: 14,
+                                  color: colors.secondaryActionText,
+                                ),
                                 const SizedBox(width: 4),
                                 Text(
                                   tr.copyAction,
@@ -967,29 +1036,31 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                 ),
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: detail.netBalanceVnd > 0
                       ? colors.primaryContainer
                       : detail.netBalanceVnd < 0
-                          ? colors.dangerSurface
-                          : colors.surfaceMuted,
+                      ? colors.dangerSurface
+                      : colors.surfaceMuted,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Text(
                   detail.netBalanceVnd > 0
                       ? 'Được nhận: ${CurrencyUtils.formatVnd(detail.netBalanceVnd)}'
                       : detail.netBalanceVnd < 0
-                          ? 'Cần trả: ${CurrencyUtils.formatVnd(detail.netBalanceVnd.abs())}'
-                          : tr.settledBadge,
+                      ? 'Cần trả: ${CurrencyUtils.formatVnd(detail.netBalanceVnd.abs())}'
+                      : tr.settledBadge,
                   style: AppTextStyle.bold(
                     fontSize: 12,
                     color: detail.netBalanceVnd > 0
                         ? colors.onPrimaryContainer
                         : detail.netBalanceVnd < 0
-                            ? colors.dangerText
-                            : colors.textSecondary,
+                        ? colors.dangerText
+                        : colors.textSecondary,
                   ),
                 ),
               ),
@@ -1004,11 +1075,15 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
               Text(
                 '• ${tr.totalRefundedByGroup}',
                 style: AppTextStyle.regular(
-                    fontSize: 13, color: colors.textSecondary),
+                  fontSize: 13,
+                  color: colors.textSecondary,
+                ),
               ),
               Text(
-                CurrencyUtils.formatVnd(detail.receivableAmountVnd,
-                    showSign: true),
+                CurrencyUtils.formatVnd(
+                  detail.receivableAmountVnd,
+                  showSign: true,
+                ),
                 style: AppTextStyle.bold(
                   fontSize: 13,
                   color: colors.onPrimaryContainer,
@@ -1025,7 +1100,9 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
               Text(
                 '• ${tr.totalToPayGroup}',
                 style: AppTextStyle.regular(
-                    fontSize: 13, color: colors.textSecondary),
+                  fontSize: 13,
+                  color: colors.textSecondary,
+                ),
               ),
               Text(
                 detail.debtAmountVnd > 0
@@ -1057,15 +1134,15 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                 detail.netBalanceVnd > 0
                     ? 'Được nhận ${CurrencyUtils.formatVnd(detail.netBalanceVnd)}'
                     : detail.netBalanceVnd < 0
-                        ? 'Cần trả ${CurrencyUtils.formatVnd(detail.netBalanceVnd.abs())}'
-                        : '0 đ',
+                    ? 'Cần trả ${CurrencyUtils.formatVnd(detail.netBalanceVnd.abs())}'
+                    : '0 đ',
                 style: AppTextStyle.bold(
                   fontSize: 14,
                   color: detail.netBalanceVnd > 0
-                        ? colors.onPrimaryContainer
-                        : detail.netBalanceVnd < 0
-                            ? colors.dangerText
-                            : colors.textPrimary,
+                      ? colors.onPrimaryContainer
+                      : detail.netBalanceVnd < 0
+                      ? colors.dangerText
+                      : colors.textPrimary,
                 ),
               ),
             ],
@@ -1137,7 +1214,9 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                 child: Text(
                   tr.noExpensesYet,
                   style: AppTextStyle.regular(
-                      fontSize: 13, color: colors.textMuted),
+                    fontSize: 13,
+                    color: colors.textMuted,
+                  ),
                 ),
               ),
             )
@@ -1255,8 +1334,11 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
                   color: colors.dangerIconBg,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(LucideIcons.userMinus,
-                    size: 18, color: colors.dangerText),
+                child: Icon(
+                  LucideIcons.userMinus,
+                  size: 18,
+                  color: colors.dangerText,
+                ),
               ),
               const SizedBox(width: 12),
               Expanded(

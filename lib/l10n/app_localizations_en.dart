@@ -413,7 +413,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createGroupAction => 'Create group';
 
   @override
-  String get codeOrQrAction => 'Code / QR';
+  String get codeOrQrAction => 'Join now';
 
   @override
   String get yourGroupsSection => 'YOUR GROUPS';
@@ -646,9 +646,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Point your camera at the group\'s QR code to send a join request';
 
   @override
-  String get testScanQrAction => 'Test Scan QR';
-
-  @override
   String get uploadQrImageAction => 'Upload QR Image';
 
   @override
@@ -719,13 +716,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get totalSpendingMetric => 'Total spending amount';
 
   @override
-  String get commonGroupSpendingSubtitle => 'Shared spending across groups';
-
-  @override
   String get averagePerPersonMetric => 'Average per person';
-
-  @override
-  String get splitEquallySubtitle => 'Split equally per member';
 
   @override
   String friendsCountBadge(int count) {
@@ -740,9 +731,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get expensesUnit => 'expenses';
-
-  @override
-  String get recordedAndAuditedSubtitle => 'Recorded & verified';
 
   @override
   String get settlementRateMetric => 'Settlement rate';

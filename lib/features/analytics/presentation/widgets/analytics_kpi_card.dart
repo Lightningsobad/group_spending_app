@@ -11,7 +11,6 @@ class AnalyticsKpiCard extends StatelessWidget {
   final String? badgeText;
   final Color? badgeBgColor;
   final Color? badgeTextColor;
-  final String? subtitle;
   final double? progressBarPercent;
   final String? progressSubtitleLeft;
   final String? progressSubtitleRight;
@@ -26,7 +25,6 @@ class AnalyticsKpiCard extends StatelessWidget {
     this.badgeText,
     this.badgeBgColor,
     this.badgeTextColor,
-    this.subtitle,
     this.progressBarPercent,
     this.progressSubtitleLeft,
     this.progressSubtitleRight,
@@ -124,7 +122,7 @@ class AnalyticsKpiCard extends StatelessWidget {
               ),
             ),
           ],
-          // Subtitle or progress footer
+          // Progress footer
           if (progressSubtitleLeft != null || progressSubtitleRight != null) ...[
             const SizedBox(height: 8),
             Row(
@@ -158,17 +156,6 @@ class AnalyticsKpiCard extends StatelessWidget {
                   ),
                 ],
               ],
-            ),
-          ] else if (subtitle != null) ...[
-            const SizedBox(height: 6),
-            Text(
-              subtitle!,
-              style: AppTextStyle.medium(
-                color: colors.textSecondary,
-                fontSize: 12,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
             ),
           ],
         ],
