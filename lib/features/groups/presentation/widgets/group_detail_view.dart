@@ -350,51 +350,58 @@ class _GroupDetailViewState extends State<GroupDetailView> {
       onPopInvokedWithResult: (didPop, _) {
         if (!didPop) widget.onBack();
       },
-      child: RefreshIndicator(
-        color: AppColors.emerald,
-        onRefresh: _fetchLatestDetail,
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 90),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // 1. Group Header Card (Image 1)
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                decoration: BoxDecoration(
-                  color: colors.cardBackground,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: colors.cardBorder),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.03),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    // Back button
-                    InkWell(
-                      borderRadius: BorderRadius.circular(12),
-                      onTap: widget.onBack,
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: colors.surfaceMuted,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Icon(
-                          LucideIcons.arrowLeft,
-                          size: 18,
-                          color: colors.textPrimary,
+      child: SafeArea(
+        bottom: false,
+        child: RefreshIndicator(
+          color: AppColors.emerald,
+          onRefresh: _fetchLatestDetail,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 90),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // 1. Group Header Card (Image 1)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: colors.cardBackground,
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(color: colors.cardBorder),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.03),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      // Back button (Touch target tối thiểu 48x48)
+                      InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: widget.onBack,
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                          child: Center(
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: colors.surfaceMuted,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Icon(
+                                LucideIcons.arrowLeft,
+                                size: 18,
+                                color: colors.textPrimary,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(width: 14),
-                    // Group name
+                      const SizedBox(width: 8),
+                      // Group name
                     Expanded(
                       child: Text(
                         _group.name,
@@ -456,8 +463,9 @@ class _GroupDetailViewState extends State<GroupDetailView> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildTabPill({
     required int index,
@@ -465,32 +473,38 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     required dynamic colors,
   }) {
     final isSelected = _selectedTabIndex == index;
-    return GestureDetector(
-      onTap: () => setState(() => _selectedTabIndex = index),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        decoration: BoxDecoration(
-          color: isSelected ? colors.tabPillActiveBg : colors.cardBackground,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 48),
+      child: Center(
+        child: InkWell(
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: isSelected ? colors.tabPillActiveBg : colors.cardBorder,
-          ),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: (colors.tabPillActiveBg as Color).withValues(alpha: 0.25),
-                    blurRadius: 6,
-                    offset: const Offset(0, 2),
-                  ),
-                ]
-              : null,
-        ),
-        child: Text(
-          label,
-          style: AppTextStyle.bold(
-            fontSize: 13,
-            color: isSelected ? colors.tabPillActiveText : colors.textPrimary,
+          onTap: () => setState(() => _selectedTabIndex = index),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            decoration: BoxDecoration(
+              color: isSelected ? colors.tabPillActiveBg : colors.cardBackground,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(
+                color: isSelected ? colors.tabPillActiveBg : colors.cardBorder,
+              ),
+              boxShadow: isSelected
+                  ? [
+                      BoxShadow(
+                        color: (colors.tabPillActiveBg as Color).withValues(alpha: 0.25),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ]
+                  : null,
+            ),
+            child: Text(
+              label,
+              style: AppTextStyle.bold(
+                fontSize: 13,
+                color: isSelected ? colors.tabPillActiveText : colors.textPrimary,
+              ),
+            ),
           ),
         ),
       ),

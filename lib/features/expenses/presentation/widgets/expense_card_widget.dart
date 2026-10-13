@@ -67,12 +67,12 @@ class ExpenseCardWidget extends StatelessWidget {
                       width: 44,
                       height: 44,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE8F5E9),
+                        color: colors.expenseCategoryIconBg,
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: Icon(
                         cat.icon,
-                        color: const Color(0xFF2E7D32),
+                        color: colors.expenseCategoryIcon,
                         size: 22,
                       ),
                     ),
@@ -85,7 +85,7 @@ class ExpenseCardWidget extends StatelessWidget {
                           Text(
                             expense.title,
                             style: AppTextStyle.bold(
-                              fontSize: 15,
+                              fontSize: 16,
                               color: colors.textPrimary,
                             ),
                             maxLines: 1,
@@ -95,17 +95,21 @@ class ExpenseCardWidget extends StatelessWidget {
                           // Date & Category tag
                           Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 LucideIcons.calendar,
                                 size: 12,
-                                color: Color(0xFF94A3B8),
+                                color: colors.textMuted,
                               ),
                               const SizedBox(width: 4),
-                              Text(
-                                _formatDateTime(expense.expenseDate),
-                                style: AppTextStyle.regular(
-                                  fontSize: 12,
-                                  color: colors.textSecondary,
+                              Flexible(
+                                child: Text(
+                                  _formatDateTime(expense.expenseDate),
+                                  style: AppTextStyle.regular(
+                                    fontSize: 12,
+                                    color: colors.textSecondary,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ],
@@ -113,17 +117,21 @@ class ExpenseCardWidget extends StatelessWidget {
                           const SizedBox(height: 4),
                           Row(
                             children: [
-                              const Icon(
+                              Icon(
                                 LucideIcons.tag,
                                 size: 12,
-                                color: Color(0xFF10B981),
+                                color: colors.expenseCategoryTag,
                               ),
                               const SizedBox(width: 4),
-                              Text(
-                                cat.labelVi,
-                                style: AppTextStyle.medium(
-                                  fontSize: 12,
-                                  color: const Color(0xFF10B981),
+                              Flexible(
+                                child: Text(
+                                  cat.labelVi,
+                                  style: AppTextStyle.medium(
+                                    fontSize: 12,
+                                    color: colors.expenseCategoryTag,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ],
@@ -139,7 +147,7 @@ class ExpenseCardWidget extends StatelessWidget {
                         Text(
                           CurrencyUtils.formatVnd(expense.amountVnd),
                           style: AppTextStyle.bold(
-                            fontSize: 15,
+                            fontSize: 16,
                             color: colors.textPrimary,
                           ),
                         ),
@@ -154,10 +162,10 @@ class ExpenseCardWidget extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 12),
-                const Divider(height: 1, color: Color(0xFFF1F5F9)),
+                Divider(height: 1, color: colors.divider),
                 const SizedBox(height: 10),
 
-                // Bottom row: Payer, Payment Status badge & View Receipt
+                // Bottom row: Payer, Payment Status badge
                 Row(
                   children: [
                     // Payer info
@@ -177,44 +185,54 @@ class ExpenseCardWidget extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
+                    const SizedBox(width: 8),
                     // Payment Status Badge
                     if (expense.isPaidByMe)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFDCFCE7),
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: const Color(0xFF86EFAC)),
-                        ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(LucideIcons.check, size: 12, color: Color(0xFF15803D)),
-                            SizedBox(width: 4),
-                            Text(
-                              'Bạn đã thanh toán',
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF15803D),
+                      Flexible(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: colors.badgeSuccessBg,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: colors.brandEmeraldBorder),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(LucideIcons.check, size: 12, color: colors.badgeSuccessText),
+                              const SizedBox(width: 4),
+                              Flexible(
+                                child: Text(
+                                  'Bạn đã thanh toán',
+                                  style: AppTextStyle.bold(
+                                    fontSize: 12,
+                                    color: colors.badgeSuccessText,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       )
                     else if (expense.myAmountOwedVnd > 0)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFEE2E2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          'Bạn nợ: ${CurrencyUtils.formatVnd(expense.myAmountOwedVnd)}',
-                          style: const TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFFDC2626),
+                      Flexible(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: colors.expenseBadgeOwedBg,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: colors.expenseBadgeOwedBorder),
+                          ),
+                          child: Text(
+                            'Bạn nợ: ${CurrencyUtils.formatVnd(expense.myAmountOwedVnd)}',
+                            style: AppTextStyle.bold(
+                              fontSize: 12,
+                              color: colors.expenseBadgeOwedText,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),

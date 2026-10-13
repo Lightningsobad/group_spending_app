@@ -139,6 +139,18 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color snackBarInfoIcon;
   final Color snackBarInfoText;
 
+  // Shimmer Skeleton
+  final Color shimmerBase;
+  final Color shimmerHighlight;
+
+  // Thẻ Chi tiêu (Expense Card & Category)
+  final Color expenseCategoryIconBg;
+  final Color expenseCategoryIcon;
+  final Color expenseCategoryTag;
+  final Color expenseBadgeOwedBg;
+  final Color expenseBadgeOwedBorder;
+  final Color expenseBadgeOwedText;
+
   const AppThemeColors({
     required this.background,
     required this.cardBackground,
@@ -240,6 +252,14 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.snackBarInfoBadge,
     required this.snackBarInfoIcon,
     required this.snackBarInfoText,
+    required this.shimmerBase,
+    required this.shimmerHighlight,
+    required this.expenseCategoryIconBg,
+    required this.expenseCategoryIcon,
+    required this.expenseCategoryTag,
+    required this.expenseBadgeOwedBg,
+    required this.expenseBadgeOwedBorder,
+    required this.expenseBadgeOwedText,
   });
 
   /// Bảng màu cho Light Theme
@@ -352,6 +372,14 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     snackBarInfoBadge: Color(0xFFE2E8F0),
     snackBarInfoIcon: AppColors.emeraldForest,
     snackBarInfoText: AppColors.textDark,
+    shimmerBase: Color(0xFFE2E8F0),
+    shimmerHighlight: Color(0xFFF8FAFC),
+    expenseCategoryIconBg: Color(0xFFE8F5E9),
+    expenseCategoryIcon: Color(0xFF2E7D32),
+    expenseCategoryTag: Color(0xFF10B981),
+    expenseBadgeOwedBg: Color(0xFFFEE2E2),
+    expenseBadgeOwedBorder: Color(0xFFFECACA),
+    expenseBadgeOwedText: Color(0xFFDC2626),
   );
 
   /// Bảng màu cho Dark Theme
@@ -464,6 +492,14 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     snackBarInfoBadge: Color(0xFF334155),
     snackBarInfoIcon: AppColors.emeraldLight,
     snackBarInfoText: AppColors.textLight,
+    shimmerBase: Color(0xFF1E293B),
+    shimmerHighlight: Color(0xFF334155),
+    expenseCategoryIconBg: Color(0xFF064E3B),
+    expenseCategoryIcon: Color(0xFF34D399),
+    expenseCategoryTag: Color(0xFF34D399),
+    expenseBadgeOwedBg: Color(0xFF450A0A),
+    expenseBadgeOwedBorder: Color(0xFF991B1B),
+    expenseBadgeOwedText: Color(0xFFF87171),
   );
 
   /// Lấy bảng màu tương ứng với Theme hiện tại
@@ -574,6 +610,14 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? snackBarInfoBadge,
     Color? snackBarInfoIcon,
     Color? snackBarInfoText,
+    Color? shimmerBase,
+    Color? shimmerHighlight,
+    Color? expenseCategoryIconBg,
+    Color? expenseCategoryIcon,
+    Color? expenseCategoryTag,
+    Color? expenseBadgeOwedBg,
+    Color? expenseBadgeOwedBorder,
+    Color? expenseBadgeOwedText,
   }) {
     return AppThemeColors(
       background: background ?? this.background,
@@ -681,6 +725,16 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       snackBarInfoBadge: snackBarInfoBadge ?? this.snackBarInfoBadge,
       snackBarInfoIcon: snackBarInfoIcon ?? this.snackBarInfoIcon,
       snackBarInfoText: snackBarInfoText ?? this.snackBarInfoText,
+      shimmerBase: shimmerBase ?? this.shimmerBase,
+      shimmerHighlight: shimmerHighlight ?? this.shimmerHighlight,
+      expenseCategoryIconBg:
+          expenseCategoryIconBg ?? this.expenseCategoryIconBg,
+      expenseCategoryIcon: expenseCategoryIcon ?? this.expenseCategoryIcon,
+      expenseCategoryTag: expenseCategoryTag ?? this.expenseCategoryTag,
+      expenseBadgeOwedBg: expenseBadgeOwedBg ?? this.expenseBadgeOwedBg,
+      expenseBadgeOwedBorder:
+          expenseBadgeOwedBorder ?? this.expenseBadgeOwedBorder,
+      expenseBadgeOwedText: expenseBadgeOwedText ?? this.expenseBadgeOwedText,
     );
   }
 
@@ -837,6 +891,21 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           Color.lerp(snackBarInfoIcon, other.snackBarInfoIcon, t)!,
       snackBarInfoText:
           Color.lerp(snackBarInfoText, other.snackBarInfoText, t)!,
+      shimmerBase: Color.lerp(shimmerBase, other.shimmerBase, t)!,
+      shimmerHighlight:
+          Color.lerp(shimmerHighlight, other.shimmerHighlight, t)!,
+      expenseCategoryIconBg:
+          Color.lerp(expenseCategoryIconBg, other.expenseCategoryIconBg, t)!,
+      expenseCategoryIcon:
+          Color.lerp(expenseCategoryIcon, other.expenseCategoryIcon, t)!,
+      expenseCategoryTag:
+          Color.lerp(expenseCategoryTag, other.expenseCategoryTag, t)!,
+      expenseBadgeOwedBg:
+          Color.lerp(expenseBadgeOwedBg, other.expenseBadgeOwedBg, t)!,
+      expenseBadgeOwedBorder:
+          Color.lerp(expenseBadgeOwedBorder, other.expenseBadgeOwedBorder, t)!,
+      expenseBadgeOwedText:
+          Color.lerp(expenseBadgeOwedText, other.expenseBadgeOwedText, t)!,
     );
   }
 }
