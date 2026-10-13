@@ -1,3 +1,4 @@
+import '../../../groups/data/models/group_model.dart';
 import '../../domain/entities/debt_enums.dart';
 import '../../domain/entities/debt_overview_entity.dart';
 import '../../domain/entities/group_debt_entity.dart';
@@ -7,6 +8,7 @@ enum DebtsStatus { initial, loading, success, failure }
 class DebtsState {
   final DebtsStatus status;
   final DebtOverviewEntity? overview;
+  final List<GroupModel> userGroups;
   final DebtOverviewFilter activeFilter;
   final String searchQuery;
   final int? selectedGroupId;
@@ -23,6 +25,7 @@ class DebtsState {
   const DebtsState({
     this.status = DebtsStatus.initial,
     this.overview,
+    this.userGroups = const [],
     this.activeFilter = DebtOverviewFilter.all,
     this.searchQuery = '',
     this.selectedGroupId,
@@ -89,6 +92,7 @@ class DebtsState {
   DebtsState copyWith({
     DebtsStatus? status,
     DebtOverviewEntity? overview,
+    List<GroupModel>? userGroups,
     DebtOverviewFilter? activeFilter,
     String? searchQuery,
     int? selectedGroupId,
@@ -107,6 +111,7 @@ class DebtsState {
     return DebtsState(
       status: status ?? this.status,
       overview: overview ?? this.overview,
+      userGroups: userGroups ?? this.userGroups,
       activeFilter: activeFilter ?? this.activeFilter,
       searchQuery: searchQuery ?? this.searchQuery,
       selectedGroupId:

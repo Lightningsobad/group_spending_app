@@ -117,7 +117,6 @@ class ActualDebtCardWidget extends StatelessWidget {
   void _showDebtorDetailSheet(BuildContext context, ActualDebtorEntity debtor) {
     final tr = context.l10n;
     final colors = context.colors;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     showModalBottomSheet(
       context: context,
@@ -132,24 +131,18 @@ class ActualDebtCardWidget extends StatelessWidget {
         switch (debtor.status) {
           case DebtStatus.settled:
             statusLabel = tr.debtStatusSettled;
-            statusBg =
-                isDark ? const Color(0xFF064E3B) : const Color(0xFFDCFCE7);
-            statusFg =
-                isDark ? const Color(0xFF6EE7B7) : const Color(0xFF15803D);
+            statusBg = colors.debtReceiveBg;
+            statusFg = colors.debtReceiveText;
             break;
           case DebtStatus.waitingForConfirmation:
             statusLabel = tr.debtStatusWaiting;
-            statusBg =
-                isDark ? const Color(0xFF1E3A8A) : const Color(0xFFDBEAFE);
-            statusFg =
-                isDark ? const Color(0xFF93C5FD) : const Color(0xFF1D4ED8);
+            statusBg = colors.debtWaitingBg;
+            statusFg = colors.debtWaitingText;
             break;
           case DebtStatus.pending:
             statusLabel = tr.debtStatusPending;
-            statusBg =
-                isDark ? const Color(0xFF713F12) : const Color(0xFFFEF3C7);
-            statusFg =
-                isDark ? const Color(0xFFFDE047) : const Color(0xFFB45309);
+            statusBg = colors.debtPendingBg;
+            statusFg = colors.debtPendingText;
             break;
         }
 
@@ -175,9 +168,7 @@ class ActualDebtCardWidget extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 20,
-                      backgroundColor: isDark
-                          ? const Color(0xFF334155)
-                          : const Color(0xFFE2E8F0),
+                      backgroundColor: colors.debtAvatarBg,
                       backgroundImage: debtor.avatarUrl != null &&
                               debtor.avatarUrl!.isNotEmpty
                           ? NetworkImage(debtor.avatarUrl!)
@@ -187,7 +178,7 @@ class ActualDebtCardWidget extends StatelessWidget {
                           ? Text(
                               NameUtils.getInitials(debtor.name),
                               style: AppTextStyle.bold(
-                                fontSize: 13,
+                                fontSize: AppFontSize.caption,
                                 color: colors.textPrimary,
                               ),
                             )
@@ -203,14 +194,14 @@ class ActualDebtCardWidget extends StatelessWidget {
                                 ? '${debtor.name} (${tr.youTag})'
                                 : debtor.name,
                             style: AppTextStyle.bold(
-                              fontSize: 16,
+                              fontSize: AppFontSize.body,
                               color: colors.textPrimary,
                             ),
                           ),
                           Text(
                             debt.title,
                             style: AppTextStyle.regular(
-                              fontSize: 12,
+                              fontSize: AppFontSize.caption,
                               color: colors.textSecondary,
                             ),
                             maxLines: 1,
@@ -231,7 +222,7 @@ class ActualDebtCardWidget extends StatelessWidget {
                       child: Text(
                         statusLabel,
                         style: AppTextStyle.bold(
-                          fontSize: 11,
+                          fontSize: AppFontSize.caption,
                           color: statusFg,
                         ),
                       ),
@@ -251,14 +242,14 @@ class ActualDebtCardWidget extends StatelessWidget {
                       Text(
                         'Số tiền nợ:',
                         style: AppTextStyle.medium(
-                          fontSize: 13,
+                          fontSize: AppFontSize.caption,
                           color: colors.textSecondary,
                         ),
                       ),
                       Text(
                         CurrencyUtils.formatVnd(debtor.amountVnd),
                         style: AppTextStyle.bold(
-                          fontSize: 16,
+                          fontSize: AppFontSize.body,
                           color: colors.textPrimary,
                         ),
                       ),
@@ -272,7 +263,7 @@ class ActualDebtCardWidget extends StatelessWidget {
                     Text(
                       'Người nhận (Chủ nợ):',
                       style: AppTextStyle.regular(
-                        fontSize: 12,
+                        fontSize: AppFontSize.caption,
                         color: colors.textSecondary,
                       ),
                     ),
@@ -281,7 +272,7 @@ class ActualDebtCardWidget extends StatelessWidget {
                           ? '${debt.paidByUserName} (${tr.youTag})'
                           : debt.paidByUserName,
                       style: AppTextStyle.semiBold(
-                        fontSize: 12,
+                        fontSize: AppFontSize.caption,
                         color: colors.textPrimary,
                       ),
                     ),
@@ -299,7 +290,6 @@ class ActualDebtCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final tr = context.l10n;
     final colors = context.colors;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final formattedDate =
         _formatExpenseDateTime(debt.expenseDate, debt.createdAt);
@@ -317,7 +307,7 @@ class ActualDebtCardWidget extends StatelessWidget {
         border: Border.all(color: colors.cardBorder),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.04),
+            color: colors.cardShadowColor,
             blurRadius: 6,
             offset: const Offset(0, 2),
           ),
@@ -341,18 +331,15 @@ class ActualDebtCardWidget extends StatelessWidget {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: isDark
-                          ? const Color(0xFF064E3B).withValues(alpha: 0.4)
-                          : const Color(0xFFDCFCE7),
+                      color: colors.debtReceiveBg,
                       borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: colors.debtReceiveBorder),
                     ),
                     child: Text(
                       category,
                       style: AppTextStyle.bold(
-                        fontSize: 11,
-                        color: isDark
-                            ? const Color(0xFF6EE7B7)
-                            : const Color(0xFF15803D),
+                        fontSize: AppFontSize.caption,
+                        color: colors.debtReceiveText,
                       ),
                     ),
                   ),
@@ -360,7 +347,7 @@ class ActualDebtCardWidget extends StatelessWidget {
                   Text(
                     formattedDate,
                     style: AppTextStyle.regular(
-                      fontSize: 11,
+                      fontSize: AppFontSize.caption,
                       color: colors.textSecondary,
                     ),
                   ),
@@ -374,7 +361,7 @@ class ActualDebtCardWidget extends StatelessWidget {
                   Text(
                     tr.totalExpenseCaps,
                     style: AppTextStyle.semiBold(
-                      fontSize: 10,
+                      fontSize: AppFontSize.caption,
                       color: colors.textSecondary,
                       letterSpacing: 0.5,
                     ),
@@ -383,7 +370,7 @@ class ActualDebtCardWidget extends StatelessWidget {
                   Text(
                     CurrencyUtils.formatVnd(debt.totalAmountVnd),
                     style: AppTextStyle.bold(
-                      fontSize: 16,
+                      fontSize: AppFontSize.body,
                       color: colors.textPrimary,
                     ),
                   ),
@@ -397,7 +384,7 @@ class ActualDebtCardWidget extends StatelessWidget {
           Text(
             debt.title,
             style: AppTextStyle.bold(
-              fontSize: 15,
+              fontSize: AppFontSize.body,
               color: colors.textPrimary,
             ),
             maxLines: 2,
@@ -410,7 +397,7 @@ class ActualDebtCardWidget extends StatelessWidget {
             TextSpan(
               text: tr.paidByLabel,
               style: AppTextStyle.regular(
-                fontSize: 12,
+                fontSize: AppFontSize.caption,
                 color: colors.textSecondary,
               ),
               children: [
@@ -419,7 +406,7 @@ class ActualDebtCardWidget extends StatelessWidget {
                       ? '${debt.paidByUserName} (${tr.youTag})'
                       : debt.paidByUserName,
                   style: AppTextStyle.bold(
-                    fontSize: 12,
+                    fontSize: AppFontSize.caption,
                     color: colors.textPrimary,
                   ),
                 ),
@@ -437,7 +424,7 @@ class ActualDebtCardWidget extends StatelessWidget {
               Text(
                 tr.allocationByMember,
                 style: AppTextStyle.semiBold(
-                  fontSize: 11,
+                  fontSize: AppFontSize.caption,
                   color: colors.textSecondary,
                   letterSpacing: 0.3,
                 ),
@@ -445,7 +432,7 @@ class ActualDebtCardWidget extends StatelessWidget {
               Text(
                 tr.debtorCountLabel(debtorCount),
                 style: AppTextStyle.regular(
-                  fontSize: 11,
+                  fontSize: AppFontSize.caption,
                   color: colors.textSecondary,
                 ),
               ),
@@ -467,7 +454,6 @@ class ActualDebtCardWidget extends StatelessWidget {
                       debtor: debtor,
                       width: itemWidth,
                       colors: colors,
-                      isDark: isDark,
                     );
                   }).toList(),
                 );
@@ -483,7 +469,6 @@ class ActualDebtCardWidget extends StatelessWidget {
     required ActualDebtorEntity debtor,
     required double width,
     required AppThemeColors colors,
-    required bool isDark,
   }) {
     final dotColor = _getStatusDotColor(debtor.status);
 
@@ -496,7 +481,7 @@ class ActualDebtCardWidget extends StatelessWidget {
           width: width,
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF8FAFC),
+            color: colors.debtChipBg,
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: colors.cardBorder),
           ),
@@ -505,9 +490,7 @@ class ActualDebtCardWidget extends StatelessWidget {
               // Avatar
               CircleAvatar(
                 radius: 14,
-                backgroundColor: isDark
-                    ? const Color(0xFF334155)
-                    : const Color(0xFFE2E8F0),
+                backgroundColor: colors.debtAvatarBg,
                 backgroundImage: debtor.avatarUrl != null &&
                         debtor.avatarUrl!.isNotEmpty
                     ? NetworkImage(debtor.avatarUrl!)
@@ -516,7 +499,7 @@ class ActualDebtCardWidget extends StatelessWidget {
                     ? Text(
                         NameUtils.getInitials(debtor.name),
                         style: AppTextStyle.bold(
-                          fontSize: 10,
+                          fontSize: AppFontSize.caption,
                           color: colors.textPrimary,
                         ),
                       )
@@ -529,7 +512,7 @@ class ActualDebtCardWidget extends StatelessWidget {
                 child: Text(
                   debtor.name,
                   style: AppTextStyle.medium(
-                    fontSize: 12,
+                    fontSize: AppFontSize.caption,
                     color: colors.textPrimary,
                   ),
                   maxLines: 1,
@@ -542,7 +525,7 @@ class ActualDebtCardWidget extends StatelessWidget {
               Text(
                 _formatCompactAmount(debtor.amount, debtor.amountVnd),
                 style: AppTextStyle.bold(
-                  fontSize: 13,
+                  fontSize: AppFontSize.secondary,
                   color: colors.textPrimary,
                 ),
               ),
