@@ -73,32 +73,66 @@ class DebtsCubit extends Cubit<DebtsState> {
       }
 
       if (groups.isNotEmpty) {
-        final groupMap = {for (final g in groups) g.id: g};
-        final updatedGroupBalances = overview.groupBalances.map((gb) {
-          final matchedGroup = groupMap[gb.groupId];
+        final groupBalancesMap = {
+          for (final gb in overview.groupBalances) gb.groupId: gb,
+        };
+        final updatedGroupBalances = groups.map((g) {
+          final existing = groupBalancesMap[g.id];
+          final netVnd = existing != null && existing.netBalanceVnd != 0
+              ? existing.netBalanceVnd
+              : g.userBalance;
+          final net = existing != null && existing.netBalance != 0
+              ? existing.netBalance
+              : (netVnd / 1000);
+          final oweVnd = netVnd < 0 ? netVnd.abs() : 0;
+          final owe = oweVnd / 1000;
+          final owedVnd = netVnd > 0 ? netVnd : 0;
+          final owed = owedVnd / 1000;
+          final pendingCount = existing != null && existing.pendingDebtCount > 0
+              ? existing.pendingDebtCount
+              : g.pendingDebtCount;
+
           return GroupDebtBalanceEntity(
-            groupId: gb.groupId,
-            groupName: (matchedGroup?.name.isNotEmpty ?? false)
-                ? matchedGroup!.name
-                : gb.groupName,
-            category: matchedGroup?.category ?? gb.category,
-            youOwe: gb.youOwe,
-            youOweVnd: gb.youOweVnd,
-            youAreOwed: gb.youAreOwed,
-            youAreOwedVnd: gb.youAreOwedVnd,
-            netBalance: gb.netBalance,
-            netBalanceVnd: gb.netBalanceVnd,
-            pendingDebtCount: gb.pendingDebtCount,
+            groupId: g.id,
+            groupName: g.name.isNotEmpty
+                ? g.name
+                : (existing?.groupName ?? ''),
+            category: g.category.isNotEmpty
+                ? g.category
+                : (existing?.category ?? 'Other'),
+            youOwe: existing != null && existing.youOwe != 0 ? existing.youOwe : owe,
+            youOweVnd: existing != null && existing.youOweVnd != 0 ? existing.youOweVnd : oweVnd,
+            youAreOwed: existing != null && existing.youAreOwed != 0 ? existing.youAreOwed : owed,
+            youAreOwedVnd: existing != null && existing.youAreOwedVnd != 0 ? existing.youAreOwedVnd : owedVnd,
+            netBalance: net,
+            netBalanceVnd: netVnd,
+            pendingDebtCount: pendingCount,
           );
         }).toList();
 
+        final groupIds = {for (final g in groups) g.id};
+        for (final gb in overview.groupBalances) {
+          if (!groupIds.contains(gb.groupId)) {
+            updatedGroupBalances.add(gb);
+          }
+        }
+
+        num totalOwedVnd = overview.totalOwedVnd;
+        num totalReceivableVnd = overview.totalReceivableVnd;
+        if (totalOwedVnd == 0 && totalReceivableVnd == 0) {
+          for (final gb in updatedGroupBalances) {
+            totalOwedVnd += gb.youOweVnd;
+            totalReceivableVnd += gb.youAreOwedVnd;
+          }
+        }
+
         overview = DebtOverviewEntity(
-          totalOwed: overview.totalOwed,
-          totalOwedVnd: overview.totalOwedVnd,
-          totalReceivable: overview.totalReceivable,
-          totalReceivableVnd: overview.totalReceivableVnd,
-          netBalance: overview.netBalance,
-          netBalanceVnd: overview.netBalanceVnd,
+          totalOwed: overview.totalOwed != 0 ? overview.totalOwed : (totalOwedVnd / 1000),
+          totalOwedVnd: totalOwedVnd,
+          totalReceivable: overview.totalReceivable != 0 ? overview.totalReceivable : (totalReceivableVnd / 1000),
+          totalReceivableVnd: totalReceivableVnd,
+          netBalance: overview.netBalance != 0 ? overview.netBalance : ((totalReceivableVnd - totalOwedVnd) / 1000),
+          netBalanceVnd: overview.netBalanceVnd != 0 ? overview.netBalanceVnd : (totalReceivableVnd - totalOwedVnd),
           groupBalances: updatedGroupBalances,
           details: overview.details,
         );
