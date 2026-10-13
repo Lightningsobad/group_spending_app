@@ -272,5 +272,70 @@ void main() {
           .firstWhere((g) => g.groupId == 11);
       expect(g11.category, 'Sport & Clubs');
     });
+
+    test('loadOverview populates groupBalances from groupsRepository when overview.groupBalances is empty', () async {
+      final emptyOverviewRepo = MockDebtsRepository()
+        ..overviewResult = const DebtOverviewEntity(
+          totalOwedVnd: 398000,
+          totalReceivableVnd: 1400000,
+          groupBalances: [],
+        );
+      final fakeGroupsRepo = FakeGroupsRepo()
+        ..groups = [
+          const GroupModel(
+            id: 7,
+            name: 'Hội đồng niên',
+            category: 'Friends & Dining',
+            ownerId: 10,
+            userBalance: 1400000,
+            pendingDebtCount: 1,
+          ),
+          const GroupModel(
+            id: 4,
+            name: 'Nhóm bóng đá công ty',
+            category: 'Sport & Clubs',
+            ownerId: 5,
+            userBalance: -398000,
+            pendingDebtCount: 1,
+          ),
+          const GroupModel(
+            id: 5,
+            name: 'Phòng trọ 705',
+            category: 'Apartment',
+            ownerId: 5,
+            userBalance: 0,
+            pendingDebtCount: 0,
+          ),
+        ];
+
+      final cubitWithEmptyOverview =
+          DebtsCubit(emptyOverviewRepo, groupsRepository: fakeGroupsRepo);
+      addTearDown(cubitWithEmptyOverview.close);
+
+      await cubitWithEmptyOverview.loadOverview();
+
+      expect(cubitWithEmptyOverview.state.isSuccess, isTrue);
+      expect(cubitWithEmptyOverview.state.overview!.groupBalances.length, 3);
+
+      final g7 = cubitWithEmptyOverview.state.overview!.groupBalances
+          .firstWhere((g) => g.groupId == 7);
+      expect(g7.groupName, 'Hội đồng niên');
+      expect(g7.category, 'Friends & Dining');
+      expect(g7.netBalanceVnd, 1400000);
+      expect(g7.youAreOwedVnd, 1400000);
+      expect(g7.pendingDebtCount, 1);
+
+      final g4 = cubitWithEmptyOverview.state.overview!.groupBalances
+          .firstWhere((g) => g.groupId == 4);
+      expect(g4.groupName, 'Nhóm bóng đá công ty');
+      expect(g4.netBalanceVnd, -398000);
+      expect(g4.youOweVnd, 398000);
+      expect(g4.pendingDebtCount, 1);
+
+      final g5 = cubitWithEmptyOverview.state.overview!.groupBalances
+          .firstWhere((g) => g.groupId == 5);
+      expect(g5.isSettled, isTrue);
+      expect(g5.pendingDebtCount, 0);
+    });
   });
 }

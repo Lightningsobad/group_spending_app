@@ -73,6 +73,7 @@ class GroupModel {
   final String? ownerName;
   final String role; // 'ADMIN', 'MEMBER'
   final num userBalance;
+  final int pendingDebtCount;
   final num? totalSpending;
   final num? totalSpendingVnd;
   final num? totalFundCollected;
@@ -94,6 +95,7 @@ class GroupModel {
     this.ownerName,
     this.role = 'MEMBER',
     this.userBalance = 0,
+    this.pendingDebtCount = 0,
     this.totalSpending,
     this.totalSpendingVnd,
     this.totalFundCollected,
@@ -129,6 +131,7 @@ class GroupModel {
       ownerName: json['ownerName'] as String?,
       role: (json['role'] as String?) ?? 'MEMBER',
       userBalance: (json['userBalance'] as num?) ?? 0,
+      pendingDebtCount: (json['pendingDebtCount'] as num?)?.toInt() ?? 0,
       totalSpending: json['totalSpending'] as num?,
       totalSpendingVnd: json['totalSpendingVnd'] as num?,
       totalFundCollected: json['totalFundCollected'] as num?,
@@ -154,6 +157,7 @@ class GroupModel {
       if (ownerName != null) 'ownerName': ownerName,
       'role': role,
       'userBalance': userBalance,
+      'pendingDebtCount': pendingDebtCount,
       if (totalSpending != null) 'totalSpending': totalSpending,
       if (totalSpendingVnd != null) 'totalSpendingVnd': totalSpendingVnd,
       if (totalFundCollected != null) 'totalFundCollected': totalFundCollected,
@@ -177,6 +181,7 @@ class GroupModel {
     String? ownerName,
     String? role,
     num? userBalance,
+    int? pendingDebtCount,
     num? totalSpending,
     num? totalSpendingVnd,
     num? totalFundCollected,
@@ -198,6 +203,7 @@ class GroupModel {
       ownerName: ownerName ?? this.ownerName,
       role: role ?? this.role,
       userBalance: userBalance ?? this.userBalance,
+      pendingDebtCount: pendingDebtCount ?? this.pendingDebtCount,
       totalSpending: totalSpending ?? this.totalSpending,
       totalSpendingVnd: totalSpendingVnd ?? this.totalSpendingVnd,
       totalFundCollected: totalFundCollected ?? this.totalFundCollected,
