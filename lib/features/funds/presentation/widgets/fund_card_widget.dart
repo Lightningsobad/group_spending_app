@@ -44,13 +44,13 @@ class FundCardWidget extends StatelessWidget {
               width: 44,
               height: 44,
               decoration: BoxDecoration(
-                color: const Color(0xFFEFF6FF),
+                color: colors.fundPiggyBg,
                 borderRadius: BorderRadius.circular(14),
               ),
-              child: const Icon(
+              child: Icon(
                 LucideIcons.piggyBank,
                 size: 20,
-                color: Color(0xFF2563EB),
+                color: colors.fundPiggyIcon,
               ),
             ),
             const SizedBox(width: 12),
@@ -63,28 +63,28 @@ class FundCardWidget extends StatelessWidget {
                   Text(
                     fund.name,
                     style: AppTextStyle.bold(
-                      fontSize: 14,
+                      fontSize: 15,
                       color: colors.textPrimary,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
-                  RichText(
-                    text: TextSpan(
+                  Text.rich(
+                    TextSpan(
                       children: [
                         TextSpan(
                           text: CurrencyUtils.formatVnd(fund.totalCollectedAmountVnd ?? 0),
                           style: AppTextStyle.bold(
-                            fontSize: 12,
-                            color: const Color(0xFF047857),
+                            fontSize: 13,
+                            color: colors.fundAmountText,
                           ),
                         ),
                         if (fund.totalTargetAmountVnd != null) ...[
                           TextSpan(
                             text: ' / ${CurrencyUtils.formatVnd(fund.totalTargetAmountVnd!)}',
                             style: AppTextStyle.regular(
-                              fontSize: 11,
+                              fontSize: 12,
                               color: colors.textMuted,
                             ),
                           ),
@@ -107,17 +107,17 @@ class FundCardWidget extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     color: isCollecting
-                        ? const Color(0xFFDBEAFE)
-                        : const Color(0xFFDCFCE7),
+                        ? colors.fundStatusCollectingBg
+                        : colors.fundStatusCompletedBg,
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Text(
                     fund.statusText,
                     style: AppTextStyle.bold(
-                      fontSize: 11,
+                      fontSize: 11.5,
                       color: isCollecting
-                          ? const Color(0xFF1D4ED8)
-                          : const Color(0xFF15803D),
+                          ? colors.fundStatusCollectingText
+                          : colors.fundStatusCompletedText,
                     ),
                   ),
                 ),

@@ -381,6 +381,8 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                       borderRadius: BorderRadius.circular(12),
                       onTap: widget.onBack,
                       child: Container(
+                        constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                        alignment: Alignment.center,
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: colors.surfaceMuted,
