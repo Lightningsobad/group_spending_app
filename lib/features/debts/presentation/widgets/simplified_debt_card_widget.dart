@@ -27,7 +27,6 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final tr = context.l10n;
     final colors = context.colors;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     final isCurrentUserDebtor =
         currentUserId != null && debt.debtorId == currentUserId;
@@ -51,7 +50,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
         border: Border.all(color: colors.cardBorder),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.04),
+            color: colors.cardShadowColor,
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -67,25 +66,21 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
               Text(
                 debt.createdAt ?? 'Vừa xong',
                 style: AppTextStyle.regular(
-                  fontSize: 11,
+                  fontSize: AppFontSize.caption,
                   color: colors.textMuted,
                 ),
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: isDark
-                      ? const Color(0xFF1E293B)
-                      : const Color(0xFFF1F5F9),
+                  color: colors.debtPendingBg,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
                   tr.debtStatusPending,
                   style: AppTextStyle.bold(
-                    fontSize: 10,
-                    color: isDark
-                        ? const Color(0xFF94A3B8)
-                        : const Color(0xFF475569),
+                    fontSize: AppFontSize.caption,
+                    color: colors.debtPendingText,
                   ),
                 ),
               ),
@@ -106,7 +101,6 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
                       name: debt.debtorName,
                       avatarUrl: debt.debtorAvatar,
                       isCurrentUser: isCurrentUserDebtor,
-                      isDark: isDark,
                       colors: colors,
                     ),
                     const SizedBox(height: 6),
@@ -115,7 +109,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
                           ? '${debt.debtorName} (${tr.youTag})'
                           : debt.debtorName,
                       style: AppTextStyle.bold(
-                        fontSize: 12,
+                        fontSize: AppFontSize.caption,
                         color: colors.textPrimary,
                       ),
                       textAlign: TextAlign.center,
@@ -126,8 +120,8 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
                     Text(
                       tr.debtorLabel,
                       style: AppTextStyle.semiBold(
-                        fontSize: 10,
-                        color: const Color(0xFFE11D48),
+                        fontSize: AppFontSize.caption,
+                        color: colors.debtOweText,
                       ),
                     ),
                   ],
@@ -142,7 +136,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
                     Text(
                       CurrencyUtils.formatVnd(debt.amountVnd),
                       style: AppTextStyle.bold(
-                        fontSize: 17,
+                        fontSize: AppFontSize.h4,
                         color: colors.textPrimary,
                       ),
                       textAlign: TextAlign.center,
@@ -150,19 +144,19 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
-                    const Row(
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
                           child: Divider(
-                            color: Color(0xFF16A34A),
+                            color: colors.debtReceiveText,
                             thickness: 1.5,
                           ),
                         ),
                         Icon(
                           LucideIcons.arrowRight,
                           size: 14,
-                          color: Color(0xFF16A34A),
+                          color: colors.debtReceiveText,
                         ),
                       ],
                     ),
@@ -179,7 +173,6 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
                       name: debt.creditorName,
                       avatarUrl: debt.creditorAvatar,
                       isCurrentUser: isCurrentUserCreditor,
-                      isDark: isDark,
                       colors: colors,
                     ),
                     const SizedBox(height: 6),
@@ -188,7 +181,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
                           ? '${debt.creditorName} (${tr.youTag})'
                           : debt.creditorName,
                       style: AppTextStyle.bold(
-                        fontSize: 12,
+                        fontSize: AppFontSize.caption,
                         color: colors.textPrimary,
                       ),
                       textAlign: TextAlign.center,
@@ -199,7 +192,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
                     Text(
                       tr.creditorLabel,
                       style: AppTextStyle.semiBold(
-                        fontSize: 10,
+                        fontSize: AppFontSize.caption,
                         color: colors.textSecondary,
                       ),
                     ),
@@ -214,15 +207,9 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             decoration: BoxDecoration(
-              color: isDark
-                  ? const Color(0xFF713F12).withValues(alpha: 0.3)
-                  : const Color(0xFFFEF9C3),
+              color: colors.debtHintBg,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: isDark
-                    ? const Color(0xFF854D0E)
-                    : const Color(0xFFFEF08A),
-              ),
+              border: Border.all(color: colors.debtHintBorder),
             ),
             child: Row(
               children: [
@@ -232,10 +219,8 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
                   child: Text(
                     debt.note ?? 'Gộp nợ tối ưu giữa các thành viên trong nhóm',
                     style: AppTextStyle.medium(
-                      fontSize: 11,
-                      color: isDark
-                          ? const Color(0xFFFDE047)
-                          : const Color(0xFF854D0E),
+                      fontSize: AppFontSize.caption,
+                      color: colors.debtHintText,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -248,7 +233,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
           // 4. Action Buttons (PAY / CONFIRM / REMIND)
           if (effectiveAction != DebtAction.none) ...[
             const SizedBox(height: 12),
-            _buildActionButtons(context, tr, colors, isDark, effectiveAction),
+            _buildActionButtons(context, tr, colors, effectiveAction),
           ],
         ],
       ),
@@ -259,7 +244,6 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
     required String name,
     required String? avatarUrl,
     required bool isCurrentUser,
-    required bool isDark,
     required AppThemeColors colors,
   }) {
     final initials = name.isNotEmpty ? name[0].toUpperCase() : '?';
@@ -269,14 +253,14 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 20,
-          backgroundColor: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+          backgroundColor: colors.debtAvatarBg,
           backgroundImage:
               avatarUrl != null && avatarUrl.isNotEmpty ? NetworkImage(avatarUrl) : null,
           child: avatarUrl == null || avatarUrl.isEmpty
               ? Text(
                   initials,
                   style: AppTextStyle.bold(
-                    fontSize: 14,
+                    fontSize: AppFontSize.secondary,
                     color: colors.textPrimary,
                   ),
                 )
@@ -289,18 +273,17 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
               decoration: BoxDecoration(
-                color: const Color(0xFFE11D48),
+                color: colors.debtOweText,
                 borderRadius: BorderRadius.circular(6),
                 border: Border.all(
-                  color: isDark ? const Color(0xFF0F172A) : Colors.white,
+                  color: colors.debtYouBadgeBorder,
                   width: 1.5,
                 ),
               ),
-              child: const Text(
+              child: Text(
                 'Bạn',
-                style: TextStyle(
-                  fontSize: 8,
-                  fontWeight: FontWeight.bold,
+                style: AppTextStyle.bold(
+                  fontSize: 10,
                   color: Colors.white,
                 ),
               ),
@@ -313,8 +296,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
   Widget _buildActionButtons(
     BuildContext context,
     AppLocalizations tr,
-    AppThemeColors colors,
-    bool isDark, [
+    AppThemeColors colors, [
     DebtAction? actionOverride,
   ]) {
     final action = actionOverride ?? debt.action;
@@ -322,7 +304,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
       case DebtAction.pay:
         return ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF15803D),
+            backgroundColor: colors.debtActionPayBg,
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(vertical: 12),
             shape: RoundedRectangleBorder(
@@ -334,7 +316,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
           icon: const Icon(LucideIcons.send, size: 16),
           label: Text(
             tr.payNowAction,
-            style: AppTextStyle.bold(fontSize: 13),
+            style: AppTextStyle.bold(fontSize: AppFontSize.secondary),
           ),
         );
 
@@ -344,7 +326,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
             Expanded(
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF15803D),
+                  backgroundColor: colors.debtActionConfirmBg,
                   foregroundColor: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
@@ -356,7 +338,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
                 icon: const Icon(LucideIcons.check, size: 16),
                 label: Text(
                   tr.confirmReceivedAction,
-                  style: AppTextStyle.bold(fontSize: 12),
+                  style: AppTextStyle.bold(fontSize: AppFontSize.secondary),
                 ),
               ),
             ),
@@ -364,8 +346,8 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
             Expanded(
               child: OutlinedButton.icon(
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: const Color(0xFFE11D48),
-                  side: const BorderSide(color: Color(0xFFFECDD3)),
+                  foregroundColor: colors.debtActionRejectFg,
+                  side: BorderSide(color: colors.debtActionRejectBorder),
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -375,7 +357,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
                 icon: const Icon(LucideIcons.x, size: 16),
                 label: Text(
                   tr.rejectReceivedAction,
-                  style: AppTextStyle.bold(fontSize: 12),
+                  style: AppTextStyle.bold(fontSize: AppFontSize.secondary),
                 ),
               ),
             ),
@@ -393,14 +375,14 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
             ),
           ),
           onPressed: onRemind,
-          icon: const Icon(
+          icon: Icon(
             LucideIcons.bell,
             size: 16,
-            color: Color(0xFFD97706),
+            color: colors.debtActionRemindIcon,
           ),
           label: Text(
             tr.remindDebtAction,
-            style: AppTextStyle.bold(fontSize: 13),
+            style: AppTextStyle.bold(fontSize: AppFontSize.secondary),
           ),
         );
 

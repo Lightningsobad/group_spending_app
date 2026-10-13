@@ -5,6 +5,7 @@ class GroupDebtBalanceModel extends GroupDebtBalanceEntity {
   const GroupDebtBalanceModel({
     required super.groupId,
     required super.groupName,
+    super.category,
     super.youOwe,
     super.youOweVnd,
     super.youAreOwed,
@@ -26,9 +27,15 @@ class GroupDebtBalanceModel extends GroupDebtBalanceEntity {
 
     final pendingDebtCount = (json['pendingDebtCount'] as num?)?.toInt() ?? 0;
 
+    final groupName = (json['groupName'] as String?) ?? '';
+    final category = (json['category'] as String?) ??
+        (json['groupCategory'] as String?) ??
+        'Other';
+
     return GroupDebtBalanceModel(
       groupId: (json['groupId'] as num?)?.toInt() ?? 0,
-      groupName: (json['groupName'] as String?) ?? '',
+      groupName: groupName,
+      category: category,
       youOwe: youOwe,
       youOweVnd: youOweVnd,
       youAreOwed: youAreOwed,
@@ -43,6 +50,7 @@ class GroupDebtBalanceModel extends GroupDebtBalanceEntity {
     return {
       'groupId': groupId,
       'groupName': groupName,
+      'category': category,
       'youOwe': youOwe,
       'youOweVnd': youOweVnd,
       'youAreOwed': youAreOwed,

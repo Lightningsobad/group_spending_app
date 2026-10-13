@@ -6,6 +6,7 @@ class DebtUserBalanceModel extends DebtUserBalanceEntity {
   const DebtUserBalanceModel({
     required super.groupId,
     required super.groupName,
+    super.category,
     super.youOwe,
     super.youOweVnd,
     super.youAreOwed,
@@ -24,9 +25,15 @@ class DebtUserBalanceModel extends DebtUserBalanceEntity {
     final netBalance = (json['netBalance'] as num?) ?? (youAreOwed - youOwe);
     final netBalanceVnd = (json['netBalanceVnd'] as num?) ?? (youAreOwedVnd - youOweVnd);
 
+    final groupName = (json['groupName'] as String?) ?? '';
+    final category = (json['category'] as String?) ??
+        (json['groupCategory'] as String?) ??
+        'Other';
+
     return DebtUserBalanceModel(
       groupId: (json['groupId'] as num?)?.toInt() ?? 0,
-      groupName: (json['groupName'] as String?) ?? '',
+      groupName: groupName,
+      category: category,
       youOwe: youOwe,
       youOweVnd: youOweVnd,
       youAreOwed: youAreOwed,
@@ -40,6 +47,7 @@ class DebtUserBalanceModel extends DebtUserBalanceEntity {
     return {
       'groupId': groupId,
       'groupName': groupName,
+      'category': category,
       'youOwe': youOwe,
       'youOweVnd': youOweVnd,
       'youAreOwed': youAreOwed,

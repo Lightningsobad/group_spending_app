@@ -149,6 +149,39 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color infoAccent;
   final Color orangeAccent;
   final Color errorAccent;
+  // --- Debt Feature Semantic Tokens ---
+  final Color debtOweBg;
+  final Color debtOweBorder;
+  final Color debtOweText;
+  final Color debtOweAmount;
+  final Color debtReceiveBg;
+  final Color debtReceiveBorder;
+  final Color debtReceiveText;
+  final Color debtReceiveAmount;
+  final Color debtBalancedBg;
+  final Color debtBalancedText;
+  final Color debtPendingBg;
+  final Color debtPendingText;
+  final Color debtWaitingBg;
+  final Color debtWaitingText;
+  final Color debtHintBg;
+  final Color debtHintBorder;
+  final Color debtHintText;
+  final Color debtChipBg;
+  final Color debtAvatarBg;
+  final Color debtYouBadgeBorder;
+  final Color debtTabBadgeActiveBg;
+  final Color debtTabBadgeActiveText;
+  final Color debtTabBadgeInactiveBg;
+  final Color debtTabBadgeInactiveText;
+  final Color debtActionPayBg;
+  final Color debtActionConfirmBg;
+  final Color debtActionRejectFg;
+  final Color debtActionRejectBorder;
+  final Color debtActionRemindIcon;
+  final Color debtIconContainerBg;
+  final Color debtIconContainerBorder;
+  final Color debtIconContainerFg;
 
   const AppThemeColors({
     required this.background,
@@ -258,6 +291,38 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.infoAccent,
     required this.orangeAccent,
     required this.errorAccent,
+    required this.debtOweBg,
+    required this.debtOweBorder,
+    required this.debtOweText,
+    required this.debtOweAmount,
+    required this.debtReceiveBg,
+    required this.debtReceiveBorder,
+    required this.debtReceiveText,
+    required this.debtReceiveAmount,
+    required this.debtBalancedBg,
+    required this.debtBalancedText,
+    required this.debtPendingBg,
+    required this.debtPendingText,
+    required this.debtWaitingBg,
+    required this.debtWaitingText,
+    required this.debtHintBg,
+    required this.debtHintBorder,
+    required this.debtHintText,
+    required this.debtChipBg,
+    required this.debtAvatarBg,
+    required this.debtYouBadgeBorder,
+    required this.debtTabBadgeActiveBg,
+    required this.debtTabBadgeActiveText,
+    required this.debtTabBadgeInactiveBg,
+    required this.debtTabBadgeInactiveText,
+    required this.debtActionPayBg,
+    required this.debtActionConfirmBg,
+    required this.debtActionRejectFg,
+    required this.debtActionRejectBorder,
+    required this.debtActionRemindIcon,
+    required this.debtIconContainerBg,
+    required this.debtIconContainerBorder,
+    required this.debtIconContainerFg,
   });
 
   /// Bảng màu cho Light Theme
@@ -377,6 +442,38 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     infoAccent: Color(0xFF3B82F6),
     orangeAccent: Color(0xFFEA580C),
     errorAccent: AppColors.error,
+    debtOweBg: Color(0xFFFFF1F2),
+    debtOweBorder: Color(0xFFFFE4E6),
+    debtOweText: Color(0xFFE11D48),
+    debtOweAmount: Color(0xFFBE123C),
+    debtReceiveBg: Color(0xFFF0FDF4),
+    debtReceiveBorder: Color(0xFFDCFCE7),
+    debtReceiveText: Color(0xFF16A34A),
+    debtReceiveAmount: Color(0xFF15803D),
+    debtBalancedBg: Color(0xFFF1F5F9),
+    debtBalancedText: Color(0xFF475569),
+    debtPendingBg: Color(0xFFFEF3C7),
+    debtPendingText: Color(0xFFB45309),
+    debtWaitingBg: Color(0xFFDBEAFE),
+    debtWaitingText: Color(0xFF1D4ED8),
+    debtHintBg: Color(0xFFFEF9C3),
+    debtHintBorder: Color(0xFFFEF08A),
+    debtHintText: Color(0xFF854D0E),
+    debtChipBg: Color(0xFFF8FAFC),
+    debtAvatarBg: Color(0xFFE2E8F0),
+    debtYouBadgeBorder: Colors.white,
+    debtTabBadgeActiveBg: Color(0xFFDCFCE7),
+    debtTabBadgeActiveText: Color(0xFF15803D),
+    debtTabBadgeInactiveBg: Color(0xFFE2E8F0),
+    debtTabBadgeInactiveText: Color(0xFF64748B),
+    debtActionPayBg: Color(0xFF15803D),
+    debtActionConfirmBg: Color(0xFF15803D),
+    debtActionRejectFg: Color(0xFFE11D48),
+    debtActionRejectBorder: Color(0xFFFECDD3),
+    debtActionRemindIcon: Color(0xFFD97706),
+    debtIconContainerBg: Color(0xFFDCFCE7),
+    debtIconContainerBorder: Color(0xFFA7F3D0),
+    debtIconContainerFg: Color(0xFF15803D),
   );
 
   /// Bảng màu cho Dark Theme
@@ -496,6 +593,38 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     infoAccent: Color(0xFF60A5FA),
     orangeAccent: Color(0xFFFB923C),
     errorAccent: Color(0xFFF87171),
+    debtOweBg: Color(0x4D4C0519),
+    debtOweBorder: Color(0x80881337),
+    debtOweText: Color(0xFFFDA4AF),
+    debtOweAmount: Color(0xFFFECDD3),
+    debtReceiveBg: Color(0x4D064E3B),
+    debtReceiveBorder: Color(0x80065F46),
+    debtReceiveText: Color(0xFF6EE7B7),
+    debtReceiveAmount: Color(0xFFA7F3D0),
+    debtBalancedBg: Color(0xFF334155),
+    debtBalancedText: Color(0xFFCBD5E1),
+    debtPendingBg: Color(0xFF713F12),
+    debtPendingText: Color(0xFFFDE047),
+    debtWaitingBg: Color(0xFF1E3A8A),
+    debtWaitingText: Color(0xFF93C5FD),
+    debtHintBg: Color(0x4D713F12),
+    debtHintBorder: Color(0xFF854D0E),
+    debtHintText: Color(0xFFFDE047),
+    debtChipBg: Color(0xFF1E293B),
+    debtAvatarBg: Color(0xFF334155),
+    debtYouBadgeBorder: Color(0xFF0F172A),
+    debtTabBadgeActiveBg: Color(0xFF064E3B),
+    debtTabBadgeActiveText: Color(0xFF6EE7B7),
+    debtTabBadgeInactiveBg: Color(0xFF334155),
+    debtTabBadgeInactiveText: Color(0xFF94A3B8),
+    debtActionPayBg: Color(0xFF059669),
+    debtActionConfirmBg: Color(0xFF059669),
+    debtActionRejectFg: Color(0xFFFDA4AF),
+    debtActionRejectBorder: Color(0xFF881337),
+    debtActionRemindIcon: Color(0xFFFBBF24),
+    debtIconContainerBg: Color(0x66064E3B),
+    debtIconContainerBorder: Color(0xFF065F46),
+    debtIconContainerFg: Color(0xFF6EE7B7),
   );
 
   /// Lấy bảng màu tương ứng với Theme hiện tại
@@ -613,6 +742,38 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? infoAccent,
     Color? orangeAccent,
     Color? errorAccent,
+    Color? debtOweBg,
+    Color? debtOweBorder,
+    Color? debtOweText,
+    Color? debtOweAmount,
+    Color? debtReceiveBg,
+    Color? debtReceiveBorder,
+    Color? debtReceiveText,
+    Color? debtReceiveAmount,
+    Color? debtBalancedBg,
+    Color? debtBalancedText,
+    Color? debtPendingBg,
+    Color? debtPendingText,
+    Color? debtWaitingBg,
+    Color? debtWaitingText,
+    Color? debtHintBg,
+    Color? debtHintBorder,
+    Color? debtHintText,
+    Color? debtChipBg,
+    Color? debtAvatarBg,
+    Color? debtYouBadgeBorder,
+    Color? debtTabBadgeActiveBg,
+    Color? debtTabBadgeActiveText,
+    Color? debtTabBadgeInactiveBg,
+    Color? debtTabBadgeInactiveText,
+    Color? debtActionPayBg,
+    Color? debtActionConfirmBg,
+    Color? debtActionRejectFg,
+    Color? debtActionRejectBorder,
+    Color? debtActionRemindIcon,
+    Color? debtIconContainerBg,
+    Color? debtIconContainerBorder,
+    Color? debtIconContainerFg,
   }) {
     return AppThemeColors(
       background: background ?? this.background,
@@ -727,6 +888,43 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       infoAccent: infoAccent ?? this.infoAccent,
       orangeAccent: orangeAccent ?? this.orangeAccent,
       errorAccent: errorAccent ?? this.errorAccent,
+      debtOweBg: debtOweBg ?? this.debtOweBg,
+      debtOweBorder: debtOweBorder ?? this.debtOweBorder,
+      debtOweText: debtOweText ?? this.debtOweText,
+      debtOweAmount: debtOweAmount ?? this.debtOweAmount,
+      debtReceiveBg: debtReceiveBg ?? this.debtReceiveBg,
+      debtReceiveBorder: debtReceiveBorder ?? this.debtReceiveBorder,
+      debtReceiveText: debtReceiveText ?? this.debtReceiveText,
+      debtReceiveAmount: debtReceiveAmount ?? this.debtReceiveAmount,
+      debtBalancedBg: debtBalancedBg ?? this.debtBalancedBg,
+      debtBalancedText: debtBalancedText ?? this.debtBalancedText,
+      debtPendingBg: debtPendingBg ?? this.debtPendingBg,
+      debtPendingText: debtPendingText ?? this.debtPendingText,
+      debtWaitingBg: debtWaitingBg ?? this.debtWaitingBg,
+      debtWaitingText: debtWaitingText ?? this.debtWaitingText,
+      debtHintBg: debtHintBg ?? this.debtHintBg,
+      debtHintBorder: debtHintBorder ?? this.debtHintBorder,
+      debtHintText: debtHintText ?? this.debtHintText,
+      debtChipBg: debtChipBg ?? this.debtChipBg,
+      debtAvatarBg: debtAvatarBg ?? this.debtAvatarBg,
+      debtYouBadgeBorder: debtYouBadgeBorder ?? this.debtYouBadgeBorder,
+      debtTabBadgeActiveBg: debtTabBadgeActiveBg ?? this.debtTabBadgeActiveBg,
+      debtTabBadgeActiveText:
+          debtTabBadgeActiveText ?? this.debtTabBadgeActiveText,
+      debtTabBadgeInactiveBg:
+          debtTabBadgeInactiveBg ?? this.debtTabBadgeInactiveBg,
+      debtTabBadgeInactiveText:
+          debtTabBadgeInactiveText ?? this.debtTabBadgeInactiveText,
+      debtActionPayBg: debtActionPayBg ?? this.debtActionPayBg,
+      debtActionConfirmBg: debtActionConfirmBg ?? this.debtActionConfirmBg,
+      debtActionRejectFg: debtActionRejectFg ?? this.debtActionRejectFg,
+      debtActionRejectBorder:
+          debtActionRejectBorder ?? this.debtActionRejectBorder,
+      debtActionRemindIcon: debtActionRemindIcon ?? this.debtActionRemindIcon,
+      debtIconContainerBg: debtIconContainerBg ?? this.debtIconContainerBg,
+      debtIconContainerBorder:
+          debtIconContainerBorder ?? this.debtIconContainerBorder,
+      debtIconContainerFg: debtIconContainerFg ?? this.debtIconContainerFg,
     );
   }
 
@@ -892,6 +1090,54 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       infoAccent: Color.lerp(infoAccent, other.infoAccent, t)!,
       orangeAccent: Color.lerp(orangeAccent, other.orangeAccent, t)!,
       errorAccent: Color.lerp(errorAccent, other.errorAccent, t)!,
+      debtOweBg: Color.lerp(debtOweBg, other.debtOweBg, t)!,
+      debtOweBorder: Color.lerp(debtOweBorder, other.debtOweBorder, t)!,
+      debtOweText: Color.lerp(debtOweText, other.debtOweText, t)!,
+      debtOweAmount: Color.lerp(debtOweAmount, other.debtOweAmount, t)!,
+      debtReceiveBg: Color.lerp(debtReceiveBg, other.debtReceiveBg, t)!,
+      debtReceiveBorder:
+          Color.lerp(debtReceiveBorder, other.debtReceiveBorder, t)!,
+      debtReceiveText: Color.lerp(debtReceiveText, other.debtReceiveText, t)!,
+      debtReceiveAmount:
+          Color.lerp(debtReceiveAmount, other.debtReceiveAmount, t)!,
+      debtBalancedBg: Color.lerp(debtBalancedBg, other.debtBalancedBg, t)!,
+      debtBalancedText:
+          Color.lerp(debtBalancedText, other.debtBalancedText, t)!,
+      debtPendingBg: Color.lerp(debtPendingBg, other.debtPendingBg, t)!,
+      debtPendingText: Color.lerp(debtPendingText, other.debtPendingText, t)!,
+      debtWaitingBg: Color.lerp(debtWaitingBg, other.debtWaitingBg, t)!,
+      debtWaitingText: Color.lerp(debtWaitingText, other.debtWaitingText, t)!,
+      debtHintBg: Color.lerp(debtHintBg, other.debtHintBg, t)!,
+      debtHintBorder: Color.lerp(debtHintBorder, other.debtHintBorder, t)!,
+      debtHintText: Color.lerp(debtHintText, other.debtHintText, t)!,
+      debtChipBg: Color.lerp(debtChipBg, other.debtChipBg, t)!,
+      debtAvatarBg: Color.lerp(debtAvatarBg, other.debtAvatarBg, t)!,
+      debtYouBadgeBorder:
+          Color.lerp(debtYouBadgeBorder, other.debtYouBadgeBorder, t)!,
+      debtTabBadgeActiveBg:
+          Color.lerp(debtTabBadgeActiveBg, other.debtTabBadgeActiveBg, t)!,
+      debtTabBadgeActiveText:
+          Color.lerp(debtTabBadgeActiveText, other.debtTabBadgeActiveText, t)!,
+      debtTabBadgeInactiveBg:
+          Color.lerp(debtTabBadgeInactiveBg, other.debtTabBadgeInactiveBg, t)!,
+      debtTabBadgeInactiveText: Color.lerp(
+          debtTabBadgeInactiveText, other.debtTabBadgeInactiveText, t)!,
+      debtActionPayBg:
+          Color.lerp(debtActionPayBg, other.debtActionPayBg, t)!,
+      debtActionConfirmBg:
+          Color.lerp(debtActionConfirmBg, other.debtActionConfirmBg, t)!,
+      debtActionRejectFg:
+          Color.lerp(debtActionRejectFg, other.debtActionRejectFg, t)!,
+      debtActionRejectBorder:
+          Color.lerp(debtActionRejectBorder, other.debtActionRejectBorder, t)!,
+      debtActionRemindIcon:
+          Color.lerp(debtActionRemindIcon, other.debtActionRemindIcon, t)!,
+      debtIconContainerBg:
+          Color.lerp(debtIconContainerBg, other.debtIconContainerBg, t)!,
+      debtIconContainerBorder: Color.lerp(
+          debtIconContainerBorder, other.debtIconContainerBorder, t)!,
+      debtIconContainerFg:
+          Color.lerp(debtIconContainerFg, other.debtIconContainerFg, t)!,
     );
   }
 }

@@ -4,6 +4,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../groups/presentation/widgets/group_category_helper.dart';
 import '../../domain/entities/debt_overview_entity.dart';
 
 class GroupDebtCardWidget extends StatelessWidget {
@@ -16,27 +17,11 @@ class GroupDebtCardWidget extends StatelessWidget {
     required this.onTap,
   });
 
-  String _inferEmoji(String name) {
-    final lower = name.toLowerCase();
-    if (lower.contains('chung cư') || lower.contains('room') || lower.contains('nhà')) {
-      return '🏢';
-    } else if (lower.contains('cầu lông') || lower.contains('bóng') || lower.contains('thể thao')) {
-      return '🏸';
-    } else if (lower.contains('phượt') || lower.contains('du lịch') || lower.contains('đà lạt')) {
-      return '🏕️';
-    } else if (lower.contains('ăn') || lower.contains('tiệc') || lower.contains('lẩu')) {
-      return '🍽️';
-    }
-    return '👥';
-  }
-
   @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
     final colors = context.colors;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final emoji = _inferEmoji(item.groupName);
     final isSettled = item.netBalanceVnd == 0;
     final isReceiving = item.netBalanceVnd > 0;
 
@@ -55,7 +40,7 @@ class GroupDebtCardWidget extends StatelessWidget {
               border: Border.all(color: colors.cardBorder),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.03),
+                  color: colors.cardShadowColor,
                   blurRadius: 6,
                   offset: const Offset(0, 2),
                 ),
@@ -63,25 +48,22 @@ class GroupDebtCardWidget extends StatelessWidget {
             ),
             child: Row(
               children: [
-                // 1. Group Emoji Squircle
+                // 1. Group Category SVG Icon Box
                 Container(
-                  width: 42,
-                  height: 42,
+                  width: 44,
+                  height: 44,
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: isDark
-                        ? const Color(0xFF064E3B).withValues(alpha: 0.4)
-                        : const Color(0xFFECFDF5),
+                    color: colors.surfaceMuted,
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(
-                      color: isDark
-                          ? const Color(0xFF065F46)
-                          : const Color(0xFFA7F3D0),
-                    ),
+                    border: Border.all(color: colors.cardBorder),
                   ),
                   alignment: Alignment.center,
-                  child: Text(
-                    emoji,
-                    style: const TextStyle(fontSize: 18),
+                  child: GroupCategoryHelper.buildIcon(
+                    item.category,
+                    width: 26,
+                    height: 26,
+                    fit: BoxFit.contain,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -94,7 +76,7 @@ class GroupDebtCardWidget extends StatelessWidget {
                       Text(
                         item.groupName,
                         style: AppTextStyle.bold(
-                          fontSize: 14,
+                          fontSize: AppFontSize.secondary,
                           color: colors.textPrimary,
                         ),
                         maxLines: 1,
@@ -104,18 +86,18 @@ class GroupDebtCardWidget extends StatelessWidget {
                       if (isSettled && item.pendingDebtCount == 0)
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               LucideIcons.check,
-                              size: 12,
-                              color: Color(0xFF16A34A),
+                              size: 13,
+                              color: colors.debtReceiveText,
                             ),
                             const SizedBox(width: 4),
                             Expanded(
                               child: Text(
                                 tr.debtsSettledAll,
                                 style: AppTextStyle.semiBold(
-                                  fontSize: 11,
-                                  color: const Color(0xFF16A34A),
+                                  fontSize: AppFontSize.caption,
+                                  color: colors.debtReceiveText,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -126,10 +108,10 @@ class GroupDebtCardWidget extends StatelessWidget {
                       else
                         Row(
                           children: [
-                            const Icon(
+                            Icon(
                               LucideIcons.clock,
-                              size: 12,
-                              color: Color(0xFFD97706),
+                              size: 13,
+                              color: colors.debtPendingText,
                             ),
                             const SizedBox(width: 4),
                             Expanded(
@@ -140,8 +122,8 @@ class GroupDebtCardWidget extends StatelessWidget {
                                       : 1,
                                 ),
                                 style: AppTextStyle.semiBold(
-                                  fontSize: 11,
-                                  color: const Color(0xFFD97706),
+                                  fontSize: AppFontSize.caption,
+                                  color: colors.debtPendingText,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -166,12 +148,12 @@ class GroupDebtCardWidget extends StatelessWidget {
                               showSign: true,
                             ),
                       style: AppTextStyle.bold(
-                        fontSize: 14,
+                        fontSize: AppFontSize.secondary,
                         color: isSettled
                             ? colors.textPrimary
                             : isReceiving
-                                ? const Color(0xFF16A34A)
-                                : const Color(0xFFE11D48),
+                                ? colors.debtReceiveText
+                                : colors.debtOweText,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -182,16 +164,10 @@ class GroupDebtCardWidget extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: isSettled
-                            ? (isDark
-                                ? const Color(0xFF334155)
-                                : const Color(0xFFF1F5F9))
+                            ? colors.debtBalancedBg
                             : isReceiving
-                                ? (isDark
-                                    ? const Color(0xFF064E3B)
-                                    : const Color(0xFFECFDF5))
-                                : (isDark
-                                    ? const Color(0xFF4C0519)
-                                    : const Color(0xFFFFF1F2)),
+                                ? colors.debtReceiveBg
+                                : colors.debtOweBg,
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
@@ -201,18 +177,12 @@ class GroupDebtCardWidget extends StatelessWidget {
                                 ? tr.badgeYouReceive
                                 : tr.badgeYouMustPay,
                         style: AppTextStyle.bold(
-                          fontSize: 10,
+                          fontSize: AppFontSize.caption,
                           color: isSettled
-                              ? (isDark
-                                  ? const Color(0xFFCBD5E1)
-                                  : const Color(0xFF475569))
+                              ? colors.debtBalancedText
                               : isReceiving
-                                  ? (isDark
-                                      ? const Color(0xFF6EE7B7)
-                                      : const Color(0xFF15803D))
-                                  : (isDark
-                                      ? const Color(0xFFFDA4AF)
-                                      : const Color(0xFFBE123C)),
+                                  ? colors.debtReceiveText
+                                  : colors.debtOweText,
                         ),
                       ),
                     ),

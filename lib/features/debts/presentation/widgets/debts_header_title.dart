@@ -18,20 +18,21 @@ class DebtsHeaderTitle extends StatelessWidget {
           width: 44,
           height: 44,
           decoration: BoxDecoration(
-            color: const Color(0xFFDCFCE7),
+            color: colors.debtIconContainerBg,
             borderRadius: BorderRadius.circular(14),
+            border: Border.all(color: colors.debtIconContainerBorder),
           ),
-          child: const Icon(
+          child: Icon(
             LucideIcons.layers,
             size: 22,
-            color: Color(0xFF15803D),
+            color: colors.debtIconContainerFg,
           ),
         ),
         const SizedBox(width: 12),
         Text(
           tr.debtsGroupTitle,
           style: AppTextStyle.bold(
-            fontSize: 18,
+            fontSize: AppFontSize.h4,
             color: colors.textPrimary,
           ),
         ),
