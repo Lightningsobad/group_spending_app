@@ -139,6 +139,25 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color snackBarInfoIcon;
   final Color snackBarInfoText;
 
+  // Shimmer Skeleton Tokens
+  final Color shimmerBase;
+  final Color shimmerHighlight;
+
+  // Group Member & Details Semantic Tokens
+  final Color memberHeroCardBg;
+  final Color memberHeroCardBorder;
+  final Color memberStatsBoxBg;
+  final Color memberStatsBoxBorder;
+  final Color memberOnlineDot;
+  final Color memberAvatarBorder;
+  final Color badgeWarningIcon;
+  final Color dangerSurface;
+  final Color dangerBorder;
+  final Color dangerIconBg;
+  final Color dangerText;
+  final Color infoIconBg;
+  final Color infoIconColor;
+
   const AppThemeColors({
     required this.background,
     required this.cardBackground,
@@ -240,6 +259,21 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.snackBarInfoBadge,
     required this.snackBarInfoIcon,
     required this.snackBarInfoText,
+    required this.shimmerBase,
+    required this.shimmerHighlight,
+    required this.memberHeroCardBg,
+    required this.memberHeroCardBorder,
+    required this.memberStatsBoxBg,
+    required this.memberStatsBoxBorder,
+    required this.memberOnlineDot,
+    required this.memberAvatarBorder,
+    required this.badgeWarningIcon,
+    required this.dangerSurface,
+    required this.dangerBorder,
+    required this.dangerIconBg,
+    required this.dangerText,
+    required this.infoIconBg,
+    required this.infoIconColor,
   });
 
   /// Bảng màu cho Light Theme
@@ -352,6 +386,21 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     snackBarInfoBadge: Color(0xFFE2E8F0),
     snackBarInfoIcon: AppColors.emeraldForest,
     snackBarInfoText: AppColors.textDark,
+    shimmerBase: Color(0xFFE2E8F0),
+    shimmerHighlight: Color(0xFFF8FAFC),
+    memberHeroCardBg: Color(0xFFF0FDF4),
+    memberHeroCardBorder: Color(0xFFA7F3D0),
+    memberStatsBoxBg: Colors.white,
+    memberStatsBoxBorder: Color(0xFFD1FAE5),
+    memberOnlineDot: Color(0xFF22C55E),
+    memberAvatarBorder: Color(0xFF86EFAC),
+    badgeWarningIcon: Color(0xFFD97706),
+    dangerSurface: Color(0xFFFFF1F2),
+    dangerBorder: Color(0xFFFFE4E6),
+    dangerIconBg: Color(0xFFFEE2E2),
+    dangerText: Color(0xFFDC2626),
+    infoIconBg: Color(0xFFEFF6FF),
+    infoIconColor: Color(0xFF2563EB),
   );
 
   /// Bảng màu cho Dark Theme
@@ -464,6 +513,21 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     snackBarInfoBadge: Color(0xFF334155),
     snackBarInfoIcon: AppColors.emeraldLight,
     snackBarInfoText: AppColors.textLight,
+    shimmerBase: Color(0xFF1E293B),
+    shimmerHighlight: Color(0xFF334155),
+    memberHeroCardBg: Color(0xFF0F291E),
+    memberHeroCardBorder: Color(0xFF065F46),
+    memberStatsBoxBg: Color(0xFF1E293B),
+    memberStatsBoxBorder: Color(0xFF334155),
+    memberOnlineDot: Color(0xFF22C55E),
+    memberAvatarBorder: Color(0xFF059669),
+    badgeWarningIcon: Color(0xFFFBBF24),
+    dangerSurface: Color(0xFF450A0A),
+    dangerBorder: Color(0xFF991B1B),
+    dangerIconBg: Color(0xFF5A1414),
+    dangerText: Color(0xFFF87171),
+    infoIconBg: Color(0xFF1E293B),
+    infoIconColor: Color(0xFF60A5FA),
   );
 
   /// Lấy bảng màu tương ứng với Theme hiện tại
@@ -574,6 +638,21 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? snackBarInfoBadge,
     Color? snackBarInfoIcon,
     Color? snackBarInfoText,
+    Color? shimmerBase,
+    Color? shimmerHighlight,
+    Color? memberHeroCardBg,
+    Color? memberHeroCardBorder,
+    Color? memberStatsBoxBg,
+    Color? memberStatsBoxBorder,
+    Color? memberOnlineDot,
+    Color? memberAvatarBorder,
+    Color? badgeWarningIcon,
+    Color? dangerSurface,
+    Color? dangerBorder,
+    Color? dangerIconBg,
+    Color? dangerText,
+    Color? infoIconBg,
+    Color? infoIconColor,
   }) {
     return AppThemeColors(
       background: background ?? this.background,
@@ -681,6 +760,21 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       snackBarInfoBadge: snackBarInfoBadge ?? this.snackBarInfoBadge,
       snackBarInfoIcon: snackBarInfoIcon ?? this.snackBarInfoIcon,
       snackBarInfoText: snackBarInfoText ?? this.snackBarInfoText,
+      shimmerBase: shimmerBase ?? this.shimmerBase,
+      shimmerHighlight: shimmerHighlight ?? this.shimmerHighlight,
+      memberHeroCardBg: memberHeroCardBg ?? this.memberHeroCardBg,
+      memberHeroCardBorder: memberHeroCardBorder ?? this.memberHeroCardBorder,
+      memberStatsBoxBg: memberStatsBoxBg ?? this.memberStatsBoxBg,
+      memberStatsBoxBorder: memberStatsBoxBorder ?? this.memberStatsBoxBorder,
+      memberOnlineDot: memberOnlineDot ?? this.memberOnlineDot,
+      memberAvatarBorder: memberAvatarBorder ?? this.memberAvatarBorder,
+      badgeWarningIcon: badgeWarningIcon ?? this.badgeWarningIcon,
+      dangerSurface: dangerSurface ?? this.dangerSurface,
+      dangerBorder: dangerBorder ?? this.dangerBorder,
+      dangerIconBg: dangerIconBg ?? this.dangerIconBg,
+      dangerText: dangerText ?? this.dangerText,
+      infoIconBg: infoIconBg ?? this.infoIconBg,
+      infoIconColor: infoIconColor ?? this.infoIconColor,
     );
   }
 
@@ -837,6 +931,29 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           Color.lerp(snackBarInfoIcon, other.snackBarInfoIcon, t)!,
       snackBarInfoText:
           Color.lerp(snackBarInfoText, other.snackBarInfoText, t)!,
+      shimmerBase: Color.lerp(shimmerBase, other.shimmerBase, t)!,
+      shimmerHighlight:
+          Color.lerp(shimmerHighlight, other.shimmerHighlight, t)!,
+      memberHeroCardBg:
+          Color.lerp(memberHeroCardBg, other.memberHeroCardBg, t)!,
+      memberHeroCardBorder:
+          Color.lerp(memberHeroCardBorder, other.memberHeroCardBorder, t)!,
+      memberStatsBoxBg:
+          Color.lerp(memberStatsBoxBg, other.memberStatsBoxBg, t)!,
+      memberStatsBoxBorder:
+          Color.lerp(memberStatsBoxBorder, other.memberStatsBoxBorder, t)!,
+      memberOnlineDot:
+          Color.lerp(memberOnlineDot, other.memberOnlineDot, t)!,
+      memberAvatarBorder:
+          Color.lerp(memberAvatarBorder, other.memberAvatarBorder, t)!,
+      badgeWarningIcon:
+          Color.lerp(badgeWarningIcon, other.badgeWarningIcon, t)!,
+      dangerSurface: Color.lerp(dangerSurface, other.dangerSurface, t)!,
+      dangerBorder: Color.lerp(dangerBorder, other.dangerBorder, t)!,
+      dangerIconBg: Color.lerp(dangerIconBg, other.dangerIconBg, t)!,
+      dangerText: Color.lerp(dangerText, other.dangerText, t)!,
+      infoIconBg: Color.lerp(infoIconBg, other.infoIconBg, t)!,
+      infoIconColor: Color.lerp(infoIconColor, other.infoIconColor, t)!,
     );
   }
 }
