@@ -3,6 +3,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../groups/presentation/widgets/group_category_helper.dart';
 import '../../domain/entities/group_debt_entity.dart';
 
 class GroupDebtSummaryCard extends StatelessWidget {
@@ -15,27 +16,11 @@ class GroupDebtSummaryCard extends StatelessWidget {
     this.subtitle,
   });
 
-  String _inferEmoji(String name) {
-    final lower = name.toLowerCase();
-    if (lower.contains('chung cư') || lower.contains('room') || lower.contains('nhà')) {
-      return '🏢';
-    } else if (lower.contains('cầu lông') || lower.contains('bóng') || lower.contains('thể thao')) {
-      return '🏸';
-    } else if (lower.contains('phượt') || lower.contains('du lịch') || lower.contains('đà lạt')) {
-      return '🏕️';
-    } else if (lower.contains('ăn') || lower.contains('tiệc') || lower.contains('lẩu')) {
-      return '🍽️';
-    }
-    return '👥';
-  }
-
   @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
     final colors = context.colors;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final emoji = _inferEmoji(userBalance.groupName);
     final isSettled = userBalance.netBalanceVnd == 0;
     final isReceiving = userBalance.netBalanceVnd > 0;
 
@@ -47,7 +32,7 @@ class GroupDebtSummaryCard extends StatelessWidget {
         border: Border.all(color: colors.cardBorder),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.04),
+            color: colors.cardShadowColor,
             blurRadius: 8,
             offset: const Offset(0, 3),
           ),
@@ -61,21 +46,18 @@ class GroupDebtSummaryCard extends StatelessWidget {
               Container(
                 width: 44,
                 height: 44,
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: isDark
-                      ? const Color(0xFF064E3B).withValues(alpha: 0.4)
-                      : const Color(0xFFECFDF5),
+                  color: colors.surfaceMuted,
                   borderRadius: BorderRadius.circular(14),
-                  border: Border.all(
-                    color: isDark
-                        ? const Color(0xFF065F46)
-                        : const Color(0xFFA7F3D0),
-                  ),
+                  border: Border.all(color: colors.cardBorder),
                 ),
                 alignment: Alignment.center,
-                child: Text(
-                  emoji,
-                  style: const TextStyle(fontSize: 20),
+                child: GroupCategoryHelper.buildIcon(
+                  userBalance.category,
+                  width: 26,
+                  height: 26,
+                  fit: BoxFit.contain,
                 ),
               ),
               const SizedBox(width: 12),
@@ -86,7 +68,7 @@ class GroupDebtSummaryCard extends StatelessWidget {
                     Text(
                       userBalance.groupName,
                       style: AppTextStyle.bold(
-                        fontSize: 15,
+                        fontSize: AppFontSize.body,
                         color: colors.textPrimary,
                       ),
                       maxLines: 1,
@@ -97,7 +79,7 @@ class GroupDebtSummaryCard extends StatelessWidget {
                       Text(
                         subtitle!,
                         style: AppTextStyle.regular(
-                          fontSize: 11,
+                          fontSize: AppFontSize.caption,
                           color: colors.textSecondary,
                         ),
                         maxLines: 1,
@@ -115,16 +97,10 @@ class GroupDebtSummaryCard extends StatelessWidget {
                 ),
                 decoration: BoxDecoration(
                   color: isSettled
-                      ? (isDark
-                          ? const Color(0xFF334155)
-                          : const Color(0xFFF1F5F9))
+                      ? colors.debtBalancedBg
                       : isReceiving
-                          ? (isDark
-                              ? const Color(0xFF064E3B)
-                              : const Color(0xFFECFDF5))
-                          : (isDark
-                              ? const Color(0xFF4C0519)
-                              : const Color(0xFFFFF1F2)),
+                          ? colors.debtReceiveBg
+                          : colors.debtOweBg,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
@@ -134,18 +110,12 @@ class GroupDebtSummaryCard extends StatelessWidget {
                           ? tr.badgeYouReceive
                           : tr.badgeYouMustPay,
                   style: AppTextStyle.bold(
-                    fontSize: 11,
+                    fontSize: AppFontSize.caption,
                     color: isSettled
-                        ? (isDark
-                            ? const Color(0xFFCBD5E1)
-                            : const Color(0xFF475569))
+                        ? colors.debtBalancedText
                         : isReceiving
-                            ? (isDark
-                                ? const Color(0xFF6EE7B7)
-                                : const Color(0xFF15803D))
-                            : (isDark
-                                ? const Color(0xFFFDA4AF)
-                                : const Color(0xFFBE123C)),
+                            ? colors.debtReceiveText
+                            : colors.debtOweText,
                   ),
                 ),
               ),
@@ -162,7 +132,7 @@ class GroupDebtSummaryCard extends StatelessWidget {
               Text(
                 tr.yourBalanceInGroup,
                 style: AppTextStyle.medium(
-                  fontSize: 12,
+                  fontSize: AppFontSize.caption,
                   color: colors.textSecondary,
                 ),
               ),
@@ -174,12 +144,12 @@ class GroupDebtSummaryCard extends StatelessWidget {
                         showSign: true,
                       ),
                 style: AppTextStyle.bold(
-                  fontSize: 16,
+                  fontSize: AppFontSize.body,
                   color: isSettled
                       ? colors.textPrimary
                       : isReceiving
-                          ? const Color(0xFF16A34A)
-                          : const Color(0xFFE11D48),
+                          ? colors.debtReceiveText
+                          : colors.debtOweText,
                 ),
               ),
             ],

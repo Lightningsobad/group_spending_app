@@ -37,6 +37,7 @@ class AppShimmerBox extends StatelessWidget {
   final double? height;
   final double borderRadius;
   final ShapeBorder? shape;
+  final Color? color;
 
   const AppShimmerBox({
     super.key,
@@ -44,16 +45,18 @@ class AppShimmerBox extends StatelessWidget {
     this.height,
     this.borderRadius = 8,
     this.shape,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
+    final boxColor = color ?? context.colors.shimmerBase;
     if (shape != null) {
       return Container(
         width: width,
         height: height,
         decoration: ShapeDecoration(
-          color: Colors.white,
+          color: boxColor,
           shape: shape!,
         ),
       );
@@ -62,7 +65,7 @@ class AppShimmerBox extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: boxColor,
         borderRadius: BorderRadius.circular(borderRadius),
       ),
     );

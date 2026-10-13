@@ -41,24 +41,39 @@ class ExpensesCubit extends Cubit<ExpensesState> {
     int groupId, {
     bool silent = false,
   }) async {
+    final isDifferentGroup = state.activeGroupId != groupId;
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
+
+    final effectiveTimeFilter = isDifferentGroup ? ExpenseTimeFilter.all : state.timeFilter;
+    final effectiveCategoryFilter = isDifferentGroup ? ExpenseCategoryFilter.all : state.categoryFilter;
+    final effectivePayerFilter = isDifferentGroup ? ExpensePayerFilter.all : state.payerFilter;
+    final effectiveSearch = isDifferentGroup ? '' : state.searchQuery;
+
     if (!silent) {
       emit(state.copyWith(
         status: ExpensesStatus.loading,
         activeGroupId: groupId,
+        clearExpensesData: isDifferentGroup,
+        timeFilter: effectiveTimeFilter,
+        categoryFilter: effectiveCategoryFilter,
+        payerFilter: effectivePayerFilter,
+        searchQuery: effectiveSearch,
         clearMessages: true,
       ));
     } else {
-      emit(state.copyWith(activeGroupId: groupId));
+      emit(state.copyWith(
+        activeGroupId: groupId,
+        clearExpensesData: isDifferentGroup,
+      ));
     }
 
     try {
       final data = await _repository.getGroupExpenses(
         groupId,
-        timeFilter: state.timeFilter,
-        payerFilter: state.payerFilter,
-        categoryFilter: state.categoryFilter,
-        search: state.searchQuery.isNotEmpty ? state.searchQuery : null,
+        timeFilter: effectiveTimeFilter,
+        payerFilter: effectivePayerFilter,
+        categoryFilter: effectiveCategoryFilter,
+        search: effectiveSearch.isNotEmpty ? effectiveSearch : null,
       );
 
       if (isClosed ||
@@ -141,5 +156,13 @@ class ExpensesCubit extends Cubit<ExpensesState> {
 
   void clearMessages() {
     emit(state.copyWith(clearMessages: true));
+  }
+
+  void clearActiveGroup() {
+    emit(state.copyWith(
+      clearExpensesData: true,
+      activeGroupId: null,
+      status: ExpensesStatus.initial,
+    ));
   }
 }

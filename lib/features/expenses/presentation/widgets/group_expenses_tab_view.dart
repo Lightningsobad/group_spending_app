@@ -4,12 +4,14 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
+import '../../../../shared/widgets/app_shimmer.dart';
 import '../../../groups/data/models/group_model.dart';
 import '../../data/models/expense_enums.dart';
 import '../cubit/expenses_cubit.dart';
 import '../cubit/expenses_state.dart';
 import '../screens/add_expense_screen.dart';
 import '../screens/expense_detail_screen.dart';
+import 'expense_card_skeleton.dart';
 import 'expense_card_widget.dart';
 
 class GroupExpensesTabView extends StatefulWidget {
@@ -30,9 +32,25 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    final cubit = context.read<ExpensesCubit>();
+    if (cubit.state.activeGroupId != widget.group.id) {
+      cubit.loadGroupExpenses(widget.group.id);
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          context.read<ExpensesCubit>().loadGroupExpenses(widget.group.id, silent: true);
+        }
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant GroupExpensesTabView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.group.id != widget.group.id) {
+      _searchCtrl.clear();
       context.read<ExpensesCubit>().loadGroupExpenses(widget.group.id);
-    });
+    }
   }
 
   @override
@@ -76,25 +94,40 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
     required String label,
     required bool isSelected,
     required VoidCallback onTap,
-    required dynamic colors,
+    required AppThemeColors colors,
   }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-        decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF14532D) : colors.cardBackground,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 48),
+      child: Center(
+        child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: isSelected ? const Color(0xFF14532D) : colors.cardBorder,
-          ),
-        ),
-        child: Text(
-          label,
-          style: AppTextStyle.bold(
-            fontSize: 12,
-            color: isSelected ? Colors.white : colors.textPrimary,
+          onTap: onTap,
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+            decoration: BoxDecoration(
+              color: isSelected ? colors.tabPillActiveBg : colors.cardBackground,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: isSelected ? colors.tabPillActiveBg : colors.cardBorder,
+              ),
+              boxShadow: isSelected
+                  ? [
+                      BoxShadow(
+                        color: colors.tabPillActiveBg.withValues(alpha: 0.25),
+                        blurRadius: 4,
+                        offset: const Offset(0, 2),
+                      ),
+                    ]
+                  : null,
+            ),
+            child: Text(
+              label,
+              style: AppTextStyle.bold(
+                fontSize: 12,
+                color: isSelected ? colors.tabPillActiveText : colors.textPrimary,
+              ),
+            ),
           ),
         ),
       ),
@@ -105,132 +138,166 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
   Widget build(BuildContext context) {
     final colors = context.colors;
 
-    return BlocConsumer<ExpensesCubit, ExpensesState>(
-      listener: (context, state) {
-        if (state.errorMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage!),
-              backgroundColor: AppColors.error,
-            ),
-          );
-          context.read<ExpensesCubit>().clearMessages();
-        }
-        if (state.successMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.successMessage!),
-              backgroundColor: AppColors.emerald,
-            ),
-          );
-          context.read<ExpensesCubit>().clearMessages();
-        }
-      },
-      builder: (context, state) {
-        final expenses = state.expenses;
-        final cubit = context.read<ExpensesCubit>();
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // 1. Total Spending Card (Image 1)
-            Container(
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: colors.cardBackground,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: colors.cardBorder),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.03),
-                    blurRadius: 10,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
+    return MediaQuery.withClampedTextScaling(
+      minScaleFactor: 0.85,
+      maxScaleFactor: 1.35,
+      child: BlocConsumer<ExpensesCubit, ExpensesState>(
+        listener: (context, state) {
+          if (state.errorMessage != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage!),
+                backgroundColor: AppColors.error,
               ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'TỔNG CHI TIÊU NHÓM',
-                          style: AppTextStyle.bold(
-                            fontSize: 11,
-                            color: colors.textSecondary,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          CurrencyUtils.formatVnd(state.totalSpendingVnd),
-                          style: AppTextStyle.bold(
-                            fontSize: 22,
-                            color: colors.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '${state.expenseCount} hóa đơn phát sinh',
-                          style: AppTextStyle.regular(
-                            fontSize: 12,
-                            color: colors.textMuted,
-                          ),
-                        ),
-                      ],
+            );
+            context.read<ExpensesCubit>().clearMessages();
+          }
+          if (state.successMessage != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.successMessage!),
+                backgroundColor: AppColors.emerald,
+              ),
+            );
+            context.read<ExpensesCubit>().clearMessages();
+          }
+        },
+        builder: (context, state) {
+          final isCurrentGroup = state.activeGroupId == widget.group.id;
+          final isLoading = state.isLoading || !isCurrentGroup;
+          final expenses = isCurrentGroup ? state.expenses : const [];
+          final totalSpendingVnd = isCurrentGroup ? state.totalSpendingVnd : 0;
+          final expenseCount = isCurrentGroup ? state.expenseCount : 0;
+          final cubit = context.read<ExpensesCubit>();
+
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // 1. Total Spending Card (Image 1)
+              Container(
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: colors.cardBackground,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: colors.cardBorder),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.03),
+                      blurRadius: 10,
+                      offset: const Offset(0, 3),
                     ),
-                  ),
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF14532D),
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(14),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'TỔNG CHI TIÊU NHÓM',
+                            style: AppTextStyle.bold(
+                              fontSize: 12,
+                              color: colors.textSecondary,
+                              letterSpacing: 0.5,
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          if (isLoading)
+                            const AppShimmer(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 4),
+                                    child: AppShimmerBox(width: 140, height: 26, borderRadius: 6),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Padding(
+                                    padding: EdgeInsets.only(top: 4),
+                                    child: AppShimmerBox(width: 100, height: 14, borderRadius: 4),
+                                  ),
+                                ],
+                              ),
+                            )
+                          else ...[
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                CurrencyUtils.formatVnd(totalSpendingVnd),
+                                style: AppTextStyle.bold(
+                                  fontSize: 24,
+                                  color: colors.textPrimary,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '$expenseCount hóa đơn phát sinh',
+                              style: AppTextStyle.regular(
+                                fontSize: 12,
+                                color: colors.textMuted,
+                              ),
+                            ),
+                          ],
+                        ],
                       ),
                     ),
-                    onPressed: _navigateToAddExpense,
-                    icon: const Icon(LucideIcons.plus, size: 16),
-                    label: const Text(
-                      'Thêm khoản chi',
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                    const SizedBox(width: 8),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: colors.primaryButton,
+                        foregroundColor: colors.onPrimaryButton,
+                        elevation: 0,
+                        minimumSize: const Size(0, 48),
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(14),
+                        ),
+                      ),
+                      onPressed: _navigateToAddExpense,
+                      icon: const Icon(LucideIcons.plus, size: 16),
+                      label: const Text(
+                        'Thêm khoản chi',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 14),
-
-            // 2. Search Field
-            Container(
-              decoration: BoxDecoration(
-                color: colors.cardBackground,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: colors.cardBorder),
-              ),
-              child: TextField(
-                controller: _searchCtrl,
-                onChanged: cubit.onSearchChanged,
-                decoration: InputDecoration(
-                  hintText: 'Tìm khoản chi theo tên...',
-                  hintStyle: AppTextStyle.regular(fontSize: 13, color: colors.textMuted),
-                  prefixIcon: Icon(LucideIcons.search, size: 18, color: colors.textMuted),
-                  suffixIcon: _searchCtrl.text.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(LucideIcons.x, size: 16),
-                          onPressed: () {
-                            _searchCtrl.clear();
-                            cubit.onSearchChanged('');
-                          },
-                        )
-                      : null,
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  ],
                 ),
               ),
-            ),
-            const SizedBox(height: 12),
+              const SizedBox(height: 14),
+
+              // 2. Search Field
+              Container(
+                decoration: BoxDecoration(
+                  color: colors.cardBackground,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: colors.cardBorder),
+                ),
+                child: TextField(
+                  controller: _searchCtrl,
+                  onChanged: cubit.onSearchChanged,
+                  decoration: InputDecoration(
+                    hintText: 'Tìm khoản chi theo tên...',
+                    hintStyle: AppTextStyle.regular(fontSize: 13, color: colors.textMuted),
+                    prefixIcon: Icon(LucideIcons.search, size: 18, color: colors.textMuted),
+                    suffixIcon: _searchCtrl.text.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(LucideIcons.x, size: 16),
+                            constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                            onPressed: () {
+                              _searchCtrl.clear();
+                              cubit.onSearchChanged('');
+                            },
+                          )
+                        : null,
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
 
             // 3. Row 1: Time filter pills
             SingleChildScrollView(
@@ -275,7 +342,7 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
               child: Row(
                 children: [
                   _buildFilterPill(
-                    label: 'Tất cả chủ đề (${state.expenseCount})',
+                    label: 'Tất cả chủ đề ($expenseCount)',
                     isSelected: state.categoryFilter == ExpenseCategoryFilter.all,
                     onTap: () => cubit.setCategoryFilter(ExpenseCategoryFilter.all),
                     colors: colors,
@@ -367,7 +434,7 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
                   ),
                 ),
                 Text(
-                  '${expenses.length} / ${state.expenseCount} khoản chi',
+                  '${expenses.length} / $expenseCount khoản chi',
                   style: AppTextStyle.bold(fontSize: 12, color: colors.textMuted),
                 ),
               ],
@@ -375,12 +442,13 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
             const SizedBox(height: 14),
 
             // 6. Expense List / Loading / Empty
-            if (state.isLoading && expenses.isEmpty)
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 40),
-                child: Center(
-                  child: CircularProgressIndicator(color: AppColors.emerald),
-                ),
+            if (isLoading && expenses.isEmpty)
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 4,
+                separatorBuilder: (_, _) => const SizedBox(height: 10),
+                itemBuilder: (_, _) => const ExpenseCardSkeleton(),
               )
             else if (expenses.isEmpty)
               Container(
@@ -396,19 +464,20 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
                     const SizedBox(height: 12),
                     Text(
                       'Chưa có khoản chi tiêu nào',
-                      style: AppTextStyle.bold(fontSize: 15, color: colors.textPrimary),
+                      style: AppTextStyle.bold(fontSize: 16, color: colors.textPrimary),
                     ),
                     const SizedBox(height: 6),
                     Text(
                       'Bấm nút bên dưới để tạo khoản chi đầu tiên cho nhóm.',
-                      style: AppTextStyle.regular(fontSize: 12, color: colors.textSecondary),
+                      style: AppTextStyle.regular(fontSize: 14, color: colors.textSecondary),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
                     ElevatedButton.icon(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF14532D),
-                        foregroundColor: Colors.white,
+                        backgroundColor: colors.primaryButton,
+                        foregroundColor: colors.onPrimaryButton,
+                        minimumSize: const Size(0, 48),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
@@ -440,6 +509,7 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
           ],
         );
       },
-    );
+    ),
+  );
   }
 }
