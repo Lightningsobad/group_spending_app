@@ -557,18 +557,13 @@ class _GroupDetailViewState extends State<GroupDetailView> {
               ),
               const SizedBox(height: 14),
 
-              // 3 mini info chips row
+              // Bento Grid Metadata: Hàng 1 (Thể loại full-width)
+              _buildCategoryCard(colors, tr),
+              const SizedBox(height: 8),
+
+              // Bento Grid Metadata: Hàng 2 (Ngày tạo & Thành viên 2 cột)
               Row(
                 children: [
-                  Expanded(
-                    child: _buildInfoChip(
-                      label: tr.categoryLabel,
-                      value: GroupCategoryHelper.getLabel(_group.category),
-                      iconWidget: GroupCategoryHelper.buildIcon(_group.category, width: 14, height: 14),
-                      colors: colors,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
                   Expanded(
                     child: _buildInfoChip(
                       label: tr.createdDateLabel,
@@ -628,42 +623,49 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    // Action 1: Sao chép mã mời (Touch target min 48px height)
-                    OutlinedButton.icon(
-                      style: OutlinedButton.styleFrom(
-                        backgroundColor: colors.secondaryActionBg,
-                        foregroundColor: colors.secondaryActionText,
-                        side: BorderSide(color: colors.secondaryActionBorder),
-                        minimumSize: const Size(0, 48),
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                    // Action 1: Sao chép mã mời (Touch target 48x48px)
+                    Tooltip(
+                      message: tr.copyInviteCodeAction,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(10),
+                        onTap: () => _copyInviteCode(inviteCode),
+                        child: Container(
+                          width: 48,
+                          height: 48,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: colors.secondaryActionBg,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: colors.secondaryActionBorder),
+                          ),
+                          child: Icon(
+                            LucideIcons.copy,
+                            size: 20,
+                            color: colors.secondaryActionText,
+                          ),
                         ),
-                      ),
-                      onPressed: () => _copyInviteCode(inviteCode),
-                      icon: const Icon(LucideIcons.copy, size: 16),
-                      label: Text(
-                        tr.copyInviteCodeAction,
-                        style: AppTextStyle.bold(fontSize: AppFontSize.caption),
                       ),
                     ),
                     const SizedBox(width: 8),
                     // Action 2: QR Button (Touch target 48x48px)
-                    InkWell(
-                      borderRadius: BorderRadius.circular(10),
-                      onTap: _openQrModal,
-                      child: Container(
-                        width: 48,
-                        height: 48,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: colors.primaryButton,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          LucideIcons.qrCode,
-                          size: 20,
-                          color: colors.onPrimaryButton,
+                    Tooltip(
+                      message: tr.viewQrCodeTooltip,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(10),
+                        onTap: _openQrModal,
+                        child: Container(
+                          width: 48,
+                          height: 48,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: colors.primaryButton,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            LucideIcons.qrCode,
+                            size: 20,
+                            color: colors.onPrimaryButton,
+                          ),
                         ),
                       ),
                     ),
@@ -1126,6 +1128,59 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     );
   }
 
+  Widget _buildCategoryCard(AppThemeColors colors, AppLocalizations tr) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: colors.surfaceMuted,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: colors.cardBorder),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 32,
+            height: 32,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: colors.primaryContainer,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: GroupCategoryHelper.buildIcon(_group.category, width: 18, height: 18),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  tr.categoryLabel,
+                  style: AppTextStyle.bold(
+                    fontSize: AppFontSize.caption,
+                    color: colors.textMuted,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  GroupCategoryHelper.getLabel(_group.category),
+                  style: AppTextStyle.bold(
+                    fontSize: AppFontSize.secondary,
+                    color: colors.textPrimary,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildInfoChip({
     required String label,
     required String value,
@@ -1134,7 +1189,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     required AppThemeColors colors,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         color: colors.surfaceMuted,
         borderRadius: BorderRadius.circular(12),
