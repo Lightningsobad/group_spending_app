@@ -139,6 +139,18 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color snackBarInfoIcon;
   final Color snackBarInfoText;
 
+
+  // Fund Tab Tokens
+  final Color fundPiggyBg;
+  final Color fundPiggyIcon;
+  final Color fundStatusCollectingBg;
+  final Color fundStatusCollectingText;
+  final Color fundStatusCompletedBg;
+  final Color fundStatusCompletedText;
+  final Color fundAmountText;
+  final Color fundProgressStart;
+  final Color fundProgressEnd;
+  final Color fundProgressText;
   // Thẻ Chi tiêu (Expense Card & Category)
   final Color expenseCategoryIconBg;
   final Color expenseCategoryIcon;
@@ -293,6 +305,16 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.snackBarInfoText,
     required this.shimmerBase,
     required this.shimmerHighlight,
+    required this.fundPiggyBg,
+    required this.fundPiggyIcon,
+    required this.fundStatusCollectingBg,
+    required this.fundStatusCollectingText,
+    required this.fundStatusCompletedBg,
+    required this.fundStatusCompletedText,
+    required this.fundAmountText,
+    required this.fundProgressStart,
+    required this.fundProgressEnd,
+    required this.fundProgressText,
     required this.expenseCategoryIconBg,
     required this.expenseCategoryIcon,
     required this.expenseCategoryTag,
@@ -450,6 +472,16 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     snackBarInfoText: AppColors.textDark,
     shimmerBase: Color(0xFFE2E8F0),
     shimmerHighlight: Color(0xFFF8FAFC),
+    fundPiggyBg: Color(0xFFEFF6FF),
+    fundPiggyIcon: Color(0xFF2563EB),
+    fundStatusCollectingBg: Color(0xFFDBEAFE),
+    fundStatusCollectingText: Color(0xFF1D4ED8),
+    fundStatusCompletedBg: Color(0xFFDCFCE7),
+    fundStatusCompletedText: Color(0xFF15803D),
+    fundAmountText: Color(0xFF047857),
+    fundProgressStart: Color(0xFF2563EB),
+    fundProgressEnd: Color(0xFF059669),
+    fundProgressText: Color(0xFF047857),
     expenseCategoryIconBg: Color(0xFFE8F5E9),
     expenseCategoryIcon: Color(0xFF2E7D32),
     expenseCategoryTag: Color(0xFF10B981),
@@ -607,6 +639,16 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     snackBarInfoText: AppColors.textLight,
     shimmerBase: Color(0xFF1E293B),
     shimmerHighlight: Color(0xFF334155),
+    fundPiggyBg: Color(0xFF1E3A8A),
+    fundPiggyIcon: Color(0xFF60A5FA),
+    fundStatusCollectingBg: Color(0xFF1E3A8A),
+    fundStatusCollectingText: Color(0xFF93C5FD),
+    fundStatusCompletedBg: Color(0xFF064E3B),
+    fundStatusCompletedText: Color(0xFF6EE7B7),
+    fundAmountText: Color(0xFF34D399),
+    fundProgressStart: Color(0xFF3B82F6),
+    fundProgressEnd: Color(0xFF10B981),
+    fundProgressText: Color(0xFF34D399),
     expenseCategoryIconBg: Color(0xFF064E3B),
     expenseCategoryIcon: Color(0xFF34D399),
     expenseCategoryTag: Color(0xFF34D399),
@@ -762,6 +804,16 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? snackBarInfoText,
     Color? shimmerBase,
     Color? shimmerHighlight,
+    Color? fundPiggyBg,
+    Color? fundPiggyIcon,
+    Color? fundStatusCollectingBg,
+    Color? fundStatusCollectingText,
+    Color? fundStatusCompletedBg,
+    Color? fundStatusCompletedText,
+    Color? fundAmountText,
+    Color? fundProgressStart,
+    Color? fundProgressEnd,
+    Color? fundProgressText,
     Color? expenseCategoryIconBg,
     Color? expenseCategoryIcon,
     Color? expenseCategoryTag,
@@ -914,6 +966,20 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       snackBarInfoText: snackBarInfoText ?? this.snackBarInfoText,
       shimmerBase: shimmerBase ?? this.shimmerBase,
       shimmerHighlight: shimmerHighlight ?? this.shimmerHighlight,
+      fundPiggyBg: fundPiggyBg ?? this.fundPiggyBg,
+      fundPiggyIcon: fundPiggyIcon ?? this.fundPiggyIcon,
+      fundStatusCollectingBg:
+          fundStatusCollectingBg ?? this.fundStatusCollectingBg,
+      fundStatusCollectingText:
+          fundStatusCollectingText ?? this.fundStatusCollectingText,
+      fundStatusCompletedBg:
+          fundStatusCompletedBg ?? this.fundStatusCompletedBg,
+      fundStatusCompletedText:
+          fundStatusCompletedText ?? this.fundStatusCompletedText,
+      fundAmountText: fundAmountText ?? this.fundAmountText,
+      fundProgressStart: fundProgressStart ?? this.fundProgressStart,
+      fundProgressEnd: fundProgressEnd ?? this.fundProgressEnd,
+      fundProgressText: fundProgressText ?? this.fundProgressText,
       expenseCategoryIconBg:
           expenseCategoryIconBg ?? this.expenseCategoryIconBg,
       expenseCategoryIcon: expenseCategoryIcon ?? this.expenseCategoryIcon,
@@ -1123,6 +1189,22 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       shimmerBase: Color.lerp(shimmerBase, other.shimmerBase, t)!,
       shimmerHighlight:
           Color.lerp(shimmerHighlight, other.shimmerHighlight, t)!,
+      fundPiggyBg: Color.lerp(fundPiggyBg, other.fundPiggyBg, t)!,
+      fundPiggyIcon: Color.lerp(fundPiggyIcon, other.fundPiggyIcon, t)!,
+      fundStatusCollectingBg:
+          Color.lerp(fundStatusCollectingBg, other.fundStatusCollectingBg, t)!,
+      fundStatusCollectingText: Color.lerp(
+          fundStatusCollectingText, other.fundStatusCollectingText, t)!,
+      fundStatusCompletedBg:
+          Color.lerp(fundStatusCompletedBg, other.fundStatusCompletedBg, t)!,
+      fundStatusCompletedText: Color.lerp(
+          fundStatusCompletedText, other.fundStatusCompletedText, t)!,
+      fundAmountText: Color.lerp(fundAmountText, other.fundAmountText, t)!,
+      fundProgressStart:
+          Color.lerp(fundProgressStart, other.fundProgressStart, t)!,
+      fundProgressEnd: Color.lerp(fundProgressEnd, other.fundProgressEnd, t)!,
+      fundProgressText:
+          Color.lerp(fundProgressText, other.fundProgressText, t)!,
       expenseCategoryIconBg:
           Color.lerp(expenseCategoryIconBg, other.expenseCategoryIconBg, t)!,
       expenseCategoryIcon:

@@ -69,8 +69,8 @@ class FundFilterBar extends StatelessWidget {
             const SizedBox(width: 8),
             Text(
               '$filteredCount / $totalCount',
-              style: AppTextStyle.bold(
-                fontSize: 11,
+              style: AppTextStyle.medium(
+                fontSize: 12,
                 color: colors.textMuted,
               ),
             ),
@@ -123,32 +123,38 @@ class FundFilterBar extends StatelessWidget {
     required VoidCallback onTap,
     required dynamic colors,
   }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-        decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF14532D) : colors.cardBackground,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: isSelected ? const Color(0xFF14532D) : colors.cardBorder,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          constraints: const BoxConstraints(minHeight: 48),
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          decoration: BoxDecoration(
+            color: isSelected ? colors.tabPillActiveBg : colors.cardBackground,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: isSelected ? colors.tabPillActiveBg : colors.cardBorder,
+            ),
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: colors.tabPillActiveBg.withValues(alpha: 0.25),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                : null,
           ),
-          boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: const Color(0xFF14532D).withValues(alpha: 0.2),
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ]
-              : null,
-        ),
-        child: Text(
-          label,
-          style: AppTextStyle.bold(
-            fontSize: 12,
-            color: isSelected ? Colors.white : colors.textPrimary,
+          child: Text(
+            label,
+            style: AppTextStyle.bold(
+              fontSize: 13,
+              color: isSelected ? colors.tabPillActiveText : colors.textPrimary,
+            ),
           ),
         ),
       ),
