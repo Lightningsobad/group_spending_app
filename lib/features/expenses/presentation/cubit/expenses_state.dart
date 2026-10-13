@@ -35,6 +35,7 @@ class ExpensesState {
   ExpensesState copyWith({
     ExpensesStatus? status,
     GroupExpensesResponseModel? expensesData,
+    bool clearExpensesData = false,
     ExpenseTimeFilter? timeFilter,
     ExpenseCategoryFilter? categoryFilter,
     ExpensePayerFilter? payerFilter,
@@ -46,7 +47,7 @@ class ExpensesState {
   }) {
     return ExpensesState(
       status: status ?? this.status,
-      expensesData: expensesData ?? this.expensesData,
+      expensesData: clearExpensesData ? null : (expensesData ?? this.expensesData),
       timeFilter: timeFilter ?? this.timeFilter,
       categoryFilter: categoryFilter ?? this.categoryFilter,
       payerFilter: payerFilter ?? this.payerFilter,
