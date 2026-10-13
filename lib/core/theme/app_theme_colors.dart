@@ -139,6 +139,13 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color snackBarInfoIcon;
   final Color snackBarInfoText;
 
+  // Thẻ Chi tiêu (Expense Card & Category)
+  final Color expenseCategoryIconBg;
+  final Color expenseCategoryIcon;
+  final Color expenseCategoryTag;
+  final Color expenseBadgeOwedBg;
+  final Color expenseBadgeOwedBorder;
+  final Color expenseBadgeOwedText;
   // Shimmer Tokens
   final Color shimmerBase;
   final Color shimmerHighlight;
@@ -286,6 +293,12 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.snackBarInfoText,
     required this.shimmerBase,
     required this.shimmerHighlight,
+    required this.expenseCategoryIconBg,
+    required this.expenseCategoryIcon,
+    required this.expenseCategoryTag,
+    required this.expenseBadgeOwedBg,
+    required this.expenseBadgeOwedBorder,
+    required this.expenseBadgeOwedText,
     required this.warningAccent,
     required this.warningAccentBorder,
     required this.infoAccent,
@@ -437,6 +450,12 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     snackBarInfoText: AppColors.textDark,
     shimmerBase: Color(0xFFE2E8F0),
     shimmerHighlight: Color(0xFFF8FAFC),
+    expenseCategoryIconBg: Color(0xFFE8F5E9),
+    expenseCategoryIcon: Color(0xFF2E7D32),
+    expenseCategoryTag: Color(0xFF10B981),
+    expenseBadgeOwedBg: Color(0xFFFEE2E2),
+    expenseBadgeOwedBorder: Color(0xFFFECACA),
+    expenseBadgeOwedText: Color(0xFFDC2626),
     warningAccent: Color(0xFFD97706),
     warningAccentBorder: Color(0xFFFCD34D),
     infoAccent: Color(0xFF3B82F6),
@@ -588,6 +607,12 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     snackBarInfoText: AppColors.textLight,
     shimmerBase: Color(0xFF1E293B),
     shimmerHighlight: Color(0xFF334155),
+    expenseCategoryIconBg: Color(0xFF064E3B),
+    expenseCategoryIcon: Color(0xFF34D399),
+    expenseCategoryTag: Color(0xFF34D399),
+    expenseBadgeOwedBg: Color(0xFF450A0A),
+    expenseBadgeOwedBorder: Color(0xFF991B1B),
+    expenseBadgeOwedText: Color(0xFFF87171),
     warningAccent: Color(0xFFFBBF24),
     warningAccentBorder: Color(0xFF78350F),
     infoAccent: Color(0xFF60A5FA),
@@ -737,6 +762,12 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? snackBarInfoText,
     Color? shimmerBase,
     Color? shimmerHighlight,
+    Color? expenseCategoryIconBg,
+    Color? expenseCategoryIcon,
+    Color? expenseCategoryTag,
+    Color? expenseBadgeOwedBg,
+    Color? expenseBadgeOwedBorder,
+    Color? expenseBadgeOwedText,
     Color? warningAccent,
     Color? warningAccentBorder,
     Color? infoAccent,
@@ -883,6 +914,14 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       snackBarInfoText: snackBarInfoText ?? this.snackBarInfoText,
       shimmerBase: shimmerBase ?? this.shimmerBase,
       shimmerHighlight: shimmerHighlight ?? this.shimmerHighlight,
+      expenseCategoryIconBg:
+          expenseCategoryIconBg ?? this.expenseCategoryIconBg,
+      expenseCategoryIcon: expenseCategoryIcon ?? this.expenseCategoryIcon,
+      expenseCategoryTag: expenseCategoryTag ?? this.expenseCategoryTag,
+      expenseBadgeOwedBg: expenseBadgeOwedBg ?? this.expenseBadgeOwedBg,
+      expenseBadgeOwedBorder:
+          expenseBadgeOwedBorder ?? this.expenseBadgeOwedBorder,
+      expenseBadgeOwedText: expenseBadgeOwedText ?? this.expenseBadgeOwedText,
       warningAccent: warningAccent ?? this.warningAccent,
       warningAccentBorder: warningAccentBorder ?? this.warningAccentBorder,
       infoAccent: infoAccent ?? this.infoAccent,
@@ -1084,6 +1123,18 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       shimmerBase: Color.lerp(shimmerBase, other.shimmerBase, t)!,
       shimmerHighlight:
           Color.lerp(shimmerHighlight, other.shimmerHighlight, t)!,
+      expenseCategoryIconBg:
+          Color.lerp(expenseCategoryIconBg, other.expenseCategoryIconBg, t)!,
+      expenseCategoryIcon:
+          Color.lerp(expenseCategoryIcon, other.expenseCategoryIcon, t)!,
+      expenseCategoryTag:
+          Color.lerp(expenseCategoryTag, other.expenseCategoryTag, t)!,
+      expenseBadgeOwedBg:
+          Color.lerp(expenseBadgeOwedBg, other.expenseBadgeOwedBg, t)!,
+      expenseBadgeOwedBorder:
+          Color.lerp(expenseBadgeOwedBorder, other.expenseBadgeOwedBorder, t)!,
+      expenseBadgeOwedText:
+          Color.lerp(expenseBadgeOwedText, other.expenseBadgeOwedText, t)!,
       warningAccent: Color.lerp(warningAccent, other.warningAccent, t)!,
       warningAccentBorder:
           Color.lerp(warningAccentBorder, other.warningAccentBorder, t)!,
