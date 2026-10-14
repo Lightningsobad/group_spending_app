@@ -43,9 +43,25 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    final cubit = context.read<GroupMembersCubit>();
+    if (cubit.groupId != widget.group.id || cubit.state.status == GroupMembersStatus.initial) {
+      cubit.init();
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          context.read<GroupMembersCubit>().loadMembers(silent: true);
+        }
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant GroupMembersTabView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.group.id != widget.group.id) {
+      _searchController.clear();
       context.read<GroupMembersCubit>().init();
-    });
+    }
   }
 
   @override
@@ -61,13 +77,21 @@ class _GroupMembersTabViewState extends State<GroupMembersTabView> {
 
     return BlocBuilder<GroupMembersCubit, GroupMembersState>(
       builder: (context, state) {
-        final members = state.members;
-        final pendingRequests = state.pendingRequests;
+        final cubit = context.read<GroupMembersCubit>();
+        final isDifferentGroup = cubit.groupId != widget.group.id;
+        final members =
+            isDifferentGroup ? const <GroupMemberSummaryModel>[] : state.members;
+        final pendingRequests =
+            isDifferentGroup ? const <GroupJoinRequestModel>[] : state.pendingRequests;
         final showPendingSection = widget.isAdmin &&
             !widget.group.isArchived &&
             pendingRequests.isNotEmpty;
 
-        if (state.isLoading && members.isEmpty) {
+        final isLoading = state.isLoading ||
+            isDifferentGroup ||
+            (state.status == GroupMembersStatus.initial);
+
+        if (isLoading && members.isEmpty) {
           return const GroupMembersTabSkeleton();
         }
 

@@ -61,13 +61,31 @@ class _GroupDetailViewState extends State<GroupDetailView> {
   }
 
   @override
+  void didUpdateWidget(covariant GroupDetailView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialGroup.id != widget.initialGroup.id) {
+      _group = widget.initialGroup;
+      _isLoadingDetail = true;
+      _selectedTabIndex = 0;
+      _viewingMemberId = null;
+      _groupMembersCubit?.close();
+      _groupMembersCubit = null;
+      _fetchLatestDetail();
+    }
+  }
+
+  @override
   void dispose() {
     _groupMembersCubit?.close();
     super.dispose();
   }
 
   GroupMembersCubit _getOrCreateGroupMembersCubit([BuildContext? ctx]) {
-    if (_groupMembersCubit != null) return _groupMembersCubit!;
+    if (_groupMembersCubit != null && _groupMembersCubit!.groupId == _group.id) {
+      return _groupMembersCubit!;
+    }
+    _groupMembersCubit?.close();
+    _groupMembersCubit = null;
 
     final currentContext = ctx ?? context;
     GroupsRepository repo;

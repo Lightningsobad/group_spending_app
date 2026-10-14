@@ -64,7 +64,7 @@ void main() {
 
       // Action buttons
       expect(find.text('Tạo nhóm'), findsOneWidget);
-      expect(find.text('Mã / QR'), findsOneWidget);
+      expect(find.text('Gia nhập nhóm'), findsOneWidget);
 
       // Filter chips
       expect(find.text('Tất cả (3)'), findsOneWidget);
@@ -99,7 +99,7 @@ void main() {
 
       // Action buttons in English
       expect(find.text('Create group'), findsOneWidget);
-      expect(find.text('Code / QR'), findsOneWidget);
+      expect(find.text('Join now'), findsOneWidget);
 
       // Filter chips in English
       expect(find.text('All (3)'), findsOneWidget);
@@ -171,11 +171,11 @@ void main() {
       expect(find.text('Chung cư Sunrise Room'), findsNothing);
     });
 
-    testWidgets('tapping Mã / QR opens JoinGroupView and tapping Quay lại returns to list', (tester) async {
+    testWidgets('tapping Gia nhập nhóm opens JoinGroupView and tapping Quay lại returns to list', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Mã / QR'));
+      await tester.tap(find.text('Gia nhập nhóm'));
       await tester.pumpAndSettle();
 
       // JoinGroupView is displayed
