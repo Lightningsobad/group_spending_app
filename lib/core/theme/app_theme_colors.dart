@@ -217,6 +217,21 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color debtIconContainerBorder;
   final Color debtIconContainerFg;
 
+  // Expense Form, Scanner & Keypad Semantic Tokens
+  final Color keypadDigitBg;
+  final Color keypadDigitText;
+  final Color keypadActionBg;
+  final Color keypadActionText;
+  final Color keypadClearBg;
+  final Color keypadClearText;
+  final Color keypadDeleteBg;
+  final Color keypadDeleteText;
+  final Color scannerHighlightBg;
+  final Color scannerHighlightBorder;
+  final Color scannerHighlightText;
+  final Color expenseCardSelectedBg;
+  final Color expenseCardSelectedBorder;
+
   const AppThemeColors({
     required this.background,
     required this.cardBackground,
@@ -386,6 +401,19 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.debtIconContainerBg,
     required this.debtIconContainerBorder,
     required this.debtIconContainerFg,
+    required this.keypadDigitBg,
+    required this.keypadDigitText,
+    required this.keypadActionBg,
+    required this.keypadActionText,
+    required this.keypadClearBg,
+    required this.keypadClearText,
+    required this.keypadDeleteBg,
+    required this.keypadDeleteText,
+    required this.scannerHighlightBg,
+    required this.scannerHighlightBorder,
+    required this.scannerHighlightText,
+    required this.expenseCardSelectedBg,
+    required this.expenseCardSelectedBorder,
   });
 
   /// Bảng màu cho Light Theme
@@ -566,6 +594,19 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     debtIconContainerBg: Color(0xFFDCFCE7),
     debtIconContainerBorder: Color(0xFFA7F3D0),
     debtIconContainerFg: Color(0xFF15803D),
+    keypadDigitBg: Color(0xFFF8FAFC),
+    keypadDigitText: AppColors.textDark,
+    keypadActionBg: Color(0xFFE2E8F0),
+    keypadActionText: Color(0xFF1E293B),
+    keypadClearBg: Color(0xFFFEE2E2),
+    keypadClearText: Color(0xFFDC2626),
+    keypadDeleteBg: Color(0xFFFEF3C7),
+    keypadDeleteText: Color(0xFFB45309),
+    scannerHighlightBg: Color(0xFFECFDF5),
+    scannerHighlightBorder: Color(0xFF6EE7B7),
+    scannerHighlightText: Color(0xFF14532D),
+    expenseCardSelectedBg: Color(0xFFF0FDF4),
+    expenseCardSelectedBorder: Color(0xFF16A34A),
   );
 
   /// Bảng màu cho Dark Theme
@@ -746,6 +787,19 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     debtIconContainerBg: Color(0x66064E3B),
     debtIconContainerBorder: Color(0xFF065F46),
     debtIconContainerFg: Color(0xFF6EE7B7),
+    keypadDigitBg: Color(0xFF1E293B),
+    keypadDigitText: AppColors.textLight,
+    keypadActionBg: Color(0xFF334155),
+    keypadActionText: Color(0xFFCBD5E1),
+    keypadClearBg: Color(0xFF450A0A),
+    keypadClearText: Color(0xFFF87171),
+    keypadDeleteBg: Color(0xFF451A03),
+    keypadDeleteText: Color(0xFFFBBF24),
+    scannerHighlightBg: Color(0xFF064E3B),
+    scannerHighlightBorder: Color(0xFF047857),
+    scannerHighlightText: Color(0xFF6EE7B7),
+    expenseCardSelectedBg: Color(0xFF064E3B),
+    expenseCardSelectedBorder: Color(0xFF059669),
   );
 
   /// Lấy bảng màu tương ứng với Theme hiện tại
@@ -924,6 +978,19 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? debtIconContainerBg,
     Color? debtIconContainerBorder,
     Color? debtIconContainerFg,
+    Color? keypadDigitBg,
+    Color? keypadDigitText,
+    Color? keypadActionBg,
+    Color? keypadActionText,
+    Color? keypadClearBg,
+    Color? keypadClearText,
+    Color? keypadDeleteBg,
+    Color? keypadDeleteText,
+    Color? scannerHighlightBg,
+    Color? scannerHighlightBorder,
+    Color? scannerHighlightText,
+    Color? expenseCardSelectedBg,
+    Color? expenseCardSelectedBorder,
   }) {
     return AppThemeColors(
       background: background ?? this.background,
@@ -1110,6 +1177,22 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       debtIconContainerBorder:
           debtIconContainerBorder ?? this.debtIconContainerBorder,
       debtIconContainerFg: debtIconContainerFg ?? this.debtIconContainerFg,
+      keypadDigitBg: keypadDigitBg ?? this.keypadDigitBg,
+      keypadDigitText: keypadDigitText ?? this.keypadDigitText,
+      keypadActionBg: keypadActionBg ?? this.keypadActionBg,
+      keypadActionText: keypadActionText ?? this.keypadActionText,
+      keypadClearBg: keypadClearBg ?? this.keypadClearBg,
+      keypadClearText: keypadClearText ?? this.keypadClearText,
+      keypadDeleteBg: keypadDeleteBg ?? this.keypadDeleteBg,
+      keypadDeleteText: keypadDeleteText ?? this.keypadDeleteText,
+      scannerHighlightBg: scannerHighlightBg ?? this.scannerHighlightBg,
+      scannerHighlightBorder:
+          scannerHighlightBorder ?? this.scannerHighlightBorder,
+      scannerHighlightText: scannerHighlightText ?? this.scannerHighlightText,
+      expenseCardSelectedBg:
+          expenseCardSelectedBg ?? this.expenseCardSelectedBg,
+      expenseCardSelectedBorder:
+          expenseCardSelectedBorder ?? this.expenseCardSelectedBorder,
     );
   }
 
@@ -1371,6 +1454,26 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           debtIconContainerBorder, other.debtIconContainerBorder, t)!,
       debtIconContainerFg:
           Color.lerp(debtIconContainerFg, other.debtIconContainerFg, t)!,
+      keypadDigitBg: Color.lerp(keypadDigitBg, other.keypadDigitBg, t)!,
+      keypadDigitText: Color.lerp(keypadDigitText, other.keypadDigitText, t)!,
+      keypadActionBg: Color.lerp(keypadActionBg, other.keypadActionBg, t)!,
+      keypadActionText:
+          Color.lerp(keypadActionText, other.keypadActionText, t)!,
+      keypadClearBg: Color.lerp(keypadClearBg, other.keypadClearBg, t)!,
+      keypadClearText: Color.lerp(keypadClearText, other.keypadClearText, t)!,
+      keypadDeleteBg: Color.lerp(keypadDeleteBg, other.keypadDeleteBg, t)!,
+      keypadDeleteText:
+          Color.lerp(keypadDeleteText, other.keypadDeleteText, t)!,
+      scannerHighlightBg:
+          Color.lerp(scannerHighlightBg, other.scannerHighlightBg, t)!,
+      scannerHighlightBorder:
+          Color.lerp(scannerHighlightBorder, other.scannerHighlightBorder, t)!,
+      scannerHighlightText:
+          Color.lerp(scannerHighlightText, other.scannerHighlightText, t)!,
+      expenseCardSelectedBg:
+          Color.lerp(expenseCardSelectedBg, other.expenseCardSelectedBg, t)!,
+      expenseCardSelectedBorder: Color.lerp(
+          expenseCardSelectedBorder, other.expenseCardSelectedBorder, t)!,
     );
   }
 }

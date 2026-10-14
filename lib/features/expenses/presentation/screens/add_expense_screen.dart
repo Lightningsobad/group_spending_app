@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../../core/constants/app_colors.dart';
 import '../../../../core/sync/data_sync_coordinator.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../core/theme/app_theme_colors.dart';
 import '../../../../core/utils/currency_utils.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../groups/data/models/group_model.dart';
 import '../../../groups/domain/repositories/groups_repository.dart';
@@ -15,6 +16,7 @@ import '../../data/models/expense_models.dart';
 import '../../domain/repositories/expenses_repository.dart';
 import '../cubit/expense_form_cubit.dart';
 import '../cubit/expense_form_state.dart';
+import '../widgets/add_expense_skeleton.dart';
 import '../widgets/ai_receipt_scanner_card.dart';
 import '../widgets/category_selector_grid.dart';
 import '../widgets/custom_numeric_keypad.dart';
@@ -76,17 +78,18 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   Future<void> _fetchGroupDetail() async {
     setState(() => _isLoadingMembers = true);
+    final groupsCubit = context.read<GroupsCubit>();
+    final groupsRepo = context.read<GroupsRepository>();
     List<GroupMemberModel>? members = _currentGroup.members;
     GroupModel? detail;
     try {
-      detail = await context.read<GroupsCubit>().loadGroupDetails(_currentGroup.id);
+      detail = await groupsCubit.loadGroupDetails(_currentGroup.id);
       members = detail?.members;
     } catch (_) {}
 
     if (members == null || members.isEmpty) {
       try {
-        final repo = context.read<GroupsRepository>();
-        final summaries = await repo.getGroupMembers(_currentGroup.id);
+        final summaries = await groupsRepo.getGroupMembers(_currentGroup.id);
         if (summaries.isNotEmpty) {
           members = summaries.map((s) => GroupMemberModel.fromSummary(s)).toList();
         }
@@ -150,10 +153,10 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                       final g = groups[index];
                       final isCurrent = g.id == _currentGroup.id;
                       return ListTile(
-                        leading: const Icon(LucideIcons.building2),
-                        title: Text(g.name, style: AppTextStyle.bold(fontSize: 14)),
-                        subtitle: Text('${g.memberCount} thành viên'),
-                        trailing: isCurrent ? const Icon(LucideIcons.check, color: AppColors.emerald) : null,
+                        leading: Icon(LucideIcons.building2, color: colors.brandEmerald),
+                        title: Text(g.name, style: AppTextStyle.bold(fontSize: AppFontSize.secondary, color: colors.textPrimary)),
+                        subtitle: Text('${g.memberCount} thành viên', style: AppTextStyle.regular(fontSize: AppFontSize.caption, color: colors.textSecondary)),
+                        trailing: isCurrent ? Icon(LucideIcons.check, color: colors.brandEmerald) : null,
                         onTap: () {
                           Navigator.of(ctx).pop();
                           if (!isCurrent) {
@@ -197,11 +200,10 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       final size = await file.length();
       if (size > 10 * 1024 * 1024) {
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Kích thước ảnh tối đa là 10MB'),
-            backgroundColor: AppColors.error,
-          ),
+        AppSnackBar.show(
+          context,
+          message: 'Kích thước ảnh tối đa là 10MB',
+          type: AppSnackBarType.error,
         );
         return;
       }
@@ -213,29 +215,26 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           _notesCtrl.text = _expenseFormCubit!.state.notes ?? '';
         }
         if (result.isLowConfidence) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Ảnh mờ hoặc không nhận dạng được chữ. Ảnh đã được lưu, vui lòng tự nhập số tiền và tiêu đề.'),
-              backgroundColor: Colors.orange,
-              duration: Duration(seconds: 4),
-            ),
+          AppSnackBar.show(
+            context,
+            message: 'Ảnh mờ hoặc không nhận dạng được chữ. Ảnh đã được lưu, vui lòng tự nhập số tiền và tiêu đề.',
+            type: AppSnackBarType.warning,
+            duration: const Duration(seconds: 4),
           );
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Quét hóa đơn thành công! Đã tự động điền thông tin.'),
-              backgroundColor: AppColors.emerald,
-            ),
+          AppSnackBar.show(
+            context,
+            message: 'Quét hóa đơn thành công! Đã tự động điền thông tin.',
+            type: AppSnackBarType.success,
           );
         }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Lỗi khi chọn ảnh: $e'),
-            backgroundColor: AppColors.error,
-          ),
+        AppSnackBar.show(
+          context,
+          message: 'Lỗi khi chọn ảnh: $e',
+          type: AppSnackBarType.error,
         );
       }
     }
@@ -257,38 +256,40 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
         builder: (_) => Dialog(
           backgroundColor: Colors.transparent,
           insetPadding: const EdgeInsets.all(12),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    child: Text(
-                      state.title.isNotEmpty ? state.title : 'Hóa đơn chi tiêu',
-                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        state.title.isNotEmpty ? state.title : 'Hóa đơn chi tiêu',
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(LucideIcons.x, color: Colors.white),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Flexible(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(16),
+                    child: InteractiveViewer(
+                      minScale: 0.8,
+                      maxScale: 4.0,
+                      child: Image.file(state.receiptFile!, fit: BoxFit.contain),
                     ),
                   ),
-                  IconButton(
-                    icon: const Icon(LucideIcons.x, color: Colors.white),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Flexible(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: InteractiveViewer(
-                    minScale: 0.8,
-                    maxScale: 4.0,
-                    child: Image.file(state.receiptFile!, fit: BoxFit.contain),
-                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
@@ -297,7 +298,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   Widget _buildCard({
     required Widget child,
-    required dynamic colors,
+    required AppThemeColors colors,
     EdgeInsetsGeometry? padding,
   }) {
     return Container(
@@ -308,7 +309,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
         border: Border.all(color: colors.cardBorder),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
+            color: colors.cardShadowColor,
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -331,20 +332,18 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       child: BlocConsumer<ExpenseFormCubit, ExpenseFormState>(
         listener: (context, state) {
           if (state.errorMessage != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage!),
-                backgroundColor: AppColors.error,
-              ),
+            AppSnackBar.show(
+              context,
+              message: state.errorMessage!,
+              type: AppSnackBarType.error,
             );
             context.read<ExpenseFormCubit>().clearMessages();
           }
           if (state.status == ExpenseFormStatus.success) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.successMessage ?? 'Thành công'),
-                backgroundColor: AppColors.emerald,
-              ),
+            AppSnackBar.show(
+              context,
+              message: state.successMessage ?? 'Thành công',
+              type: AppSnackBarType.success,
             );
             Navigator.of(context).pop(true);
           }
@@ -363,462 +362,479 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
               ),
               title: Text(
                 isEdit ? 'Sửa thông tin khoản chi' : 'Thêm chi tiêu',
-                style: AppTextStyle.bold(fontSize: 18, color: colors.textPrimary),
+                style: AppTextStyle.bold(fontSize: AppFontSize.h4, color: colors.textPrimary),
               ),
               centerTitle: false,
             ),
-            body: SafeArea(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          // 1. NHÓM NHẬN CHI TIÊU (Image 3)
-                          _buildCard(
-                            colors: colors,
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: colors.surfaceMuted,
-                                    borderRadius: BorderRadius.circular(10),
+            body: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // 1. NHÓM NHẬN CHI TIÊU
+                        _buildCard(
+                          colors: colors,
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: colors.surfaceMuted,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Icon(
+                                  LucideIcons.building2,
+                                  size: 20,
+                                  color: colors.brandEmerald,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'NHÓM NHẬN CHI TIÊU',
+                                      style: AppTextStyle.bold(
+                                        fontSize: AppFontSize.caption,
+                                        letterSpacing: 0.5,
+                                        color: colors.brandEmerald,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      _currentGroup.name,
+                                      style: AppTextStyle.bold(
+                                        fontSize: AppFontSize.secondary,
+                                        color: colors.textPrimary,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              if (!isEdit)
+                                OutlinedButton(
+                                  style: OutlinedButton.styleFrom(
+                                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                                    minimumSize: const Size(80, 48),
+                                    side: BorderSide(color: colors.cardBorder),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
                                   ),
-                                  child: const Icon(
-                                    LucideIcons.building2,
-                                    size: 20,
-                                    color: Color(0xFF14532D),
+                                  onPressed: _showChangeGroupSheet,
+                                  child: Text(
+                                    'Đổi nhóm',
+                                    style: AppTextStyle.bold(
+                                      fontSize: 13,
+                                      color: colors.brandEmerald,
+                                    ),
                                   ),
                                 ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'NHÓM NHẬN CHI TIÊU',
-                                        style: AppTextStyle.bold(
-                                          fontSize: 11,
-                                          color: const Color(0xFF14532D),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+
+                        // QUÉT HÓA ĐƠN AI
+                        AiReceiptScannerCard(
+                          isScanning: state.isScanningReceipt,
+                          receiptFile: state.receiptFile,
+                          receiptUrl: state.receiptUrl,
+                          scanConfidence: state.scanConfidence,
+                          onCapturePressed: () => _pickReceipt(ImageSource.camera),
+                          onPickGalleryPressed: () => _pickReceipt(ImageSource.gallery),
+                          onRemoveReceipt: cubit.removeReceipt,
+                          onViewReceipt: _viewReceipt,
+                        ),
+                        const SizedBox(height: 14),
+
+                        // 2. SỐ TIỀN CHI TIÊU (VNĐ) + Custom Numeric Keypad
+                        _buildCard(
+                          colors: colors,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'SỐ TIỀN CHI TIÊU (VNĐ)',
+                                style: AppTextStyle.bold(
+                                  fontSize: AppFontSize.caption,
+                                  letterSpacing: 0.5,
+                                  color: colors.textSecondary,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '₫',
+                                    style: AppTextStyle.bold(
+                                      fontSize: 26,
+                                      color: colors.brandEmerald,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                          CurrencyUtils.formatVnd(state.totalAmountVnd),
+                                          style: AppTextStyle.bold(
+                                            fontSize: AppFontSize.h1,
+                                            color: colors.textPrimary,
+                                          ),
                                         ),
                                       ),
-                                      const SizedBox(height: 2),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 12),
+                              Divider(height: 1, color: colors.divider),
+                              const SizedBox(height: 12),
+                              CustomNumericKeypad(
+                                onDigitPressed: cubit.onDigitPressed,
+                                onTripleZeroPressed: cubit.onTripleZeroPressed,
+                                onClearPressed: cubit.onClearPressed,
+                                onDeletePressed: cubit.onDeletePressed,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+
+                        // 3. TÊN KHOẢN CHI & GHI CHÚ
+                        _buildCard(
+                          colors: colors,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'TÊN KHOẢN CHI',
+                                style: AppTextStyle.bold(
+                                  fontSize: AppFontSize.caption,
+                                  letterSpacing: 0.5,
+                                  color: colors.textSecondary,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              TextField(
+                                controller: _titleCtrl,
+                                onChanged: cubit.setTitle,
+                                style: AppTextStyle.medium(
+                                  fontSize: AppFontSize.secondary,
+                                  color: colors.textPrimary,
+                                ),
+                                decoration: InputDecoration(
+                                  hintText: 'Nhập tên khoản chi (ví dụ: Ăn tối Haidilao)...',
+                                  hintStyle: AppTextStyle.regular(
+                                    fontSize: AppFontSize.secondary,
+                                    color: colors.textMuted,
+                                  ),
+                                  filled: true,
+                                  fillColor: colors.surfaceMuted,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: BorderSide(color: colors.cardBorder),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: BorderSide(color: colors.cardBorder),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: BorderSide(color: colors.brandEmerald, width: 1.5),
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                                ),
+                              ),
+                              const SizedBox(height: 14),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(LucideIcons.fileText, size: 14, color: colors.textSecondary),
+                                      const SizedBox(width: 4),
                                       Text(
-                                        _currentGroup.name,
+                                        'GHI CHÚ',
                                         style: AppTextStyle.bold(
-                                          fontSize: 14,
-                                          color: colors.textPrimary,
+                                          fontSize: AppFontSize.caption,
+                                          letterSpacing: 0.5,
+                                          color: colors.textSecondary,
                                         ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
                                   ),
-                                ),
-                                if (!isEdit)
-                                  OutlinedButton(
-                                    style: OutlinedButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                                      minimumSize: Size.zero,
-                                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    ),
-                                    onPressed: _showChangeGroupSheet,
-                                    child: const Text(
-                                      'Đổi nhóm',
-                                      style: TextStyle(fontSize: 12, color: Color(0xFF14532D)),
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 14),
-
-                          // QUÉT HÓA ĐƠN AI
-                          AiReceiptScannerCard(
-                            isScanning: state.isScanningReceipt,
-                            receiptFile: state.receiptFile,
-                            receiptUrl: state.receiptUrl,
-                            scanConfidence: state.scanConfidence,
-                            onCapturePressed: () => _pickReceipt(ImageSource.camera),
-                            onPickGalleryPressed: () => _pickReceipt(ImageSource.gallery),
-                            onRemoveReceipt: cubit.removeReceipt,
-                            onViewReceipt: _viewReceipt,
-                          ),
-                          const SizedBox(height: 14),
-
-                          // 2. SỐ TIỀN CHI TIÊU (VNĐ) + Custom Numeric Keypad (Image 3)
-                          _buildCard(
-                            colors: colors,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'SỐ TIỀN CHI TIÊU (VNĐ)',
-                                  style: AppTextStyle.bold(
-                                    fontSize: 11,
-                                    color: colors.textSecondary,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
-                                      '\$',
-                                      style: TextStyle(
-                                        fontSize: 28,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF14532D),
-                                      ),
-                                    ),
-                                    Text(
-                                      CurrencyUtils.formatVnd(state.totalAmountVnd),
-                                      style: AppTextStyle.bold(
-                                        fontSize: 26,
-                                        color: colors.textPrimary,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 12),
-                                const Divider(height: 1),
-                                const SizedBox(height: 12),
-                                CustomNumericKeypad(
-                                  onDigitPressed: cubit.onDigitPressed,
-                                  onTripleZeroPressed: cubit.onTripleZeroPressed,
-                                  onClearPressed: cubit.onClearPressed,
-                                  onDeletePressed: cubit.onDeletePressed,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 14),
-
-                          // 3. TÊN KHOẢN CHI & GHI CHÚ (Image 3, 4)
-                          _buildCard(
-                            colors: colors,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'TÊN KHOẢN CHI',
-                                  style: AppTextStyle.bold(
-                                    fontSize: 11,
-                                    color: colors.textSecondary,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                TextField(
-                                  controller: _titleCtrl,
-                                  onChanged: cubit.setTitle,
-                                  decoration: InputDecoration(
-                                    hintText: 'Nhập tên khoản chi (ví dụ: Ăn tối Haidilao)...',
-                                    hintStyle: AppTextStyle.regular(
-                                      fontSize: 13,
-                                      color: colors.textMuted,
-                                    ),
-                                    filled: true,
-                                    fillColor: colors.surfaceMuted,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(14),
-                                      borderSide: BorderSide(color: colors.cardBorder),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(14),
-                                      borderSide: BorderSide(color: colors.cardBorder),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(14),
-                                      borderSide: const BorderSide(color: Color(0xFF14532D), width: 1.5),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                                  ),
-                                ),
-                                const SizedBox(height: 14),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Icon(LucideIcons.fileText, size: 14, color: colors.textSecondary),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          'GHI CHÚ',
-                                          style: AppTextStyle.bold(
-                                            fontSize: 11,
-                                            color: colors.textSecondary,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      'Tùy chọn',
-                                      style: AppTextStyle.regular(fontSize: 11, color: colors.textMuted),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                TextField(
-                                  controller: _notesCtrl,
-                                  onChanged: cubit.setNotes,
-                                  maxLines: 2,
-                                  decoration: InputDecoration(
-                                    hintText: 'Nhập ghi chú thêm cho khoản chi (tùy chọn)...',
-                                    hintStyle: AppTextStyle.regular(
-                                      fontSize: 13,
-                                      color: colors.textMuted,
-                                    ),
-                                    filled: true,
-                                    fillColor: colors.surfaceMuted,
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(14),
-                                      borderSide: BorderSide(color: colors.cardBorder),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(14),
-                                      borderSide: BorderSide(color: colors.cardBorder),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(14),
-                                      borderSide: const BorderSide(color: Color(0xFF14532D), width: 1.5),
-                                    ),
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 14),
-
-                          // 4. DANH MỤC CHI TIÊU (Image 4)
-                          _buildCard(
-                            colors: colors,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'DANH MỤC CHI TIÊU',
-                                  style: AppTextStyle.bold(
-                                    fontSize: 11,
-                                    color: colors.textSecondary,
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-                                CategorySelectorGrid(
-                                  selectedCategory: state.category,
-                                  onCategorySelected: cubit.setCategory,
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 14),
-
-                          // 5. NGƯỜI ĐÃ TRẢ TIỀN (DUY NHẤT 1 NGƯỜI) (Image 4)
-                          _buildCard(
-                            colors: colors,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'NGƯỜI ĐÃ TRẢ TIỀN (DUY NHẤT 1 NGƯỜI)',
-                                  style: AppTextStyle.bold(
-                                    fontSize: 11,
-                                    color: colors.textSecondary,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                if (_isLoadingMembers && _groupMembers.isEmpty)
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                    child: Row(
-                                      children: [
-                                        const SizedBox(
-                                          width: 16,
-                                          height: 16,
-                                          child: CircularProgressIndicator(strokeWidth: 2),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                          'Đang tải danh sách thành viên...',
-                                          style: AppTextStyle.regular(fontSize: 12, color: colors.textMuted),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                else if (_groupMembers.isNotEmpty)
-                                  DropdownButtonFormField<int>(
-                                    value: _groupMembers.any((m) => m.userId == state.paidByUserId)
-                                        ? state.paidByUserId
-                                        : _groupMembers.first.userId,
-                                    decoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: colors.surfaceMuted,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(14),
-                                        borderSide: BorderSide(color: colors.cardBorder),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(14),
-                                        borderSide: BorderSide(color: colors.cardBorder),
-                                      ),
-                                      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                                    ),
-                                    items: _groupMembers.map((m) {
-                                      final isMe = m.userId == currentUserId;
-                                      return DropdownMenuItem<int>(
-                                        value: m.userId,
-                                        child: Text(
-                                          '${m.fullName}${isMe ? ' (Bạn)' : ''}${m.email != null ? ' (${m.email})' : ''}',
-                                          style: AppTextStyle.bold(fontSize: 13, color: colors.textPrimary),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      );
-                                    }).toList(),
-                                    onChanged: (val) {
-                                      if (val != null) cubit.setPayer(val);
-                                    },
-                                  )
-                                else
                                   Text(
-                                    'Không có thành viên trong nhóm.',
-                                    style: AppTextStyle.regular(fontSize: 12, color: colors.textMuted),
+                                    'Tùy chọn',
+                                    style: AppTextStyle.regular(
+                                      fontSize: AppFontSize.caption,
+                                      color: colors.textMuted,
+                                    ),
                                   ),
-                              ],
-                            ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              TextField(
+                                controller: _notesCtrl,
+                                onChanged: cubit.setNotes,
+                                maxLines: 2,
+                                style: AppTextStyle.medium(
+                                  fontSize: AppFontSize.secondary,
+                                  color: colors.textPrimary,
+                                ),
+                                decoration: InputDecoration(
+                                  hintText: 'Nhập ghi chú thêm cho khoản chi (tùy chọn)...',
+                                  hintStyle: AppTextStyle.regular(
+                                    fontSize: AppFontSize.secondary,
+                                    color: colors.textMuted,
+                                  ),
+                                  filled: true,
+                                  fillColor: colors.surfaceMuted,
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: BorderSide(color: colors.cardBorder),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: BorderSide(color: colors.cardBorder),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(14),
+                                    borderSide: BorderSide(color: colors.brandEmerald, width: 1.5),
+                                  ),
+                                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 14),
+                        ),
+                        const SizedBox(height: 14),
 
-                          // 6. KHUNG PHÂN CHIA CHI PHÍ (Image 2)
-                          _buildCard(
-                            colors: colors,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                        // 4. DANH MỤC CHI TIÊU
+                        _buildCard(
+                          colors: colors,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'DANH MỤC CHI TIÊU',
+                                style: AppTextStyle.bold(
+                                  fontSize: AppFontSize.caption,
+                                  letterSpacing: 0.5,
+                                  color: colors.textSecondary,
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              CategorySelectorGrid(
+                                selectedCategory: state.category,
+                                onCategorySelected: cubit.setCategory,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+
+                        // 5. NGƯỜI ĐÃ TRẢ TIỀN (DUY NHẤT 1 NGƯỜI)
+                        _buildCard(
+                          colors: colors,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'NGƯỜI ĐÃ TRẢ TIỀN (DUY NHẤT 1 NGƯỜI)',
+                                style: AppTextStyle.bold(
+                                  fontSize: AppFontSize.caption,
+                                  letterSpacing: 0.5,
+                                  color: colors.textSecondary,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              if (_isLoadingMembers && _groupMembers.isEmpty)
+                                const AddExpensePayerSkeleton()
+                              else if (_groupMembers.isNotEmpty)
+                                DropdownButtonFormField<int>(
+                                  isExpanded: true,
+                                  key: ValueKey<int>(state.paidByUserId),
+                                  initialValue: _groupMembers.any((m) => m.userId == state.paidByUserId)
+                                      ? state.paidByUserId
+                                      : _groupMembers.first.userId,
+                                  decoration: InputDecoration(
+                                    filled: true,
+                                    fillColor: colors.surfaceMuted,
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(14),
+                                      borderSide: BorderSide(color: colors.cardBorder),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(14),
+                                      borderSide: BorderSide(color: colors.cardBorder),
+                                    ),
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                                  ),
+                                  items: _groupMembers.map((m) {
+                                    final isMe = m.userId == currentUserId;
+                                    return DropdownMenuItem<int>(
+                                      value: m.userId,
+                                      child: Text(
+                                        '${m.fullName}${isMe ? ' (Bạn)' : ''}${m.email != null ? ' (${m.email})' : ''}',
+                                        style: AppTextStyle.bold(
+                                          fontSize: AppFontSize.secondary,
+                                          color: colors.textPrimary,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (val) {
+                                    if (val != null) cubit.setPayer(val);
+                                  },
+                                )
+                              else
                                 Text(
-                                  'KHUNG PHÂN CHIA CHI PHÍ',
-                                  style: AppTextStyle.bold(
-                                    fontSize: 11,
-                                    color: colors.textSecondary,
+                                  'Không có thành viên trong nhóm.',
+                                  style: AppTextStyle.regular(
+                                    fontSize: AppFontSize.caption,
+                                    color: colors.textMuted,
                                   ),
                                 ),
-                                const SizedBox(height: 12),
-                                if (_isLoadingMembers && _groupMembers.isEmpty)
-                                  const Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 24),
-                                    child: Center(
-                                      child: CircularProgressIndicator(),
-                                    ),
-                                  )
-                                else if (_groupMembers.isEmpty)
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 16),
-                                    child: Center(
-                                      child: Text(
-                                        'Không có thành viên trong nhóm để chia chi phí.',
-                                        style: AppTextStyle.regular(fontSize: 12, color: colors.textMuted),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+
+                        // 6. KHUNG PHÂN CHIA CHI PHÍ
+                        _buildCard(
+                          colors: colors,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'KHUNG PHÂN CHIA CHI PHÍ',
+                                style: AppTextStyle.bold(
+                                  fontSize: AppFontSize.caption,
+                                  letterSpacing: 0.5,
+                                  color: colors.textSecondary,
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              if (_isLoadingMembers && _groupMembers.isEmpty)
+                                const AddExpenseSplitSkeleton()
+                              else if (_groupMembers.isEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 16),
+                                  child: Center(
+                                    child: Text(
+                                      'Không có thành viên trong nhóm để chia chi phí.',
+                                      style: AppTextStyle.regular(
+                                        fontSize: AppFontSize.caption,
+                                        color: colors.textMuted,
                                       ),
                                     ),
-                                  )
-                                else
-                                  SplitMembersSection(
-                                    members: _groupMembers,
-                                    selectedParticipantUserIds: state.selectedParticipantUserIds,
-                                    splitOption: state.splitOption,
-                                    paidByUserId: state.paidByUserId,
-                                    totalAmountVnd: state.totalAmountVnd,
-                                    onSplitOptionChanged: cubit.setSplitOption,
-                                    onToggleParticipant: cubit.toggleParticipant,
-                                    onSelectAll: cubit.selectAllParticipants,
-                                    onDeselectAll: cubit.deselectAllParticipants,
-                                    getMemberShareVnd: cubit.state.getMemberShareVnd,
                                   ),
-                              ],
+                                )
+                              else
+                                SplitMembersSection(
+                                  members: _groupMembers,
+                                  selectedParticipantUserIds: state.selectedParticipantUserIds,
+                                  splitOption: state.splitOption,
+                                  paidByUserId: state.paidByUserId,
+                                  totalAmountVnd: state.totalAmountVnd,
+                                  onSplitOptionChanged: cubit.setSplitOption,
+                                  onToggleParticipant: cubit.toggleParticipant,
+                                  onSelectAll: cubit.selectAllParticipants,
+                                  onDeselectAll: cubit.deselectAllParticipants,
+                                  getMemberShareVnd: cubit.state.getMemberShareVnd,
+                                ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Bottom Action Buttons with SafeArea integration
+                Container(
+                  decoration: BoxDecoration(
+                    color: colors.cardBackground,
+                    border: Border(top: BorderSide(color: colors.cardBorder)),
+                    boxShadow: [colors.bottomNavShadow],
+                  ),
+                  child: SafeArea(
+                    top: false,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(vertical: 14),
+                                minimumSize: const Size(100, 48),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                side: BorderSide(color: colors.cardBorder),
+                              ),
+                              onPressed: () => Navigator.of(context).pop(),
+                              child: Text(
+                                'Hủy bỏ',
+                                style: AppTextStyle.bold(
+                                  fontSize: 15,
+                                  color: colors.textSecondary,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            flex: 2,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: colors.primaryButton,
+                                foregroundColor: colors.onPrimaryButton,
+                                padding: const EdgeInsets.symmetric(vertical: 14),
+                                minimumSize: const Size(140, 48),
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              onPressed: state.isSubmitting ? null : cubit.submitExpense,
+                              child: state.isSubmitting
+                                  ? SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: colors.onPrimaryButton,
+                                      ),
+                                    )
+                                  : Text(
+                                      isEdit ? 'Lưu thay đổi' : 'Lưu khoản chi mới',
+                                      style: AppTextStyle.bold(
+                                        fontSize: 15,
+                                        color: colors.onPrimaryButton,
+                                      ),
+                                    ),
                             ),
                           ),
                         ],
                       ),
                     ),
                   ),
-
-                  // Bottom Action Buttons (Image 2)
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-                    decoration: BoxDecoration(
-                      color: colors.cardBackground,
-                      border: Border(top: BorderSide(color: colors.cardBorder)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.04),
-                          blurRadius: 10,
-                          offset: const Offset(0, -2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              side: BorderSide(color: colors.cardBorder),
-                            ),
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: Text(
-                              'Hủy bỏ',
-                              style: AppTextStyle.bold(
-                                fontSize: 14,
-                                color: colors.textSecondary,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          flex: 2,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF047857),
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 14),
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                            ),
-                            onPressed: state.isSubmitting ? null : cubit.submitExpense,
-                            child: state.isSubmitting
-                                ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                : Text(
-                                    isEdit ? 'Lưu thay đổi' : 'Lưu khoản chi mới',
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           );
         },

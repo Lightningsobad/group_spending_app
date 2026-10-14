@@ -25,7 +25,7 @@ class CategorySelectorGrid extends StatelessWidget {
         crossAxisCount: 4,
         crossAxisSpacing: 8,
         mainAxisSpacing: 8,
-        childAspectRatio: 0.95,
+        mainAxisExtent: 74,
       ),
       itemCount: categories.length,
       itemBuilder: (context, index) {
@@ -37,12 +37,12 @@ class CategorySelectorGrid extends StatelessWidget {
           onTap: () => onCategorySelected(cat),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 150),
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
             decoration: BoxDecoration(
-              color: isSelected ? const Color(0xFFF0FDF4) : colors.surfaceMuted,
+              color: isSelected ? colors.expenseCardSelectedBg : colors.surfaceMuted,
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: isSelected ? const Color(0xFF14532D) : colors.cardBorder,
+                color: isSelected ? colors.expenseCardSelectedBorder : colors.cardBorder,
                 width: isSelected ? 2 : 1,
               ),
             ),
@@ -51,19 +51,24 @@ class CategorySelectorGrid extends StatelessWidget {
               children: [
                 Icon(
                   cat.icon,
-                  size: 24,
-                  color: isSelected ? const Color(0xFF14532D) : cat.themeColor,
+                  size: 22,
+                  color: isSelected ? colors.brandEmerald : cat.themeColor,
                 ),
-                const SizedBox(height: 6),
-                Text(
-                  cat.labelVi,
-                  style: AppTextStyle.bold(
-                    fontSize: 11,
-                    color: isSelected ? const Color(0xFF14532D) : colors.textPrimary,
+                const SizedBox(height: 4),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      cat.labelVi,
+                      style: AppTextStyle.bold(
+                        fontSize: AppFontSize.caption,
+                        color: isSelected ? colors.brandEmerald : colors.textPrimary,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                    ),
                   ),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
