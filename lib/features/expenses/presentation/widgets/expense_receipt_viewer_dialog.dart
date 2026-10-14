@@ -24,10 +24,11 @@ class ExpenseReceiptViewerDialog extends StatelessWidget {
     return Dialog(
       backgroundColor: Colors.transparent,
       insetPadding: const EdgeInsets.all(12),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Top bar with close button
+      child: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Top bar with close button
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -97,6 +98,7 @@ class ExpenseReceiptViewerDialog extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ),
+  );
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/theme/app_theme_colors.dart';
 import '../../../../core/utils/currency_utils.dart';
@@ -57,7 +56,7 @@ class SplitMembersSection extends StatelessWidget {
             children: [
               Checkbox(
                 value: isSplitAll,
-                activeColor: const Color(0xFF14532D),
+                activeColor: colors.brandEmerald,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                 onChanged: (val) {
                   if (val == true) {
@@ -73,15 +72,21 @@ class SplitMembersSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Chia đều cho tất cả thành viên (${members.length} thành viên)',
-                      style: AppTextStyle.bold(fontSize: 14, color: colors.textPrimary),
+                      'Chia đều cho tất cả thành viên (${members.length} người)',
+                      style: AppTextStyle.bold(
+                        fontSize: AppFontSize.secondary,
+                        color: colors.textPrimary,
+                      ),
                     ),
                     const SizedBox(height: 3),
                     Text(
                       isSplitAll
                           ? 'Mọi người trong nhóm sẽ chia đều số tiền'
                           : 'Đang tùy chỉnh chọn thành viên chia chi phí',
-                      style: AppTextStyle.regular(fontSize: 12, color: colors.textSecondary),
+                      style: AppTextStyle.regular(
+                        fontSize: AppFontSize.caption,
+                        color: colors.textSecondary,
+                      ),
                     ),
                   ],
                 ),
@@ -91,7 +96,7 @@ class SplitMembersSection extends StatelessWidget {
         ),
         const SizedBox(height: 16),
 
-        // 2. Select members header
+        // 2. Select members header & quick actions
         Row(
           children: [
             Expanded(
@@ -100,37 +105,49 @@ class SplitMembersSection extends StatelessWidget {
                 children: [
                   Text(
                     'Chọn người cùng chia tiền:',
-                    style: AppTextStyle.bold(fontSize: 14, color: colors.textPrimary),
+                    style: AppTextStyle.bold(
+                      fontSize: AppFontSize.secondary,
+                      color: colors.textPrimary,
+                    ),
                   ),
                   const SizedBox(height: 2),
                   Text(
                     'Đã chọn $activeCount/${members.length} người • ${CurrencyUtils.formatVnd(perPersonVnd)} / người',
-                    style: AppTextStyle.regular(fontSize: 12, color: colors.textSecondary),
+                    style: AppTextStyle.regular(
+                      fontSize: AppFontSize.caption,
+                      color: colors.textSecondary,
+                    ),
                   ),
                 ],
               ),
             ),
-            // Quick action buttons
+            // Quick action buttons with minimum 48px touch height and >= 8px gap
             OutlinedButton(
               style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                minimumSize: Size.zero,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                minimumSize: const Size(56, 48),
+                side: BorderSide(color: colors.cardBorder),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
               onPressed: onSelectAll,
-              child: const Text('Tất cả', style: TextStyle(fontSize: 12)),
+              child: Text(
+                'Tất cả',
+                style: AppTextStyle.bold(fontSize: 13, color: colors.textPrimary),
+              ),
             ),
-            const SizedBox(width: 6),
+            const SizedBox(width: 8),
             OutlinedButton(
               style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                minimumSize: Size.zero,
-                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                minimumSize: const Size(66, 48),
+                side: BorderSide(color: colors.cardBorder),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               ),
               onPressed: onDeselectAll,
-              child: const Text('Bỏ chọn', style: TextStyle(fontSize: 12)),
+              child: Text(
+                'Bỏ chọn',
+                style: AppTextStyle.bold(fontSize: 13, color: colors.textSecondary),
+              ),
             ),
           ],
         ),
@@ -154,10 +171,10 @@ class SplitMembersSection extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 decoration: BoxDecoration(
-                  color: isSelected ? const Color(0xFFF0FDF4) : colors.cardBackground,
+                  color: isSelected ? colors.expenseCardSelectedBg : colors.cardBackground,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: isSelected ? const Color(0xFF10B981) : colors.cardBorder,
+                    color: isSelected ? colors.expenseCardSelectedBorder : colors.cardBorder,
                     width: isSelected ? 1.5 : 1,
                   ),
                 ),
@@ -165,7 +182,7 @@ class SplitMembersSection extends StatelessWidget {
                   children: [
                     Checkbox(
                       value: isSelected,
-                      activeColor: const Color(0xFF10B981),
+                      activeColor: colors.brandEmerald,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                       onChanged: (_) => onToggleParticipant(member.userId),
                     ),
@@ -182,7 +199,10 @@ class SplitMembersSection extends StatelessWidget {
                               member.fullName.isNotEmpty
                                   ? member.fullName.substring(0, 1).toUpperCase()
                                   : '?',
-                              style: AppTextStyle.bold(fontSize: 14, color: colors.textPrimary),
+                              style: AppTextStyle.bold(
+                                fontSize: AppFontSize.secondary,
+                                color: colors.textPrimary,
+                              ),
                             )
                           : null,
                     ),
@@ -192,41 +212,43 @@ class SplitMembersSection extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Flexible(
+                          Text(
+                            member.fullName,
+                            style: AppTextStyle.bold(
+                              fontSize: AppFontSize.secondary,
+                              color: colors.textPrimary,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          if (isPayer) ...[
+                            const SizedBox(height: 2),
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: colors.badgeSuccessBg,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
                                 child: Text(
-                                  member.fullName,
-                                  style: AppTextStyle.bold(fontSize: 13, color: colors.textPrimary),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                                  'Người trả',
+                                  style: AppTextStyle.bold(
+                                    fontSize: 10,
+                                    color: colors.badgeSuccessText,
+                                  ),
                                 ),
                               ),
-                              if (isPayer) ...[
-                                const SizedBox(width: 6),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFDCFCE7),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: const Text(
-                                    'Người trả',
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color(0xFF15803D),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ],
-                          ),
+                            ),
+                          ],
                           if (member.email != null && member.email!.isNotEmpty) ...[
                             const SizedBox(height: 2),
                             Text(
                               member.email!,
-                              style: AppTextStyle.regular(fontSize: 11, color: colors.textSecondary),
+                              style: AppTextStyle.regular(
+                                fontSize: AppFontSize.caption,
+                                color: colors.textSecondary,
+                              ),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -235,12 +257,17 @@ class SplitMembersSection extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 8),
-                    // Share Amount
-                    Text(
-                      CurrencyUtils.formatVnd(shareAmount),
-                      style: AppTextStyle.bold(
-                        fontSize: 13,
-                        color: isSelected ? const Color(0xFF14532D) : colors.textMuted,
+                    // Share Amount with FittedBox protection
+                    Flexible(
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          CurrencyUtils.formatVnd(shareAmount),
+                          style: AppTextStyle.bold(
+                            fontSize: AppFontSize.secondary,
+                            color: isSelected ? colors.brandEmerald : colors.textMuted,
+                          ),
+                        ),
                       ),
                     ),
                   ],
