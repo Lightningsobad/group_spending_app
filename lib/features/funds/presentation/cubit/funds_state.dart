@@ -56,6 +56,7 @@ class FundsState {
     FundsStatus? status,
     int? currentGroupId,
     GroupFundsOverviewEntity? overview,
+    bool clearOverview = false,
     String? searchQuery,
     FundCollectionStatus? selectedStatusFilter,
     bool clearStatusFilter = false,
@@ -68,7 +69,7 @@ class FundsState {
     return FundsState(
       status: status ?? this.status,
       currentGroupId: currentGroupId ?? this.currentGroupId,
-      overview: overview ?? this.overview,
+      overview: clearOverview ? null : (overview ?? this.overview),
       searchQuery: searchQuery ?? this.searchQuery,
       selectedStatusFilter: clearStatusFilter
           ? null
