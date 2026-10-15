@@ -105,7 +105,11 @@ class FakeGroupsRepository implements GroupsRepository {
   }
 
   @override
-  Future<List<GroupMemberSummaryModel>> getGroupMembers(int groupId, {String? name}) async => [];
+  Future<List<GroupMemberSummaryModel>> getGroupMembers(int groupId, {String? name}) async => const [
+    GroupMemberSummaryModel(userId: 1, fullName: 'Nguyễn Văn A', role: 'ADMIN'),
+    GroupMemberSummaryModel(userId: 2, fullName: 'Trần Thị B', role: 'MEMBER'),
+    GroupMemberSummaryModel(userId: 3, fullName: 'Lê Văn C', role: 'MEMBER'),
+  ];
 
   @override
   Future<List<GroupModel>> getMyGroups({String? filter, String? category, String? search}) async => [defaultGroup];
@@ -153,6 +157,7 @@ void main() {
     GroupModel? group,
     ThemeData? theme,
     double? textScale,
+    bool includeGroupsCubit = true,
   }) {
     return MultiRepositoryProvider(
       providers: [
@@ -164,7 +169,8 @@ void main() {
         child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthCubit>.value(value: authCubit),
-          BlocProvider<GroupsCubit>.value(value: groupsCubit),
+          if (includeGroupsCubit)
+            BlocProvider<GroupsCubit>.value(value: groupsCubit),
         ],
         child: MaterialApp(
           theme: theme ?? AppTheme.lightTheme,
@@ -312,6 +318,42 @@ void main() {
       // Ký hiệu tiền tệ hiển thị ₫ thay vì $
       expect(find.text('₫'), findsOneWidget);
       expect(find.text('\$'), findsNothing);
+    });
+
+    testWidgets('load dữ liệu thành viên thành công qua GroupsRepository ngay cả khi không có GroupsCubit trong context', (tester) async {
+      const groupWithoutMembers = GroupModel(
+        id: 1,
+        name: 'Nhóm Đi Chơi Đà Lạt',
+        description: 'Chuyến đi',
+        category: 'TRIP',
+        ownerId: 1,
+        memberCount: 3,
+        members: null,
+      );
+
+      await tester.pumpWidget(buildTestScreen(
+        group: groupWithoutMembers,
+        includeGroupsCubit: false,
+      ));
+      await tester.pumpAndSettle();
+
+      // Skeletons phải biến mất và dữ liệu thành viên phải xuất hiện
+      expect(find.byType(AddExpensePayerSkeleton), findsNothing);
+      expect(find.byType(AddExpenseSplitSkeleton), findsNothing);
+      expect(find.text('Trần Thị B'), findsWidgets);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('nút Đổi nhóm mở danh sách nhóm thành công qua GroupsRepository khi không có GroupsCubit', (tester) async {
+      await tester.pumpWidget(buildTestScreen(includeGroupsCubit: false));
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.widgetWithText(OutlinedButton, 'Đổi nhóm'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Chọn nhóm nhận chi tiêu'), findsOneWidget);
+      expect(find.text('Nhóm Đi Chơi Đà Lạt'), findsWidgets);
+      expect(tester.takeException(), isNull);
     });
   });
 }
