@@ -78,15 +78,23 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
   Future<void> _fetchGroupDetail() async {
     setState(() => _isLoadingMembers = true);
-    final groupsCubit = context.read<GroupsCubit>();
     final groupsRepo = context.read<GroupsRepository>();
     List<GroupMemberModel>? members = _currentGroup.members;
     GroupModel? detail;
+
+    // 1. Cố gắng lấy chi tiết nhóm qua GroupsCubit nếu có trong context hoặc trực tiếp từ GroupsRepository
     try {
+      final groupsCubit = context.read<GroupsCubit>();
       detail = await groupsCubit.loadGroupDetails(_currentGroup.id);
       members = detail?.members;
-    } catch (_) {}
+    } catch (_) {
+      try {
+        detail = await groupsRepo.getGroupDetails(_currentGroup.id);
+        members = detail.members;
+      } catch (_) {}
+    }
 
+    // 2. Vì API GET /groups/{id} lược bỏ members để tối ưu payload, gọi getGroupMembers để lấy danh sách đầy đủ
     if (members == null || members.isEmpty) {
       try {
         final summaries = await groupsRepo.getGroupMembers(_currentGroup.id);
@@ -120,8 +128,20 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
     super.dispose();
   }
 
-  void _showChangeGroupSheet() {
-    final groups = context.read<GroupsCubit>().state.groups;
+  Future<void> _showChangeGroupSheet() async {
+    List<GroupModel> groups = [];
+    try {
+      groups = context.read<GroupsCubit>().state.groups;
+    } catch (_) {}
+
+    if (groups.isEmpty) {
+      try {
+        final repo = context.read<GroupsRepository>();
+        groups = await repo.getMyGroups();
+      } catch (_) {}
+    }
+
+    if (!mounted) return;
     final colors = context.colors;
 
     showModalBottomSheet(
@@ -147,35 +167,45 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 ),
                 const SizedBox(height: 12),
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: groups.length,
-                    itemBuilder: (context, index) {
-                      final g = groups[index];
-                      final isCurrent = g.id == _currentGroup.id;
-                      return ListTile(
-                        leading: Icon(LucideIcons.building2, color: colors.brandEmerald),
-                        title: Text(g.name, style: AppTextStyle.bold(fontSize: AppFontSize.secondary, color: colors.textPrimary)),
-                        subtitle: Text('${g.memberCount} thành viên', style: AppTextStyle.regular(fontSize: AppFontSize.caption, color: colors.textSecondary)),
-                        trailing: isCurrent ? Icon(LucideIcons.check, color: colors.brandEmerald) : null,
-                        onTap: () {
-                          Navigator.of(ctx).pop();
-                          if (!isCurrent) {
-                            setState(() {
-                              _currentGroup = g;
-                              _groupMembers = g.members ?? [];
-                            });
-                            _expenseFormCubit?.updateGroup(g.id, g.name);
-                            if (g.members != null && g.members!.isNotEmpty) {
-                              final currentUserId = context.read<AuthCubit>().state.currentUser?.id;
-                              _expenseFormCubit?.updateMembers(g.members!, currentUserId: currentUserId);
-                            } else {
-                              _fetchGroupDetail();
-                            }
-                          }
-                        },
-                      );
-                    },
-                  ),
+                  child: groups.isEmpty
+                      ? Center(
+                          child: Text(
+                            'Không có nhóm nào khả dụng.',
+                            style: AppTextStyle.regular(
+                              fontSize: AppFontSize.caption,
+                              color: colors.textSecondary,
+                            ),
+                          ),
+                        )
+                      : ListView.builder(
+                          itemCount: groups.length,
+                          itemBuilder: (context, index) {
+                            final g = groups[index];
+                            final isCurrent = g.id == _currentGroup.id;
+                            return ListTile(
+                              leading: Icon(LucideIcons.building2, color: colors.brandEmerald),
+                              title: Text(g.name, style: AppTextStyle.bold(fontSize: AppFontSize.secondary, color: colors.textPrimary)),
+                              subtitle: Text('${g.memberCount} thành viên', style: AppTextStyle.regular(fontSize: AppFontSize.caption, color: colors.textSecondary)),
+                              trailing: isCurrent ? Icon(LucideIcons.check, color: colors.brandEmerald) : null,
+                              onTap: () {
+                                Navigator.of(ctx).pop();
+                                if (!isCurrent) {
+                                  setState(() {
+                                    _currentGroup = g;
+                                    _groupMembers = g.members ?? [];
+                                  });
+                                  _expenseFormCubit?.updateGroup(g.id, g.name);
+                                  if (g.members != null && g.members!.isNotEmpty) {
+                                    final currentUserId = context.read<AuthCubit>().state.currentUser?.id;
+                                    _expenseFormCubit?.updateMembers(g.members!, currentUserId: currentUserId);
+                                  } else {
+                                    _fetchGroupDetail();
+                                  }
+                                }
+                              },
+                            );
+                          },
+                        ),
                 ),
               ],
             ),

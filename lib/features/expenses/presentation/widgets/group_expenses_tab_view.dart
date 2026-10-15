@@ -6,6 +6,7 @@ import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../shared/widgets/app_shimmer.dart';
 import '../../../groups/data/models/group_model.dart';
+import '../../../groups/presentation/cubit/groups_cubit.dart';
 import '../../data/models/expense_enums.dart';
 import '../cubit/expenses_cubit.dart';
 import '../cubit/expenses_state.dart';
@@ -70,11 +71,23 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
       return;
     }
 
+    GroupsCubit? groupsCubit;
+    try {
+      groupsCubit = context.read<GroupsCubit>();
+    } catch (_) {}
+
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => AddExpenseScreen(
-          group: widget.group,
-        ),
+        builder: (_) => groupsCubit != null
+            ? BlocProvider<GroupsCubit>.value(
+                value: groupsCubit,
+                child: AddExpenseScreen(
+                  group: widget.group,
+                ),
+              )
+            : AddExpenseScreen(
+                group: widget.group,
+              ),
       ),
     );
   }
