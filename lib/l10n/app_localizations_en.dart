@@ -1735,4 +1735,181 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get otpResentSuccessMessage =>
       'A new verification code has been sent to your email.';
+
+  @override
+  String get editExpenseTitle => 'Edit Expense';
+
+  @override
+  String get expenseReceivingGroupCaps => 'EXPENSE RECEIVING GROUP';
+
+  @override
+  String get changeGroupAction => 'Change Group';
+
+  @override
+  String get selectReceivingGroupTitle => 'Select Receiving Group';
+
+  @override
+  String get noGroupsAvailable => 'No groups available.';
+
+  @override
+  String get maxImageSize10Mb => 'Maximum image size is 10MB';
+
+  @override
+  String get receiptLowConfidenceWarning =>
+      'Image is blurry or unreadable. Image saved; please manually enter amount and title.';
+
+  @override
+  String get receiptScanSuccess =>
+      'Receipt scanned successfully! Information pre-filled.';
+
+  @override
+  String pickImageError(String error) {
+    return 'Error selecting image: $error';
+  }
+
+  @override
+  String get expenseReceiptDefaultTitle => 'Expense Receipt';
+
+  @override
+  String get expenseAmountVndCaps => 'EXPENSE AMOUNT (VND)';
+
+  @override
+  String get expenseTitleCaps => 'EXPENSE TITLE';
+
+  @override
+  String get expenseTitleHint =>
+      'Enter expense title (e.g., Haidilao dinner)...';
+
+  @override
+  String get expenseNotesCaps => 'NOTES';
+
+  @override
+  String get optionalLabel => 'Optional';
+
+  @override
+  String get expenseNotesHint => 'Enter additional notes (optional)...';
+
+  @override
+  String get expenseCategorySectionCaps => 'EXPENSE CATEGORY';
+
+  @override
+  String get expensePayerSectionCaps => 'PAID BY (SINGLE PAYER)';
+
+  @override
+  String get youPayerSuffix => ' (You)';
+
+  @override
+  String get noMembersInGroup => 'No members in this group.';
+
+  @override
+  String get expenseSplitSectionCaps => 'EXPENSE SPLIT BREAKDOWN';
+
+  @override
+  String get noMembersToSplit => 'No group members to split expenses.';
+
+  @override
+  String get cancelAction => 'Cancel';
+
+  @override
+  String get saveNewExpenseAction => 'Save New Expense';
+
+  @override
+  String get aiReceiptScannerCaps => 'AI RECEIPT SCANNER';
+
+  @override
+  String get aiScanningReceipt => 'AI is analyzing receipt...';
+
+  @override
+  String get aiScanningReceiptDesc =>
+      'Extracting total amount, item breakdown and category';
+
+  @override
+  String get capturePhotoAction => 'Take Photo';
+
+  @override
+  String get uploadPhotoAction => 'Upload Photo';
+
+  @override
+  String get uploadReceiptHelper =>
+      'Upload or take a receipt photo to quickly log details';
+
+  @override
+  String get receiptScannedAndAttached => 'Receipt scanned & attached';
+
+  @override
+  String get blurryReceiptWarning => 'Blurry image - Please verify information';
+
+  @override
+  String get receiptAutofilledNotice =>
+      'Information was automatically filled into form';
+
+  @override
+  String get removeReceiptTooltip => 'Remove receipt';
+
+  @override
+  String get viewPhotoAction => 'View Photo';
+
+  @override
+  String get retakePhotoAction => 'Retake';
+
+  @override
+  String get changePhotoAction => 'Change Photo';
+
+  @override
+  String splitEquallyAllMembers(int count) {
+    return 'Split equally among all members ($count people)';
+  }
+
+  @override
+  String get splitEquallyAllSubtitle =>
+      'All group members will split the amount equally';
+
+  @override
+  String get splitCustomSelectedSubtitle =>
+      'Customizing members to split the cost';
+
+  @override
+  String get chooseSplitParticipantsTitle => 'Select participants to split:';
+
+  @override
+  String selectedParticipantsCount(
+    int selectedCount,
+    int totalCount,
+    String amount,
+  ) {
+    return 'Selected $selectedCount/$totalCount people • $amount / person';
+  }
+
+  @override
+  String get selectAllAction => 'All';
+
+  @override
+  String get payerBadge => 'Payer';
+
+  @override
+  String get cannotLoadReceiptImage => 'Unable to load receipt image';
+
+  @override
+  String get categoryFood => 'Food & Dining';
+
+  @override
+  String get categoryTransport => 'Transportation';
+
+  @override
+  String get categoryShopping => 'Shopping';
+
+  @override
+  String get categoryHousing => 'Housing & Utilities';
+
+  @override
+  String get categoryEntertainment => 'Entertainment';
+
+  @override
+  String get categoryGroceries => 'Groceries';
+
+  @override
+  String get categoryHealthcare => 'Healthcare';
+
+  @override
+  String get categoryOthers => 'Others';
 }

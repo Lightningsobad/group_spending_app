@@ -1729,4 +1729,183 @@ class AppLocalizationsVi extends AppLocalizations {
   @override
   String get otpResentSuccessMessage =>
       'Mã xác thực mới đã được gửi đến email của bạn.';
+
+  @override
+  String get editExpenseTitle => 'Sửa thông tin khoản chi';
+
+  @override
+  String get expenseReceivingGroupCaps => 'NHÓM NHẬN CHI TIÊU';
+
+  @override
+  String get changeGroupAction => 'Đổi nhóm';
+
+  @override
+  String get selectReceivingGroupTitle => 'Chọn nhóm nhận chi tiêu';
+
+  @override
+  String get noGroupsAvailable => 'Không có nhóm nào khả dụng.';
+
+  @override
+  String get maxImageSize10Mb => 'Kích thước ảnh tối đa là 10MB';
+
+  @override
+  String get receiptLowConfidenceWarning =>
+      'Ảnh mờ hoặc không nhận dạng được chữ. Ảnh đã được lưu, vui lòng tự nhập số tiền và tiêu đề.';
+
+  @override
+  String get receiptScanSuccess =>
+      'Quét hóa đơn thành công! Đã tự động điền thông tin.';
+
+  @override
+  String pickImageError(String error) {
+    return 'Lỗi khi chọn ảnh: $error';
+  }
+
+  @override
+  String get expenseReceiptDefaultTitle => 'Hóa đơn chi tiêu';
+
+  @override
+  String get expenseAmountVndCaps => 'SỐ TIỀN CHI TIÊU (VNĐ)';
+
+  @override
+  String get expenseTitleCaps => 'TÊN KHOẢN CHI';
+
+  @override
+  String get expenseTitleHint =>
+      'Nhập tên khoản chi (ví dụ: Ăn tối Haidilao)...';
+
+  @override
+  String get expenseNotesCaps => 'GHI CHÚ';
+
+  @override
+  String get optionalLabel => 'Tùy chọn';
+
+  @override
+  String get expenseNotesHint =>
+      'Nhập ghi chú thêm cho khoản chi (tùy chọn)...';
+
+  @override
+  String get expenseCategorySectionCaps => 'DANH MỤC CHI TIÊU';
+
+  @override
+  String get expensePayerSectionCaps => 'NGƯỜI ĐÃ TRẢ TIỀN (DUY NHẤT 1 NGƯỜI)';
+
+  @override
+  String get youPayerSuffix => ' (Bạn)';
+
+  @override
+  String get noMembersInGroup => 'Không có thành viên trong nhóm.';
+
+  @override
+  String get expenseSplitSectionCaps => 'KHUNG PHÂN CHIA CHI PHÍ';
+
+  @override
+  String get noMembersToSplit =>
+      'Không có thành viên trong nhóm để chia chi phí.';
+
+  @override
+  String get cancelAction => 'Hủy bỏ';
+
+  @override
+  String get saveNewExpenseAction => 'Lưu khoản chi mới';
+
+  @override
+  String get aiReceiptScannerCaps => 'QUÉT HÓA ĐƠN AI';
+
+  @override
+  String get aiScanningReceipt => 'AI đang phân tích hóa đơn...';
+
+  @override
+  String get aiScanningReceiptDesc =>
+      'Bóc tách tổng tiền, chi tiết món và danh mục';
+
+  @override
+  String get capturePhotoAction => 'Chụp ảnh';
+
+  @override
+  String get uploadPhotoAction => 'Tải ảnh lên';
+
+  @override
+  String get uploadReceiptHelper =>
+      'Tải hoặc chụp ảnh hóa đơn để ghi lại thông tin nhanh gọn';
+
+  @override
+  String get receiptScannedAndAttached => 'Đã quét & đính kèm hóa đơn';
+
+  @override
+  String get blurryReceiptWarning => 'Ảnh mờ - Vui lòng kiểm tra lại thông tin';
+
+  @override
+  String get receiptAutofilledNotice =>
+      'Thông tin đã được tự động điền vào form';
+
+  @override
+  String get removeReceiptTooltip => 'Xóa hóa đơn';
+
+  @override
+  String get viewPhotoAction => 'Xem ảnh';
+
+  @override
+  String get retakePhotoAction => 'Chụp lại';
+
+  @override
+  String get changePhotoAction => 'Đổi ảnh';
+
+  @override
+  String splitEquallyAllMembers(int count) {
+    return 'Chia đều cho tất cả thành viên ($count người)';
+  }
+
+  @override
+  String get splitEquallyAllSubtitle =>
+      'Mọi người trong nhóm sẽ chia đều số tiền';
+
+  @override
+  String get splitCustomSelectedSubtitle =>
+      'Đang tùy chỉnh chọn thành viên chia chi phí';
+
+  @override
+  String get chooseSplitParticipantsTitle => 'Chọn người cùng chia tiền:';
+
+  @override
+  String selectedParticipantsCount(
+    int selectedCount,
+    int totalCount,
+    String amount,
+  ) {
+    return 'Đã chọn $selectedCount/$totalCount người • $amount / người';
+  }
+
+  @override
+  String get selectAllAction => 'Tất cả';
+
+  @override
+  String get payerBadge => 'Người trả';
+
+  @override
+  String get cannotLoadReceiptImage => 'Không thể tải ảnh hóa đơn';
+
+  @override
+  String get categoryFood => 'Ăn uống';
+
+  @override
+  String get categoryTransport => 'Di chuyển';
+
+  @override
+  String get categoryShopping => 'Mua sắm';
+
+  @override
+  String get categoryHousing => 'Nhà ở & Điện nước';
+
+  @override
+  String get categoryEntertainment => 'Giải trí';
+
+  @override
+  String get categoryGroceries => 'Siêu thị';
+
+  @override
+  String get categoryHealthcare => 'Y tế & Sức khỏe';
+
+  @override
+  String get categoryOthers => 'Khác';
 }

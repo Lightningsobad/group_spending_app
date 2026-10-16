@@ -22,6 +22,7 @@ import '../widgets/category_selector_grid.dart';
 import '../widgets/custom_numeric_keypad.dart';
 import '../widgets/expense_receipt_viewer_dialog.dart';
 import '../widgets/split_members_section.dart';
+import '../../../../l10n/l10n.dart';
 
 class AddExpenseScreen extends StatefulWidget {
   final GroupModel group;
@@ -143,6 +144,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
 
     if (!mounted) return;
     final colors = context.colors;
+    final l10n = context.l10n;
 
     showModalBottomSheet(
       context: context,
@@ -161,7 +163,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: Text(
-                    'Chọn nhóm nhận chi tiêu',
+                    l10n.selectReceivingGroupTitle,
                     style: AppTextStyle.bold(fontSize: 16, color: colors.textPrimary),
                   ),
                 ),
@@ -170,7 +172,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   child: groups.isEmpty
                       ? Center(
                           child: Text(
-                            'Không có nhóm nào khả dụng.',
+                            l10n.noGroupsAvailable,
                             style: AppTextStyle.regular(
                               fontSize: AppFontSize.caption,
                               color: colors.textSecondary,
@@ -185,7 +187,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             return ListTile(
                               leading: Icon(LucideIcons.building2, color: colors.brandEmerald),
                               title: Text(g.name, style: AppTextStyle.bold(fontSize: AppFontSize.secondary, color: colors.textPrimary)),
-                              subtitle: Text('${g.memberCount} thành viên', style: AppTextStyle.regular(fontSize: AppFontSize.caption, color: colors.textSecondary)),
+                              subtitle: Text(l10n.membersCountSubtitle(g.memberCount), style: AppTextStyle.regular(fontSize: AppFontSize.caption, color: colors.textSecondary)),
                               trailing: isCurrent ? Icon(LucideIcons.check, color: colors.brandEmerald) : null,
                               onTap: () {
                                 Navigator.of(ctx).pop();
@@ -216,6 +218,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   }
 
   Future<void> _pickReceipt(ImageSource source) async {
+    final l10n = context.l10n;
     try {
       final picker = ImagePicker();
       final picked = await picker.pickImage(
@@ -232,7 +235,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
         if (!mounted) return;
         AppSnackBar.show(
           context,
-          message: 'Kích thước ảnh tối đa là 10MB',
+          message: l10n.maxImageSize10Mb,
           type: AppSnackBarType.error,
         );
         return;
@@ -247,14 +250,14 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
         if (result.isLowConfidence) {
           AppSnackBar.show(
             context,
-            message: 'Ảnh mờ hoặc không nhận dạng được chữ. Ảnh đã được lưu, vui lòng tự nhập số tiền và tiêu đề.',
+            message: l10n.receiptLowConfidenceWarning,
             type: AppSnackBarType.warning,
             duration: const Duration(seconds: 4),
           );
         } else {
           AppSnackBar.show(
             context,
-            message: 'Quét hóa đơn thành công! Đã tự động điền thông tin.',
+            message: l10n.receiptScanSuccess,
             type: AppSnackBarType.success,
           );
         }
@@ -263,7 +266,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
       if (mounted) {
         AppSnackBar.show(
           context,
-          message: 'Lỗi khi chọn ảnh: $e',
+          message: l10n.pickImageError(e.toString()),
           type: AppSnackBarType.error,
         );
       }
@@ -273,11 +276,13 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   void _viewReceipt() {
     final state = _expenseFormCubit?.state;
     if (state == null) return;
+    final l10n = context.l10n;
+    final defaultTitle = l10n.expenseReceiptDefaultTitle;
     if (state.receiptUrl != null && state.receiptUrl!.trim().isNotEmpty) {
       ExpenseReceiptViewerDialog.show(
         context,
         receiptUrl: state.receiptUrl!,
-        title: state.title.isNotEmpty ? state.title : 'Hóa đơn chi tiêu',
+        title: state.title.isNotEmpty ? state.title : defaultTitle,
       );
     } else if (state.receiptFile != null) {
       showDialog(
@@ -295,7 +300,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                   children: [
                     Flexible(
                       child: Text(
-                        state.title.isNotEmpty ? state.title : 'Hóa đơn chi tiêu',
+                        state.title.isNotEmpty ? state.title : defaultTitle,
                         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -352,6 +357,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final l10n = context.l10n;
     final currentUserId = context.read<AuthCubit>().state.currentUser?.id ?? 0;
     final isEdit = widget.expenseToEdit != null;
     final formCubit = _expenseFormCubit;
@@ -372,7 +378,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           if (state.status == ExpenseFormStatus.success) {
             AppSnackBar.show(
               context,
-              message: state.successMessage ?? 'Thành công',
+              message: state.successMessage ?? (isEdit ? l10n.saveChanges : l10n.saveNewExpenseAction),
               type: AppSnackBarType.success,
             );
             Navigator.of(context).pop(true);
@@ -391,7 +397,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                 onPressed: () => Navigator.of(context).pop(),
               ),
               title: Text(
-                isEdit ? 'Sửa thông tin khoản chi' : 'Thêm chi tiêu',
+                isEdit ? l10n.editExpenseTitle : l10n.addExpense,
                 style: AppTextStyle.bold(fontSize: AppFontSize.h4, color: colors.textPrimary),
               ),
               centerTitle: false,
@@ -427,7 +433,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'NHÓM NHẬN CHI TIÊU',
+                                      l10n.expenseReceivingGroupCaps,
                                       style: AppTextStyle.bold(
                                         fontSize: AppFontSize.caption,
                                         letterSpacing: 0.5,
@@ -459,7 +465,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                   ),
                                   onPressed: _showChangeGroupSheet,
                                   child: Text(
-                                    'Đổi nhóm',
+                                    l10n.changeGroupAction,
                                     style: AppTextStyle.bold(
                                       fontSize: 13,
                                       color: colors.brandEmerald,
@@ -491,7 +497,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'SỐ TIỀN CHI TIÊU (VNĐ)',
+                                l10n.expenseAmountVndCaps,
                                 style: AppTextStyle.bold(
                                   fontSize: AppFontSize.caption,
                                   letterSpacing: 0.5,
@@ -548,7 +554,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'TÊN KHOẢN CHI',
+                                l10n.expenseTitleCaps,
                                 style: AppTextStyle.bold(
                                   fontSize: AppFontSize.caption,
                                   letterSpacing: 0.5,
@@ -564,7 +570,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                   color: colors.textPrimary,
                                 ),
                                 decoration: InputDecoration(
-                                  hintText: 'Nhập tên khoản chi (ví dụ: Ăn tối Haidilao)...',
+                                  hintText: l10n.expenseTitleHint,
                                   hintStyle: AppTextStyle.regular(
                                     fontSize: AppFontSize.secondary,
                                     color: colors.textMuted,
@@ -595,7 +601,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                       Icon(LucideIcons.fileText, size: 14, color: colors.textSecondary),
                                       const SizedBox(width: 4),
                                       Text(
-                                        'GHI CHÚ',
+                                        l10n.expenseNotesCaps,
                                         style: AppTextStyle.bold(
                                           fontSize: AppFontSize.caption,
                                           letterSpacing: 0.5,
@@ -605,7 +611,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                     ],
                                   ),
                                   Text(
-                                    'Tùy chọn',
+                                    l10n.optionalLabel,
                                     style: AppTextStyle.regular(
                                       fontSize: AppFontSize.caption,
                                       color: colors.textMuted,
@@ -623,7 +629,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                   color: colors.textPrimary,
                                 ),
                                 decoration: InputDecoration(
-                                  hintText: 'Nhập ghi chú thêm cho khoản chi (tùy chọn)...',
+                                  hintText: l10n.expenseNotesHint,
                                   hintStyle: AppTextStyle.regular(
                                     fontSize: AppFontSize.secondary,
                                     color: colors.textMuted,
@@ -657,7 +663,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'DANH MỤC CHI TIÊU',
+                                l10n.expenseCategorySectionCaps,
                                 style: AppTextStyle.bold(
                                   fontSize: AppFontSize.caption,
                                   letterSpacing: 0.5,
@@ -681,7 +687,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'NGƯỜI ĐÃ TRẢ TIỀN (DUY NHẤT 1 NGƯỜI)',
+                                l10n.expensePayerSectionCaps,
                                 style: AppTextStyle.bold(
                                   fontSize: AppFontSize.caption,
                                   letterSpacing: 0.5,
@@ -716,7 +722,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                     return DropdownMenuItem<int>(
                                       value: m.userId,
                                       child: Text(
-                                        '${m.fullName}${isMe ? ' (Bạn)' : ''}${m.email != null ? ' (${m.email})' : ''}',
+                                        '${m.fullName}${isMe ? l10n.youPayerSuffix : ''}${m.email != null ? ' (${m.email})' : ''}',
                                         style: AppTextStyle.bold(
                                           fontSize: AppFontSize.secondary,
                                           color: colors.textPrimary,
@@ -731,7 +737,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                 )
                               else
                                 Text(
-                                  'Không có thành viên trong nhóm.',
+                                  l10n.noMembersInGroup,
                                   style: AppTextStyle.regular(
                                     fontSize: AppFontSize.caption,
                                     color: colors.textMuted,
@@ -749,7 +755,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'KHUNG PHÂN CHIA CHI PHÍ',
+                                l10n.expenseSplitSectionCaps,
                                 style: AppTextStyle.bold(
                                   fontSize: AppFontSize.caption,
                                   letterSpacing: 0.5,
@@ -764,7 +770,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                   padding: const EdgeInsets.symmetric(vertical: 16),
                                   child: Center(
                                     child: Text(
-                                      'Không có thành viên trong nhóm để chia chi phí.',
+                                      l10n.noMembersToSplit,
                                       style: AppTextStyle.regular(
                                         fontSize: AppFontSize.caption,
                                         color: colors.textMuted,
@@ -818,7 +824,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                               ),
                               onPressed: () => Navigator.of(context).pop(),
                               child: Text(
-                                'Hủy bỏ',
+                                l10n.cancelAction,
                                 style: AppTextStyle.bold(
                                   fontSize: 15,
                                   color: colors.textSecondary,
@@ -851,7 +857,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                       ),
                                     )
                                   : Text(
-                                      isEdit ? 'Lưu thay đổi' : 'Lưu khoản chi mới',
+                                      isEdit ? l10n.saveChanges : l10n.saveNewExpenseAction,
                                       style: AppTextStyle.bold(
                                         fontSize: 15,
                                         color: colors.onPrimaryButton,

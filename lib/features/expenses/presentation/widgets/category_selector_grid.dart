@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/theme/app_theme_colors.dart';
+import '../../../../l10n/l10n.dart';
 import '../../data/models/expense_enums.dart';
 
 class CategorySelectorGrid extends StatelessWidget {
@@ -12,6 +13,28 @@ class CategorySelectorGrid extends StatelessWidget {
     required this.selectedCategory,
     required this.onCategorySelected,
   });
+
+  String _getCategoryLabel(BuildContext context, ExpenseCategoryType cat) {
+    final l10n = context.l10n;
+    switch (cat) {
+      case ExpenseCategoryType.food:
+        return l10n.categoryFood;
+      case ExpenseCategoryType.transport:
+        return l10n.categoryTransport;
+      case ExpenseCategoryType.shopping:
+        return l10n.categoryShopping;
+      case ExpenseCategoryType.housing:
+        return l10n.categoryHousing;
+      case ExpenseCategoryType.entertainment:
+        return l10n.categoryEntertainment;
+      case ExpenseCategoryType.groceries:
+        return l10n.categoryGroceries;
+      case ExpenseCategoryType.healthcare:
+        return l10n.categoryHealthcare;
+      case ExpenseCategoryType.others:
+        return l10n.categoryOthers;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +83,7 @@ class CategorySelectorGrid extends StatelessWidget {
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(
-                      cat.labelVi,
+                      _getCategoryLabel(context, cat),
                       style: AppTextStyle.bold(
                         fontSize: AppFontSize.caption,
                         color: isSelected ? colors.brandEmerald : colors.textPrimary,

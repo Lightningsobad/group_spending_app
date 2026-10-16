@@ -15,10 +15,12 @@ import 'package:group_spending_app/features/expenses/data/models/receipt_scan_mo
 import 'package:group_spending_app/features/expenses/domain/repositories/expenses_repository.dart';
 import 'package:group_spending_app/features/expenses/presentation/screens/add_expense_screen.dart';
 import 'package:group_spending_app/features/expenses/presentation/widgets/add_expense_skeleton.dart';
+import 'package:group_spending_app/features/expenses/presentation/widgets/ai_receipt_scanner_card.dart';
 import 'package:group_spending_app/features/groups/data/models/group_member_models.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
 import 'package:group_spending_app/features/groups/domain/repositories/groups_repository.dart';
 import 'package:group_spending_app/features/groups/presentation/cubit/groups_cubit.dart';
+import 'package:group_spending_app/l10n/l10n.dart';
 
 class FakeAuthCubit extends Cubit<AuthState> implements AuthCubit {
   FakeAuthCubit()
@@ -155,8 +157,10 @@ void main() {
 
   Widget buildTestScreen({
     GroupModel? group,
+    ExpenseDetailModel? expenseToEdit,
     ThemeData? theme,
     double? textScale,
+    Locale? locale,
     bool includeGroupsCubit = true,
   }) {
     return MultiRepositoryProvider(
@@ -167,25 +171,29 @@ void main() {
       child: ChangeNotifierProvider<DataSyncCoordinator>.value(
         value: syncCoordinator,
         child: MultiBlocProvider(
-        providers: [
-          BlocProvider<AuthCubit>.value(value: authCubit),
-          if (includeGroupsCubit)
-            BlocProvider<GroupsCubit>.value(value: groupsCubit),
-        ],
-        child: MaterialApp(
-          theme: theme ?? AppTheme.lightTheme,
-          home: MediaQuery(
-            data: MediaQueryData(
-              textScaler: TextScaler.linear(textScale ?? 1.0),
-            ),
-            child: AddExpenseScreen(
-              group: group ?? sampleGroupWithMembers,
+          providers: [
+            BlocProvider<AuthCubit>.value(value: authCubit),
+            if (includeGroupsCubit)
+              BlocProvider<GroupsCubit>.value(value: groupsCubit),
+          ],
+          child: MaterialApp(
+            theme: theme ?? AppTheme.lightTheme,
+            locale: locale ?? const Locale('vi'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: MediaQuery(
+              data: MediaQueryData(
+                textScaler: TextScaler.linear(textScale ?? 1.0),
+              ),
+              child: AddExpenseScreen(
+                group: group ?? sampleGroupWithMembers,
+                expenseToEdit: expenseToEdit,
+              ),
             ),
           ),
         ),
       ),
-    ),
-  );
+    );
   }
 
   group('AddExpenseScreen UI/UX & Quality Tests', () {
@@ -353,6 +361,59 @@ void main() {
 
       expect(find.text('Chọn nhóm nhận chi tiêu'), findsOneWidget);
       expect(find.text('Nhóm Đi Chơi Đà Lạt'), findsWidgets);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('thẻ quét hóa đơn khi đã có ảnh (hasReceipt: true) không bị overflow trên màn hình 320px và 1.35x font', (tester) async {
+      tester.view.physicalSize = const Size(320, 800);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      final expenseWithReceipt = ExpenseDetailModel(
+        id: 101,
+        groupId: 1,
+        title: 'Ăn tối nhóm',
+        totalAmount: 300,
+        totalAmountVnd: 300000,
+        paidByUserId: 1,
+        paidByUserName: 'Nguyễn Văn A',
+        createdByUserId: 1,
+        receiptUrl: 'https://example.com/receipt.jpg',
+        categoryName: 'FOOD',
+        status: 'ACTIVE',
+        splits: const [],
+      );
+
+      await tester.pumpWidget(buildTestScreen(
+        expenseToEdit: expenseWithReceipt,
+        textScale: 1.35,
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(AiReceiptScannerCard), findsOneWidget);
+      expect(find.text('Đã quét & đính kèm hóa đơn'), findsOneWidget);
+      expect(find.text('Xem ảnh'), findsOneWidget);
+      expect(find.text('Chụp lại'), findsOneWidget);
+      expect(find.text('Đổi ảnh'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('hỗ trợ đa ngôn ngữ chuyển đổi chuẩn xác sang tiếng Anh (en)', (tester) async {
+      await tester.pumpWidget(buildTestScreen(locale: const Locale('en')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('EXPENSE RECEIVING GROUP'), findsOneWidget);
+      expect(find.text('EXPENSE AMOUNT (VND)'), findsOneWidget);
+      expect(find.text('EXPENSE TITLE'), findsOneWidget);
+      expect(find.text('EXPENSE CATEGORY'), findsOneWidget);
+      expect(find.text('PAID BY (SINGLE PAYER)'), findsOneWidget);
+      expect(find.text('EXPENSE SPLIT BREAKDOWN'), findsOneWidget);
+      expect(find.text('Change Group'), findsOneWidget);
+      expect(find.text('Save New Expense'), findsOneWidget);
+      expect(find.text('Cancel'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
   });

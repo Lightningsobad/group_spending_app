@@ -3229,6 +3229,328 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Mã xác thực mới đã được gửi đến email của bạn.'**
   String get otpResentSuccessMessage;
+
+  /// No description provided for @editExpenseTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Sửa thông tin khoản chi'**
+  String get editExpenseTitle;
+
+  /// No description provided for @expenseReceivingGroupCaps.
+  ///
+  /// In vi, this message translates to:
+  /// **'NHÓM NHẬN CHI TIÊU'**
+  String get expenseReceivingGroupCaps;
+
+  /// No description provided for @changeGroupAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi nhóm'**
+  String get changeGroupAction;
+
+  /// No description provided for @selectReceivingGroupTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn nhóm nhận chi tiêu'**
+  String get selectReceivingGroupTitle;
+
+  /// No description provided for @noGroupsAvailable.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có nhóm nào khả dụng.'**
+  String get noGroupsAvailable;
+
+  /// No description provided for @maxImageSize10Mb.
+  ///
+  /// In vi, this message translates to:
+  /// **'Kích thước ảnh tối đa là 10MB'**
+  String get maxImageSize10Mb;
+
+  /// No description provided for @receiptLowConfidenceWarning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh mờ hoặc không nhận dạng được chữ. Ảnh đã được lưu, vui lòng tự nhập số tiền và tiêu đề.'**
+  String get receiptLowConfidenceWarning;
+
+  /// No description provided for @receiptScanSuccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Quét hóa đơn thành công! Đã tự động điền thông tin.'**
+  String get receiptScanSuccess;
+
+  /// No description provided for @pickImageError.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lỗi khi chọn ảnh: {error}'**
+  String pickImageError(String error);
+
+  /// No description provided for @expenseReceiptDefaultTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hóa đơn chi tiêu'**
+  String get expenseReceiptDefaultTitle;
+
+  /// No description provided for @expenseAmountVndCaps.
+  ///
+  /// In vi, this message translates to:
+  /// **'SỐ TIỀN CHI TIÊU (VNĐ)'**
+  String get expenseAmountVndCaps;
+
+  /// No description provided for @expenseTitleCaps.
+  ///
+  /// In vi, this message translates to:
+  /// **'TÊN KHOẢN CHI'**
+  String get expenseTitleCaps;
+
+  /// No description provided for @expenseTitleHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập tên khoản chi (ví dụ: Ăn tối Haidilao)...'**
+  String get expenseTitleHint;
+
+  /// No description provided for @expenseNotesCaps.
+  ///
+  /// In vi, this message translates to:
+  /// **'GHI CHÚ'**
+  String get expenseNotesCaps;
+
+  /// No description provided for @optionalLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tùy chọn'**
+  String get optionalLabel;
+
+  /// No description provided for @expenseNotesHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập ghi chú thêm cho khoản chi (tùy chọn)...'**
+  String get expenseNotesHint;
+
+  /// No description provided for @expenseCategorySectionCaps.
+  ///
+  /// In vi, this message translates to:
+  /// **'DANH MỤC CHI TIÊU'**
+  String get expenseCategorySectionCaps;
+
+  /// No description provided for @expensePayerSectionCaps.
+  ///
+  /// In vi, this message translates to:
+  /// **'NGƯỜI ĐÃ TRẢ TIỀN (DUY NHẤT 1 NGƯỜI)'**
+  String get expensePayerSectionCaps;
+
+  /// No description provided for @youPayerSuffix.
+  ///
+  /// In vi, this message translates to:
+  /// **' (Bạn)'**
+  String get youPayerSuffix;
+
+  /// No description provided for @noMembersInGroup.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có thành viên trong nhóm.'**
+  String get noMembersInGroup;
+
+  /// No description provided for @expenseSplitSectionCaps.
+  ///
+  /// In vi, this message translates to:
+  /// **'KHUNG PHÂN CHIA CHI PHÍ'**
+  String get expenseSplitSectionCaps;
+
+  /// No description provided for @noMembersToSplit.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không có thành viên trong nhóm để chia chi phí.'**
+  String get noMembersToSplit;
+
+  /// No description provided for @cancelAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hủy bỏ'**
+  String get cancelAction;
+
+  /// No description provided for @saveNewExpenseAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lưu khoản chi mới'**
+  String get saveNewExpenseAction;
+
+  /// No description provided for @aiReceiptScannerCaps.
+  ///
+  /// In vi, this message translates to:
+  /// **'QUÉT HÓA ĐƠN AI'**
+  String get aiReceiptScannerCaps;
+
+  /// No description provided for @aiScanningReceipt.
+  ///
+  /// In vi, this message translates to:
+  /// **'AI đang phân tích hóa đơn...'**
+  String get aiScanningReceipt;
+
+  /// No description provided for @aiScanningReceiptDesc.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bóc tách tổng tiền, chi tiết món và danh mục'**
+  String get aiScanningReceiptDesc;
+
+  /// No description provided for @capturePhotoAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chụp ảnh'**
+  String get capturePhotoAction;
+
+  /// No description provided for @uploadPhotoAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tải ảnh lên'**
+  String get uploadPhotoAction;
+
+  /// No description provided for @uploadReceiptHelper.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tải hoặc chụp ảnh hóa đơn để ghi lại thông tin nhanh gọn'**
+  String get uploadReceiptHelper;
+
+  /// No description provided for @receiptScannedAndAttached.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã quét & đính kèm hóa đơn'**
+  String get receiptScannedAndAttached;
+
+  /// No description provided for @blurryReceiptWarning.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ảnh mờ - Vui lòng kiểm tra lại thông tin'**
+  String get blurryReceiptWarning;
+
+  /// No description provided for @receiptAutofilledNotice.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thông tin đã được tự động điền vào form'**
+  String get receiptAutofilledNotice;
+
+  /// No description provided for @removeReceiptTooltip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa hóa đơn'**
+  String get removeReceiptTooltip;
+
+  /// No description provided for @viewPhotoAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem ảnh'**
+  String get viewPhotoAction;
+
+  /// No description provided for @retakePhotoAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chụp lại'**
+  String get retakePhotoAction;
+
+  /// No description provided for @changePhotoAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đổi ảnh'**
+  String get changePhotoAction;
+
+  /// No description provided for @splitEquallyAllMembers.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia đều cho tất cả thành viên ({count} người)'**
+  String splitEquallyAllMembers(int count);
+
+  /// No description provided for @splitEquallyAllSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mọi người trong nhóm sẽ chia đều số tiền'**
+  String get splitEquallyAllSubtitle;
+
+  /// No description provided for @splitCustomSelectedSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang tùy chỉnh chọn thành viên chia chi phí'**
+  String get splitCustomSelectedSubtitle;
+
+  /// No description provided for @chooseSplitParticipantsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chọn người cùng chia tiền:'**
+  String get chooseSplitParticipantsTitle;
+
+  /// No description provided for @selectedParticipantsCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã chọn {selectedCount}/{totalCount} người • {amount} / người'**
+  String selectedParticipantsCount(
+    int selectedCount,
+    int totalCount,
+    String amount,
+  );
+
+  /// No description provided for @selectAllAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả'**
+  String get selectAllAction;
+
+  /// No description provided for @payerBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người trả'**
+  String get payerBadge;
+
+  /// No description provided for @cannotLoadReceiptImage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Không thể tải ảnh hóa đơn'**
+  String get cannotLoadReceiptImage;
+
+  /// No description provided for @categoryFood.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ăn uống'**
+  String get categoryFood;
+
+  /// No description provided for @categoryTransport.
+  ///
+  /// In vi, this message translates to:
+  /// **'Di chuyển'**
+  String get categoryTransport;
+
+  /// No description provided for @categoryShopping.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mua sắm'**
+  String get categoryShopping;
+
+  /// No description provided for @categoryHousing.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhà ở & Điện nước'**
+  String get categoryHousing;
+
+  /// No description provided for @categoryEntertainment.
+  ///
+  /// In vi, this message translates to:
+  /// **'Giải trí'**
+  String get categoryEntertainment;
+
+  /// No description provided for @categoryGroceries.
+  ///
+  /// In vi, this message translates to:
+  /// **'Siêu thị'**
+  String get categoryGroceries;
+
+  /// No description provided for @categoryHealthcare.
+  ///
+  /// In vi, this message translates to:
+  /// **'Y tế & Sức khỏe'**
+  String get categoryHealthcare;
+
+  /// No description provided for @categoryOthers.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khác'**
+  String get categoryOthers;
 }
 
 class _AppLocalizationsDelegate
