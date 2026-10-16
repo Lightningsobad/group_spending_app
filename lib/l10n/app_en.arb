@@ -134,6 +134,7 @@
   "addExpense": "Add expense",
   "addExpenseFeatureNotice": "Add expense feature is being integrated.",
   "chooseGroupToAddExpenseTitle": "Select group to add expense",
+  "searchGroupByNameHint": "Search by group name...",
   "filterActiveOnly": "Active",
   "filterAllGroupsOnly": "All groups",
   "filterAdminOnly": "I'm Admin",

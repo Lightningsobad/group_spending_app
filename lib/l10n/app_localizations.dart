@@ -800,6 +800,12 @@ abstract class AppLocalizations {
   /// **'Chọn nhóm muốn thêm khoản chi'**
   String get chooseGroupToAddExpenseTitle;
 
+  /// No description provided for @searchGroupByNameHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm theo tên nhóm...'**
+  String get searchGroupByNameHint;
+
   /// No description provided for @filterActiveOnly.
   ///
   /// In vi, this message translates to:

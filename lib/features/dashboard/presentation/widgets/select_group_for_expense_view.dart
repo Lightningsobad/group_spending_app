@@ -3,13 +3,18 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../core/theme/app_theme_colors.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../../shared/widgets/app_shimmer.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../groups/data/models/group_model.dart';
 import '../../../groups/presentation/widgets/group_category_helper.dart';
+import '../../../groups/presentation/widgets/group_filter_chip.dart';
 
 class SelectGroupForExpenseView extends StatefulWidget {
   final List<GroupModel> groups;
+  final bool isLoading;
   final VoidCallback onBack;
   final ValueChanged<GroupModel> onGroupSelected;
   final VoidCallback onCreateGroup;
@@ -17,6 +22,7 @@ class SelectGroupForExpenseView extends StatefulWidget {
   const SelectGroupForExpenseView({
     super.key,
     required this.groups,
+    this.isLoading = false,
     required this.onBack,
     required this.onGroupSelected,
     required this.onCreateGroup,
@@ -86,12 +92,10 @@ class _SelectGroupForExpenseViewState extends State<SelectGroupForExpenseView> {
 
   void _handleGroupTap(GroupModel group) {
     if (group.isArchived) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(context.l10n.cannotAddExpenseToArchivedGroup),
-          backgroundColor: Colors.amber[800],
-          duration: const Duration(seconds: 2),
-        ),
+      AppSnackBar.show(
+        context,
+        message: context.l10n.cannotAddExpenseToArchivedGroup,
+        type: AppSnackBarType.warning,
       );
       return;
     }
@@ -102,8 +106,10 @@ class _SelectGroupForExpenseViewState extends State<SelectGroupForExpenseView> {
   Widget build(BuildContext context) {
     final tr = context.l10n;
     final colors = context.colors;
-    final filtered = _filteredGroups;
-    final availableCategories = _availableCategories;
+    final textScaler = MediaQuery.textScalerOf(context).clamp(
+      minScaleFactor: 0.85,
+      maxScaleFactor: 1.30,
+    );
 
     return PopScope(
       canPop: false,
@@ -112,13 +118,54 @@ class _SelectGroupForExpenseViewState extends State<SelectGroupForExpenseView> {
           widget.onBack();
         }
       },
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 90),
+      child: SafeArea(
+        top: false,
+        bottom: true,
+        child: MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaler: textScaler),
+          child: widget.isLoading
+              ? _buildSkeleton(colors, tr)
+              : SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 90),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // 1. Header: Back button + Title
+                      _buildHeader(colors, tr),
+                      const SizedBox(height: 16),
+
+                      // 2. Search Text Field
+                      _buildSearchBar(colors, tr),
+                      const SizedBox(height: 14),
+
+                      // 3. Filter Rows
+                      _buildFilterRows(colors, tr),
+                      const SizedBox(height: 16),
+
+                      // 4. Group Cards List / Empty State
+                      _buildGroupListOrEmpty(colors, tr),
+                      const SizedBox(height: 16),
+
+                      // 5. Bottom Action: "Chưa có nhóm phù hợp? [+ Tạo nhóm]"
+                      _buildBottomAction(colors, tr),
+                    ],
+                  ),
+                ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSkeleton(AppThemeColors colors, AppLocalizations tr) {
+    return SingleChildScrollView(
+      physics: const AlwaysScrollableScrollPhysics(),
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 90),
+      child: AppShimmer(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // 1. Header: Back button + Title
+            // 1. Header skeleton (Real interactive back button so user can exit)
             Row(
               children: [
                 Material(
@@ -144,210 +191,77 @@ class _SelectGroupForExpenseViewState extends State<SelectGroupForExpenseView> {
                   ),
                 ),
                 const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    tr.chooseGroupToAddExpenseTitle,
-                    style: AppTextStyle.bold(
-                      fontSize: 18,
-                      color: colors.textPrimary,
-                    ),
-                  ),
+                const AppShimmerBox(
+                  width: 200,
+                  height: 22,
+                  borderRadius: 6,
                 ),
               ],
             ),
             const SizedBox(height: 16),
 
-            // 2. Search Text Field
+            // 2. Search bar skeleton
             Container(
+              height: 48,
               decoration: BoxDecoration(
                 color: colors.cardBackground,
                 borderRadius: BorderRadius.circular(14),
                 border: Border.all(color: colors.cardBorder),
               ),
-              child: TextField(
-                controller: _searchController,
-                onChanged: (_) => setState(() {}),
-                style: AppTextStyle.regular(
-                  fontSize: 14,
-                  color: colors.textPrimary,
-                ),
-                decoration: InputDecoration(
-                  hintText: 'Tìm theo tên nhóm...',
-                  hintStyle: AppTextStyle.regular(
-                    fontSize: 14,
-                    color: colors.textMuted,
-                  ),
-                  prefixIcon: Icon(
-                    LucideIcons.search,
-                    size: 18,
-                    color: colors.textMuted,
-                  ),
-                  suffixIcon: _searchController.text.isNotEmpty
-                      ? IconButton(
-                          icon: Icon(
-                            LucideIcons.x,
-                            size: 16,
-                            color: colors.textMuted,
-                          ),
-                          onPressed: () {
-                            _searchController.clear();
-                            setState(() {});
-                          },
-                        )
-                      : null,
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 12,
-                  ),
-                ),
+              padding: const EdgeInsets.symmetric(horizontal: 14),
+              alignment: Alignment.centerLeft,
+              child: Row(
+                children: const [
+                  AppShimmerBox(width: 20, height: 20, borderRadius: 10),
+                  SizedBox(width: 12),
+                  AppShimmerBox(width: 140, height: 14, borderRadius: 4),
+                ],
               ),
             ),
             const SizedBox(height: 14),
 
-            // 3. Filter Row 1 (Status/Role)
+            // 3. Filter Row 1 skeleton
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+              physics: const NeverScrollableScrollPhysics(),
               child: Row(
-                children: [
-                  _buildFilterChip(
-                    label: tr.filterActiveOnly,
-                    isSelected: _statusFilter == 'ACTIVE',
-                    onTap: () => setState(() => _statusFilter = 'ACTIVE'),
-                    colors: colors,
-                  ),
-                  const SizedBox(width: 8),
-                  _buildFilterChip(
-                    label: tr.filterAllGroupsOnly,
-                    isSelected: _statusFilter == 'ALL',
-                    onTap: () => setState(() => _statusFilter = 'ALL'),
-                    colors: colors,
-                  ),
-                  const SizedBox(width: 8),
-                  _buildFilterChip(
-                    label: tr.filterAdminOnly,
-                    isSelected: _statusFilter == 'ADMIN',
-                    onTap: () => setState(() => _statusFilter = 'ADMIN'),
-                    colors: colors,
-                  ),
+                children: const [
+                  AppShimmerBox(width: 110, height: 48, borderRadius: 20),
+                  SizedBox(width: 8),
+                  AppShimmerBox(width: 90, height: 48, borderRadius: 20),
+                  SizedBox(width: 8),
+                  AppShimmerBox(width: 100, height: 48, borderRadius: 20),
                 ],
               ),
             ),
             const SizedBox(height: 10),
 
-            // 4. Filter Row 2 (Category/Topic)
+            // 4. Filter Row 2 skeleton
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+              physics: const NeverScrollableScrollPhysics(),
               child: Row(
-                children: [
-                  _buildFilterChip(
-                    label: tr.filterAllTopicsOnly,
-                    isSelected: _categoryFilter == 'ALL',
-                    onTap: () => setState(() => _categoryFilter = 'ALL'),
-                    colors: colors,
-                  ),
-                  for (final cat in availableCategories) ...[
-                    const SizedBox(width: 8),
-                    _buildFilterChip(
-                      label: GroupCategoryHelper.getShortLabel(cat),
-                      isSelected: _categoryFilter == cat,
-                      onTap: () => setState(() => _categoryFilter = cat),
-                      colors: colors,
-                    ),
-                  ],
+                children: const [
+                  AppShimmerBox(width: 100, height: 48, borderRadius: 20),
+                  SizedBox(width: 8),
+                  AppShimmerBox(width: 110, height: 48, borderRadius: 20),
+                  SizedBox(width: 8),
+                  AppShimmerBox(width: 85, height: 48, borderRadius: 20),
                 ],
               ),
             ),
             const SizedBox(height: 16),
 
-            // 5. Group Cards List / Empty State
-            if (filtered.isEmpty)
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 16),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: colors.cardBackground,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: colors.cardBorder),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      LucideIcons.users,
-                      size: 40,
-                      color: colors.textMuted,
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      tr.noMatchingGroupsTitle,
-                      style: AppTextStyle.bold(
-                        fontSize: 15,
-                        color: colors.textPrimary,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      tr.noMatchingGroupsSubtitle,
-                      style: AppTextStyle.regular(
-                        fontSize: 13,
-                        color: colors.textSecondary,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              )
-            else
-              ...filtered.map(
-                (group) => _buildGroupCard(
-                  group: group,
-                  colors: colors,
-                  tr: tr,
-                  onTap: () => _handleGroupTap(group),
-                ),
-              ),
-
+            // 5. Group Card Skeletons (3 items)
+            ...List.generate(3, (index) => _buildSkeletonCard(colors)),
             const SizedBox(height: 16),
 
-            // 6. Bottom Action: "Chưa có nhóm phù hợp? [+ Tạo nhóm mới]"
+            // 6. Bottom action skeleton
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  tr.noSuitableGroupQuestion,
-                  style: AppTextStyle.regular(
-                    fontSize: 13,
-                    color: colors.textSecondary,
-                  ),
-                ),
-                OutlinedButton.icon(
-                  onPressed: widget.onCreateGroup,
-                  icon: const Icon(
-                    LucideIcons.plus,
-                    size: 16,
-                    color: Color(0xFF15803D),
-                  ),
-                  label: Text(
-                    tr.createGroupAction,
-                    style: AppTextStyle.bold(
-                      fontSize: 13,
-                      color: const Color(0xFF15803D),
-                    ),
-                  ),
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Color(0xFF86EFAC)),
-                    backgroundColor: const Color(0xFFF0FDF4),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 14,
-                      vertical: 10,
-                    ),
-                  ),
-                ),
+              children: const [
+                AppShimmerBox(width: 140, height: 14, borderRadius: 4),
+                AppShimmerBox(width: 110, height: 48, borderRadius: 12),
               ],
             ),
           ],
@@ -356,37 +270,254 @@ class _SelectGroupForExpenseViewState extends State<SelectGroupForExpenseView> {
     );
   }
 
-  Widget _buildFilterChip({
-    required String label,
-    required bool isSelected,
-    required VoidCallback onTap,
-    required AppThemeColors colors,
-  }) {
-    final bgColor = isSelected ? const Color(0xFF166534) : colors.surfaceMuted;
-    final textColor = isSelected ? Colors.white : colors.textSecondary;
-
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-          decoration: BoxDecoration(
-            color: bgColor,
-            borderRadius: BorderRadius.circular(20),
-            border: isSelected ? null : Border.all(color: colors.cardBorder),
+  Widget _buildSkeletonCard(AppThemeColors colors) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: colors.cardBackground,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: colors.cardBorder),
+        boxShadow: [colors.cardShadow],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 44,
+            height: 44,
+            decoration: BoxDecoration(
+              color: colors.surfaceMuted,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: colors.cardBorder),
+            ),
           ),
-          child: Text(
-            label,
-            style: AppTextStyle.bold(
-              fontSize: 13,
-              color: textColor,
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                AppShimmerBox(width: 150, height: 16, borderRadius: 4),
+                SizedBox(height: 6),
+                AppShimmerBox(width: 65, height: 18, borderRadius: 12),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: const [
+              AppShimmerBox(width: 55, height: 12, borderRadius: 4),
+              SizedBox(height: 4),
+              AppShimmerBox(width: 85, height: 16, borderRadius: 4),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader(AppThemeColors colors, AppLocalizations tr) {
+    return Row(
+      children: [
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(12),
+            onTap: widget.onBack,
+            child: Container(
+              width: 48,
+              height: 48,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: colors.cardBackground,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: colors.cardBorder),
+              ),
+              child: Icon(
+                LucideIcons.arrowLeft,
+                size: 20,
+                color: colors.textPrimary,
+              ),
             ),
           ),
         ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Text(
+            tr.chooseGroupToAddExpenseTitle,
+            style: AppTextStyle.bold(
+              fontSize: AppFontSize.h4,
+              color: colors.textPrimary,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSearchBar(AppThemeColors colors, AppLocalizations tr) {
+    return Container(
+      decoration: BoxDecoration(
+        color: colors.cardBackground,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: colors.cardBorder),
       ),
+      child: TextField(
+        controller: _searchController,
+        onChanged: (_) => setState(() {}),
+        style: AppTextStyle.regular(
+          fontSize: AppFontSize.secondary,
+          color: colors.textPrimary,
+        ),
+        decoration: InputDecoration(
+          hintText: tr.searchGroupByNameHint,
+          hintStyle: AppTextStyle.regular(
+            fontSize: AppFontSize.secondary,
+            color: colors.textMuted,
+          ),
+          prefixIcon: Icon(
+            LucideIcons.search,
+            size: 18,
+            color: colors.textMuted,
+          ),
+          suffixIcon: _searchController.text.isNotEmpty
+              ? IconButton(
+                  constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                  splashRadius: 24,
+                  icon: Icon(
+                    LucideIcons.x,
+                    size: 16,
+                    color: colors.textMuted,
+                  ),
+                  onPressed: () {
+                    _searchController.clear();
+                    setState(() {});
+                  },
+                )
+              : null,
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 14,
+            vertical: 12,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilterRows(AppThemeColors colors, AppLocalizations tr) {
+    final availableCategories = _availableCategories;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Filter Row 1 (Status/Role)
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              GroupFilterChip(
+                label: tr.filterActiveOnly,
+                isSelected: _statusFilter == 'ACTIVE',
+                onTap: () => setState(() => _statusFilter = 'ACTIVE'),
+              ),
+              const SizedBox(width: 8),
+              GroupFilterChip(
+                label: tr.filterAllGroupsOnly,
+                isSelected: _statusFilter == 'ALL',
+                onTap: () => setState(() => _statusFilter = 'ALL'),
+              ),
+              const SizedBox(width: 8),
+              GroupFilterChip(
+                label: tr.filterAdminOnly,
+                isSelected: _statusFilter == 'ADMIN',
+                onTap: () => setState(() => _statusFilter = 'ADMIN'),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 10),
+
+        // Filter Row 2 (Category/Topic)
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              GroupFilterChip(
+                label: tr.filterAllTopicsOnly,
+                isSelected: _categoryFilter == 'ALL',
+                onTap: () => setState(() => _categoryFilter = 'ALL'),
+              ),
+              for (final cat in availableCategories) ...[
+                const SizedBox(width: 8),
+                GroupFilterChip(
+                  label: GroupCategoryHelper.getShortLabel(cat),
+                  isSelected: _categoryFilter == cat,
+                  onTap: () => setState(() => _categoryFilter = cat),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGroupListOrEmpty(AppThemeColors colors, AppLocalizations tr) {
+    final filtered = _filteredGroups;
+
+    if (filtered.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 16),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: colors.cardBackground,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: colors.cardBorder),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              LucideIcons.users,
+              size: 40,
+              color: colors.textMuted,
+            ),
+            const SizedBox(height: 12),
+            Text(
+              tr.noMatchingGroupsTitle,
+              style: AppTextStyle.bold(
+                fontSize: AppFontSize.body,
+                color: colors.textPrimary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 6),
+            Text(
+              tr.noMatchingGroupsSubtitle,
+              style: AppTextStyle.regular(
+                fontSize: AppFontSize.secondary,
+                color: colors.textSecondary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: filtered
+          .map(
+            (group) => _buildGroupCard(
+              group: group,
+              colors: colors,
+              tr: tr,
+              onTap: () => _handleGroupTap(group),
+            ),
+          )
+          .toList(),
     );
   }
 
@@ -400,9 +531,9 @@ class _SelectGroupForExpenseViewState extends State<SelectGroupForExpenseView> {
     final balance = group.userBalance;
     final Color balanceColor;
     if (balance > 0) {
-      balanceColor = const Color(0xFF10B981);
+      balanceColor = colors.debtReceiveAmount;
     } else if (balance < 0) {
-      balanceColor = const Color(0xFFEF4444);
+      balanceColor = colors.debtOweAmount;
     } else {
       balanceColor = colors.textMuted;
     }
@@ -455,7 +586,7 @@ class _SelectGroupForExpenseViewState extends State<SelectGroupForExpenseView> {
                         Text(
                           group.name,
                           style: AppTextStyle.bold(
-                            fontSize: 15,
+                            fontSize: AppFontSize.body,
                             color: colors.textPrimary,
                           ),
                           maxLines: 1,
@@ -475,23 +606,27 @@ class _SelectGroupForExpenseViewState extends State<SelectGroupForExpenseView> {
                                 color: colors.adminBadgeBorder,
                               ),
                             ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  LucideIcons.shieldCheck,
-                                  size: 12,
-                                  color: colors.adminBadgeText,
-                                ),
-                                const SizedBox(width: 3),
-                                Text(
-                                  'Admin',
-                                  style: AppTextStyle.bold(
-                                    fontSize: 11,
+                            child: FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    LucideIcons.shieldCheck,
+                                    size: 13,
                                     color: colors.adminBadgeText,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(width: 3),
+                                  Text(
+                                    'Admin',
+                                    style: AppTextStyle.bold(
+                                      fontSize: AppFontSize.caption,
+                                      color: colors.adminBadgeText,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -501,25 +636,34 @@ class _SelectGroupForExpenseViewState extends State<SelectGroupForExpenseView> {
                   const SizedBox(width: 8),
 
                   // Trailing: Balance
-                  Column(
-                     crossAxisAlignment: CrossAxisAlignment.end,
-                     children: [
-                       Text(
-                         tr.balanceLabel,
-                         style: AppTextStyle.regular(
-                           fontSize: 12,
-                           color: colors.textMuted,
-                         ),
-                       ),
-                      const SizedBox(height: 2),
-                      Text(
-                        balanceText,
-                        style: AppTextStyle.bold(
-                          fontSize: 14,
-                          color: balanceColor,
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 110),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          tr.balanceLabel,
+                          style: AppTextStyle.regular(
+                            fontSize: AppFontSize.caption,
+                            color: colors.textMuted,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 2),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            balanceText,
+                            style: AppTextStyle.bold(
+                              fontSize: AppFontSize.secondary,
+                              color: balanceColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -527,6 +671,53 @@ class _SelectGroupForExpenseViewState extends State<SelectGroupForExpenseView> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildBottomAction(AppThemeColors colors, AppLocalizations tr) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Text(
+            tr.noSuitableGroupQuestion,
+            style: AppTextStyle.regular(
+              fontSize: AppFontSize.secondary,
+              color: colors.textSecondary,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        const SizedBox(width: 8),
+        OutlinedButton.icon(
+          onPressed: widget.onCreateGroup,
+          icon: Icon(
+            LucideIcons.plus,
+            size: 16,
+            color: colors.secondaryActionText,
+          ),
+          label: Text(
+            tr.createGroupAction,
+            style: AppTextStyle.bold(
+              fontSize: AppFontSize.secondary,
+              color: colors.secondaryActionText,
+            ),
+          ),
+          style: OutlinedButton.styleFrom(
+            side: BorderSide(color: colors.secondaryActionBorder),
+            backgroundColor: colors.secondaryActionBg,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            minimumSize: const Size(0, 48),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 14,
+              vertical: 10,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
