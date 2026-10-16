@@ -840,11 +840,11 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String debtsPendingCount(int count) {
-    return '$count khoản nợ cần xử lý';
+    return '$count khoản nợ';
   }
 
   @override
-  String get debtsSettledAll => 'Đã tất toán toàn bộ';
+  String get debtsSettledAll => 'Đã tất toán';
 
   @override
   String get debtsBalanced => 'Cân bằng (0 đ)';
@@ -874,7 +874,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String debtsToHandleCount(int count) {
-    return '$count KHOẢN NỢ CẦN XỬ LÝ';
+    return '$count KHOẢN NỢ';
   }
 
   @override

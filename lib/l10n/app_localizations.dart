@@ -1613,13 +1613,13 @@ abstract class AppLocalizations {
   /// No description provided for @debtsPendingCount.
   ///
   /// In vi, this message translates to:
-  /// **'{count} khoản nợ cần xử lý'**
+  /// **'{count} khoản nợ'**
   String debtsPendingCount(int count);
 
   /// No description provided for @debtsSettledAll.
   ///
   /// In vi, this message translates to:
-  /// **'Đã tất toán toàn bộ'**
+  /// **'Đã tất toán'**
   String get debtsSettledAll;
 
   /// No description provided for @debtsBalanced.
@@ -1673,7 +1673,7 @@ abstract class AppLocalizations {
   /// No description provided for @debtsToHandleCount.
   ///
   /// In vi, this message translates to:
-  /// **'{count} KHOẢN NỢ CẦN XỬ LÝ'**
+  /// **'{count} KHOẢN NỢ'**
   String debtsToHandleCount(int count);
 
   /// No description provided for @simplifiedDebtAlgorithm.

@@ -89,7 +89,7 @@
   "roleMember": "Member",
   "editProfile": "Edit Profile",
   "changePassword": "Change Password",
-  "vietqrTitle": "PAYMENT RECEIVING ACCOUNT (VIETQR)",
+  "vietqrTitle": "BANK ACCOUNT",
   "noBankData": "No data",
   "appearanceLanguageSection": "APPEARANCE & LANGUAGE",
   "themeModeTitle": "Theme Mode",
@@ -204,7 +204,7 @@
   "createGroupTitle": "Create new expense group",
   "createGroupSubtitle": "Enter group name and category to manage shared expenses.",
   "groupNameLabel": "Expense group name *",
-  "groupNameHint": "Enter group name (e.g., Dalat Trip, Apt 402...)",
+  "groupNameHint": "Enter group name",
   "groupDescLabel": "Group description (Optional)",
   "groupDescHint": "Enter a brief note about this group's expenses...",
   "groupCategoryLabel": "Group category",
@@ -213,7 +213,7 @@
   "joinGroupTitle": "Join group via invite code",
   "joinGroupSubtitle": "Enter a 6-12 character code to join your friends' group.",
   "inviteCodeLabel": "Group invite code *",
-  "inviteCodeHint": "E.g., DALAT2024, ROOM402...",
+  "inviteCodeHint": "Enter code",
   "inviteCodeRequired": "Please enter an invite code.",
   "joinGroupButton": "Join group",
   "groupDetailTitle": "Group details",
@@ -367,7 +367,7 @@
   "youLabel": "(Me)",
   "debtsGroupTitle": "Debts by Group",
   "debtsYouOwe": "You owe",
-  "debtsYouOweSubtitle": "Total amount you need to pay",
+  "debtsYouOweSubtitle": "You need to pay",
   "debtsYouReceive": "You receive",
   "debtsYouReceiveSubtitle": "Friends owe you",
   "searchDebtGroupPlaceholder": "Search group by name, category...",
@@ -395,7 +395,7 @@
       }
     }
   },
-  "debtsPendingCount": "{count} debts need settlement",
+  "debtsPendingCount": "{count} debts",
   "@debtsPendingCount": {
     "placeholders": {
       "count": {
@@ -412,7 +412,7 @@
   "actualDebtsTab": "Actual Debts",
   "simplifiedDebtsBanner": "Optimize cash flow transactions for fastest settlement.",
   "actualDebtsBanner": "Detailed debts arising from each bill and spending item.",
-  "debtsToHandleCount": "{count} DEBTS NEED SETTLEMENT",
+  "debtsToHandleCount": "{count} DEBTS",
   "@debtsToHandleCount": {
     "placeholders": {
       "count": {
@@ -521,14 +521,14 @@
   "viewQrCodeTooltip": "View QR Code",
   "inviteMembersTitle": "Invite members to group",
   "tabQrCode": "QR Code",
-  "tabCopyCode": "Copy invite code",
-  "copyCodeInstruction": "Members enter this code to request to join the group",
+  "tabCopyCode": "Invite code",
+  "copyCodeInstruction": "Enter this code to join the group",
   "shareCodeAction": "Share invite code",
-  "scanToJoinInstruction": "Members scan this code with their phone to request to join",
-  "downloadQrAction": "Download QR image",
+  "scanToJoinInstruction": "Scan this code to join the group",
+  "downloadQrAction": "Download QR",
   "downloadQrSuccess": "QR code image saved successfully!",
   "downloadQrFailed": "Failed to save QR code image",
-  "shareViaOtherAppsAction": "Share via other apps",
+  "shareViaOtherAppsAction": "Share",
   "closeButton": "Close",
   "yourBalanceInGroupLabel": "Your balance in group",
   "youReceiveBadge": "You receive",

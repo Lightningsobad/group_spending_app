@@ -395,7 +395,7 @@
       }
     }
   },
-  "debtsPendingCount": "{count} khoản nợ cần xử lý",
+  "debtsPendingCount": "{count} khoản nợ",
   "@debtsPendingCount": {
     "placeholders": {
       "count": {
@@ -403,7 +403,7 @@
       }
     }
   },
-  "debtsSettledAll": "Đã tất toán toàn bộ",
+  "debtsSettledAll": "Đã tất toán",
   "debtsBalanced": "Cân bằng (0 đ)",
   "badgeYouReceive": "Bạn nhận",
   "badgeYouMustPay": "Bạn nợ",
@@ -412,7 +412,7 @@
   "actualDebtsTab": "Nợ thực tế",
   "simplifiedDebtsBanner": "Tối ưu hóa số lượng giao dịch gộp thông minh để thanh toán nhanh gọn nhất.",
   "actualDebtsBanner": "Chi tiết các khoản nợ phát sinh theo từng hóa đơn và mục chi tiêu.",
-  "debtsToHandleCount": "{count} KHOẢN NỢ CẦN XỬ LÝ",
+  "debtsToHandleCount": "{count} KHOẢN NỢ",
   "@debtsToHandleCount": {
     "placeholders": {
       "count": {

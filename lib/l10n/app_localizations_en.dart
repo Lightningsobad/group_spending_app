@@ -238,7 +238,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get changePassword => 'Change Password';
 
   @override
-  String get vietqrTitle => 'PAYMENT RECEIVING ACCOUNT (VIETQR)';
+  String get vietqrTitle => 'BANK ACCOUNT';
 
   @override
   String get noBankData => 'No data';
@@ -489,7 +489,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get groupNameLabel => 'Expense group name *';
 
   @override
-  String get groupNameHint => 'Enter group name (e.g., Dalat Trip, Apt 402...)';
+  String get groupNameHint => 'Enter group name';
 
   @override
   String get groupDescLabel => 'Group description (Optional)';
@@ -518,7 +518,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get inviteCodeLabel => 'Group invite code *';
 
   @override
-  String get inviteCodeHint => 'E.g., DALAT2024, ROOM402...';
+  String get inviteCodeHint => 'Enter code';
 
   @override
   String get inviteCodeRequired => 'Please enter an invite code.';
@@ -815,7 +815,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get debtsYouOwe => 'You owe';
 
   @override
-  String get debtsYouOweSubtitle => 'Total amount you need to pay';
+  String get debtsYouOweSubtitle => 'You need to pay';
 
   @override
   String get debtsYouReceive => 'You receive';
@@ -843,7 +843,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String debtsPendingCount(int count) {
-    return '$count debts need settlement';
+    return '$count debts';
   }
 
   @override
@@ -877,7 +877,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String debtsToHandleCount(int count) {
-    return '$count DEBTS NEED SETTLEMENT';
+    return '$count DEBTS';
   }
 
   @override
@@ -1070,21 +1070,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabQrCode => 'QR Code';
 
   @override
-  String get tabCopyCode => 'Copy invite code';
+  String get tabCopyCode => 'Invite code';
 
   @override
-  String get copyCodeInstruction =>
-      'Members enter this code to request to join the group';
+  String get copyCodeInstruction => 'Enter this code to join the group';
 
   @override
   String get shareCodeAction => 'Share invite code';
 
   @override
-  String get scanToJoinInstruction =>
-      'Members scan this code with their phone to request to join';
+  String get scanToJoinInstruction => 'Scan this code to join the group';
 
   @override
-  String get downloadQrAction => 'Download QR image';
+  String get downloadQrAction => 'Download QR';
 
   @override
   String get downloadQrSuccess => 'QR code image saved successfully!';
@@ -1093,7 +1091,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get downloadQrFailed => 'Failed to save QR code image';
 
   @override
-  String get shareViaOtherAppsAction => 'Share via other apps';
+  String get shareViaOtherAppsAction => 'Share';
 
   @override
   String get closeButton => 'Close';
