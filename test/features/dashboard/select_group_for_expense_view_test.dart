@@ -3,7 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:group_spending_app/core/theme/app_theme.dart';
 import 'package:group_spending_app/features/dashboard/presentation/widgets/select_group_for_expense_view.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
+import 'package:group_spending_app/features/groups/presentation/widgets/group_filter_chip.dart';
 import 'package:group_spending_app/l10n/app_localizations.dart';
+import 'package:group_spending_app/shared/widgets/app_shimmer.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 void main() {
@@ -43,19 +45,22 @@ void main() {
 
     Widget buildTestWidget({
       List<GroupModel>? groups,
+      bool isLoading = false,
+      ThemeData? theme,
       VoidCallback? onBack,
       ValueChanged<GroupModel>? onGroupSelected,
       VoidCallback? onCreateGroup,
       Locale locale = const Locale('vi'),
     }) {
       return MaterialApp(
-        theme: AppTheme.lightTheme,
+        theme: theme ?? AppTheme.lightTheme,
         locale: locale,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: SelectGroupForExpenseView(
             groups: groups ?? sampleGroups,
+            isLoading: isLoading,
             onBack: onBack ?? () {},
             onGroupSelected: onGroupSelected ?? (_) {},
             onCreateGroup: onCreateGroup ?? () {},
@@ -99,6 +104,13 @@ void main() {
       // Bottom action
       expect(find.text('Chưa có nhóm phù hợp?'), findsOneWidget);
       expect(find.text('Tạo nhóm'), findsOneWidget);
+    });
+
+    testWidgets('renders localized search hint in English when locale is en', (tester) async {
+      await tester.pumpWidget(buildTestWidget(locale: const Locale('en')));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Search by group name...'), findsOneWidget);
     });
 
     testWidgets('tapping back button triggers onBack callback', (tester) async {
@@ -187,6 +199,88 @@ void main() {
       await tester.pump();
 
       expect(createCalled, isTrue);
+    });
+
+    testWidgets('renders full-page shimmer skeleton when isLoading is true and back button still works', (tester) async {
+      var backCalled = false;
+      await tester.pumpWidget(buildTestWidget(
+        isLoading: true,
+        onBack: () => backCalled = true,
+      ));
+      await tester.pump();
+
+      // AppShimmer is active
+      expect(find.byType(AppShimmer), findsOneWidget);
+
+      // Group cards should not be rendered yet
+      expect(find.text('Chung cư Sunrise Room'), findsNothing);
+
+      // Back button in skeleton should be functional
+      final backBtn = find.byIcon(LucideIcons.arrowLeft);
+      expect(backBtn, findsOneWidget);
+      await tester.tap(backBtn);
+      await tester.pump();
+
+      expect(backCalled, isTrue);
+    });
+
+    testWidgets('verifies touch target size of back button, filter chips, and create group button are at least 48x48px', (tester) async {
+      await tester.pumpWidget(buildTestWidget());
+      await tester.pumpAndSettle();
+
+      // 1. Back button >= 48x48
+      final backButtonFinder = find.ancestor(
+        of: find.byIcon(LucideIcons.arrowLeft),
+        matching: find.byType(InkWell),
+      );
+      final backSize = tester.getSize(backButtonFinder);
+      expect(backSize.width, greaterThanOrEqualTo(48.0));
+      expect(backSize.height, greaterThanOrEqualTo(48.0));
+
+      // 2. Filter chip >= 48px height
+      final chipFinder = find.byType(GroupFilterChip).first;
+      final chipSize = tester.getSize(chipFinder);
+      expect(chipSize.height, greaterThanOrEqualTo(48.0));
+
+      // 3. Create group button >= 48px height
+      final createBtnFinder = find.widgetWithText(OutlinedButton, 'Tạo nhóm');
+      final createBtnSize = tester.getSize(createBtnFinder);
+      expect(createBtnSize.height, greaterThanOrEqualTo(48.0));
+    });
+
+    testWidgets('renders cleanly without overflow on narrow 320px width device with 1.3x textScaler', (tester) async {
+      tester.view.physicalSize = const Size(320 * 2, 640 * 2);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      await tester.pumpWidget(
+        MediaQuery(
+          data: const MediaQueryData(
+            textScaler: TextScaler.linear(1.3),
+            size: Size(320, 640),
+          ),
+          child: buildTestWidget(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(find.text('Chưa có nhóm phù hợp?'), findsOneWidget);
+      expect(find.text('Tạo nhóm'), findsOneWidget);
+    });
+
+    testWidgets('renders with dark theme using AppThemeColors semantic tokens', (tester) async {
+      await tester.pumpWidget(buildTestWidget(theme: AppTheme.darkTheme));
+      await tester.pumpAndSettle();
+
+      // Renders successfully
+      expect(find.text('Chọn nhóm muốn thêm khoản chi'), findsOneWidget);
+      expect(find.text('+2.450.000 đ'), findsOneWidget);
+      expect(find.text('-450.000 đ'), findsOneWidget);
+      expect(find.text('Tạo nhóm'), findsOneWidget);
     });
   });
 }

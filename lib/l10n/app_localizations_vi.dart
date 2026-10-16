@@ -386,6 +386,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get chooseGroupToAddExpenseTitle => 'Chọn nhóm muốn thêm khoản chi';
 
   @override
+  String get searchGroupByNameHint => 'Tìm theo tên nhóm...';
+
+  @override
   String get filterActiveOnly => 'Đang hoạt động';
 
   @override

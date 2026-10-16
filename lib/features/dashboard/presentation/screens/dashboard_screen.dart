@@ -114,25 +114,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
           builder: (context, state) {
             // ponytail: Syncing groups from GroupsCubit in build() as fallback until unified in a shared repository stream.
             List<GroupModel> groups = state.groups;
+            bool isGroupsLoading =
+                (state.status == DashboardStatus.initial || state.isLoading) &&
+                    groups.isEmpty;
             try {
-              final groupsFromCubit = context.watch<GroupsCubit>().state.groups;
-              if (groupsFromCubit.isNotEmpty) {
-                groups = groupsFromCubit;
+              final groupsState = context.watch<GroupsCubit>().state;
+              if (groupsState.groups.isNotEmpty) {
+                groups = groupsState.groups;
+              }
+              if (groupsState.isLoading && groups.isEmpty) {
+                isGroupsLoading = true;
               }
             } catch (_) {}
 
             if (_isSelectingGroupForExpense) {
               return SelectGroupForExpenseView(
                 groups: groups,
+                isLoading: isGroupsLoading,
                 onBack: () => setState(() => _isSelectingGroupForExpense = false),
                 onGroupSelected: _handleGroupSelectedForExpense,
                 onCreateGroup: _openCreateGroup,
               );
             }
 
-            final isLoadingInitial =
-                (state.status == DashboardStatus.initial || state.isLoading) &&
-                    groups.isEmpty;
+            final isLoadingInitial = isGroupsLoading;
 
             return RefreshIndicator(
               color: AppColors.emerald,
