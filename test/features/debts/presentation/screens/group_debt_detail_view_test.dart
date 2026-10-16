@@ -126,6 +126,13 @@ void main() {
     }
 
     testWidgets('tapping Pay Now when creditor has bank info opens VietQrModalSheet and marks as paid on confirm', (tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
       final debtsRepo = _MockDebtsRepo(
         simplifiedDebts: const [
           SimplifiedDebtEntity(
@@ -188,6 +195,13 @@ void main() {
     });
 
     testWidgets('tapping Pay Now when creditor has NO bank info shows No Bank Info Alert', (tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
       final debtsRepo = _MockDebtsRepo(
         simplifiedDebts: const [
           SimplifiedDebtEntity(
@@ -250,6 +264,13 @@ void main() {
     });
 
     testWidgets('Pay Now button is ENABLED and clickable when debt.id is null (common in simplified debts)', (tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
       final debtsRepo = _MockDebtsRepo(
         simplifiedDebts: const [
           SimplifiedDebtEntity(
@@ -300,6 +321,13 @@ void main() {
     });
 
     testWidgets('tapping Confirm in VietQrModalSheet marks splitId as paid when debt.id is null', (tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
       final debtsRepo = _MockDebtsRepo(
         simplifiedDebts: const [
           SimplifiedDebtEntity(

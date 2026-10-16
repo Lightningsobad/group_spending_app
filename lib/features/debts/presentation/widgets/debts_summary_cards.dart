@@ -67,14 +67,16 @@ class DebtsSummaryCards extends StatelessWidget {
                           ),
                         ),
                       )
-                    : Text(
-                        CurrencyUtils.formatVnd(totalOwedVnd),
-                        style: AppTextStyle.bold(
-                          fontSize: AppFontSize.h4,
-                          color: colors.debtOweAmount,
+                    : FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          CurrencyUtils.formatVnd(totalOwedVnd),
+                          style: AppTextStyle.bold(
+                            fontSize: AppFontSize.h4,
+                            color: colors.debtOweAmount,
+                          ),
+                          maxLines: 1,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
                 const SizedBox(height: 2),
                 Text(
@@ -133,14 +135,16 @@ class DebtsSummaryCards extends StatelessWidget {
                           ),
                         ),
                       )
-                    : Text(
-                        CurrencyUtils.formatVnd(totalReceivableVnd),
-                        style: AppTextStyle.bold(
-                          fontSize: AppFontSize.h4,
-                          color: colors.debtReceiveAmount,
+                    : FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          CurrencyUtils.formatVnd(totalReceivableVnd),
+                          style: AppTextStyle.bold(
+                            fontSize: AppFontSize.h4,
+                            color: colors.debtReceiveAmount,
+                          ),
+                          maxLines: 1,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
                 const SizedBox(height: 2),
                 Text(

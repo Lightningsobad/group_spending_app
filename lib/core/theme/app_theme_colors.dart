@@ -216,6 +216,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color debtIconContainerBg;
   final Color debtIconContainerBorder;
   final Color debtIconContainerFg;
+  final Color debtStatusSettledDot;
+  final Color debtStatusPendingDot;
+  final Color debtStatusWaitingDot;
+  final Color filterChipActiveBg;
+  final Color filterChipActiveText;
 
   // Expense Form, Scanner & Keypad Semantic Tokens
   final Color keypadDigitBg;
@@ -401,6 +406,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.debtIconContainerBg,
     required this.debtIconContainerBorder,
     required this.debtIconContainerFg,
+    required this.debtStatusSettledDot,
+    required this.debtStatusPendingDot,
+    required this.debtStatusWaitingDot,
+    required this.filterChipActiveBg,
+    required this.filterChipActiveText,
     required this.keypadDigitBg,
     required this.keypadDigitText,
     required this.keypadActionBg,
@@ -594,6 +604,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     debtIconContainerBg: Color(0xFFDCFCE7),
     debtIconContainerBorder: Color(0xFFA7F3D0),
     debtIconContainerFg: Color(0xFF15803D),
+    debtStatusSettledDot: Color(0xFF16A34A),
+    debtStatusPendingDot: Color(0xFFE11D48),
+    debtStatusWaitingDot: Color(0xFFF59E0B),
+    filterChipActiveBg: Color(0xFF166534),
+    filterChipActiveText: Colors.white,
     keypadDigitBg: Color(0xFFF8FAFC),
     keypadDigitText: AppColors.textDark,
     keypadActionBg: Color(0xFFE2E8F0),
@@ -787,6 +802,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     debtIconContainerBg: Color(0x66064E3B),
     debtIconContainerBorder: Color(0xFF065F46),
     debtIconContainerFg: Color(0xFF6EE7B7),
+    debtStatusSettledDot: Color(0xFF22C55E),
+    debtStatusPendingDot: Color(0xFFF43F5E),
+    debtStatusWaitingDot: Color(0xFFFBBF24),
+    filterChipActiveBg: Color(0xFF15803D),
+    filterChipActiveText: Colors.white,
     keypadDigitBg: Color(0xFF1E293B),
     keypadDigitText: AppColors.textLight,
     keypadActionBg: Color(0xFF334155),
@@ -978,6 +998,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? debtIconContainerBg,
     Color? debtIconContainerBorder,
     Color? debtIconContainerFg,
+    Color? debtStatusSettledDot,
+    Color? debtStatusPendingDot,
+    Color? debtStatusWaitingDot,
+    Color? filterChipActiveBg,
+    Color? filterChipActiveText,
     Color? keypadDigitBg,
     Color? keypadDigitText,
     Color? keypadActionBg,
@@ -1177,6 +1202,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       debtIconContainerBorder:
           debtIconContainerBorder ?? this.debtIconContainerBorder,
       debtIconContainerFg: debtIconContainerFg ?? this.debtIconContainerFg,
+      debtStatusSettledDot: debtStatusSettledDot ?? this.debtStatusSettledDot,
+      debtStatusPendingDot: debtStatusPendingDot ?? this.debtStatusPendingDot,
+      debtStatusWaitingDot: debtStatusWaitingDot ?? this.debtStatusWaitingDot,
+      filterChipActiveBg: filterChipActiveBg ?? this.filterChipActiveBg,
+      filterChipActiveText: filterChipActiveText ?? this.filterChipActiveText,
       keypadDigitBg: keypadDigitBg ?? this.keypadDigitBg,
       keypadDigitText: keypadDigitText ?? this.keypadDigitText,
       keypadActionBg: keypadActionBg ?? this.keypadActionBg,
@@ -1454,6 +1484,16 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           debtIconContainerBorder, other.debtIconContainerBorder, t)!,
       debtIconContainerFg:
           Color.lerp(debtIconContainerFg, other.debtIconContainerFg, t)!,
+      debtStatusSettledDot:
+          Color.lerp(debtStatusSettledDot, other.debtStatusSettledDot, t)!,
+      debtStatusPendingDot:
+          Color.lerp(debtStatusPendingDot, other.debtStatusPendingDot, t)!,
+      debtStatusWaitingDot:
+          Color.lerp(debtStatusWaitingDot, other.debtStatusWaitingDot, t)!,
+      filterChipActiveBg:
+          Color.lerp(filterChipActiveBg, other.filterChipActiveBg, t)!,
+      filterChipActiveText:
+          Color.lerp(filterChipActiveText, other.filterChipActiveText, t)!,
       keypadDigitBg: Color.lerp(keypadDigitBg, other.keypadDigitBg, t)!,
       keypadDigitText: Color.lerp(keypadDigitText, other.keypadDigitText, t)!,
       keypadActionBg: Color.lerp(keypadActionBg, other.keypadActionBg, t)!,
