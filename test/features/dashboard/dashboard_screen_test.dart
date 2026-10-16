@@ -75,7 +75,7 @@ void main() {
       // Quick action buttons
       expect(find.text('Thêm chi tiêu'), findsOneWidget);
       expect(find.text('Tạo nhóm'), findsOneWidget);
-      expect(find.text('Mã / QR'), findsOneWidget);
+      expect(find.text('Gia nhập nhóm'), findsOneWidget);
 
       // Groups section header
       expect(find.text('CÁC NHÓM CỦA BẠN'), findsOneWidget);
@@ -100,7 +100,7 @@ void main() {
       // Quick action buttons in English
       expect(find.text('Add expense'), findsOneWidget);
       expect(find.text('Create group'), findsOneWidget);
-      expect(find.text('Code / QR'), findsOneWidget);
+      expect(find.text('Join now'), findsOneWidget);
 
       // Groups section header in English
       expect(find.text('YOUR GROUPS'), findsOneWidget);
@@ -125,7 +125,7 @@ void main() {
       expect(navigated, isTrue);
     });
 
-    testWidgets('tapping Mã / QR invokes onNavigateToJoinGroup callback', (tester) async {
+    testWidgets('tapping Gia nhập nhóm invokes onNavigateToJoinGroup callback', (tester) async {
       bool joinNavigated = false;
       await tester.pumpWidget(createWidgetUnderTest(
         locale: const Locale('vi'),
@@ -135,7 +135,7 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      final qrBtn = find.text('Mã / QR');
+      final qrBtn = find.text('Gia nhập nhóm');
       expect(qrBtn, findsOneWidget);
       await tester.tap(qrBtn);
       await tester.pump();

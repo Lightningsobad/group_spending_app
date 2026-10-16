@@ -388,6 +388,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chooseGroupToAddExpenseTitle => 'Select group to add expense';
 
   @override
+  String get searchGroupByNameHint => 'Search by group name...';
+
+  @override
   String get filterActiveOnly => 'Active';
 
   @override
