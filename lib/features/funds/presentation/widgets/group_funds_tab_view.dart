@@ -33,11 +33,16 @@ class _GroupFundsTabViewState extends State<GroupFundsTabView> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) {
-        context.read<FundsCubit>().loadGroupFunds(widget.group.id);
-      }
-    });
+    final cubit = context.read<FundsCubit>();
+    if (cubit.state.currentGroupId != widget.group.id) {
+      cubit.loadGroupFunds(widget.group.id);
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          context.read<FundsCubit>().loadGroupFunds(widget.group.id, silent: true);
+        }
+      });
+    }
   }
 
   @override
@@ -86,9 +91,10 @@ class _GroupFundsTabViewState extends State<GroupFundsTabView> {
 
     return BlocBuilder<FundsCubit, FundsState>(
       builder: (context, state) {
-        final overview = state.overview;
-        final filteredFunds = state.filteredFunds;
-        final isLoading = state.isLoading && overview == null;
+        final isDifferentGroup = state.currentGroupId != widget.group.id;
+        final overview = isDifferentGroup ? null : state.overview;
+        final filteredFunds = isDifferentGroup ? const [] : state.filteredFunds;
+        final isLoading = state.isLoading || isDifferentGroup || (overview == null);
 
         return SafeArea(
           top: false,

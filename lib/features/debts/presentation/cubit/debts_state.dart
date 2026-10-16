@@ -106,6 +106,7 @@ class DebtsState {
     String? errorMessage,
     String? successMessage,
     bool clearSelectedGroup = false,
+    bool clearGroupDetails = false,
     bool clearMessages = false,
   }) {
     return DebtsState(
@@ -120,8 +121,10 @@ class DebtsState {
           ? null
           : (selectedGroupName ?? this.selectedGroupName),
       activeDetailTab: activeDetailTab ?? this.activeDetailTab,
-      simplifiedDebts: simplifiedDebts ?? this.simplifiedDebts,
-      actualDebts: actualDebts ?? this.actualDebts,
+      simplifiedDebts:
+          clearGroupDetails ? null : (simplifiedDebts ?? this.simplifiedDebts),
+      actualDebts:
+          clearGroupDetails ? null : (actualDebts ?? this.actualDebts),
       actualDebtStatusFilter:
           actualDebtStatusFilter ?? this.actualDebtStatusFilter,
       isDetailLoading: isDetailLoading ?? this.isDetailLoading,

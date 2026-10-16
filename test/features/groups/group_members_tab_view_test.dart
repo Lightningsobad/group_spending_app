@@ -157,5 +157,96 @@ void main() {
       final size = tester.getSize(inviteButtonFinder);
       expect(size.height, greaterThanOrEqualTo(48.0));
     });
+
+    testWidgets('renders shimmer skeleton on initial state before data resolves', (tester) async {
+      final initialCubit = GroupMembersCubit(
+        groupId: 1,
+        groupsRepository: groupsRepo,
+      );
+      addTearDown(initialCubit.close);
+
+      await tester.pumpWidget(
+        BlocProvider<GroupMembersCubit>.value(
+          value: initialCubit,
+          child: MaterialApp(
+            theme: AppTheme.lightTheme,
+            locale: const Locale('vi'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: const Scaffold(
+              body: SingleChildScrollView(
+                child: GroupMembersTabView(
+                  group: testGroup,
+                  isAdmin: true,
+                  isOwner: true,
+                  onInviteMore: _noop,
+                  onSelectMember: _noopWithInt,
+                  onDeleteGroup: _noop,
+                  onLeaveGroup: _noop,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Skeleton must be visible immediately
+      expect(find.byType(GroupMembersTabSkeleton), findsOneWidget);
+      // Empty state text must NOT be visible
+      expect(find.text('Không tìm thấy kết quả phù hợp'), findsNothing);
+
+      await tester.pumpAndSettle();
+
+      expect(find.byType(GroupMembersTabSkeleton), findsNothing);
+      expect(find.text('Nguyễn Nhật Minh'), findsOneWidget);
+    });
+
+    testWidgets('does not show old group A members when cubit is for group 1 but widget is for group 2', (tester) async {
+      // Pre-seed cubit with group 1 members
+      await membersCubit.loadMembers();
+      expect(membersCubit.state.members, isNotEmpty);
+
+      const group2 = GroupModel(
+        id: 2,
+        name: 'Nhóm 2 Mới',
+        category: 'work',
+        ownerId: 2,
+        role: 'MEMBER',
+      );
+
+      await tester.pumpWidget(
+        BlocProvider<GroupMembersCubit>.value(
+          value: membersCubit,
+          child: MaterialApp(
+            theme: AppTheme.lightTheme,
+            locale: const Locale('vi'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: const Scaffold(
+              body: SingleChildScrollView(
+                child: GroupMembersTabView(
+                  group: group2,
+                  isAdmin: false,
+                  isOwner: false,
+                  onInviteMore: _noop,
+                  onSelectMember: _noopWithInt,
+                  onDeleteGroup: _noop,
+                  onLeaveGroup: _noop,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Group 1 member names MUST NOT be visible!
+      expect(find.text('Nguyễn Nhật Minh'), findsNothing);
+      expect(find.text('Trần Văn An'), findsNothing);
+      // Skeleton must be shown because cubit.groupId (1) != group2.id (2)
+      expect(find.byType(GroupMembersTabSkeleton), findsOneWidget);
+    });
   });
 }
+
+void _noop() {}
+void _noopWithInt(int _) {}

@@ -175,15 +175,17 @@ class DebtsCubit extends Cubit<DebtsState> {
 
   void selectGroup(int? groupId, {String? groupName}) {
     if (groupId == null) {
-      emit(state.copyWith(clearSelectedGroup: true));
+      emit(state.copyWith(clearSelectedGroup: true, clearGroupDetails: true));
       return;
     }
 
+    final isDifferentGroup = groupId != state.selectedGroupId;
     emit(
       state.copyWith(
         selectedGroupId: groupId,
         selectedGroupName: groupName,
         isDetailLoading: true,
+        clearGroupDetails: isDifferentGroup,
         clearMessages: true,
       ),
     );

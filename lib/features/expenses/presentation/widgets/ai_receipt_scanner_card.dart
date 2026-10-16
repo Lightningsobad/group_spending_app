@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../core/theme/app_theme_colors.dart';
 
 class AiReceiptScannerCard extends StatelessWidget {
   final bool isScanning;
@@ -56,17 +56,18 @@ class AiReceiptScannerCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Icon(
+                  Icon(
                     LucideIcons.sparkles,
-                    size: 15,
-                    color: Color(0xFF14532D),
+                    size: 16,
+                    color: colors.brandEmerald,
                   ),
                   const SizedBox(width: 6),
                   Text(
                     'QUÉT HÓA ĐƠN AI',
                     style: AppTextStyle.bold(
-                      fontSize: 11,
-                      color: const Color(0xFF14532D),
+                      fontSize: AppFontSize.caption,
+                      letterSpacing: 0.5,
+                      color: colors.brandEmerald,
                     ),
                   ),
                 ],
@@ -74,7 +75,7 @@ class AiReceiptScannerCard extends StatelessWidget {
               Text(
                 'Tùy chọn',
                 style: AppTextStyle.regular(
-                  fontSize: 11,
+                  fontSize: AppFontSize.caption,
                   color: colors.textMuted,
                 ),
               ),
@@ -94,22 +95,22 @@ class AiReceiptScannerCard extends StatelessWidget {
     );
   }
 
-  Widget _buildScanningState(dynamic colors) {
+  Widget _buildScanningState(AppThemeColors colors) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 16),
       decoration: BoxDecoration(
-        color: const Color(0xFFECFDF5),
+        color: colors.scannerHighlightBg,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFF6EE7B7)),
+        border: Border.all(color: colors.scannerHighlightBorder),
       ),
       child: Row(
         children: [
-          const SizedBox(
+          SizedBox(
             width: 24,
             height: 24,
             child: CircularProgressIndicator(
               strokeWidth: 2.5,
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF047857)),
+              valueColor: AlwaysStoppedAnimation<Color>(colors.brandEmerald),
             ),
           ),
           const SizedBox(width: 14),
@@ -120,16 +121,16 @@ class AiReceiptScannerCard extends StatelessWidget {
                 Text(
                   'AI đang phân tích hóa đơn...',
                   style: AppTextStyle.bold(
-                    fontSize: 13,
-                    color: const Color(0xFF14532D),
+                    fontSize: AppFontSize.secondary,
+                    color: colors.scannerHighlightText,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   'Bóc tách tổng tiền, chi tiết món và danh mục',
                   style: AppTextStyle.regular(
-                    fontSize: 11,
-                    color: const Color(0xFF047857),
+                    fontSize: AppFontSize.caption,
+                    color: colors.brandEmerald,
                   ),
                 ),
               ],
@@ -140,75 +141,89 @@ class AiReceiptScannerCard extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButtons(dynamic colors) {
+  Widget _buildActionButtons(AppThemeColors colors) {
     return Column(
       children: [
         Row(
           children: [
-            // Nút Chụp ảnh (Camera)
+            // Nút Chụp ảnh (Camera) - đảm bảo touch target >= 48px
             Expanded(
-              child: InkWell(
-                onTap: onCapturePressed,
+              child: Material(
+                color: colors.scannerHighlightBg,
                 borderRadius: BorderRadius.circular(14),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFECFDF5),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: const Color(0xFF6EE7B7)),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        LucideIcons.camera,
-                        size: 18,
-                        color: Color(0xFF14532D),
+                child: InkWell(
+                  onTap: onCapturePressed,
+                  borderRadius: BorderRadius.circular(14),
+                  child: Container(
+                    constraints: const BoxConstraints(minHeight: 48),
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: colors.scannerHighlightBorder),
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            LucideIcons.camera,
+                            size: 18,
+                            color: colors.scannerHighlightText,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            'Chụp ảnh',
+                            style: AppTextStyle.bold(
+                              fontSize: AppFontSize.secondary,
+                              color: colors.scannerHighlightText,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Chụp ảnh',
-                        style: AppTextStyle.bold(
-                          fontSize: 13,
-                          color: const Color(0xFF14532D),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
             ),
             const SizedBox(width: 12),
 
-            // Nút Tải ảnh lên (Gallery)
+            // Nút Tải ảnh lên (Gallery) - đảm bảo touch target >= 48px
             Expanded(
-              child: InkWell(
-                onTap: onPickGalleryPressed,
+              child: Material(
+                color: colors.cardBackground,
                 borderRadius: BorderRadius.circular(14),
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: BoxDecoration(
-                    color: colors.cardBackground,
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: colors.cardBorder),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        LucideIcons.upload,
-                        size: 18,
-                        color: colors.textPrimary,
+                child: InkWell(
+                  onTap: onPickGalleryPressed,
+                  borderRadius: BorderRadius.circular(14),
+                  child: Container(
+                    constraints: const BoxConstraints(minHeight: 48),
+                    padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(14),
+                      border: Border.all(color: colors.cardBorder),
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            LucideIcons.upload,
+                            size: 18,
+                            color: colors.textPrimary,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            'Tải ảnh lên',
+                            style: AppTextStyle.bold(
+                              fontSize: AppFontSize.secondary,
+                              color: colors.textPrimary,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'Tải ảnh lên',
-                        style: AppTextStyle.bold(
-                          fontSize: 13,
-                          color: colors.textPrimary,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
               ),
@@ -222,7 +237,7 @@ class AiReceiptScannerCard extends StatelessWidget {
           'Tải hoặc chụp ảnh hóa đơn để ghi lại thông tin nhanh gọn',
           textAlign: TextAlign.center,
           style: AppTextStyle.regular(
-            fontSize: 12,
+            fontSize: AppFontSize.caption,
             color: colors.textMuted,
           ),
         ),
@@ -230,7 +245,7 @@ class AiReceiptScannerCard extends StatelessWidget {
     );
   }
 
-  Widget _buildReceiptPreview(BuildContext context, dynamic colors) {
+  Widget _buildReceiptPreview(BuildContext context, AppThemeColors colors) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -243,7 +258,7 @@ class AiReceiptScannerCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              // Thumbnail
+              // Thumbnail (52x52 >= 48x48)
               GestureDetector(
                 onTap: onViewReceipt,
                 child: ClipRRect(
@@ -292,17 +307,21 @@ class AiReceiptScannerCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           LucideIcons.checkCircle2,
-                          size: 14,
-                          color: AppColors.emerald,
+                          size: 15,
+                          color: colors.badgeSuccess,
                         ),
-                        const SizedBox(width: 4),
-                        Text(
-                          'Đã quét & đính kèm hóa đơn',
-                          style: AppTextStyle.bold(
-                            fontSize: 12,
-                            color: colors.textPrimary,
+                        const SizedBox(width: 5),
+                        Flexible(
+                          child: Text(
+                            'Đã quét & đính kèm hóa đơn',
+                            style: AppTextStyle.bold(
+                              fontSize: AppFontSize.caption,
+                              color: colors.textPrimary,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -312,15 +331,15 @@ class AiReceiptScannerCard extends StatelessWidget {
                       Text(
                         'Ảnh mờ - Vui lòng kiểm tra lại thông tin',
                         style: AppTextStyle.regular(
-                          fontSize: 11,
-                          color: Colors.orange,
+                          fontSize: AppFontSize.caption,
+                          color: colors.badgeWarningText,
                         ),
                       )
                     else
                       Text(
                         'Thông tin đã được tự động điền vào form',
                         style: AppTextStyle.regular(
-                          fontSize: 11,
+                          fontSize: AppFontSize.caption,
                           color: colors.textMuted,
                         ),
                       ),
@@ -328,13 +347,13 @@ class AiReceiptScannerCard extends StatelessWidget {
                 ),
               ),
 
-              // Delete button
+              // Delete button (IconButton has default 48x48 touch target)
               if (onRemoveReceipt != null)
                 IconButton(
-                  icon: const Icon(
+                  icon: Icon(
                     LucideIcons.trash2,
                     size: 18,
-                    color: AppColors.error,
+                    color: colors.dangerText,
                   ),
                   tooltip: 'Xóa hóa đơn',
                   onPressed: onRemoveReceipt,
@@ -342,42 +361,45 @@ class AiReceiptScannerCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 10),
-          const Divider(height: 1),
+          Divider(height: 1, color: colors.divider),
           const SizedBox(height: 8),
 
-          // Action row
+          // Action row với touch target >= 48px và khoảng cách >= 8px
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              if (onViewReceipt != null)
+              if (onViewReceipt != null) ...[
                 TextButton.icon(
                   onPressed: onViewReceipt,
-                  icon: const Icon(LucideIcons.eye, size: 14),
+                  icon: const Icon(LucideIcons.eye, size: 15),
                   label: const Text('Xem ảnh'),
                   style: TextButton.styleFrom(
-                    visualDensity: VisualDensity.compact,
-                    foregroundColor: const Color(0xFF14532D),
-                    textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                    minimumSize: const Size(64, 48),
+                    foregroundColor: colors.brandEmerald,
+                    textStyle: AppTextStyle.bold(fontSize: AppFontSize.caption),
                   ),
                 ),
+                const SizedBox(width: 8),
+              ],
               TextButton.icon(
                 onPressed: onCapturePressed,
-                icon: const Icon(LucideIcons.camera, size: 14),
+                icon: const Icon(LucideIcons.camera, size: 15),
                 label: const Text('Chụp lại'),
                 style: TextButton.styleFrom(
-                  visualDensity: VisualDensity.compact,
+                  minimumSize: const Size(64, 48),
                   foregroundColor: colors.textSecondary,
-                  textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                  textStyle: AppTextStyle.bold(fontSize: AppFontSize.caption),
                 ),
               ),
+              const SizedBox(width: 8),
               TextButton.icon(
                 onPressed: onPickGalleryPressed,
-                icon: const Icon(LucideIcons.image, size: 14),
+                icon: const Icon(LucideIcons.image, size: 15),
                 label: const Text('Đổi ảnh'),
                 style: TextButton.styleFrom(
-                  visualDensity: VisualDensity.compact,
+                  minimumSize: const Size(64, 48),
                   foregroundColor: colors.textSecondary,
-                  textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                  textStyle: AppTextStyle.bold(fontSize: AppFontSize.caption),
                 ),
               ),
             ],

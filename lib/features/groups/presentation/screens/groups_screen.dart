@@ -123,6 +123,7 @@ class GroupsScreenState extends State<GroupsScreen> {
       builder: (context, state) {
         if (_selectedGroup != null) {
           return GroupDetailView(
+            key: ValueKey(_selectedGroup!.id),
             initialGroup: _selectedGroup!,
             onBack: closeGroupDetail,
             onNavigateToDebts: widget.onNavigateToDebts,

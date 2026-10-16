@@ -136,20 +136,26 @@ class GroupDebtSummaryCard extends StatelessWidget {
                   color: colors.textSecondary,
                 ),
               ),
-              Text(
-                isSettled
-                    ? tr.debtsBalanced
-                    : CurrencyUtils.formatVnd(
-                        userBalance.netBalanceVnd,
-                        showSign: true,
-                      ),
-                style: AppTextStyle.bold(
-                  fontSize: AppFontSize.body,
-                  color: isSettled
-                      ? colors.textPrimary
-                      : isReceiving
-                          ? colors.debtReceiveText
-                          : colors.debtOweText,
+              Flexible(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    isSettled
+                        ? tr.debtsBalanced
+                        : CurrencyUtils.formatVnd(
+                            userBalance.netBalanceVnd,
+                            showSign: true,
+                          ),
+                    style: AppTextStyle.bold(
+                      fontSize: AppFontSize.h3,
+                      color: isSettled
+                          ? colors.textPrimary
+                          : isReceiving
+                              ? colors.debtReceiveText
+                              : colors.debtOweText,
+                    ),
+                  ),
                 ),
               ),
             ],

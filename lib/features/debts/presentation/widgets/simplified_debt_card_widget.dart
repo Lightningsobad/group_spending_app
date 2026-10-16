@@ -109,7 +109,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
                           ? '${debt.debtorName} (${tr.youTag})'
                           : debt.debtorName,
                       style: AppTextStyle.bold(
-                        fontSize: AppFontSize.caption,
+                        fontSize: AppFontSize.secondary,
                         color: colors.textPrimary,
                       ),
                       textAlign: TextAlign.center,
@@ -133,15 +133,17 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
                 flex: 4,
                 child: Column(
                   children: [
-                    Text(
-                      CurrencyUtils.formatVnd(debt.amountVnd),
-                      style: AppTextStyle.bold(
-                        fontSize: AppFontSize.h4,
-                        color: colors.textPrimary,
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        CurrencyUtils.formatVnd(debt.amountVnd),
+                        style: AppTextStyle.bold(
+                          fontSize: AppFontSize.h4,
+                          color: colors.textPrimary,
+                        ),
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
                       ),
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
                     Row(
@@ -181,7 +183,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
                           ? '${debt.creditorName} (${tr.youTag})'
                           : debt.creditorName,
                       style: AppTextStyle.bold(
-                        fontSize: AppFontSize.caption,
+                        fontSize: AppFontSize.secondary,
                         color: colors.textPrimary,
                       ),
                       textAlign: TextAlign.center,
@@ -271,7 +273,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
             bottom: -2,
             right: -4,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
               decoration: BoxDecoration(
                 color: colors.debtOweText,
                 borderRadius: BorderRadius.circular(6),
@@ -283,8 +285,8 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
               child: Text(
                 'Bạn',
                 style: AppTextStyle.bold(
-                  fontSize: 10,
-                  color: Colors.white,
+                  fontSize: AppFontSize.caption,
+                  color: colors.onPrimaryButton,
                 ),
               ),
             ),
@@ -305,7 +307,8 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
         return ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
             backgroundColor: colors.debtActionPayBg,
-            foregroundColor: Colors.white,
+            foregroundColor: colors.onPrimaryButton,
+            minimumSize: const Size.fromHeight(48),
             padding: const EdgeInsets.symmetric(vertical: 12),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),
@@ -327,7 +330,8 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: colors.debtActionConfirmBg,
-                  foregroundColor: Colors.white,
+                  foregroundColor: colors.onPrimaryButton,
+                  minimumSize: const Size.fromHeight(48),
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -348,6 +352,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
                 style: OutlinedButton.styleFrom(
                   foregroundColor: colors.debtActionRejectFg,
                   side: BorderSide(color: colors.debtActionRejectBorder),
+                  minimumSize: const Size.fromHeight(48),
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14),
@@ -369,6 +374,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
           style: OutlinedButton.styleFrom(
             foregroundColor: colors.textPrimary,
             side: BorderSide(color: colors.cardBorder),
+            minimumSize: const Size.fromHeight(48),
             padding: const EdgeInsets.symmetric(vertical: 12),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),
