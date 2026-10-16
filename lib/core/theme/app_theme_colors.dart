@@ -237,6 +237,13 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color expenseCardSelectedBg;
   final Color expenseCardSelectedBorder;
 
+  // Scanner & QR Mockup Tokens
+  final Color scannerBackground;
+  final Color scannerCorner;
+  final Color qrMockupCard;
+  final Color qrMockupFinder;
+  final Color qrMockupDot;
+
   const AppThemeColors({
     required this.background,
     required this.cardBackground,
@@ -406,6 +413,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.debtIconContainerBg,
     required this.debtIconContainerBorder,
     required this.debtIconContainerFg,
+    required this.scannerBackground,
+    required this.scannerCorner,
+    required this.qrMockupCard,
+    required this.qrMockupFinder,
+    required this.qrMockupDot,
     required this.debtStatusSettledDot,
     required this.debtStatusPendingDot,
     required this.debtStatusWaitingDot,
@@ -604,6 +616,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     debtIconContainerBg: Color(0xFFDCFCE7),
     debtIconContainerBorder: Color(0xFFA7F3D0),
     debtIconContainerFg: Color(0xFF15803D),
+    scannerBackground: Color(0xFF060B1E),
+    scannerCorner: Color(0xFF10B981),
+    qrMockupCard: Colors.white,
+    qrMockupFinder: Color(0xFF1E293B),
+    qrMockupDot: Color(0xFF334155),
     debtStatusSettledDot: Color(0xFF16A34A),
     debtStatusPendingDot: Color(0xFFE11D48),
     debtStatusWaitingDot: Color(0xFFF59E0B),
@@ -802,6 +819,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     debtIconContainerBg: Color(0x66064E3B),
     debtIconContainerBorder: Color(0xFF065F46),
     debtIconContainerFg: Color(0xFF6EE7B7),
+    scannerBackground: Color(0xFF060B1E),
+    scannerCorner: Color(0xFF34D399),
+    qrMockupCard: AppColors.cardDark,
+    qrMockupFinder: Color(0xFFE2E8F0),
+    qrMockupDot: Color(0xFF94A3B8),
     debtStatusSettledDot: Color(0xFF22C55E),
     debtStatusPendingDot: Color(0xFFF43F5E),
     debtStatusWaitingDot: Color(0xFFFBBF24),
@@ -998,6 +1020,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? debtIconContainerBg,
     Color? debtIconContainerBorder,
     Color? debtIconContainerFg,
+    Color? scannerBackground,
+    Color? scannerCorner,
+    Color? qrMockupCard,
+    Color? qrMockupFinder,
+    Color? qrMockupDot,
     Color? debtStatusSettledDot,
     Color? debtStatusPendingDot,
     Color? debtStatusWaitingDot,
@@ -1202,6 +1229,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       debtIconContainerBorder:
           debtIconContainerBorder ?? this.debtIconContainerBorder,
       debtIconContainerFg: debtIconContainerFg ?? this.debtIconContainerFg,
+      scannerBackground: scannerBackground ?? this.scannerBackground,
+      scannerCorner: scannerCorner ?? this.scannerCorner,
+      qrMockupCard: qrMockupCard ?? this.qrMockupCard,
+      qrMockupFinder: qrMockupFinder ?? this.qrMockupFinder,
+      qrMockupDot: qrMockupDot ?? this.qrMockupDot,
       debtStatusSettledDot: debtStatusSettledDot ?? this.debtStatusSettledDot,
       debtStatusPendingDot: debtStatusPendingDot ?? this.debtStatusPendingDot,
       debtStatusWaitingDot: debtStatusWaitingDot ?? this.debtStatusWaitingDot,
@@ -1484,6 +1516,12 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           debtIconContainerBorder, other.debtIconContainerBorder, t)!,
       debtIconContainerFg:
           Color.lerp(debtIconContainerFg, other.debtIconContainerFg, t)!,
+      scannerBackground:
+          Color.lerp(scannerBackground, other.scannerBackground, t)!,
+      scannerCorner: Color.lerp(scannerCorner, other.scannerCorner, t)!,
+      qrMockupCard: Color.lerp(qrMockupCard, other.qrMockupCard, t)!,
+      qrMockupFinder: Color.lerp(qrMockupFinder, other.qrMockupFinder, t)!,
+      qrMockupDot: Color.lerp(qrMockupDot, other.qrMockupDot, t)!,
       debtStatusSettledDot:
           Color.lerp(debtStatusSettledDot, other.debtStatusSettledDot, t)!,
       debtStatusPendingDot:

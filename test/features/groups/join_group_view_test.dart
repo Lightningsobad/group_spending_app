@@ -120,5 +120,94 @@ void main() {
       expect(find.text('E93KLA'), findsOneWidget);
       expect(find.text('Tham gia nhóm'), findsOneWidget);
     });
+
+    testWidgets('touch targets meet minimum 48px height and interactive spacing requirements', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pump();
+
+      // Back button hit area
+      final backInkWell = find.ancestor(of: find.text('Quay lại'), matching: find.byType(InkWell)).first;
+      final backSize = tester.getSize(backInkWell);
+      expect(backSize.height, greaterThanOrEqualTo(48.0));
+
+      // Tab items hit area
+      final tab0 = find.ancestor(of: find.text('Quét mã QR'), matching: find.byType(ConstrainedBox)).first;
+      final tab0Size = tester.getSize(tab0);
+      expect(tab0Size.height, greaterThanOrEqualTo(48.0));
+
+      final tab1 = find.ancestor(of: find.text('Nhập mã mời'), matching: find.byType(ConstrainedBox)).first;
+      final tab1Size = tester.getSize(tab1);
+      expect(tab1Size.height, greaterThanOrEqualTo(48.0));
+
+      // Action button "Tải ảnh mã QR"
+      final uploadBtn = find.ancestor(of: find.text('Tải ảnh mã QR'), matching: find.byType(OutlinedButton)).first;
+      final uploadSize = tester.getSize(uploadBtn);
+      expect(uploadSize.height, greaterThanOrEqualTo(48.0));
+
+      // Switch to manual input tab
+      await tester.tap(find.text('Nhập mã mời'));
+      await tester.pump();
+
+      // Submit button "Tham gia nhóm"
+      final submitBtn = find.ancestor(of: find.text('Tham gia nhóm'), matching: find.byType(ElevatedButton)).first;
+      final submitSize = tester.getSize(submitBtn);
+      expect(submitSize.height, greaterThanOrEqualTo(48.0));
+    });
+
+    testWidgets('renders cleanly in dark theme without exceptions', (tester) async {
+      await tester.pumpWidget(
+        BlocProvider<GroupsCubit>.value(
+          value: groupsCubit,
+          child: MaterialApp(
+            theme: AppTheme.darkTheme,
+            locale: const Locale('vi'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: const Scaffold(
+              body: JoinGroupView(
+                onBack: _noop,
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      expect(find.text('Gia nhập bằng mã / QR'), findsOneWidget);
+      expect(find.text('Quét mã QR'), findsOneWidget);
+    });
+
+    testWidgets('handles non-linear text scaling gracefully without overflow', (tester) async {
+      tester.view.physicalSize = const Size(360, 640);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(
+        BlocProvider<GroupsCubit>.value(
+          value: groupsCubit,
+          child: MaterialApp(
+            theme: AppTheme.lightTheme,
+            locale: const Locale('vi'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: MediaQuery(
+              data: const MediaQueryData(textScaler: TextScaler.linear(1.5)),
+              child: const Scaffold(
+                body: JoinGroupView(
+                  onBack: _noop,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pump();
+
+      expect(tester.takeException(), isNull);
+      expect(find.text('Gia nhập bằng mã / QR'), findsOneWidget);
+    });
   });
 }
+
+void _noop() {}
