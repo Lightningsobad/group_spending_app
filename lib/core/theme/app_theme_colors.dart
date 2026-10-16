@@ -217,6 +217,13 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color debtIconContainerBorder;
   final Color debtIconContainerFg;
 
+  // Scanner & QR Mockup Tokens
+  final Color scannerBackground;
+  final Color scannerCorner;
+  final Color qrMockupCard;
+  final Color qrMockupFinder;
+  final Color qrMockupDot;
+
   const AppThemeColors({
     required this.background,
     required this.cardBackground,
@@ -386,6 +393,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.debtIconContainerBg,
     required this.debtIconContainerBorder,
     required this.debtIconContainerFg,
+    required this.scannerBackground,
+    required this.scannerCorner,
+    required this.qrMockupCard,
+    required this.qrMockupFinder,
+    required this.qrMockupDot,
   });
 
   /// Bảng màu cho Light Theme
@@ -566,6 +578,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     debtIconContainerBg: Color(0xFFDCFCE7),
     debtIconContainerBorder: Color(0xFFA7F3D0),
     debtIconContainerFg: Color(0xFF15803D),
+    scannerBackground: Color(0xFF060B1E),
+    scannerCorner: Color(0xFF10B981),
+    qrMockupCard: Colors.white,
+    qrMockupFinder: Color(0xFF1E293B),
+    qrMockupDot: Color(0xFF334155),
   );
 
   /// Bảng màu cho Dark Theme
@@ -746,6 +763,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     debtIconContainerBg: Color(0x66064E3B),
     debtIconContainerBorder: Color(0xFF065F46),
     debtIconContainerFg: Color(0xFF6EE7B7),
+    scannerBackground: Color(0xFF060B1E),
+    scannerCorner: Color(0xFF34D399),
+    qrMockupCard: AppColors.cardDark,
+    qrMockupFinder: Color(0xFFE2E8F0),
+    qrMockupDot: Color(0xFF94A3B8),
   );
 
   /// Lấy bảng màu tương ứng với Theme hiện tại
@@ -924,6 +946,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? debtIconContainerBg,
     Color? debtIconContainerBorder,
     Color? debtIconContainerFg,
+    Color? scannerBackground,
+    Color? scannerCorner,
+    Color? qrMockupCard,
+    Color? qrMockupFinder,
+    Color? qrMockupDot,
   }) {
     return AppThemeColors(
       background: background ?? this.background,
@@ -1110,6 +1137,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       debtIconContainerBorder:
           debtIconContainerBorder ?? this.debtIconContainerBorder,
       debtIconContainerFg: debtIconContainerFg ?? this.debtIconContainerFg,
+      scannerBackground: scannerBackground ?? this.scannerBackground,
+      scannerCorner: scannerCorner ?? this.scannerCorner,
+      qrMockupCard: qrMockupCard ?? this.qrMockupCard,
+      qrMockupFinder: qrMockupFinder ?? this.qrMockupFinder,
+      qrMockupDot: qrMockupDot ?? this.qrMockupDot,
     );
   }
 
@@ -1371,6 +1403,12 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           debtIconContainerBorder, other.debtIconContainerBorder, t)!,
       debtIconContainerFg:
           Color.lerp(debtIconContainerFg, other.debtIconContainerFg, t)!,
+      scannerBackground:
+          Color.lerp(scannerBackground, other.scannerBackground, t)!,
+      scannerCorner: Color.lerp(scannerCorner, other.scannerCorner, t)!,
+      qrMockupCard: Color.lerp(qrMockupCard, other.qrMockupCard, t)!,
+      qrMockupFinder: Color.lerp(qrMockupFinder, other.qrMockupFinder, t)!,
+      qrMockupDot: Color.lerp(qrMockupDot, other.qrMockupDot, t)!,
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../core/theme/app_theme_colors.dart';
 import '../../../../l10n/l10n.dart';
 import '../cubit/groups_cubit.dart';
 import '../utils/invite_code_parser.dart';
@@ -181,6 +182,10 @@ class _JoinGroupViewState extends State<JoinGroupView> {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final tr = context.l10n;
+    final textScaler = MediaQuery.textScalerOf(context).clamp(
+      minScaleFactor: 0.85,
+      maxScaleFactor: 1.3,
+    );
 
     return PopScope(
       canPop: false,
@@ -189,153 +194,162 @@ class _JoinGroupViewState extends State<JoinGroupView> {
           widget.onBack();
         }
       },
-      child: SingleChildScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 90),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // 1. Back button row
-            Align(
-              alignment: Alignment.centerLeft,
-              child: InkWell(
-                borderRadius: BorderRadius.circular(10),
-                onTap: widget.onBack,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        LucideIcons.arrowLeft,
-                        size: 18,
-                        color: colors.textPrimary,
+      child: SafeArea(
+        top: false,
+        bottom: true,
+        child: MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaler: textScaler),
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 90),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // 1. Back button row with min 48x48px touch target
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(10),
+                      onTap: widget.onBack,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              LucideIcons.arrowLeft,
+                              size: 18,
+                              color: colors.textPrimary,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              tr.backAction,
+                              style: AppTextStyle.bold(
+                                fontSize: AppFontSize.secondary,
+                                color: colors.textPrimary,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      const SizedBox(width: 6),
-                      Text(
-                        tr.backAction,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+
+                // 2. Title Section
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        color: colors.primaryContainer,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        LucideIcons.qrCode,
+                        size: 20,
+                        color: colors.onPrimaryContainer,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        tr.joinGroupQrTitle,
                         style: AppTextStyle.bold(
-                          fontSize: 14,
+                          fontSize: AppFontSize.h3,
                           color: colors.textPrimary,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  tr.joinGroupQrSubtitle,
+                  style: AppTextStyle.regular(
+                    fontSize: AppFontSize.secondary,
+                    color: colors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // 3. Segmented Tab Control (min 8px spacing between items)
+                Container(
+                  padding: const EdgeInsets.all(4),
+                  decoration: BoxDecoration(
+                    color: colors.surfaceMuted,
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: colors.cardBorder),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _buildTabItem(
+                          index: 0,
+                          icon: LucideIcons.qrCode,
+                          label: tr.scanQrTab,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: _buildTabItem(
+                          index: 1,
+                          icon: LucideIcons.keyRound,
+                          label: tr.enterCodeTab,
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 12),
+                const SizedBox(height: 16),
 
-            // 2. Title Section
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: 38,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFDCFCE7),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    LucideIcons.qrCode,
-                    size: 20,
-                    color: Color(0xFF15803D),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    tr.joinGroupQrTitle,
-                    style: AppTextStyle.bold(
-                      fontSize: 20,
-                      color: colors.textPrimary,
+                // Error banner if any (min 48x48 dismiss touch target)
+                if (_inlineError != null)
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: colors.errorSurface,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: colors.errorBorder),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(LucideIcons.alertCircle,
+                            size: 18, color: colors.errorAccent),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            _inlineError!,
+                            style: AppTextStyle.medium(
+                              fontSize: AppFontSize.secondary,
+                              color: colors.errorAccent,
+                            ),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(LucideIcons.x, size: 18),
+                          constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                          color: colors.errorAccent,
+                          onPressed: () => setState(() => _inlineError = null),
+                        ),
+                      ],
                     ),
                   ),
-                ),
+
+                // 4. Tab Body
+                if (_selectedTabIndex == 0)
+                  _buildScannerTab(colors, tr)
+                else
+                  _buildManualInputTab(colors, tr),
               ],
             ),
-            const SizedBox(height: 6),
-            Text(
-              tr.joinGroupQrSubtitle,
-              style: AppTextStyle.regular(
-                fontSize: 13,
-                color: colors.textSecondary,
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // 3. Segmented Tab Control
-            Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: colors.surfaceMuted,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: colors.cardBorder),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: _buildTabItem(
-                      index: 0,
-                      icon: LucideIcons.qrCode,
-                      label: tr.scanQrTab,
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                  Expanded(
-                    child: _buildTabItem(
-                      index: 1,
-                      icon: LucideIcons.keyRound,
-                      label: tr.enterCodeTab,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Error banner if any
-            if (_inlineError != null)
-              Container(
-                margin: const EdgeInsets.only(bottom: 16),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: colors.errorSurface,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: colors.errorBorder),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(LucideIcons.alertCircle,
-                        size: 18, color: AppColors.error),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        _inlineError!,
-                        style: AppTextStyle.medium(
-                          fontSize: 13,
-                          color: AppColors.error,
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: const Icon(LucideIcons.x, size: 16),
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                      color: AppColors.error,
-                      onPressed: () => setState(() => _inlineError = null),
-                    ),
-                  ],
-                ),
-              ),
-
-            // 4. Tab Body
-            if (_selectedTabIndex == 0)
-              _buildScannerTab(colors, tr)
-            else
-              _buildManualInputTab(colors, tr),
-          ],
+          ),
         ),
       ),
     );
@@ -359,64 +373,71 @@ class _JoinGroupViewState extends State<JoinGroupView> {
             _inlineError = null;
           });
         },
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          decoration: BoxDecoration(
-            color: isSelected ? colors.cardBackground : Colors.transparent,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: isSelected
-                ? [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
-                      blurRadius: 4,
-                      offset: const Offset(0, 1),
-                    )
-                  ]
-                : null,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                size: 16,
-                color: isSelected
-                    ? const Color(0xFF15803D)
-                    : colors.textSecondary,
-              ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: Text(
-                  label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: isSelected
-                      ? AppTextStyle.bold(
-                          fontSize: 13,
-                          color: colors.textPrimary,
-                        )
-                      : AppTextStyle.medium(
-                          fontSize: 13,
-                          color: colors.textSecondary,
-                        ),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 48),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: isSelected ? colors.cardBackground : Colors.transparent,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: isSelected
+                  ? [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.05),
+                        blurRadius: 4,
+                        offset: const Offset(0, 1),
+                      )
+                    ]
+                  : null,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  icon,
+                  size: 18,
+                  color: isSelected
+                      ? colors.brandEmerald
+                      : colors.textSecondary,
                 ),
-              ),
-            ],
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    label,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: isSelected
+                        ? AppTextStyle.bold(
+                            fontSize: AppFontSize.secondary,
+                            color: colors.textPrimary,
+                          )
+                        : AppTextStyle.medium(
+                            fontSize: AppFontSize.secondary,
+                            color: colors.textSecondary,
+                          ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildScannerTab(dynamic colors, dynamic tr) {
+  Widget _buildScannerTab(AppThemeColors colors, dynamic tr) {
+    final screenHeight = MediaQuery.sizeOf(context).height;
+    final boxHeight = screenHeight < 700 ? 270.0 : 330.0;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         // Camera Viewfinder Box
         Container(
-          height: 330,
+          height: boxHeight,
           decoration: BoxDecoration(
-            color: const Color(0xFF060B1E),
+            color: colors.scannerBackground,
             borderRadius: BorderRadius.circular(24),
           ),
           child: ClipRRect(
@@ -444,8 +465,8 @@ class _JoinGroupViewState extends State<JoinGroupView> {
                     width: 200,
                     height: 200,
                     child: CustomPaint(
-                      painter: const ViewfinderCornerPainter(
-                        color: Color(0xFF10B981),
+                      painter: ViewfinderCornerPainter(
+                        color: colors.scannerCorner,
                         cornerLength: 26,
                         strokeWidth: 3.5,
                       ),
@@ -472,7 +493,7 @@ class _JoinGroupViewState extends State<JoinGroupView> {
                       tr.scanQrInstruction,
                       textAlign: TextAlign.center,
                       style: AppTextStyle.regular(
-                        fontSize: 12,
+                        fontSize: AppFontSize.caption,
                         color: Colors.white.withValues(alpha: 0.9),
                       ),
                     ),
@@ -484,21 +505,20 @@ class _JoinGroupViewState extends State<JoinGroupView> {
                   Positioned.fill(
                     child: Container(
                       color: Colors.black.withValues(alpha: 0.65),
-                      child: const Center(
+                      child: Center(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             CircularProgressIndicator(
-                              color: Color(0xFF10B981),
+                              color: colors.scannerCorner,
                               strokeWidth: 3,
                             ),
-                            SizedBox(height: 14),
+                            const SizedBox(height: 14),
                             Text(
                               'Đang xử lý tham gia nhóm...',
-                              style: TextStyle(
+                              style: AppTextStyle.semiBold(
                                 color: Colors.white,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w600,
+                                fontSize: AppFontSize.secondary,
                               ),
                             ),
                           ],
@@ -512,11 +532,12 @@ class _JoinGroupViewState extends State<JoinGroupView> {
         ),
         const SizedBox(height: 18),
 
-        // Secondary Action: Tải ảnh mã QR
+        // Secondary Action: Tải ảnh mã QR (Touch target >= 48px)
         OutlinedButton.icon(
           style: OutlinedButton.styleFrom(
             backgroundColor: colors.cardBackground,
             foregroundColor: colors.textPrimary,
+            minimumSize: const Size(double.infinity, 48),
             padding: const EdgeInsets.symmetric(vertical: 14),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),
@@ -531,14 +552,14 @@ class _JoinGroupViewState extends State<JoinGroupView> {
           ),
           label: Text(
             tr.uploadQrImageAction,
-            style: AppTextStyle.bold(fontSize: 14),
+            style: AppTextStyle.bold(fontSize: AppFontSize.body),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildManualInputTab(dynamic colors, dynamic tr) {
+  Widget _buildManualInputTab(AppThemeColors colors, dynamic tr) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -555,7 +576,8 @@ class _JoinGroupViewState extends State<JoinGroupView> {
               Text(
                 tr.inviteCodeLabel.toUpperCase(),
                 style: AppTextStyle.bold(
-                  fontSize: 11,
+                  fontSize: AppFontSize.caption,
+                  letterSpacing: 0.8,
                   color: colors.textSecondary,
                 ),
               ),
@@ -566,13 +588,14 @@ class _JoinGroupViewState extends State<JoinGroupView> {
                 decoration: InputDecoration(
                   hintText: tr.inviteCodeHint,
                   hintStyle: AppTextStyle.regular(
-                    fontSize: 14,
+                    fontSize: AppFontSize.secondary,
                     color: colors.textMuted,
                   ),
                   prefixIcon: const Icon(LucideIcons.keyRound, size: 18),
                   suffixIcon: IconButton(
                     icon: const Icon(LucideIcons.clipboardPaste, size: 18),
                     tooltip: 'Dán mã',
+                    constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
                     onPressed: _pasteFromClipboard,
                   ),
                   filled: true,
@@ -591,8 +614,8 @@ class _JoinGroupViewState extends State<JoinGroupView> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(14),
-                    borderSide: const BorderSide(
-                      color: AppColors.emerald,
+                    borderSide: BorderSide(
+                      color: colors.brandEmeraldBorder,
                       width: 1.5,
                     ),
                   ),
@@ -607,7 +630,7 @@ class _JoinGroupViewState extends State<JoinGroupView> {
               Text(
                 tr.joinGroupSubtitle,
                 style: AppTextStyle.regular(
-                  fontSize: 12,
+                  fontSize: AppFontSize.caption,
                   color: colors.textMuted,
                 ),
               ),
@@ -618,7 +641,9 @@ class _JoinGroupViewState extends State<JoinGroupView> {
 
         ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.emerald,
+            backgroundColor: colors.primaryButton,
+            foregroundColor: colors.onPrimaryButton,
+            minimumSize: const Size(double.infinity, 48),
             padding: const EdgeInsets.symmetric(vertical: 14),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),
@@ -649,8 +674,8 @@ class _JoinGroupViewState extends State<JoinGroupView> {
               : Text(
                   tr.joinGroupButton,
                   style: AppTextStyle.bold(
-                    fontSize: 14,
-                    color: Colors.white,
+                    fontSize: AppFontSize.body,
+                    color: colors.onPrimaryButton,
                   ),
                 ),
         ),
@@ -660,14 +685,17 @@ class _JoinGroupViewState extends State<JoinGroupView> {
 
   /// Khung minh họa mã QR với logo FairShare (FS) ở giữa (giống mockup thiết kế)
   Widget _buildQrMockupGraphic() {
+    final colors = context.colors;
+
     return Center(
       child: Container(
         width: 150,
         height: 150,
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colors.qrMockupCard,
           borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: colors.cardBorder),
         ),
         child: Stack(
           alignment: Alignment.center,
@@ -678,25 +706,25 @@ class _JoinGroupViewState extends State<JoinGroupView> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildFinderSquare(),
-                    _buildGridDots(3),
-                    _buildFinderSquare(),
+                    _buildFinderSquare(colors),
+                    _buildGridDots(3, colors),
+                    _buildFinderSquare(colors),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildGridDots(2),
+                    _buildGridDots(2, colors),
                     const SizedBox(width: 32),
-                    _buildGridDots(2),
+                    _buildGridDots(2, colors),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _buildFinderSquare(),
-                    _buildGridDots(3),
-                    _buildGridDots(2),
+                    _buildFinderSquare(colors),
+                    _buildGridDots(3, colors),
+                    _buildGridDots(2, colors),
                   ],
                 ),
               ],
@@ -705,16 +733,15 @@ class _JoinGroupViewState extends State<JoinGroupView> {
               width: 32,
               height: 32,
               decoration: BoxDecoration(
-                color: const Color(0xFF15803D),
+                color: colors.primaryButton,
                 borderRadius: BorderRadius.circular(8),
               ),
               alignment: Alignment.center,
-              child: const Text(
+              child: Text(
                 'FS',
-                style: TextStyle(
-                  color: Colors.white,
+                style: AppTextStyle.black(
+                  color: colors.onPrimaryButton,
                   fontSize: 13,
-                  fontWeight: FontWeight.w900,
                   letterSpacing: -0.5,
                 ),
               ),
@@ -725,24 +752,24 @@ class _JoinGroupViewState extends State<JoinGroupView> {
     );
   }
 
-  Widget _buildFinderSquare() {
+  Widget _buildFinderSquare(AppThemeColors colors) {
     return Container(
       width: 32,
       height: 32,
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E293B),
+        color: colors.qrMockupFinder,
         borderRadius: BorderRadius.circular(6),
       ),
       child: Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colors.qrMockupCard,
           borderRadius: BorderRadius.circular(4),
         ),
         child: Container(
           decoration: BoxDecoration(
-            color: const Color(0xFF1E293B),
+            color: colors.qrMockupFinder,
             borderRadius: BorderRadius.circular(2),
           ),
         ),
@@ -750,7 +777,7 @@ class _JoinGroupViewState extends State<JoinGroupView> {
     );
   }
 
-  Widget _buildGridDots(int count) {
+  Widget _buildGridDots(int count, AppThemeColors colors) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List.generate(
@@ -760,7 +787,7 @@ class _JoinGroupViewState extends State<JoinGroupView> {
           height: 7,
           margin: const EdgeInsets.symmetric(horizontal: 2),
           decoration: BoxDecoration(
-            color: const Color(0xFF334155),
+            color: colors.qrMockupDot,
             borderRadius: BorderRadius.circular(1.5),
           ),
         ),
