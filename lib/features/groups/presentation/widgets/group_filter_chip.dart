@@ -24,19 +24,21 @@ class GroupFilterChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         onTap: onTap,
         child: Container(
+          constraints: const BoxConstraints(minHeight: 48),
+          alignment: Alignment.center,
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF166534) : colors.surfaceMuted,
+            color: isSelected ? colors.filterChipActiveBg : colors.surfaceMuted,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: isSelected ? const Color(0xFF166534) : colors.cardBorder,
+              color: isSelected ? colors.filterChipActiveBg : colors.cardBorder,
             ),
           ),
           child: Text(
             label,
             style: AppTextStyle.bold(
-              fontSize: 12,
-              color: isSelected ? Colors.white : colors.textPrimary,
+              fontSize: AppFontSize.caption,
+              color: isSelected ? colors.filterChipActiveText : colors.textPrimary,
             ),
           ),
         ),

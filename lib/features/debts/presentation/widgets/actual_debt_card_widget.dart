@@ -54,14 +54,14 @@ class ActualDebtCardWidget extends StatelessWidget {
     return CurrencyUtils.formatVnd(amountVnd);
   }
 
-  Color _getStatusDotColor(DebtStatus status) {
+  Color _getStatusDotColor(DebtStatus status, AppThemeColors colors) {
     switch (status) {
       case DebtStatus.settled:
-        return const Color(0xFF16A34A); // Green dot
+        return colors.debtStatusSettledDot;
       case DebtStatus.pending:
-        return const Color(0xFFE11D48); // Red/pink dot
+        return colors.debtStatusPendingDot;
       case DebtStatus.waitingForConfirmation:
-        return const Color(0xFFF59E0B); // Amber/yellow dot
+        return colors.debtStatusWaitingDot;
     }
   }
 
@@ -367,11 +367,15 @@ class ActualDebtCardWidget extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 2),
-                  Text(
-                    CurrencyUtils.formatVnd(debt.totalAmountVnd),
-                    style: AppTextStyle.bold(
-                      fontSize: AppFontSize.body,
-                      color: colors.textPrimary,
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerRight,
+                    child: Text(
+                      CurrencyUtils.formatVnd(debt.totalAmountVnd),
+                      style: AppTextStyle.bold(
+                        fontSize: AppFontSize.body,
+                        color: colors.textPrimary,
+                      ),
                     ),
                   ),
                 ],
@@ -470,7 +474,7 @@ class ActualDebtCardWidget extends StatelessWidget {
     required double width,
     required AppThemeColors colors,
   }) {
-    final dotColor = _getStatusDotColor(debtor.status);
+    final dotColor = _getStatusDotColor(debtor.status, colors);
 
     return Material(
       color: Colors.transparent,
@@ -479,6 +483,7 @@ class ActualDebtCardWidget extends StatelessWidget {
         onTap: () => _handleDebtorTap(context, debtor),
         child: Container(
           width: width,
+          constraints: const BoxConstraints(minHeight: 48),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           decoration: BoxDecoration(
             color: colors.debtChipBg,
@@ -522,11 +527,14 @@ class ActualDebtCardWidget extends StatelessWidget {
               const SizedBox(width: 4),
 
               // Amount (e.g. 320k)
-              Text(
-                _formatCompactAmount(debtor.amount, debtor.amountVnd),
-                style: AppTextStyle.bold(
-                  fontSize: AppFontSize.secondary,
-                  color: colors.textPrimary,
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  _formatCompactAmount(debtor.amount, debtor.amountVnd),
+                  style: AppTextStyle.bold(
+                    fontSize: AppFontSize.secondary,
+                    color: colors.textPrimary,
+                  ),
                 ),
               ),
               const SizedBox(width: 6),

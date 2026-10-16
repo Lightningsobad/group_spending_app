@@ -11,6 +11,7 @@ import 'package:group_spending_app/features/debts/domain/repositories/debts_repo
 import 'package:group_spending_app/features/debts/presentation/cubit/debts_cubit.dart';
 import 'package:group_spending_app/features/debts/presentation/screens/debts_screen.dart';
 import 'package:group_spending_app/features/debts/presentation/widgets/group_debt_card_skeleton.dart';
+import 'package:group_spending_app/features/debts/presentation/widgets/group_debt_detail_skeleton.dart';
 import 'package:group_spending_app/l10n/app_localizations.dart';
 import '../../../auth/presentation/cubit/auth_cubit_test.dart';
 
@@ -210,6 +211,57 @@ void main() {
 
       expect(find.byType(GroupDebtCardSkeleton), findsWidgets);
     });
+
+    testWidgets('renders GroupDebtDetailSkeleton when group details are loading', (tester) async {
+      tester.view.physicalSize = const Size(800, 1200);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      final slowRepo = _SlowGroupDebtsRepo();
+      final cubit = DebtsCubit(slowRepo);
+      addTearDown(() {
+        if (!slowRepo.completer.isCompleted) {
+          slowRepo.completer.complete(
+            const GroupSimplifiedDebtsEntity(
+              userBalance: DebtUserBalanceEntity(
+                groupId: 10,
+                groupName: 'Chung cư Sunrise Room',
+              ),
+              simplifiedDebts: [],
+            ),
+          );
+        }
+        cubit.close();
+      });
+
+      await tester.pumpWidget(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider<DebtsCubit>.value(value: cubit),
+            BlocProvider<AuthCubit>.value(value: authCubit),
+          ],
+          child: MaterialApp(
+            theme: AppTheme.lightTheme,
+            locale: const Locale('vi'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: const Scaffold(
+              body: DebtsScreen(),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Tap on group card
+      await tester.tap(find.text('Chung cư Sunrise Room'));
+      await tester.pump(); // Advance 1 frame while loading
+
+      expect(find.byType(GroupDebtDetailSkeleton), findsOneWidget);
+    });
   });
 }
 
@@ -218,4 +270,11 @@ class _SlowDebtsRepo extends FakeDebtsRepo {
 
   @override
   Future<DebtOverviewEntity> getDebtOverview() => completer.future;
+}
+
+class _SlowGroupDebtsRepo extends FakeDebtsRepo {
+  final completer = Completer<GroupSimplifiedDebtsEntity>();
+
+  @override
+  Future<GroupSimplifiedDebtsEntity> getGroupSimplifiedDebts(int groupId) => completer.future;
 }

@@ -15,6 +15,7 @@ import '../cubit/debts_cubit.dart';
 import '../cubit/debts_state.dart';
 import '../widgets/actual_debt_card_widget.dart';
 import '../widgets/group_debt_card_skeleton.dart';
+import '../widgets/group_debt_detail_skeleton.dart';
 import '../widgets/group_debt_segmented_tab.dart';
 import '../widgets/group_debt_summary_card.dart';
 import '../widgets/settle_debt_dialogs.dart';
@@ -43,6 +44,30 @@ class GroupDebtDetailView extends StatelessWidget {
         final isDetailLoading = state.isDetailLoading;
         final activeTab = state.activeDetailTab;
 
+        final hasFreshData = (state.simplifiedDebts != null &&
+                state.simplifiedDebts!.userBalance.groupId == groupId) ||
+            (state.actualDebts != null &&
+                state.actualDebts!.userBalance.groupId == groupId);
+
+        if (isDetailLoading && !hasFreshData) {
+          return PopScope(
+            canPop: false,
+            onPopInvokedWithResult: (didPop, _) {
+              if (!didPop) cubit.selectGroup(null);
+            },
+            child: MediaQuery.withClampedTextScaling(
+              maxScaleFactor: 1.35,
+              child: SafeArea(
+                top: false,
+                bottom: true,
+                child: GroupDebtDetailSkeleton(
+                  onBack: () => cubit.selectGroup(null),
+                ),
+              ),
+            ),
+          );
+        }
+
         final userBalance = state.simplifiedDebts?.userBalance ??
             state.actualDebts?.userBalance ??
             DebtUserBalanceEntity(
@@ -54,35 +79,50 @@ class GroupDebtDetailView extends StatelessWidget {
             state.simplifiedDebts?.simplifiedDebts ?? const [];
         final actualList = state.actualDebts?.actualDebts ?? const [];
 
-        return RefreshIndicator(
-          color: colors.brandEmerald,
-          onRefresh: () => cubit.loadGroupDebts(groupId),
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 90),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // 1. Sub-Header: Back Pill & Group Title Pill
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Back button pill
-                    Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(16),
-                        onTap: () => cubit.selectGroup(null),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: colors.cardBackground,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: colors.cardBorder),
-                          ),
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, _) {
+            if (!didPop) cubit.selectGroup(null);
+          },
+          child: MediaQuery.withClampedTextScaling(
+            maxScaleFactor: 1.35,
+            child: SafeArea(
+              top: false,
+              bottom: true,
+              child: RefreshIndicator(
+                color: colors.brandEmerald,
+                onRefresh: () => cubit.loadGroupDebts(groupId),
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 90),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // 1. Sub-Header: Back Pill & Group Title Pill
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Back button pill
+                          Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(16),
+                              onTap: () => cubit.selectGroup(null),
+                              child: Container(
+                                constraints: const BoxConstraints(
+                                  minWidth: 48,
+                                  minHeight: 48,
+                                ),
+                                alignment: Alignment.center,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: colors.cardBackground,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(color: colors.cardBorder),
+                                ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
@@ -205,18 +245,28 @@ class GroupDebtDetailView extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          tr.debtsToHandleCount(simplifiedList.length),
-                          style: AppTextStyle.bold(
-                            fontSize: AppFontSize.caption,
-                            color: colors.textPrimary,
+                        Flexible(
+                          child: Text(
+                            tr.debtsToHandleCount(simplifiedList.length),
+                            style: AppTextStyle.bold(
+                              fontSize: AppFontSize.caption,
+                              color: colors.textPrimary,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        Text(
-                          tr.simplifiedDebtAlgorithm,
-                          style: AppTextStyle.semiBold(
-                            fontSize: AppFontSize.caption,
-                            color: colors.debtReceiveText,
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            tr.simplifiedDebtAlgorithm,
+                            style: AppTextStyle.semiBold(
+                              fontSize: AppFontSize.caption,
+                              color: colors.debtReceiveText,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.end,
                           ),
                         ),
                       ],
@@ -327,6 +377,9 @@ class GroupDebtDetailView extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    ),
         );
       },
     );
