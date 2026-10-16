@@ -3305,7 +3305,7 @@ abstract class AppLocalizations {
   /// No description provided for @expenseTitleHint.
   ///
   /// In vi, this message translates to:
-  /// **'Nhập tên khoản chi (ví dụ: Ăn tối Haidilao)...'**
+  /// **'Nhập tên khoản chi'**
   String get expenseTitleHint;
 
   /// No description provided for @expenseNotesCaps.
@@ -3389,7 +3389,7 @@ abstract class AppLocalizations {
   /// No description provided for @aiScanningReceiptDesc.
   ///
   /// In vi, this message translates to:
-  /// **'Bóc tách tổng tiền, chi tiết món và danh mục'**
+  /// **'Đang phân tích tổng tiền chi tiêu, ghi chú, chủ đề....'**
   String get aiScanningReceiptDesc;
 
   /// No description provided for @capturePhotoAction.

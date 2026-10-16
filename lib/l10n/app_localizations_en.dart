@@ -1776,8 +1776,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get expenseTitleCaps => 'EXPENSE TITLE';
 
   @override
-  String get expenseTitleHint =>
-      'Enter expense title (e.g., Haidilao dinner)...';
+  String get expenseTitleHint => 'Enter expense title';
 
   @override
   String get expenseNotesCaps => 'NOTES';
@@ -1820,7 +1819,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aiScanningReceiptDesc =>
-      'Extracting total amount, item breakdown and category';
+      'Analyzing total amount, notes, category...';
 
   @override
   String get capturePhotoAction => 'Take Photo';

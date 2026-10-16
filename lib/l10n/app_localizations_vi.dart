@@ -1772,8 +1772,7 @@ class AppLocalizationsVi extends AppLocalizations {
   String get expenseTitleCaps => 'TÊN KHOẢN CHI';
 
   @override
-  String get expenseTitleHint =>
-      'Nhập tên khoản chi (ví dụ: Ăn tối Haidilao)...';
+  String get expenseTitleHint => 'Nhập tên khoản chi';
 
   @override
   String get expenseNotesCaps => 'GHI CHÚ';
@@ -1818,7 +1817,7 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get aiScanningReceiptDesc =>
-      'Bóc tách tổng tiền, chi tiết món và danh mục';
+      'Đang phân tích tổng tiền chi tiêu, ghi chú, chủ đề....';
 
   @override
   String get capturePhotoAction => 'Chụp ảnh';
