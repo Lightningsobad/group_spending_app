@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/theme/app_theme_colors.dart';
 import '../../../../core/utils/currency_utils.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../groups/data/models/group_model.dart';
 import '../../data/models/expense_enums.dart';
 
@@ -34,6 +35,7 @@ class SplitMembersSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final l10n = context.l10n;
     final isSplitAll = splitOption == SplitOption.equalAll;
     final activeCount = isSplitAll
         ? members.length
@@ -72,7 +74,7 @@ class SplitMembersSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Chia đều cho tất cả thành viên (${members.length} người)',
+                      l10n.splitEquallyAllMembers(members.length),
                       style: AppTextStyle.bold(
                         fontSize: AppFontSize.secondary,
                         color: colors.textPrimary,
@@ -81,8 +83,8 @@ class SplitMembersSection extends StatelessWidget {
                     const SizedBox(height: 3),
                     Text(
                       isSplitAll
-                          ? 'Mọi người trong nhóm sẽ chia đều số tiền'
-                          : 'Đang tùy chỉnh chọn thành viên chia chi phí',
+                          ? l10n.splitEquallyAllSubtitle
+                          : l10n.splitCustomSelectedSubtitle,
                       style: AppTextStyle.regular(
                         fontSize: AppFontSize.caption,
                         color: colors.textSecondary,
@@ -104,7 +106,7 @@ class SplitMembersSection extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Chọn người cùng chia tiền:',
+                    l10n.chooseSplitParticipantsTitle,
                     style: AppTextStyle.bold(
                       fontSize: AppFontSize.secondary,
                       color: colors.textPrimary,
@@ -112,7 +114,7 @@ class SplitMembersSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'Đã chọn $activeCount/${members.length} người • ${CurrencyUtils.formatVnd(perPersonVnd)} / người',
+                    l10n.selectedParticipantsCount(activeCount, members.length, CurrencyUtils.formatVnd(perPersonVnd)),
                     style: AppTextStyle.regular(
                       fontSize: AppFontSize.caption,
                       color: colors.textSecondary,
@@ -131,7 +133,7 @@ class SplitMembersSection extends StatelessWidget {
               ),
               onPressed: onSelectAll,
               child: Text(
-                'Tất cả',
+                l10n.selectAllAction,
                 style: AppTextStyle.bold(fontSize: 13, color: colors.textPrimary),
               ),
             ),
@@ -145,7 +147,7 @@ class SplitMembersSection extends StatelessWidget {
               ),
               onPressed: onDeselectAll,
               child: Text(
-                'Bỏ chọn',
+                l10n.deselectAll,
                 style: AppTextStyle.bold(fontSize: 13, color: colors.textSecondary),
               ),
             ),
@@ -232,7 +234,7 @@ class SplitMembersSection extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Text(
-                                  'Người trả',
+                                  l10n.payerBadge,
                                   style: AppTextStyle.bold(
                                     fontSize: 10,
                                     color: colors.badgeSuccessText,

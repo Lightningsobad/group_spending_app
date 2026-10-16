@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../../../../l10n/l10n.dart';
 
 class ExpenseReceiptViewerDialog extends StatelessWidget {
   final String receiptUrl;
@@ -74,17 +75,17 @@ class ExpenseReceiptViewerDialog extends StatelessWidget {
                       );
                     },
                     errorBuilder: (context, error, stackTrace) {
-                      return const Center(
+                      return Center(
                         child: Padding(
-                          padding: EdgeInsets.all(32),
+                          padding: const EdgeInsets.all(32),
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(LucideIcons.imageOff, color: Colors.white70, size: 40),
-                              SizedBox(height: 8),
+                              const Icon(LucideIcons.imageOff, color: Colors.white70, size: 40),
+                              const SizedBox(height: 8),
                               Text(
-                                'Không thể tải ảnh hóa đơn',
-                                style: TextStyle(color: Colors.white70),
+                                context.l10n.cannotLoadReceiptImage,
+                                style: const TextStyle(color: Colors.white70),
                               ),
                             ],
                           ),

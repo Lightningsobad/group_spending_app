@@ -866,5 +866,85 @@
   "clearBankPrompt": "Clear bank selection",
   "imagePickerGenericError": "Could not select image. Please try again.",
   "updateProfileGenericError": "Failed to update profile. Please try again later.",
-  "otpResentSuccessMessage": "A new verification code has been sent to your email."
+  "otpResentSuccessMessage": "A new verification code has been sent to your email.",
+  "editExpenseTitle": "Edit Expense",
+  "expenseReceivingGroupCaps": "EXPENSE RECEIVING GROUP",
+  "changeGroupAction": "Change Group",
+  "selectReceivingGroupTitle": "Select Receiving Group",
+  "noGroupsAvailable": "No groups available.",
+  "maxImageSize10Mb": "Maximum image size is 10MB",
+  "receiptLowConfidenceWarning": "Image is blurry or unreadable. Image saved; please manually enter amount and title.",
+  "receiptScanSuccess": "Receipt scanned successfully! Information pre-filled.",
+  "pickImageError": "Error selecting image: {error}",
+  "@pickImageError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "expenseReceiptDefaultTitle": "Expense Receipt",
+  "expenseAmountVndCaps": "EXPENSE AMOUNT (VND)",
+  "expenseTitleCaps": "EXPENSE TITLE",
+  "expenseTitleHint": "Enter expense title",
+  "expenseNotesCaps": "NOTES",
+  "optionalLabel": "Optional",
+  "expenseNotesHint": "Enter additional notes (optional)...",
+  "expenseCategorySectionCaps": "EXPENSE CATEGORY",
+  "expensePayerSectionCaps": "PAID BY (SINGLE PAYER)",
+  "youPayerSuffix": " (You)",
+  "noMembersInGroup": "No members in this group.",
+  "expenseSplitSectionCaps": "EXPENSE SPLIT BREAKDOWN",
+  "noMembersToSplit": "No group members to split expenses.",
+  "cancelAction": "Cancel",
+  "saveNewExpenseAction": "Save New Expense",
+  "aiReceiptScannerCaps": "AI RECEIPT SCANNER",
+  "aiScanningReceipt": "AI is analyzing receipt...",
+  "aiScanningReceiptDesc": "Analyzing total amount, notes, category...",
+  "capturePhotoAction": "Take Photo",
+  "uploadPhotoAction": "Upload Photo",
+  "uploadReceiptHelper": "Upload or take a receipt photo to quickly log details",
+  "receiptScannedAndAttached": "Receipt scanned & attached",
+  "blurryReceiptWarning": "Blurry image - Please verify information",
+  "receiptAutofilledNotice": "Information was automatically filled into form",
+  "removeReceiptTooltip": "Remove receipt",
+  "viewPhotoAction": "View Photo",
+  "retakePhotoAction": "Retake",
+  "changePhotoAction": "Change Photo",
+  "splitEquallyAllMembers": "Split equally among all members ({count} people)",
+  "@splitEquallyAllMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "splitEquallyAllSubtitle": "All group members will split the amount equally",
+  "splitCustomSelectedSubtitle": "Customizing members to split the cost",
+  "chooseSplitParticipantsTitle": "Select participants to split:",
+  "selectedParticipantsCount": "Selected {selectedCount}/{totalCount} people • {amount} / person",
+  "@selectedParticipantsCount": {
+    "placeholders": {
+      "selectedCount": {
+        "type": "int"
+      },
+      "totalCount": {
+        "type": "int"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "selectAllAction": "All",
+  "payerBadge": "Payer",
+  "cannotLoadReceiptImage": "Unable to load receipt image",
+  "categoryFood": "Food & Dining",
+  "categoryTransport": "Transportation",
+  "categoryShopping": "Shopping",
+  "categoryHousing": "Housing & Utilities",
+  "categoryEntertainment": "Entertainment",
+  "categoryGroceries": "Groceries",
+  "categoryHealthcare": "Healthcare",
+  "categoryOthers": "Others"
 }
