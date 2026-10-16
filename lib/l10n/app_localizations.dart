@@ -2018,23 +2018,23 @@ abstract class AppLocalizations {
   /// **'Mã QR Code'**
   String get tabQrCode;
 
-  /// No description provided for @tabQrCodeSubtitle.
-  ///
-  /// In vi, this message translates to:
-  /// **'Quét trực tiếp khi ở cạnh nhau'**
-  String get tabQrCodeSubtitle;
-
   /// No description provided for @tabCopyCode.
   ///
   /// In vi, this message translates to:
   /// **'Sao chép mã mời'**
   String get tabCopyCode;
 
-  /// No description provided for @tabCopyCodeSubtitle.
+  /// No description provided for @copyCodeInstruction.
   ///
   /// In vi, this message translates to:
-  /// **'Gửi mã văn bản qua tin nhắn, Zalo'**
-  String get tabCopyCodeSubtitle;
+  /// **'Thành viên nhập mã này để gửi yêu cầu gia nhập nhóm'**
+  String get copyCodeInstruction;
+
+  /// No description provided for @shareCodeAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chia sẻ mã mời'**
+  String get shareCodeAction;
 
   /// No description provided for @scanToJoinInstruction.
   ///
