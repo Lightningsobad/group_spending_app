@@ -245,6 +245,10 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color qrMockupDot;
 
   // QR & Group Invite Semantic Tokens
+  final Color qrCardBg;
+  final Color qrCardBorder;
+  final Color qrQuietZoneBg;
+  final Color qrQuietZoneBorder;
   final Color qrTabActiveBg;
   final Color qrTabActiveBorder;
   final Color qrTabIconActiveBg;
@@ -426,6 +430,10 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.debtIconContainerBg,
     required this.debtIconContainerBorder,
     required this.debtIconContainerFg,
+    required this.qrCardBg,
+    required this.qrCardBorder,
+    required this.qrQuietZoneBg,
+    required this.qrQuietZoneBorder,
     required this.qrTabActiveBg,
     required this.qrTabActiveBorder,
     required this.qrTabIconActiveBg,
@@ -640,6 +648,10 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     debtIconContainerBg: Color(0xFFDCFCE7),
     debtIconContainerBorder: Color(0xFFA7F3D0),
     debtIconContainerFg: Color(0xFF15803D),
+    qrCardBg: Colors.white,
+    qrCardBorder: Color(0xFFE2E8F0),
+    qrQuietZoneBg: Colors.white,
+    qrQuietZoneBorder: Color(0xFFA7F3D0),
     qrTabActiveBg: Color(0xFFF0FDF4),
     qrTabActiveBorder: Color(0xFF15803D),
     qrTabIconActiveBg: Color(0xFF15803D),
@@ -854,6 +866,10 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     debtIconContainerBg: Color(0x66064E3B),
     debtIconContainerBorder: Color(0xFF065F46),
     debtIconContainerFg: Color(0xFF6EE7B7),
+    qrCardBg: Color(0xFF0F172A),
+    qrCardBorder: Color(0xFF334155),
+    qrQuietZoneBg: Colors.white,
+    qrQuietZoneBorder: Color(0xFF065F46),
     qrTabActiveBg: Color(0x59064E3B),
     qrTabActiveBorder: Color(0xFF10B981),
     qrTabIconActiveBg: Color(0xFF059669),
@@ -1066,6 +1082,10 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? debtIconContainerBg,
     Color? debtIconContainerBorder,
     Color? debtIconContainerFg,
+    Color? qrCardBg,
+    Color? qrCardBorder,
+    Color? qrQuietZoneBg,
+    Color? qrQuietZoneBorder,
     Color? qrTabActiveBg,
     Color? qrTabActiveBorder,
     Color? qrTabIconActiveBg,
@@ -1286,6 +1306,10 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       debtIconContainerBorder:
           debtIconContainerBorder ?? this.debtIconContainerBorder,
       debtIconContainerFg: debtIconContainerFg ?? this.debtIconContainerFg,
+      qrCardBg: qrCardBg ?? this.qrCardBg,
+      qrCardBorder: qrCardBorder ?? this.qrCardBorder,
+      qrQuietZoneBg: qrQuietZoneBg ?? this.qrQuietZoneBg,
+      qrQuietZoneBorder: qrQuietZoneBorder ?? this.qrQuietZoneBorder,
       qrTabActiveBg: qrTabActiveBg ?? this.qrTabActiveBg,
       qrTabActiveBorder: qrTabActiveBorder ?? this.qrTabActiveBorder,
       qrTabIconActiveBg: qrTabIconActiveBg ?? this.qrTabIconActiveBg,
@@ -1584,6 +1608,11 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           debtIconContainerBorder, other.debtIconContainerBorder, t)!,
       debtIconContainerFg:
           Color.lerp(debtIconContainerFg, other.debtIconContainerFg, t)!,
+      qrCardBg: Color.lerp(qrCardBg, other.qrCardBg, t)!,
+      qrCardBorder: Color.lerp(qrCardBorder, other.qrCardBorder, t)!,
+      qrQuietZoneBg: Color.lerp(qrQuietZoneBg, other.qrQuietZoneBg, t)!,
+      qrQuietZoneBorder:
+          Color.lerp(qrQuietZoneBorder, other.qrQuietZoneBorder, t)!,
       qrTabActiveBg: Color.lerp(qrTabActiveBg, other.qrTabActiveBg, t)!,
       qrTabActiveBorder:
           Color.lerp(qrTabActiveBorder, other.qrTabActiveBorder, t)!,
