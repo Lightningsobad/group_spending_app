@@ -58,7 +58,8 @@ class SettleDebtDialogs {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: colors.debtActionPayBg,
-              foregroundColor: Colors.white,
+              foregroundColor: colors.onPrimaryButton,
+              minimumSize: const Size(64, 44),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -105,6 +106,9 @@ class SettleDebtDialogs {
         ),
         actions: [
           TextButton(
+            style: TextButton.styleFrom(
+              minimumSize: const Size(64, 44),
+            ),
             onPressed: () => Navigator.of(ctx).pop(false),
             child: Text(
               tr.cancel,
@@ -117,7 +121,8 @@ class SettleDebtDialogs {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: colors.debtActionPayBg,
-              foregroundColor: Colors.white,
+              foregroundColor: colors.onPrimaryButton,
+              minimumSize: const Size(64, 44),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -169,6 +174,9 @@ class SettleDebtDialogs {
         ),
         actions: [
           TextButton(
+            style: TextButton.styleFrom(
+              minimumSize: const Size(64, 44),
+            ),
             onPressed: () => Navigator.of(ctx).pop(false),
             child: Text(
               tr.cancel,
@@ -183,7 +191,8 @@ class SettleDebtDialogs {
               backgroundColor: confirmed
                   ? colors.debtActionConfirmBg
                   : colors.debtOweText,
-              foregroundColor: Colors.white,
+              foregroundColor: colors.onPrimaryButton,
+              minimumSize: const Size(64, 44),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -230,6 +239,9 @@ class SettleDebtDialogs {
         ),
         actions: [
           TextButton(
+            style: TextButton.styleFrom(
+              minimumSize: const Size(64, 44),
+            ),
             onPressed: () => Navigator.of(ctx).pop(false),
             child: Text(
               tr.cancel,
@@ -242,7 +254,8 @@ class SettleDebtDialogs {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: colors.debtActionRemindIcon,
-              foregroundColor: Colors.white,
+              foregroundColor: colors.onPrimaryButton,
+              minimumSize: const Size(64, 44),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

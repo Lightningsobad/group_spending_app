@@ -61,9 +61,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Future<void> _handleGroupSelectedForExpense(GroupModel group) async {
+    GroupsCubit? groupsCubit;
+    try {
+      groupsCubit = context.read<GroupsCubit>();
+    } catch (_) {}
+
     final result = await Navigator.of(context).push<bool>(
       MaterialPageRoute(
-        builder: (_) => AddExpenseScreen(group: group),
+        builder: (_) => groupsCubit != null
+            ? BlocProvider<GroupsCubit>.value(
+                value: groupsCubit,
+                child: AddExpenseScreen(group: group),
+              )
+            : AddExpenseScreen(group: group),
       ),
     );
     if (result == true && mounted) {

@@ -44,7 +44,7 @@ class GroupDebtSegmentedTab extends StatelessWidget {
               colors: colors,
             ),
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: 8),
 
           // Tab 1: Nợ thực tế
           Expanded(
@@ -79,6 +79,8 @@ class GroupDebtSegmentedTab extends StatelessWidget {
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
+          constraints: const BoxConstraints(minHeight: 48),
+          alignment: Alignment.center,
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
           decoration: BoxDecoration(
             color: isSelected ? colors.cardBackground : Colors.transparent,

@@ -53,13 +53,18 @@ class FundsCubit extends Cubit<FundsState> {
     int groupId, {
     bool silent = false,
   }) async {
+    final isDifferentGroup = state.currentGroupId != groupId;
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
     if (!silent) {
       emit(
         state.copyWith(
           status: FundsStatus.loading,
           currentGroupId: groupId,
+          clearOverview: isDifferentGroup,
           clearMessages: true,
+          searchQuery: isDifferentGroup ? '' : state.searchQuery,
+          clearStatusFilter: isDifferentGroup,
+          selectedTimeFilter: isDifferentGroup ? FundTimeFilter.all : state.selectedTimeFilter,
         ),
       );
     } else {
@@ -67,11 +72,15 @@ class FundsCubit extends Cubit<FundsState> {
     }
 
     try {
+      final effectiveSearch = isDifferentGroup ? null : (state.searchQuery.trim().isNotEmpty ? state.searchQuery : null);
+      final effectiveTime = isDifferentGroup ? FundTimeFilter.all : state.selectedTimeFilter;
+      final effectiveStatus = isDifferentGroup ? null : state.selectedStatusFilter;
+
       final overview = await _repository.getGroupFundsOverview(
         groupId,
-        search: state.searchQuery.trim().isNotEmpty ? state.searchQuery : null,
-        timeFilter: state.selectedTimeFilter,
-        status: state.selectedStatusFilter,
+        search: effectiveSearch,
+        timeFilter: effectiveTime,
+        status: effectiveStatus,
       );
 
       if (isClosed ||

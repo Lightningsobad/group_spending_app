@@ -277,5 +277,69 @@ void main() {
       expect(find.byIcon(LucideIcons.piggyBank), findsOneWidget);
       expect(find.text('Chưa có đợt đóng quỹ nào'), findsOneWidget);
     });
+
+    testWidgets('does not show old group A funds when opening group B, shows shimmer immediately', (tester) async {
+      final repo = MockFundsRepository(delay: const Duration(milliseconds: 300));
+      final cubit = FundsCubit(repo);
+      cubit.emit(
+        const FundsState(
+          status: FundsStatus.success,
+          currentGroupId: 1,
+          overview: GroupFundsOverviewEntity(
+            groupId: 1,
+            totalCollectedAmount: 99999,
+            totalCollectedAmountVnd: 99999000,
+            totalTargetAmount: 99999,
+            totalTargetAmountVnd: 99999000,
+            completionPercentage: 100.0,
+            funds: [
+              FundCollectionItemEntity(
+                id: 999,
+                name: 'Quỹ Nhóm A Cũ',
+                totalCollectedAmountVnd: 99999000,
+                totalTargetAmountVnd: 99999000,
+                status: FundCollectionStatus.completed,
+                statusText: 'Hoàn thành',
+              ),
+            ],
+          ),
+        ),
+      );
+
+      const groupB = GroupModel(
+        id: 2,
+        name: 'Nhóm B Mới',
+        category: 'friends',
+        ownerId: 2,
+        role: 'ADMIN',
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('vi'),
+          theme: AppTheme.lightTheme,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: BlocProvider<FundsCubit>.value(
+              value: cubit,
+              child: const SingleChildScrollView(
+                child: GroupFundsTabView(group: groupB),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // Group A data MUST NOT be visible!
+      expect(find.text('Quỹ Nhóm A Cũ'), findsNothing);
+      expect(find.textContaining('99.999.000'), findsNothing);
+      expect(find.byType(AppShimmer), findsWidgets);
+
+      await tester.pumpAndSettle();
+
+      expect(find.text('Quỹ Nhóm A Cũ'), findsNothing);
+      expect(find.byType(AppShimmer), findsNothing);
+    });
   });
 }

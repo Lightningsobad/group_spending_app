@@ -209,6 +209,26 @@ void main() {
       expect(cubit.state.selectedGroupId, isNull);
     });
 
+    test('selectGroup clears previous group debt details when switching to a different group', () async {
+      cubit.selectGroup(10, groupName: 'Group 10');
+      await Future.delayed(const Duration(milliseconds: 50));
+      expect(cubit.state.simplifiedDebts, isNotNull);
+      expect(cubit.state.actualDebts, isNotNull);
+
+      // Switch to group 20
+      cubit.selectGroup(20, groupName: 'Group 20');
+      // Previous details must be immediately cleared to prevent stale cache flickering
+      expect(cubit.state.selectedGroupId, 20);
+      expect(cubit.state.simplifiedDebts, isNull);
+      expect(cubit.state.actualDebts, isNull);
+      expect(cubit.state.isDetailLoading, isTrue);
+
+      await Future.delayed(const Duration(milliseconds: 50));
+      expect(cubit.state.simplifiedDebts, isNotNull);
+      expect(cubit.state.actualDebts, isNotNull);
+      expect(cubit.state.isDetailLoading, isFalse);
+    });
+
     test('setDetailTab switches between simplified and actual debts', () {
       cubit.setDetailTab(1);
       expect(cubit.state.activeDetailTab, 1);

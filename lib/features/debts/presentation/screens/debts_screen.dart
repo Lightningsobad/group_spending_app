@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/constants/app_colors.dart';
+import '../../../../core/theme/app_theme_colors.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../cubit/debts_cubit.dart';
 import '../cubit/debts_state.dart';
 import '../widgets/debts_empty_view.dart';
@@ -44,21 +45,11 @@ class _DebtsScreenState extends State<DebtsScreen> {
           previous.successMessage != current.successMessage,
       listener: (context, state) {
         if (state.errorMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage!),
-              backgroundColor: AppColors.error,
-            ),
-          );
+          AppSnackBar.showError(context, state.errorMessage!);
           context.read<DebtsCubit>().clearMessages();
         }
         if (state.successMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.successMessage!),
-              backgroundColor: AppColors.emerald,
-            ),
-          );
+          AppSnackBar.showSuccess(context, state.successMessage!);
           context.read<DebtsCubit>().clearMessages();
         }
       },
@@ -76,9 +67,11 @@ class _DebtsScreenState extends State<DebtsScreen> {
         final filteredGroups = state.filteredGroupBalances;
         final overview = state.overview;
 
-        return RefreshIndicator(
-          color: colors.brandEmerald,
-          onRefresh: () => cubit.loadOverview(),
+        return MediaQuery.withClampedTextScaling(
+          maxScaleFactor: 1.35,
+          child: RefreshIndicator(
+            color: colors.brandEmerald,
+            onRefresh: () => cubit.loadOverview(),
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 90),
@@ -139,8 +132,9 @@ class _DebtsScreenState extends State<DebtsScreen> {
               ],
             ),
           ),
-        );
-      },
+        ),
+      );
+    },
     );
   }
 }

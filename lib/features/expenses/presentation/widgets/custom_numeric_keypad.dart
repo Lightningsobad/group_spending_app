@@ -25,8 +25,8 @@ class CustomNumericKeypad extends StatelessWidget {
     bool isWide = false,
   }) {
     final colors = context.colors;
-    final defaultBg = colors.surfaceMuted;
-    final defaultText = colors.textPrimary;
+    final defaultBg = colors.keypadDigitBg;
+    final defaultText = colors.keypadDigitText;
 
     return Expanded(
       flex: isWide ? 4 : 1,
@@ -57,6 +57,8 @@ class CustomNumericKeypad extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -70,8 +72,8 @@ class CustomNumericKeypad extends StatelessWidget {
               context: context,
               label: 'CLR',
               onTap: onClearPressed,
-              bgColor: const Color(0xFFFEE2E2),
-              textColor: const Color(0xFFDC2626),
+              bgColor: colors.keypadClearBg,
+              textColor: colors.keypadClearText,
             ),
           ],
         ),
@@ -85,8 +87,8 @@ class CustomNumericKeypad extends StatelessWidget {
               context: context,
               label: '000',
               onTap: onTripleZeroPressed,
-              bgColor: const Color(0xFFE2E8F0),
-              textColor: const Color(0xFF1E293B),
+              bgColor: colors.keypadActionBg,
+              textColor: colors.keypadActionText,
             ),
           ],
         ),
@@ -100,8 +102,8 @@ class CustomNumericKeypad extends StatelessWidget {
               context: context,
               label: 'DEL',
               onTap: onDeletePressed,
-              bgColor: const Color(0xFFFEF3C7),
-              textColor: const Color(0xFFB45309),
+              bgColor: colors.keypadDeleteBg,
+              textColor: colors.keypadDeleteText,
             ),
           ],
         ),

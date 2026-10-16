@@ -8,6 +8,7 @@ import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
 import '../../../groups/data/models/group_model.dart';
+import '../../../groups/presentation/cubit/groups_cubit.dart';
 import '../../data/models/expense_enums.dart';
 import '../../data/models/expense_models.dart';
 import '../../domain/repositories/expenses_repository.dart';
@@ -76,12 +77,25 @@ class _ExpenseDetailScreenState extends State<ExpenseDetailScreen> {
   }
 
   void _handleEdit(BuildContext context, ExpenseDetailModel expense) {
+    GroupsCubit? groupsCubit;
+    try {
+      groupsCubit = context.read<GroupsCubit>();
+    } catch (_) {}
+
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (_) => AddExpenseScreen(
-          group: widget.group,
-          expenseToEdit: expense,
-        ),
+        builder: (_) => groupsCubit != null
+            ? BlocProvider<GroupsCubit>.value(
+                value: groupsCubit,
+                child: AddExpenseScreen(
+                  group: widget.group,
+                  expenseToEdit: expense,
+                ),
+              )
+            : AddExpenseScreen(
+                group: widget.group,
+                expenseToEdit: expense,
+              ),
       ),
     ).then((updated) {
       if (updated == true && context.mounted) {
