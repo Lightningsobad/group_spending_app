@@ -1070,13 +1070,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tabQrCode => 'QR Code';
 
   @override
-  String get tabQrCodeSubtitle => 'Scan directly when together';
-
-  @override
   String get tabCopyCode => 'Copy invite code';
 
   @override
-  String get tabCopyCodeSubtitle => 'Send text code via SMS, Zalo';
+  String get copyCodeInstruction =>
+      'Members enter this code to request to join the group';
+
+  @override
+  String get shareCodeAction => 'Share invite code';
 
   @override
   String get scanToJoinInstruction =>

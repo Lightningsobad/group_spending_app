@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:group_spending_app/core/theme/app_theme.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
 import 'package:group_spending_app/features/groups/presentation/widgets/group_invite_qr_sheet.dart';
 import 'package:group_spending_app/features/groups/presentation/widgets/qr_code_widget.dart';
 import 'package:group_spending_app/l10n/app_localizations.dart';
+import 'package:group_spending_app/shared/widgets/app_shimmer.dart';
 
 void main() {
   group('GroupInviteQrSheet Widget Tests', () {
@@ -18,59 +20,94 @@ void main() {
       ownerId: 1,
     );
 
-    Widget createWidgetUnderTest() {
+    Widget createWidgetUnderTest({
+      GroupModel group = testGroup,
+      bool isLoading = false,
+      ThemeData? theme,
+      TextScaler? textScaler,
+    }) {
       return MaterialApp(
-        theme: AppTheme.lightTheme,
+        theme: theme ?? AppTheme.lightTheme,
         locale: const Locale('vi'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        home: const Scaffold(
-          body: GroupInviteQrSheet(group: testGroup),
+        home: Scaffold(
+          body: Builder(
+            builder: (context) {
+              final mediaQuery = MediaQuery.of(context);
+              return MediaQuery(
+                data: mediaQuery.copyWith(
+                  textScaler: textScaler ?? TextScaler.noScaling,
+                ),
+                child: GroupInviteQrSheet(
+                  group: group,
+                  isLoading: isLoading,
+                ),
+              );
+            },
+          ),
         ),
       );
     }
 
-    testWidgets('renders header, tabs, QR code and invite code correctly', (tester) async {
+    testWidgets('renders header with SVG icon, tabs, QR code on Tab 0 (no code banner on Tab 0)', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
 
-      // Header title
+      // Header title and group information
       expect(find.text('Mời thành viên vào nhóm'), findsOneWidget);
       expect(find.textContaining('Chung cư Sunrise Room'), findsWidgets);
+      expect(find.textContaining('5 thành viên'), findsOneWidget);
 
-      // Mode tabs
+      // SVG icon for Apartment category
+      expect(find.byType(SvgPicture), findsOneWidget);
+
+      // Mode tabs: titles present, subtitles removed
       expect(find.text('Mã QR Code'), findsOneWidget);
-      expect(find.text('Sao chép mã mời'), findsWidgets);
+      expect(find.text('Sao chép mã mời'), findsOneWidget);
+      expect(find.text('Quét trực tiếp khi ở cạnh nhau'), findsNothing);
+      expect(find.text('Gửi mã văn bản qua tin nhắn, Zalo'), findsNothing);
 
-      // QR Code widget
+      // Tab 0 displays QR Code widget & instructions
       expect(find.byType(QrCodeWidget), findsOneWidget);
+      expect(find.text('Thành viên quét mã này bằng điện thoại để gửi yêu cầu gia nhập'), findsOneWidget);
+      expect(find.byKey(const ValueKey('btn_download_qr')), findsOneWidget);
+      expect(find.byKey(const ValueKey('btn_share_qr')), findsOneWidget);
 
-      // Invite code SUN402-VIP
-      expect(find.text('SUN402-VIP'), findsOneWidget);
+      // Invite code SUN402-VIP is moved off Tab 0
+      expect(find.text('SUN402-VIP'), findsNothing);
 
-      // Action buttons
-      expect(find.text('Tải ảnh mã QR'), findsOneWidget);
-      expect(find.text('Chia sẻ qua ứng dụng khác'), findsOneWidget);
-      expect(find.text('Đóng'), findsOneWidget);
+      // Close button
+      expect(find.byKey(const ValueKey('btn_close_sheet')), findsOneWidget);
     });
 
-    testWidgets('switching between tabs updates state', (tester) async {
+    testWidgets('switching to Tab 1 reveals invite code card, copy and share buttons', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
 
-      // Tap on Tab "Sao chép mã mời"
-      final copyTab = find.text('Sao chép mã mời').first;
-      await tester.tap(copyTab);
+      // Tap on Tab "Sao chép mã mời" via key
+      await tester.tap(find.byKey(const ValueKey('tab_copy_code')));
       await tester.pumpAndSettle();
 
-      // Tap on Tab "Mã QR Code"
-      await tester.tap(find.text('Mã QR Code'));
+      // Tab 0 QR code is no longer rendered
+      expect(find.byType(QrCodeWidget), findsNothing);
+
+      // Tab 1 displays invite code & actions
+      expect(find.text('MÃ MỜI THAM GIA NHÓM'), findsOneWidget);
+      expect(find.text('SUN402-VIP'), findsOneWidget);
+      expect(find.text('Thành viên nhập mã này để gửi yêu cầu gia nhập nhóm'), findsOneWidget);
+      expect(find.byKey(const ValueKey('btn_copy_code')), findsOneWidget);
+      expect(find.byKey(const ValueKey('btn_share_code')), findsOneWidget);
+
+      // Switch back to Tab 0
+      await tester.tap(find.byKey(const ValueKey('tab_qr_code')));
       await tester.pumpAndSettle();
 
       expect(find.byType(QrCodeWidget), findsOneWidget);
+      expect(find.text('SUN402-VIP'), findsNothing);
     });
 
-    testWidgets('tapping copy invite code copies to clipboard', (tester) async {
+    testWidgets('tapping copy invite code in Tab 1 copies to clipboard', (tester) async {
       tester.view.physicalSize = const Size(800, 1200);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(tester.view.resetPhysicalSize);
@@ -86,15 +123,80 @@ void main() {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
 
-      // Tap copy button at bottom banner
-      final copyButton = find.text('Sao chép mã mời').last;
-      await tester.ensureVisible(copyButton);
+      // Switch to Tab 1
+      await tester.tap(find.byKey(const ValueKey('tab_copy_code')));
       await tester.pumpAndSettle();
+
+      // Tap the copy button on Tab 1
+      final copyButton = find.byKey(const ValueKey('btn_copy_code'));
+      expect(copyButton, findsOneWidget);
       await tester.tap(copyButton);
       await tester.pumpAndSettle();
 
       final setClipboardCall = log.firstWhere((call) => call.method == 'Clipboard.setData');
       expect(setClipboardCall.arguments['text'], 'SUN402-VIP');
+    });
+
+    testWidgets('renders shimmer skeleton when isLoading is true', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest(isLoading: true));
+      await tester.pump();
+
+      expect(find.byType(AppShimmer), findsOneWidget);
+      expect(find.byType(AppShimmerBox), findsWidgets);
+      expect(find.byType(QrCodeWidget), findsNothing);
+    });
+
+    testWidgets('interactive buttons have touch targets of at least 48px height', (tester) async {
+      tester.view.physicalSize = const Size(400, 900);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Tab 0 buttons
+      final downloadBtnSize = tester.getSize(find.byKey(const ValueKey('btn_download_qr')));
+      expect(downloadBtnSize.height, greaterThanOrEqualTo(48.0));
+
+      final shareBtnSize = tester.getSize(find.byKey(const ValueKey('btn_share_qr')));
+      expect(shareBtnSize.height, greaterThanOrEqualTo(48.0));
+
+      final closeBtnSize = tester.getSize(find.byKey(const ValueKey('btn_close_sheet')));
+      expect(closeBtnSize.height, greaterThanOrEqualTo(48.0));
+
+      // Switch to Tab 1
+      await tester.tap(find.byKey(const ValueKey('tab_copy_code')));
+      await tester.pumpAndSettle();
+
+      final copyBtnSize = tester.getSize(find.byKey(const ValueKey('btn_copy_code')));
+      expect(copyBtnSize.height, greaterThanOrEqualTo(48.0));
+
+      final shareTextBtnSize = tester.getSize(find.byKey(const ValueKey('btn_share_code')));
+      expect(shareTextBtnSize.height, greaterThanOrEqualTo(48.0));
+    });
+
+    testWidgets('renders properly under dark theme', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest(theme: AppTheme.darkTheme));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(QrCodeWidget), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('adapts cleanly on compact 320px screen with 1.35x textScaler without overflow', (tester) async {
+      tester.view.physicalSize = const Size(320, 600);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+
+      await tester.pumpWidget(createWidgetUnderTest(
+        textScaler: const TextScaler.linear(1.35),
+      ));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(QrCodeWidget), findsOneWidget);
+      expect(tester.takeException(), isNull);
     });
   });
 }

@@ -217,6 +217,19 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color debtIconContainerBorder;
   final Color debtIconContainerFg;
 
+  // QR & Group Invite Semantic Tokens
+  final Color qrTabActiveBg;
+  final Color qrTabActiveBorder;
+  final Color qrTabIconActiveBg;
+  final Color qrCodeForeground;
+  final Color qrShareButtonBg;
+  final Color qrShareButtonFg;
+  final Color inviteBannerBg;
+  final Color inviteBannerBorder;
+  final Color inviteBannerTitle;
+  final Color inviteBannerButtonBg;
+  final Color inviteBannerButtonFg;
+
   const AppThemeColors({
     required this.background,
     required this.cardBackground,
@@ -386,6 +399,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.debtIconContainerBg,
     required this.debtIconContainerBorder,
     required this.debtIconContainerFg,
+    required this.qrTabActiveBg,
+    required this.qrTabActiveBorder,
+    required this.qrTabIconActiveBg,
+    required this.qrCodeForeground,
+    required this.qrShareButtonBg,
+    required this.qrShareButtonFg,
+    required this.inviteBannerBg,
+    required this.inviteBannerBorder,
+    required this.inviteBannerTitle,
+    required this.inviteBannerButtonBg,
+    required this.inviteBannerButtonFg,
   });
 
   /// Bảng màu cho Light Theme
@@ -566,6 +590,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     debtIconContainerBg: Color(0xFFDCFCE7),
     debtIconContainerBorder: Color(0xFFA7F3D0),
     debtIconContainerFg: Color(0xFF15803D),
+    qrTabActiveBg: Color(0xFFF0FDF4),
+    qrTabActiveBorder: Color(0xFF15803D),
+    qrTabIconActiveBg: Color(0xFF15803D),
+    qrCodeForeground: Color(0xFF047857),
+    qrShareButtonBg: Color(0xFF14532D),
+    qrShareButtonFg: Colors.white,
+    inviteBannerBg: Color(0xFFECFDF5),
+    inviteBannerBorder: Color(0xFFA7F3D0),
+    inviteBannerTitle: Color(0xFF047857),
+    inviteBannerButtonBg: Color(0xFF14532D),
+    inviteBannerButtonFg: Colors.white,
   );
 
   /// Bảng màu cho Dark Theme
@@ -746,6 +781,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     debtIconContainerBg: Color(0x66064E3B),
     debtIconContainerBorder: Color(0xFF065F46),
     debtIconContainerFg: Color(0xFF6EE7B7),
+    qrTabActiveBg: Color(0x59064E3B),
+    qrTabActiveBorder: Color(0xFF10B981),
+    qrTabIconActiveBg: Color(0xFF059669),
+    qrCodeForeground: Color(0xFF047857),
+    qrShareButtonBg: Color(0xFF059669),
+    qrShareButtonFg: Colors.white,
+    inviteBannerBg: Color(0xFF132E27),
+    inviteBannerBorder: Color(0xFF065F46),
+    inviteBannerTitle: Color(0xFF34D399),
+    inviteBannerButtonBg: Color(0xFF059669),
+    inviteBannerButtonFg: Colors.white,
   );
 
   /// Lấy bảng màu tương ứng với Theme hiện tại
@@ -924,6 +970,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? debtIconContainerBg,
     Color? debtIconContainerBorder,
     Color? debtIconContainerFg,
+    Color? qrTabActiveBg,
+    Color? qrTabActiveBorder,
+    Color? qrTabIconActiveBg,
+    Color? qrCodeForeground,
+    Color? qrShareButtonBg,
+    Color? qrShareButtonFg,
+    Color? inviteBannerBg,
+    Color? inviteBannerBorder,
+    Color? inviteBannerTitle,
+    Color? inviteBannerButtonBg,
+    Color? inviteBannerButtonFg,
   }) {
     return AppThemeColors(
       background: background ?? this.background,
@@ -1110,6 +1167,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       debtIconContainerBorder:
           debtIconContainerBorder ?? this.debtIconContainerBorder,
       debtIconContainerFg: debtIconContainerFg ?? this.debtIconContainerFg,
+      qrTabActiveBg: qrTabActiveBg ?? this.qrTabActiveBg,
+      qrTabActiveBorder: qrTabActiveBorder ?? this.qrTabActiveBorder,
+      qrTabIconActiveBg: qrTabIconActiveBg ?? this.qrTabIconActiveBg,
+      qrCodeForeground: qrCodeForeground ?? this.qrCodeForeground,
+      qrShareButtonBg: qrShareButtonBg ?? this.qrShareButtonBg,
+      qrShareButtonFg: qrShareButtonFg ?? this.qrShareButtonFg,
+      inviteBannerBg: inviteBannerBg ?? this.inviteBannerBg,
+      inviteBannerBorder: inviteBannerBorder ?? this.inviteBannerBorder,
+      inviteBannerTitle: inviteBannerTitle ?? this.inviteBannerTitle,
+      inviteBannerButtonBg: inviteBannerButtonBg ?? this.inviteBannerButtonBg,
+      inviteBannerButtonFg: inviteBannerButtonFg ?? this.inviteBannerButtonFg,
     );
   }
 
@@ -1371,6 +1439,27 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           debtIconContainerBorder, other.debtIconContainerBorder, t)!,
       debtIconContainerFg:
           Color.lerp(debtIconContainerFg, other.debtIconContainerFg, t)!,
+      qrTabActiveBg: Color.lerp(qrTabActiveBg, other.qrTabActiveBg, t)!,
+      qrTabActiveBorder:
+          Color.lerp(qrTabActiveBorder, other.qrTabActiveBorder, t)!,
+      qrTabIconActiveBg:
+          Color.lerp(qrTabIconActiveBg, other.qrTabIconActiveBg, t)!,
+      qrCodeForeground:
+          Color.lerp(qrCodeForeground, other.qrCodeForeground, t)!,
+      qrShareButtonBg:
+          Color.lerp(qrShareButtonBg, other.qrShareButtonBg, t)!,
+      qrShareButtonFg:
+          Color.lerp(qrShareButtonFg, other.qrShareButtonFg, t)!,
+      inviteBannerBg:
+          Color.lerp(inviteBannerBg, other.inviteBannerBg, t)!,
+      inviteBannerBorder:
+          Color.lerp(inviteBannerBorder, other.inviteBannerBorder, t)!,
+      inviteBannerTitle:
+          Color.lerp(inviteBannerTitle, other.inviteBannerTitle, t)!,
+      inviteBannerButtonBg:
+          Color.lerp(inviteBannerButtonBg, other.inviteBannerButtonBg, t)!,
+      inviteBannerButtonFg:
+          Color.lerp(inviteBannerButtonFg, other.inviteBannerButtonFg, t)!,
     );
   }
 }

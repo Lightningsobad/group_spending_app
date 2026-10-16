@@ -1065,13 +1065,14 @@ class AppLocalizationsVi extends AppLocalizations {
   String get tabQrCode => 'Mã QR Code';
 
   @override
-  String get tabQrCodeSubtitle => 'Quét trực tiếp khi ở cạnh nhau';
-
-  @override
   String get tabCopyCode => 'Sao chép mã mời';
 
   @override
-  String get tabCopyCodeSubtitle => 'Gửi mã văn bản qua tin nhắn, Zalo';
+  String get copyCodeInstruction =>
+      'Thành viên nhập mã này để gửi yêu cầu gia nhập nhóm';
+
+  @override
+  String get shareCodeAction => 'Chia sẻ mã mời';
 
   @override
   String get scanToJoinInstruction =>
