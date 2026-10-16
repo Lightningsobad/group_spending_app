@@ -555,15 +555,31 @@ class _GroupInviteQrSheetState extends State<GroupInviteQrSheet> {
           RepaintBoundary(
             key: _qrKey,
             child: Container(
-              color: Colors.white,
-              padding: const EdgeInsets.all(14),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+              decoration: BoxDecoration(
+                color: colors.qrCardBg,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: colors.qrCardBorder),
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  QrCodeWidget(
-                    data: code,
-                    size: 210,
-                    color: colors.qrCodeForeground,
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: colors.qrQuietZoneBg,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: colors.qrQuietZoneBorder,
+                        width: 1.5,
+                      ),
+                    ),
+                    child: QrCodeWidget(
+                      data: code,
+                      size: 200,
+                      color: colors.qrCodeForeground,
+                      backgroundColor: colors.qrQuietZoneBg,
+                    ),
                   ),
                   const SizedBox(height: 14),
                   Text(
@@ -573,6 +589,8 @@ class _GroupInviteQrSheetState extends State<GroupInviteQrSheet> {
                       color: colors.textPrimary,
                     ),
                     textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
                   Text(

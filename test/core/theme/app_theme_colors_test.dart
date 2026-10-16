@@ -13,6 +13,10 @@ void main() {
       expect(AppThemeColors.light.shimmerBase, isNotNull);
       expect(AppThemeColors.light.fundPiggyBg, isNotNull);
       expect(AppThemeColors.light.fundStatusCollectingBg, isNotNull);
+      expect(AppThemeColors.light.qrCardBg, equals(Colors.white));
+      expect(AppThemeColors.light.qrCardBorder, isNotNull);
+      expect(AppThemeColors.light.qrQuietZoneBg, equals(Colors.white));
+      expect(AppThemeColors.light.qrQuietZoneBorder, isNotNull);
       expect(AppThemeColors.light.qrTabActiveBg, isNotNull);
       expect(AppThemeColors.light.qrCodeForeground, isNotNull);
       expect(AppThemeColors.light.inviteBannerBg, isNotNull);
@@ -29,6 +33,10 @@ void main() {
       expect(AppThemeColors.dark.shimmerBase, isNotNull);
       expect(AppThemeColors.dark.fundPiggyBg, isNotNull);
       expect(AppThemeColors.dark.fundStatusCollectingBg, isNotNull);
+      expect(AppThemeColors.dark.qrCardBg, isNot(equals(Colors.white)));
+      expect(AppThemeColors.dark.qrCardBorder, isNotNull);
+      expect(AppThemeColors.dark.qrQuietZoneBg, equals(Colors.white));
+      expect(AppThemeColors.dark.qrQuietZoneBorder, isNotNull);
       expect(AppThemeColors.dark.qrTabActiveBg, isNotNull);
       expect(AppThemeColors.dark.qrCodeForeground, isNotNull);
       expect(AppThemeColors.dark.inviteBannerBg, isNotNull);

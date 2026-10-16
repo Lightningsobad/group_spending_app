@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:group_spending_app/core/theme/app_theme.dart';
+import 'package:group_spending_app/core/theme/app_theme_colors.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
 import 'package:group_spending_app/features/groups/presentation/widgets/group_invite_qr_sheet.dart';
 import 'package:group_spending_app/features/groups/presentation/widgets/qr_code_widget.dart';
@@ -176,11 +177,24 @@ void main() {
       expect(shareTextBtnSize.height, greaterThanOrEqualTo(48.0));
     });
 
-    testWidgets('renders properly under dark theme', (tester) async {
+    testWidgets('renders properly under dark theme with high contrast QR card and quiet zone', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest(theme: AppTheme.darkTheme));
       await tester.pumpAndSettle();
 
-      expect(find.byType(QrCodeWidget), findsOneWidget);
+      final qrCodeWidget = tester.widget<QrCodeWidget>(find.byType(QrCodeWidget));
+      expect(qrCodeWidget.backgroundColor, equals(Colors.white));
+      expect(qrCodeWidget.color, equals(AppThemeColors.dark.qrCodeForeground));
+
+      // Group name is rendered with dark theme textPrimary (white-ish on dark qrCardBg)
+      final nameText = tester.widget<Text>(find.text('Chung cư Sunrise Room'));
+      expect(nameText.style?.color, equals(AppThemeColors.dark.textPrimary));
+
+      // Instruction is rendered with dark theme textSecondary
+      final instructionFinder = find.text('Thành viên quét mã này bằng điện thoại để gửi yêu cầu gia nhập');
+      expect(instructionFinder, findsOneWidget);
+      final instructionText = tester.widget<Text>(instructionFinder);
+      expect(instructionText.style?.color, equals(AppThemeColors.dark.textSecondary));
+
       expect(tester.takeException(), isNull);
     });
 
