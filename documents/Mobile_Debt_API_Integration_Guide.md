@@ -26,7 +26,13 @@
    - [3.5. Chủ nợ xác nhận hoặc từ chối đã nhận tiền (Confirm Debt Settled)](#35-chủ-nợ-xác-nhận-hoặc-từ-chối-đã-nhận-tiền-confirm-debt-settled)
    - [3.6. Gửi thông báo nhắc nợ thủ công (Send Debt Reminder)](#36-gửi-thông-báo-nhắc-nợ-thủ-công-send-debt-reminder)
    - [3.7. Các API bổ trợ liên quan đến công nợ (Auxiliary APIs)](#37-các-api-bổ-trợ-liên-quan-đến-công-nợ-auxiliary-apis)
-5. [Bảng mã lỗi (Error Codes) & Hướng dẫn xử lý UI](#5-bảng-mã-lỗi-error-codes--hướng-dẫn-xử-lý-ui)
+   - [3.8. Gửi thông báo nhắc nợ tối giản (Send Simplified Debt Reminder)](#38-gửi-thông-báo-nhắc-nợ-tối-giản-send-simplified-debt-reminder)
+   - [3.9. Xem trước cấn trừ nợ tối giản (Simplified Debt Payment Preview)](#39-xem-trước-cấn-trừ-nợ-tối-giản-simplified-debt-payment-preview)
+   - [3.10. Thanh toán nợ tối giản (Pay Simplified Debt)](#310-thanh-toán-nợ-tối-giản-pay-simplified-debt)
+   - [3.11. Xác nhận hoặc từ chối tất toán công nợ (Confirm Debt Settlement)](#311-xác-nhận-hoặc-từ-chối-tất-toán-công-nợ-confirm-debt-settlement)
+   - [3.12. Lấy chi tiết đợt tất toán (Get Debt Settlement Detail)](#312-lấy-chi-tiết-đợt-tất-toán-get-debt-settlement-detail)
+   - [3.13. Lấy lịch sử các đợt tất toán trong nhóm (Get Group Debt Settlements)](#313-lấy-lịch-sử-các-đợt-tất-toán-trong-nhóm-get-group-debt-settlements)
+4. [Bảng mã lỗi (Error Codes) & Hướng dẫn xử lý UI](#4-bảng-mã-lỗi-error-codes--hướng-dẫn-xử-lý-ui)
 
 ---
 
@@ -89,13 +95,6 @@ Backend tự động tính toán trường `action` trong từng khoản nợ d�
 | `CONFIRM` | Người gọi là **Chủ nợ** và khoản nợ đang `WAITING_FOR_CONFIRMATION`. | Nút nổi bật: **"Xác nhận nhận tiền"** (kèm tùy chọn từ chối) |
 | `REMIND` | Người gọi là **Chủ nợ** hoặc **Admin nhóm** khi nợ đang `PENDING`. | Nút phụ/icon chuông: **"Nhắc nợ"** |
 | `NONE` | Người gọi là bên thứ 3 hoặc khoản nợ đã `SETTLED` / không có quyền can thiệp. | Không hiển thị nút tương tác (chỉ xem thông tin) |
-
-#### Phân loại nợ cá nhân (`PeerDebtSummary.type`)
-
-| Chuỗi giá trị | Ý nghĩa | Màu sắc gợi ý trên UI |
-| :--- | :--- | :--- |
-| `YOU_OWE` | Người dùng hiện tại đang nợ đối tác (Cần trả). | Đỏ / Cam (`#E53935` / `-`) |
-| `OWED_TO_YOU` | Đối tác đang nợ người dùng hiện tại (Cần thu). | Xanh lá (`#43A047` / `+`) |
 
 ---
 
@@ -171,7 +170,7 @@ Backend tự động gắn trường `action` trong mỗi đối tượng nợ t
 
 ### 3.1. Lấy tổng quan số dư công nợ của người dùng (Get User Balance Overview)
 
-API này phục vụ màn hình **"Tổng quan Công nợ"** (Dashboard hoặc Tab Tài chính cá nhân). Trả về tổng tiền người dùng đang nợ người khác, tổng tiền người khác nợ mình, số dư ròng, chi tiết công nợ gom theo từng nhóm và danh sách từng đối tác (peer).
+API này phục vụ màn hình **"Tổng quan Công nợ"** (Dashboard hoặc Tab Tài chính cá nhân). Trả về tổng tiền người dùng đang nợ người khác và tổng tiền người khác nợ mình từ tất cả các nhóm.
 
 - **Method:** `GET`
 - **Path:** `/debts/overview`
@@ -187,73 +186,20 @@ API này phục vụ màn hình **"Tổng quan Công nợ"** (Dashboard hoặc T
   "success": true,
   "message": "Thành công",
   "data": {
-    "totalOwed": 250,
-    "totalOwedVnd": 250000,
-    "totalReceivable": 600,
-    "totalReceivableVnd": 600000,
-    "netBalance": 350,
-    "netBalanceVnd": 350000,
-    "groupBalances": [
-      {
-        "groupId": 10,
-        "groupName": "Nhóm bạn cấp 3",
-        "youOwe": 100,
-        "youOweVnd": 100000,
-        "youAreOwed": 450,
-        "youAreOwedVnd": 450000,
-        "netBalance": 350,
-        "netBalanceVnd": 350000
-      },
-      {
-        "groupId": 12,
-        "groupName": "Căn hộ chung cư 402",
-        "youOwe": 150,
-        "youOweVnd": 150000,
-        "youAreOwed": 150,
-        "youAreOwedVnd": 150000,
-        "netBalance": 0,
-        "netBalanceVnd": 0
-      }
-    ],
-    "details": [
-      {
-        "debtId": 101,
-        "groupId": 10,
-        "groupName": "Nhóm bạn cấp 3",
-        "peerId": 5,
-        "peerName": "Trần Thị B",
-        "peerAvatar": "https://cdn.example.com/avatar/user5.jpg",
-        "amount": 450,
-        "amountVnd": 450000,
-        "type": "OWED_TO_YOU",
-        "status": "PENDING",
-        "createdAt": "2026-09-27T10:15:00Z"
-      },
-      {
-        "debtId": 105,
-        "groupId": 12,
-        "groupName": "Căn hộ chung cư 402",
-        "peerId": 8,
-        "peerName": "Lê Văn C",
-        "peerAvatar": "https://cdn.example.com/avatar/user8.jpg",
-        "amount": 150,
-        "amountVnd": 150000,
-        "type": "YOU_OWE",
-        "status": "WAITING_FOR_CONFIRMATION",
-        "createdAt": "2026-09-26T15:30:00Z"
-      }
-    ]
+    "totalOwed": 80,
+    "totalOwedVnd": 80000,
+    "totalReceivable": 120,
+    "totalReceivableVnd": 120000
   },
   "timestamp": "2026-09-28T08:05:00Z"
 }
 ```
 
 - **Mô tả các trường dữ liệu quan trọng:**
-  - `totalOwedVnd`: Tổng số tiền người dùng cần thanh toán cho mọi người từ tất cả các nhóm.
-  - `totalReceivableVnd`: Tổng số tiền người dùng sắp nhận lại từ tất cả mọi người.
-  - `netBalanceVnd`: Số dư ròng tổng thể (`totalReceivableVnd - totalOwedVnd`).
-  - `groupBalances`: Danh sách phân rã số dư theo từng nhóm người dùng tham gia.
-  - `details`: Danh sách các khoản nợ chưa tất toán (`PENDING` và `WAITING_FOR_CONFIRMATION`) kèm đối tác liên quan (`peerId`, `peerName`, `peerAvatar`).
+  - `totalOwed`: Tổng số tiền người dùng đang nợ từ tất cả các nhóm (đơn vị: k VNĐ).
+  - `totalOwedVnd`: Tổng số tiền người dùng đang nợ quy đổi VNĐ đầy đủ (`totalOwed * 1000`).
+  - `totalReceivable`: Tổng số tiền người dùng được nhận từ tất cả các nhóm (đơn vị: k VNĐ).
+  - `totalReceivableVnd`: Tổng số tiền người dùng được nhận quy đổi VNĐ đầy đủ (`totalReceivable * 1000`).
 
 ---
 
@@ -656,6 +602,296 @@ Trả về các trường hữu ích cho UI Dashboard nhóm:
 
 ---
 
+### 3.8. Gửi thông báo nhắc nợ tối giản (Send Simplified Debt Reminder)
+
+Chủ nợ hoặc Admin của nhóm có thể gửi thông báo nhắc nợ dựa trên kết quả cấn trừ nợ tối giản giữa hai thành viên trong nhóm.
+
+- **Method:** `POST`
+- **Path:** `/groups/{groupId}/debts/simplified/remind`
+- **Full URL:** `/api/v1/groups/{groupId}/debts/simplified/remind`
+- **Path Variables:**
+  - `groupId` (Long): ID của nhóm
+- **Header:**
+  ```http
+  Authorization: Bearer <accessToken>
+  Content-Type: application/json
+  ```
+- **Request Body:**
+```json
+{
+  "debtorId": 1,
+  "creditorId": 2,
+  "customMessage": "Nhớ gửi tiền cà phê nha bạn ơi!"
+}
+```
+*(Ghi chú: `customMessage` là tùy chọn. Nếu không truyền, hệ thống sẽ sử dụng tin nhắn nhắc nợ mặc định).*
+
+- **Quyền hạn:** Người gọi API phải là Chủ nợ (`creditorId`) hoặc Admin của nhóm.
+- **Mã phản hồi thành công (HTTP 200 OK):**
+```json
+{
+  "success": true,
+  "message": "Đã gửi thông báo nhắc nợ thành công",
+  "data": null,
+  "timestamp": "2026-10-16T15:00:00Z"
+}
+```
+- **Mã lỗi thường gặp:**
+  - `400 Bad Request`: `INVALID_DEBT_REMINDER` - Không tìm thấy giao dịch nợ tối giản hợp lệ giữa con nợ và chủ nợ trong nhóm.
+  - `403 Forbidden`: `UNAUTHORIZED` - Chỉ chủ nợ hoặc Admin mới có quyền gửi thông báo nhắc nợ.
+
+---
+
+### 3.9. Xem trước cấn trừ nợ tối giản (Simplified Debt Payment Preview)
+
+Trước khi con nợ bấm thanh toán, Mobile gọi API này để hệ thống tính toán thuật toán giải nợ đa bước (multi-hop) và hiển thị cho người dùng biết số tiền nợ tối giản sẽ cấn trừ vào các khoản chi (ExpenseSplit) cụ thể nào.
+
+- **Method:** `POST`
+- **Path:** `/groups/{groupId}/debts/simplified/payment-preview`
+- **Full URL:** `/api/v1/groups/{groupId}/debts/simplified/payment-preview`
+- **Path Variables:**
+  - `groupId` (Long): ID của nhóm
+- **Header:**
+  ```http
+  Authorization: Bearer <accessToken>
+  Content-Type: application/json
+  ```
+- **Request Body:**
+```json
+{
+  "creditorId": 2,
+  "amount": 150
+}
+```
+*(Ghi chú: `amount` theo đơn vị k VNĐ. Nếu bỏ trống hoặc null, hệ thống sẽ tự động lấy toàn bộ số tiền nợ tối giản còn lại giữa hai người).*
+
+- **Quyền hạn:** Người gọi API phải là Con nợ trong giao dịch tối giản.
+- **Mã phản hồi thành công (HTTP 200 OK):**
+```json
+{
+  "success": true,
+  "message": "Xem trước cấn trừ nợ thành công",
+  "data": {
+    "groupId": 10,
+    "debtorId": 1,
+    "creditorId": 2,
+    "amount": 150,
+    "amountVnd": 150000,
+    "allocatedSplits": [
+      {
+        "expenseSplitId": 12,
+        "expenseId": 5,
+        "expenseTitle": "Ăn tối lẩu Haidilao",
+        "expenseDate": "2026-10-15",
+        "payerId": 2,
+        "payerName": "Trần Văn B",
+        "participantId": 1,
+        "participantName": "Nguyễn Văn A",
+        "originalAmount": 150,
+        "originalAmountVnd": 150000,
+        "settledAmount": 0,
+        "settledAmountVnd": 0,
+        "remainingAmount": 150,
+        "remainingAmountVnd": 150000,
+        "allocatedAmount": 150,
+        "allocatedAmountVnd": 150000,
+        "allocationType": "DIRECT"
+      }
+    ]
+  },
+  "timestamp": "2026-10-16T15:00:00Z"
+}
+```
+- **Mã lỗi thường gặp:**
+  - `400 Bad Request`: `SIMPLIFIED_DEBT_CHANGED` - Khoản nợ tối giản không tồn tại hoặc số tiền yêu cầu thanh toán vượt quá số nợ tối giản hiện tại.
+
+---
+
+### 3.10. Thanh toán nợ tối giản (Pay Simplified Debt)
+
+Con nợ bấm xác nhận thanh toán nợ tối giản (kèm ảnh bằng chứng chuyển khoản nếu có). Hệ thống sẽ tạo một yêu cầu tất toán (`DebtSettlement`) ở trạng thái `WAITING_FOR_CONFIRMATION`, đồng thời tạm khóa (RESERVED) các khoản `ExpenseSplit` tương ứng để tránh bị cấn trừ trùng lặp hoặc sửa đổi dữ liệu chi tiêu trong lúc chờ xác nhận.
+
+- **Method:** `POST`
+- **Path:** `/groups/{groupId}/debts/simplified/pay`
+- **Full URL:** `/api/v1/groups/{groupId}/debts/simplified/pay`
+- **Path Variables:**
+  - `groupId` (Long): ID của nhóm
+- **Header:**
+  ```http
+  Authorization: Bearer <accessToken>
+  Content-Type: application/json
+  ```
+- **Request Body:**
+```json
+{
+  "creditorId": 2,
+  "amount": 150,
+  "paymentProofUrl": "https://cdn.example.com/receipt.jpg",
+  "note": "Đã chuyển khoản qua Vietcombank"
+}
+```
+
+- **Quyền hạn:** Người gọi API phải là Con nợ.
+- **Mã phản hồi thành công (HTTP 200 OK):**
+```json
+{
+  "success": true,
+  "message": "Đã gửi yêu cầu xác nhận tất toán công nợ",
+  "data": {
+    "id": 501,
+    "groupId": 10,
+    "debtorId": 1,
+    "debtorName": "Nguyễn Văn A",
+    "debtorAvatar": "https://cdn.example.com/avatar/user1.jpg",
+    "creditorId": 2,
+    "creditorName": "Trần Văn B",
+    "creditorAvatar": "https://cdn.example.com/avatar/user2.jpg",
+    "amount": 150,
+    "amountVnd": 150000,
+    "status": "WAITING_FOR_CONFIRMATION",
+    "paymentProofUrl": "https://cdn.example.com/receipt.jpg",
+    "note": "Đã chuyển khoản qua Vietcombank",
+    "allocatedSplits": [
+      {
+        "expenseSplitId": 12,
+        "expenseId": 5,
+        "expenseTitle": "Ăn tối lẩu Haidilao",
+        "expenseDate": "2026-10-15",
+        "payerId": 2,
+        "payerName": "Trần Văn B",
+        "participantId": 1,
+        "participantName": "Nguyễn Văn A",
+        "originalAmount": 150,
+        "originalAmountVnd": 150000,
+        "settledAmount": 0,
+        "settledAmountVnd": 0,
+        "remainingAmount": 150,
+        "remainingAmountVnd": 150000,
+        "allocatedAmount": 150,
+        "allocatedAmountVnd": 150000,
+        "allocationType": "DIRECT"
+      }
+    ],
+    "createdAt": "2026-10-16T15:00:00Z",
+    "confirmedAt": null
+  },
+  "timestamp": "2026-10-16T15:00:00Z"
+}
+```
+- **Mã lỗi thường gặp:**
+  - `400 Bad Request`: `SIMPLIFIED_DEBT_CHANGED` - Công nợ tối giản đã thay đổi kể từ lúc xem trước.
+  - `400 Bad Request`: `SETTLEMENT_IN_PROGRESS` - Đang có đợt thanh toán khác giữa hai người trong nhóm đang chờ xác nhận.
+
+---
+
+### 3.11. Xác nhận hoặc từ chối tất toán công nợ (Confirm Debt Settlement)
+
+Chủ nợ kiểm tra tài khoản ngân hàng và bấm xác nhận nhận tiền (`confirmed=true`) hoặc từ chối (`confirmed=false`).
+- Khi chấp thuận (`true`): Trạng thái chuyển thành `SETTLED`, các split được cộng vĩnh viễn vào `settledAmount` (COMMITTED), công nợ được xóa bỏ khỏi đồ thị nợ tối giản.
+- Khi từ chối (`false`): Trạng thái chuyển thành `REJECTED`, các split được nhả khóa (RELEASED), khôi phục lại trạng thái nợ ban đầu.
+
+- **Method:** `POST`
+- **Path:** `/debt-settlements/{settlementId}/confirm`
+- **Full URL:** `/api/v1/debt-settlements/{settlementId}/confirm`
+- **Path Variables:**
+  - `settlementId` (Long): ID của đợt tất toán
+- **Header:**
+  ```http
+  Authorization: Bearer <accessToken>
+  Content-Type: application/json
+  ```
+- **Request Body:**
+```json
+{
+  "confirmed": true
+}
+```
+
+- **Quyền hạn:** **Chỉ Chủ nợ** (`creditorId`) trong đợt tất toán mới có quyền xác nhận (Admin không xác nhận thay).
+- **Mã phản hồi thành công (HTTP 200 OK):**
+```json
+{
+  "success": true,
+  "message": "Đã xác nhận tất toán công nợ",
+  "data": {
+    "id": 501,
+    "groupId": 10,
+    "debtorId": 1,
+    "debtorName": "Nguyễn Văn A",
+    "debtorAvatar": "https://cdn.example.com/avatar/user1.jpg",
+    "creditorId": 2,
+    "creditorName": "Trần Văn B",
+    "creditorAvatar": "https://cdn.example.com/avatar/user2.jpg",
+    "amount": 150,
+    "amountVnd": 150000,
+    "status": "SETTLED",
+    "paymentProofUrl": "https://cdn.example.com/receipt.jpg",
+    "note": "Đã chuyển khoản qua Vietcombank",
+    "allocatedSplits": [ ... ],
+    "createdAt": "2026-10-16T15:00:00Z",
+    "confirmedAt": "2026-10-16T15:05:00Z"
+  },
+  "timestamp": "2026-10-16T15:05:00Z"
+}
+```
+- **Mã lỗi thường gặp:**
+  - `403 Forbidden`: `UNAUTHORIZED` - Chỉ chủ nợ mới có quyền xác nhận tất toán công nợ.
+  - `404 Not Found`: `SETTLEMENT_NOT_FOUND` - Không tìm thấy yêu cầu tất toán.
+  - `400 Bad Request`: `SETTLEMENT_ALREADY_RESOLVED` - Yêu cầu tất toán này đã được xác nhận hoặc từ chối trước đó.
+
+---
+
+### 3.12. Lấy chi tiết đợt tất toán (Get Debt Settlement Detail)
+
+- **Method:** `GET`
+- **Path:** `/debt-settlements/{settlementId}`
+- **Full URL:** `/api/v1/debt-settlements/{settlementId}`
+- **Path Variables:**
+  - `settlementId` (Long): ID của đợt tất toán
+- **Quyền hạn:** Thành viên trong nhóm của đợt tất toán.
+- **Mã phản hồi thành công:** `200 OK` (Cấu trúc tương tự `DebtSettlementResponse` ở mục 3.10/3.11).
+
+---
+
+### 3.13. Lấy lịch sử các đợt tất toán trong nhóm (Get Group Debt Settlements)
+
+- **Method:** `GET`
+- **Path:** `/groups/{groupId}/debt-settlements`
+- **Full URL:** `/api/v1/groups/{groupId}/debt-settlements`
+- **Path Variables:**
+  - `groupId` (Long): ID của nhóm
+- **Quyền hạn:** Thành viên của nhóm.
+- **Mã phản hồi thành công (HTTP 200 OK):**
+```json
+{
+  "success": true,
+  "message": "Lấy danh sách các đợt tất toán thành công",
+  "data": [
+    {
+      "id": 501,
+      "groupId": 10,
+      "debtorId": 1,
+      "debtorName": "Nguyễn Văn A",
+      "debtorAvatar": "https://cdn.example.com/avatar/user1.jpg",
+      "creditorId": 2,
+      "creditorName": "Trần Văn B",
+      "creditorAvatar": "https://cdn.example.com/avatar/user2.jpg",
+      "amount": 150,
+      "amountVnd": 150000,
+      "status": "SETTLED",
+      "paymentProofUrl": "https://cdn.example.com/receipt.jpg",
+      "note": "Đã chuyển khoản qua Vietcombank",
+      "allocatedSplits": [ ... ],
+      "createdAt": "2026-10-16T15:00:00Z",
+      "confirmedAt": "2026-10-16T15:05:00Z"
+    }
+  ],
+  "timestamp": "2026-10-16T15:06:00Z"
+}
+```
+
+---
+
 ## 4. BẢNG MÃ LỖI (ERROR CODES) & HƯỚNG DẪN XỬ LÝ UI
 
 | HTTP Status | Error Code / Message | Nguyên nhân gây lỗi | Hướng dẫn xử lý trên Mobile UI |
@@ -663,10 +899,16 @@ Trả về các trường hữu ích cho UI Dashboard nhóm:
 | `400` | *Chỉ người nợ tiền mới có thể đánh dấu 'Đã trả'* | Người bấm nút "Đã trả" không phải là `debtor_user_id`. | Ẩn hoặc disable nút "Đã trả" nếu `action !== "PAY"`. |
 | `400` | *Khoản nợ này hiện đang ở trạng thái: ...* | Cố tình bấm "Đã trả" khi nợ đang chờ duyệt (`WAITING_FOR_CONFIRMATION`) hoặc đã xong (`SETTLED`). | Reload lại danh sách nợ để cập nhật trạng thái mới nhất từ server. |
 | `400` | *Chỉ chủ nợ mới có quyền xác nhận đã nhận tiền* | Người bấm "Xác nhận nhận tiền" không phải `creditor_user_id`. | Chỉ hiển thị nút xác nhận nếu `action === "CONFIRM"`. |
+| `400` | `INVALID_DEBT_REMINDER` | Không tìm thấy khoản nợ tối giản giữa con nợ và chủ nợ để nhắc nợ. | Báo Toast lỗi và tải lại danh sách nợ tối giản của nhóm. |
+| `400` | `SIMPLIFIED_DEBT_CHANGED` | Khoản nợ tối giản đã thay đổi do có giao dịch chi tiêu mới hoặc nợ đã được tất toán. | Hiển thị Toast cảnh báo: *"Công nợ tối giản đã thay đổi, vui lòng làm mới trang"* và tải lại danh sách. |
+| `400` | `SETTLEMENT_IN_PROGRESS` | Đang có một giao dịch tất toán giữa 2 người này đang ở trạng thái `WAITING_FOR_CONFIRMATION`. | Hiển thị thông báo yêu cầu chờ chủ nợ xác nhận đợt thanh toán trước đó. |
+| `400` | `SETTLEMENT_ALREADY_RESOLVED` | Đợt tất toán này đã được duyệt hoặc từ chối trước đó. | Reload lại màn hình chi tiết đợt tất toán. |
+| `400` | `EXPENSE_HAS_SETTLEMENT` | Cố tình sửa hoặc xóa khoản chi tiêu (`Expense`) đang có phần chia tiền bị khóa trong đợt tất toán. | Hiển thị cảnh báo: *"Không thể sửa/xóa khoản chi do đang nằm trong đợt tất toán công nợ"*. |
 | `401` | `INVALID_TOKEN` | Token đăng nhập hết hạn hoặc không hợp lệ. | Kích hoạt luồng làm mới token ngầm (Silent Refresh) hoặc đưa người dùng về màn hình Đăng nhập. |
 | `403` | `NOT_GROUP_MEMBER` | Người dùng không phải thành viên nhóm chi tiêu. | Hiển thị thông báo Toast và điều hướng quay lại danh sách nhóm. |
-| `403` | `UNAUTHORIZED` (*Chỉ chủ nợ hoặc Admin mới có quyền gửi thông báo nhắc nợ*) | Thành viên bình thường không phải chủ nợ bấm nhắc nợ. | Ẩn icon chuông / nút Nhắc nợ nếu `action !== "REMIND"`. |
+| `403` | `UNAUTHORIZED` | Thành viên không có quyền (không phải chủ nợ hoặc admin khi nhắc nợ; không phải chủ nợ khi xác nhận tất toán). | Ẩn hoặc vô hiệu hóa các nút tương tác tương ứng trên UI. |
 | `404` | `DEBT_NOT_FOUND` | Khoản nợ đã bị xóa hoặc `debtId` không tồn tại trong hệ thống. | Hiển thị Toast thông báo: *"Khoản nợ này không tồn tại hoặc đã được cập nhật"*, tự động refresh danh sách nợ. |
+| `404` | `SETTLEMENT_NOT_FOUND` | Đợt tất toán không tồn tại hoặc `settlementId` không hợp lệ. | Hiển thị Toast và quay lại danh sách tất toán. |
 | `404` | `GROUP_NOT_FOUND` | Nhóm không tồn tại hoặc đã bị xóa vĩnh viễn. | Điều hướng quay về danh sách nhóm. |
 
 ---

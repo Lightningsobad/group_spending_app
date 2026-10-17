@@ -365,10 +365,10 @@ Khi người dùng nhấn vào thông báo (từ Push Notification banner hoặc
 | `EXPENSE_CREATED` | `EXPENSE` | `ExpenseDetailScreen(expenseId)` | Hiển thị chi tiết khoản chi vừa tạo và danh sách chia tiền |
 | `EXPENSE_UPDATED` | `EXPENSE` | `ExpenseDetailScreen(expenseId)` | Hiển thị chi tiết khoản chi đã sửa |
 | `EXPENSE_DELETED` | `EXPENSE` | `GroupExpensesScreen(groupId)` | Mở danh sách chi tiêu của nhóm |
-| `DEBT_REMINDER` | `DEBT` | `DebtDetailScreen(debtId)` hoặc `ActualDebtsScreen(groupId)` | Mở màn hình trả nợ, làm nổi bật nút **"Đã trả"** |
-| `DEBT_PAY_REQUEST` | `DEBT` | `ActualDebtsScreen(groupId)` | Mở màn hình công nợ, làm nổi bật nút **"Xác nhận đã nhận tiền"** (Confirm) |
-| `DEBT_SETTLED` | `DEBT` | `UserBalanceOverviewScreen` | Hiển thị thông báo nợ đã được tất toán thành công |
-| `DEBT_REJECTED` | `DEBT` | `ActualDebtsScreen(groupId)` | Hiển thị cảnh báo chủ nợ từ chối nhận tiền |
+| `DEBT_REMINDER` | `DEBT` / `SIMPLIFIED_DEBT` | `DebtDetailScreen(debtId)` hoặc `SimplifiedDebtsScreen(groupId)` | Mở màn hình trả nợ, làm nổi bật nút **"Đã trả / Thanh toán"** |
+| `DEBT_PAY_REQUEST` | `DEBT` / `DEBT_SETTLEMENT` | `ActualDebtsScreen(groupId)` hoặc `SettlementDetailScreen(settlementId)` | Mở màn hình xác nhận, làm nổi bật nút **"Xác nhận đã nhận tiền"** (Confirm) |
+| `DEBT_SETTLED` | `DEBT` / `DEBT_SETTLEMENT` | `SettlementDetailScreen(settlementId)` hoặc `UserBalanceOverviewScreen` | Hiển thị thông báo nợ đã được tất toán thành công |
+| `DEBT_REJECTED` | `DEBT` / `DEBT_SETTLEMENT` | `SettlementDetailScreen(settlementId)` hoặc `ActualDebtsScreen(groupId)` | Hiển thị cảnh báo chủ nợ từ chối nhận tiền |
 | `FUND_CREATED` | `FUND` | `FundDetailScreen(fundId)` | Xem mục tiêu đóng quỹ và danh sách đóng tiền |
 | `FUND_REMINDER` | `FUND` | `FundDetailScreen(fundId)` | Mở màn hình đợt quỹ để người dùng nộp tiền |
 | `FUND_PAID` | `FUND` | `FundDetailScreen(fundId)` | Hiển thị trạng thái đã hoàn thành đóng quỹ |
