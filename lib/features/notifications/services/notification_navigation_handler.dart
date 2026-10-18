@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/router/app_router.dart';
+import '../../debts/presentation/cubit/debts_cubit.dart';
 import '../domain/entities/notification_entity.dart';
 import '../domain/entities/notification_enums.dart';
 
@@ -34,8 +36,24 @@ class NotificationNavigationHandler {
       case NotificationType.debtPayRequest:
       case NotificationType.debtSettled:
       case NotificationType.debtRejected:
-        // Chuyển hướng tới tab Công nợ
+        // Chuyển hướng tới tab Công nợ và chọn nhóm phù hợp
         ctx.go('/dashboard?tab=2');
+        if (groupId != null && groupId > 0) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            try {
+              final navCtx = AppRouter.navigatorKey.currentContext;
+              if (navCtx != null) {
+                final cubit = navCtx.read<DebtsCubit>();
+                cubit.selectGroup(groupId, groupName: notification.groupName);
+                if (notification.referenceType == NotificationReferenceType.debt) {
+                  cubit.setDetailTab(1);
+                } else {
+                  cubit.setDetailTab(0);
+                }
+              }
+            } catch (_) {}
+          });
+        }
         break;
 
       case NotificationType.fundCreated:

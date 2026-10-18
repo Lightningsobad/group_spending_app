@@ -1,7 +1,8 @@
 enum DebtStatus {
   pending,
   waitingForConfirmation,
-  settled;
+  settled,
+  rejected;
 
   static DebtStatus fromString(String? val) {
     switch (val?.toUpperCase()) {
@@ -9,6 +10,8 @@ enum DebtStatus {
         return DebtStatus.waitingForConfirmation;
       case 'SETTLED':
         return DebtStatus.settled;
+      case 'REJECTED':
+        return DebtStatus.rejected;
       case 'PENDING':
       default:
         return DebtStatus.pending;
@@ -21,6 +24,8 @@ enum DebtStatus {
         return 'WAITING_FOR_CONFIRMATION';
       case DebtStatus.settled:
         return 'SETTLED';
+      case DebtStatus.rejected:
+        return 'REJECTED';
       case DebtStatus.pending:
         return 'PENDING';
     }

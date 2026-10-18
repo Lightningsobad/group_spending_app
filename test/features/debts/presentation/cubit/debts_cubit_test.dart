@@ -4,6 +4,7 @@ import 'package:group_spending_app/core/storage/token_storage.dart';
 import 'package:group_spending_app/core/sync/data_sync_coordinator.dart';
 import 'package:group_spending_app/features/debts/domain/entities/debt_enums.dart';
 import 'package:group_spending_app/features/debts/domain/entities/debt_overview_entity.dart';
+import 'package:group_spending_app/features/debts/domain/entities/debt_settlement_entity.dart';
 import 'package:group_spending_app/features/debts/domain/entities/group_debt_entity.dart';
 import 'package:group_spending_app/features/debts/domain/repositories/debts_repository.dart';
 import 'package:group_spending_app/features/debts/presentation/cubit/debts_cubit.dart';
@@ -87,6 +88,15 @@ class MockDebtsRepository implements DebtsRepository {
   int markAsPaidCalls = 0;
   int confirmCalls = 0;
   int remindCalls = 0;
+  int simplifiedRemindCalls = 0;
+  int? lastRemindedDebtorId;
+  int paySimplifiedCalls = 0;
+  int? lastPayCreditorId;
+  num? lastPayAmount;
+  int confirmSettlementCalls = 0;
+  int? lastConfirmedSettlementId;
+  bool? lastConfirmedStatus;
+  List<DebtSettlementEntity> settlementsResult = [];
 
   @override
   Future<DebtOverviewEntity> getDebtOverview() async => overviewResult;
@@ -113,6 +123,72 @@ class MockDebtsRepository implements DebtsRepository {
   @override
   Future<void> sendDebtReminder(int debtId) async {
     remindCalls++;
+  }
+
+  @override
+  Future<void> sendSimplifiedDebtReminder(
+    int groupId, {
+    required int debtorId,
+    required int creditorId,
+  }) async {
+    simplifiedRemindCalls++;
+    lastRemindedDebtorId = debtorId;
+  }
+
+  @override
+  Future<DebtSettlementEntity> paySimplifiedDebt(
+    int groupId, {
+    required int creditorId,
+    num? amount,
+    String? paymentProofUrl,
+    String? note,
+  }) async {
+    paySimplifiedCalls++;
+    lastPayCreditorId = creditorId;
+    lastPayAmount = amount;
+    return DebtSettlementEntity(
+      id: 99,
+      groupId: groupId,
+      debtorId: 2,
+      creditorId: creditorId,
+      amount: amount ?? 150000,
+      note: note,
+      status: DebtStatus.waitingForConfirmation,
+    );
+  }
+
+  @override
+  Future<DebtSettlementEntity> confirmDebtSettlement(
+    int settlementId, {
+    required bool confirmed,
+  }) async {
+    confirmSettlementCalls++;
+    lastConfirmedSettlementId = settlementId;
+    lastConfirmedStatus = confirmed;
+    return DebtSettlementEntity(
+      id: settlementId,
+      groupId: 10,
+      debtorId: 2,
+      creditorId: 1,
+      amount: 150000,
+      status: confirmed ? DebtStatus.settled : DebtStatus.rejected,
+    );
+  }
+
+  @override
+  Future<DebtSettlementEntity> getDebtSettlementDetail(int settlementId) async {
+    return DebtSettlementEntity(
+      id: settlementId,
+      groupId: 10,
+      debtorId: 2,
+      creditorId: 1,
+      amount: 150000,
+    );
+  }
+
+  @override
+  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(int groupId) async {
+    return settlementsResult;
   }
 }
 
@@ -356,6 +432,78 @@ void main() {
           .firstWhere((g) => g.groupId == 5);
       expect(g5.isSettled, isTrue);
       expect(g5.pendingDebtCount, 0);
+    });
+
+    test('sendSimplifiedDebtReminder calls repository and emits success', () async {
+      final success = await cubit.sendSimplifiedDebtReminder(
+        10,
+        debtorId: 2,
+        creditorId: 1,
+      );
+
+      expect(success, isTrue);
+      expect(repository.simplifiedRemindCalls, 1);
+      expect(repository.lastRemindedDebtorId, 2);
+      expect(cubit.state.successMessage, isNotNull);
+    });
+
+    test('paySimplifiedDebt calls repository, triggers sync and reloads debts', () async {
+      final success = await cubit.paySimplifiedDebt(
+        10,
+        creditorId: 2,
+        amount: 150000,
+        note: 'Đã chuyển MBBank',
+      );
+
+      expect(success, isTrue);
+      expect(repository.paySimplifiedCalls, 1);
+      expect(repository.lastPayCreditorId, 2);
+      expect(repository.lastPayAmount, 150000);
+      expect(cubit.state.successMessage, isNotNull);
+    });
+
+    test('confirmDebtSettlement calls repository, triggers sync and reloads debts', () async {
+      final success = await cubit.confirmDebtSettlement(
+        99,
+        confirmed: true,
+      );
+
+      expect(success, isTrue);
+      expect(repository.confirmSettlementCalls, 1);
+      expect(repository.lastConfirmedSettlementId, 99);
+      expect(repository.lastConfirmedStatus, isTrue);
+      expect(cubit.state.successMessage, isNotNull);
+    });
+
+    test('loadGroupDebts fetches settlements and pendingSettlements filters correctly', () async {
+      repository.settlementsResult = [
+        const DebtSettlementEntity(
+          id: 501,
+          groupId: 10,
+          debtorId: 2,
+          debtorName: 'Minh',
+          creditorId: 1,
+          creditorName: 'An',
+          amount: 150000,
+          status: DebtStatus.waitingForConfirmation,
+        ),
+        const DebtSettlementEntity(
+          id: 502,
+          groupId: 10,
+          debtorId: 3,
+          debtorName: 'Hương',
+          creditorId: 1,
+          creditorName: 'An',
+          amount: 320000,
+          status: DebtStatus.settled,
+        ),
+      ];
+
+      await cubit.loadGroupDebts(10);
+
+      expect(cubit.state.settlements.length, 2);
+      expect(cubit.state.pendingSettlements.length, 1);
+      expect(cubit.state.pendingSettlements.first.id, 501);
     });
   });
 }

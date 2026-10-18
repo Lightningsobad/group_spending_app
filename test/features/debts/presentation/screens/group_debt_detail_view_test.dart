@@ -5,6 +5,7 @@ import 'package:group_spending_app/core/theme/app_theme.dart';
 import 'package:group_spending_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:group_spending_app/features/debts/domain/entities/debt_enums.dart';
 import 'package:group_spending_app/features/debts/domain/entities/debt_overview_entity.dart';
+import 'package:group_spending_app/features/debts/domain/entities/debt_settlement_entity.dart';
 import 'package:group_spending_app/features/debts/domain/entities/group_debt_entity.dart';
 import 'package:group_spending_app/features/debts/domain/repositories/debts_repository.dart';
 import 'package:group_spending_app/features/debts/presentation/cubit/debts_cubit.dart';
@@ -21,6 +22,8 @@ class _MockDebtsRepo implements DebtsRepository {
   final List<SimplifiedDebtEntity> simplifiedDebts;
   final List<ActualDebtEntity> actualDebts;
   int? markedAsPaidDebtId;
+  int? paidCreditorId;
+  num? paidAmount;
 
   _MockDebtsRepo({
     required this.simplifiedDebts,
@@ -66,6 +69,63 @@ class _MockDebtsRepo implements DebtsRepository {
 
   @override
   Future<void> sendDebtReminder(int debtId) async {}
+
+  @override
+  Future<void> sendSimplifiedDebtReminder(
+    int groupId, {
+    required int debtorId,
+    required int creditorId,
+  }) async {}
+
+  @override
+  Future<DebtSettlementEntity> paySimplifiedDebt(
+    int groupId, {
+    required int creditorId,
+    num? amount,
+    String? paymentProofUrl,
+    String? note,
+  }) async {
+    paidCreditorId = creditorId;
+    paidAmount = amount;
+    return DebtSettlementEntity(
+      id: 1,
+      groupId: 10,
+      debtorId: 1,
+      creditorId: creditorId,
+      amount: amount ?? 150000,
+    );
+  }
+
+  @override
+  Future<DebtSettlementEntity> confirmDebtSettlement(
+    int settlementId, {
+    required bool confirmed,
+  }) async {
+    return DebtSettlementEntity(
+      id: settlementId,
+      groupId: 10,
+      debtorId: 1,
+      creditorId: 2,
+      amount: 150000,
+      status: confirmed ? DebtStatus.settled : DebtStatus.rejected,
+    );
+  }
+
+  @override
+  Future<DebtSettlementEntity> getDebtSettlementDetail(int settlementId) async {
+    return DebtSettlementEntity(
+      id: settlementId,
+      groupId: 10,
+      debtorId: 1,
+      creditorId: 2,
+      amount: 150000,
+    );
+  }
+
+  @override
+  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(int groupId) async {
+    return [];
+  }
 }
 
 class _TestGroupsRepo extends FakeGroupsRepo {
@@ -189,7 +249,8 @@ void main() {
 
       // Modal is dismissed and debt marked as paid
       expect(find.byType(VietQrModalSheet), findsNothing);
-      expect(debtsRepo.markedAsPaidDebtId, 101);
+      expect(debtsRepo.paidCreditorId, 2);
+      expect(debtsRepo.paidAmount, 150000);
 
       debtsCubit.close();
     });
@@ -320,7 +381,7 @@ void main() {
       debtsCubit.close();
     });
 
-    testWidgets('tapping Confirm in VietQrModalSheet marks splitId as paid when debt.id is null', (tester) async {
+    testWidgets('tapping Confirm in VietQrModalSheet calls paySimplifiedDebt when debt.id is null', (tester) async {
       tester.view.physicalSize = const Size(800, 1200);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() {
@@ -383,7 +444,8 @@ void main() {
       await tester.tap(confirmBtn);
       await tester.pumpAndSettle();
 
-      expect(debtsRepo.markedAsPaidDebtId, 999);
+      expect(debtsRepo.paidCreditorId, 2);
+      expect(debtsRepo.paidAmount, 250000);
 
       debtsCubit.close();
     });

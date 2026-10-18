@@ -10,6 +10,7 @@ import '../../../groups/domain/repositories/groups_repository.dart';
 import '../../../groups/presentation/widgets/group_category_helper.dart';
 import '../../../groups/presentation/widgets/viet_qr_modal_sheet.dart';
 import '../../domain/entities/debt_enums.dart';
+import '../../domain/entities/debt_settlement_entity.dart';
 import '../../domain/entities/group_debt_entity.dart';
 import '../cubit/debts_cubit.dart';
 import '../cubit/debts_state.dart';
@@ -282,75 +283,75 @@ class GroupDebtDetailView extends StatelessWidget {
                     (index) => const GroupDebtCardSkeleton(),
                   )
                 else if (activeTab == 0) ...[
-                  if (simplifiedList.isEmpty)
+                  if (state.pendingSettlements.isNotEmpty)
+                    ...state.pendingSettlements.map(
+                      (settlement) => _buildSettlementCard(
+                        context,
+                        settlement: settlement,
+                        currentUserId: currentUserId,
+                        cubit: cubit,
+                        colors: colors,
+                      ),
+                    ),
+                  if (simplifiedList.isEmpty && state.pendingSettlements.isEmpty)
                     _buildEmptyDebtView(context, tr, colors)
                   else
                     ...simplifiedList.map(
-                      (debt) => SimplifiedDebtCardWidget(
-                        debt: debt,
-                        currentUserId: currentUserId,
-                        onPay: () => _handlePaySimplifiedDebt(
-                          context,
+                      (debt) {
+                        final matchingSettlement = state.pendingSettlements
+                            .where((s) =>
+                                s.debtorId == debt.debtorId &&
+                                s.creditorId == debt.creditorId)
+                            .firstOrNull;
+                        final isWaiting = matchingSettlement != null ||
+                            debt.action == DebtAction.confirm;
+
+                        return SimplifiedDebtCardWidget(
                           debt: debt,
-                          groupName: userBalance.groupName,
-                          cubit: cubit,
-                        ),
-                        onConfirm: (confirmed) async {
-                          final ok =
-                              await SettleDebtDialogs.showConfirmSettled(
+                          currentUserId: currentUserId,
+                          isWaitingForConfirmation: isWaiting,
+                          onPay: () => _handlePaySimplifiedDebt(
                             context,
-                            debtorName: debt.debtorName,
-                            formattedAmount:
-                                CurrencyUtils.formatVnd(debt.amountVnd),
-                            confirmed: confirmed,
-                          );
-                          if (ok == true) {
-                            if (debt.id != null) {
-                              await cubit.confirmDebtSettled(
-                                debt.id!,
+                            debt: debt,
+                            groupName: userBalance.groupName,
+                            cubit: cubit,
+                          ),
+                          onConfirm: (confirmed) async {
+                            final settlementId =
+                                matchingSettlement?.id ?? debt.id;
+                            final ok =
+                                await SettleDebtDialogs.showConfirmSettled(
+                              context,
+                              debtorName: debt.debtorName,
+                              formattedAmount:
+                                  CurrencyUtils.formatVnd(debt.amountVnd),
+                              confirmed: confirmed,
+                            );
+                            if (ok == true && settlementId != null) {
+                              await cubit.confirmDebtSettlement(
+                                settlementId,
                                 confirmed: confirmed,
                               );
-                            } else {
-                              final splits = _findMatchingSplitIds(
-                                cubit: cubit,
-                                creditorId: debt.creditorId,
-                                debtorId: debt.debtorId,
-                                action: DebtAction.confirm,
-                              );
-                              for (final sid in splits) {
-                                await cubit.confirmDebtSettled(
-                                  sid,
-                                  confirmed: confirmed,
-                                );
-                              }
                             }
-                          }
-                        },
-                        onRemind: () async {
-                          final ok =
-                              await SettleDebtDialogs.showRemindConfirm(
-                            context,
-                            debtorName: debt.debtorName,
-                            formattedAmount:
-                                CurrencyUtils.formatVnd(debt.amountVnd),
-                          );
-                          if (ok == true) {
-                            if (debt.id != null) {
-                              await cubit.sendDebtReminder(debt.id!);
-                            } else {
-                              final splits = _findMatchingSplitIds(
-                                cubit: cubit,
-                                creditorId: debt.creditorId,
+                          },
+                          onRemind: () async {
+                            final ok =
+                                await SettleDebtDialogs.showRemindConfirm(
+                              context,
+                              debtorName: debt.debtorName,
+                              formattedAmount:
+                                  CurrencyUtils.formatVnd(debt.amountVnd),
+                            );
+                            if (ok == true) {
+                              await cubit.sendSimplifiedDebtReminder(
+                                groupId,
                                 debtorId: debt.debtorId,
-                                action: DebtAction.remind,
+                                creditorId: debt.creditorId,
                               );
-                              for (final sid in splits) {
-                                await cubit.sendDebtReminder(sid);
-                              }
                             }
-                          }
-                        },
-                      ),
+                          },
+                        );
+                      },
                     ),
                 ] else ...[
                   if (actualList.isEmpty)
@@ -486,51 +487,222 @@ class GroupDebtDetailView extends StatelessWidget {
       amount: debt.amountVnd,
       note: transferNote,
       onPaidConfirmed: () async {
-        if (debt.id != null) {
-          await cubit.markDebtAsPaid(debt.id!);
-        } else {
-          final splits = _findMatchingSplitIds(
-            cubit: cubit,
-            creditorId: debt.creditorId,
-            debtorId: debt.debtorId,
-            action: DebtAction.pay,
-          );
-          if (splits.isNotEmpty) {
-            for (final sid in splits) {
-              await cubit.markDebtAsPaid(sid);
-            }
-          } else {
-            await cubit.loadGroupDebts(groupId, silent: true);
-          }
-        }
+        await cubit.paySimplifiedDebt(
+          groupId,
+          creditorId: debt.creditorId,
+          amount: debt.amountVnd > 0
+              ? debt.amountVnd
+              : (debt.amount > 0 ? debt.amount : null),
+          note: transferNote,
+        );
       },
     );
   }
 
-  List<int> _findMatchingSplitIds({
+  Widget _buildSettlementCard(
+    BuildContext context, {
+    required DebtSettlementEntity settlement,
+    required int? currentUserId,
     required DebtsCubit cubit,
-    required int creditorId,
-    required int debtorId,
-    DebtAction? action,
+    required AppThemeColors colors,
   }) {
-    final actualDebts = cubit.state.actualDebts?.actualDebts ?? const [];
-    final splitIds = <int>[];
-    for (final exp in actualDebts) {
-      if (exp.paidByUserId == creditorId) {
-        for (final d in exp.debtors) {
-          final isDebtor = d.userId == debtorId || d.isMe;
-          final matchesAction = action == null ||
-              d.action == action ||
-              (action == DebtAction.pay && d.status == DebtStatus.pending) ||
-              (action == DebtAction.confirm &&
-                  d.status == DebtStatus.waitingForConfirmation) ||
-              (action == DebtAction.remind && d.status == DebtStatus.pending);
-          if (isDebtor && matchesAction) {
-            splitIds.add(d.splitId);
-          }
-        }
-      }
-    }
-    return splitIds;
+    final isCreditor =
+        currentUserId != null && settlement.creditorId == currentUserId;
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: colors.cardBackground,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(
+          color: isCreditor ? colors.debtReceiveBorder : colors.debtWaitingBg,
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: colors.cardShadowColor,
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    LucideIcons.bellRing,
+                    size: 15,
+                    color: colors.debtWaitingText,
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    isCreditor
+                        ? 'Yêu cầu tất toán cần xác nhận'
+                        : 'Đợt tất toán đang chờ duyệt',
+                    style: AppTextStyle.bold(
+                      fontSize: AppFontSize.caption,
+                      color: colors.debtWaitingText,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: colors.debtWaitingBg,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  'Chờ xác nhận',
+                  style: AppTextStyle.bold(
+                    fontSize: AppFontSize.caption,
+                    color: colors.debtWaitingText,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 18,
+                backgroundColor: colors.debtAvatarBg,
+                backgroundImage: settlement.debtorAvatar != null &&
+                        settlement.debtorAvatar!.isNotEmpty
+                    ? NetworkImage(settlement.debtorAvatar!)
+                    : null,
+                child: settlement.debtorAvatar == null ||
+                        settlement.debtorAvatar!.isEmpty
+                    ? Text(
+                        settlement.debtorName.isNotEmpty
+                            ? settlement.debtorName[0].toUpperCase()
+                            : '?',
+                        style: AppTextStyle.bold(
+                          fontSize: AppFontSize.secondary,
+                          color: colors.textPrimary,
+                        ),
+                      )
+                    : null,
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${settlement.debtorName} ➔ ${settlement.creditorName}',
+                      style: AppTextStyle.bold(
+                        fontSize: AppFontSize.secondary,
+                        color: colors.textPrimary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    if (settlement.note != null &&
+                        settlement.note!.isNotEmpty)
+                      Text(
+                        settlement.note!,
+                        style: AppTextStyle.regular(
+                          fontSize: AppFontSize.caption,
+                          color: colors.textSecondary,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                  ],
+                ),
+              ),
+              Text(
+                CurrencyUtils.formatVnd(settlement.amountVnd),
+                style: AppTextStyle.bold(
+                  fontSize: AppFontSize.body,
+                  color: colors.debtReceiveText,
+                ),
+              ),
+            ],
+          ),
+          if (isCreditor) ...[
+            const SizedBox(height: 14),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: colors.debtActionConfirmBg,
+                      foregroundColor: colors.onPrimaryButton,
+                      minimumSize: const Size.fromHeight(44),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 0,
+                    ),
+                    onPressed: () async {
+                      final ok = await SettleDebtDialogs.showConfirmSettled(
+                        context,
+                        debtorName: settlement.debtorName,
+                        formattedAmount:
+                            CurrencyUtils.formatVnd(settlement.amountVnd),
+                        confirmed: true,
+                      );
+                      if (ok == true) {
+                        await cubit.confirmDebtSettlement(
+                          settlement.id,
+                          confirmed: true,
+                        );
+                      }
+                    },
+                    icon: const Icon(LucideIcons.check, size: 16),
+                    label: Text(
+                      'Đã nhận tiền',
+                      style: AppTextStyle.bold(fontSize: AppFontSize.secondary),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: colors.debtActionRejectFg,
+                      side: BorderSide(color: colors.debtActionRejectBorder),
+                      minimumSize: const Size.fromHeight(44),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    onPressed: () async {
+                      final ok = await SettleDebtDialogs.showConfirmSettled(
+                        context,
+                        debtorName: settlement.debtorName,
+                        formattedAmount:
+                            CurrencyUtils.formatVnd(settlement.amountVnd),
+                        confirmed: false,
+                      );
+                      if (ok == true) {
+                        await cubit.confirmDebtSettlement(
+                          settlement.id,
+                          confirmed: false,
+                        );
+                      }
+                    },
+                    icon: const Icon(LucideIcons.x, size: 16),
+                    label: Text(
+                      'Từ chối',
+                      style: AppTextStyle.bold(fontSize: AppFontSize.secondary),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
   }
 }
