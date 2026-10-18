@@ -163,8 +163,12 @@ class ApiClient {
         );
       }
 
+      final fullMessage = (fieldErrors != null && fieldErrors.isNotEmpty)
+          ? '$message: ${fieldErrors.entries.map((e) => '${e.key} (${e.value})').join(', ')}'
+          : message;
+
       return AppException(
-        message: message,
+        message: fullMessage,
         statusCode: response.statusCode,
         errorCode: errorCode,
         fieldErrors: fieldErrors,
