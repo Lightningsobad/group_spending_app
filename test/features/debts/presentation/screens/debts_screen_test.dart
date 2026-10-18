@@ -6,6 +6,7 @@ import 'package:group_spending_app/core/theme/app_theme.dart';
 import 'package:group_spending_app/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:group_spending_app/features/debts/domain/entities/debt_enums.dart';
 import 'package:group_spending_app/features/debts/domain/entities/debt_overview_entity.dart';
+import 'package:group_spending_app/features/debts/domain/entities/debt_settlement_entity.dart';
 import 'package:group_spending_app/features/debts/domain/entities/group_debt_entity.dart';
 import 'package:group_spending_app/features/debts/domain/repositories/debts_repository.dart';
 import 'package:group_spending_app/features/debts/presentation/cubit/debts_cubit.dart';
@@ -99,6 +100,61 @@ class FakeDebtsRepo implements DebtsRepository {
 
   @override
   Future<void> sendDebtReminder(int debtId) async {}
+
+  @override
+  Future<void> sendSimplifiedDebtReminder(
+    int groupId, {
+    required int debtorId,
+    required int creditorId,
+  }) async {}
+
+  @override
+  Future<DebtSettlementEntity> paySimplifiedDebt(
+    int groupId, {
+    required int creditorId,
+    num? amount,
+    String? paymentProofUrl,
+    String? note,
+  }) async {
+    return const DebtSettlementEntity(
+      id: 1,
+      groupId: 10,
+      debtorId: 1,
+      creditorId: 2,
+      amount: 150000,
+    );
+  }
+
+  @override
+  Future<DebtSettlementEntity> confirmDebtSettlement(
+    int settlementId, {
+    required bool confirmed,
+  }) async {
+    return DebtSettlementEntity(
+      id: settlementId,
+      groupId: 10,
+      debtorId: 1,
+      creditorId: 2,
+      amount: 150000,
+      status: confirmed ? DebtStatus.settled : DebtStatus.rejected,
+    );
+  }
+
+  @override
+  Future<DebtSettlementEntity> getDebtSettlementDetail(int settlementId) async {
+    return DebtSettlementEntity(
+      id: settlementId,
+      groupId: 10,
+      debtorId: 1,
+      creditorId: 2,
+      amount: 150000,
+    );
+  }
+
+  @override
+  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(int groupId) async {
+    return [];
+  }
 }
 
 void main() {
@@ -154,8 +210,8 @@ void main() {
       // Group cards
       expect(find.text('Chung cư Sunrise Room'), findsOneWidget);
       expect(find.text('Đội Cầu Lông Ba Đình'), findsOneWidget);
-      expect(find.text('4 khoản nợ cần xử lý'), findsOneWidget);
-      expect(find.text('1 khoản nợ cần xử lý'), findsOneWidget);
+      expect(find.text('4 khoản nợ'), findsOneWidget);
+      expect(find.text('1 khoản nợ'), findsOneWidget);
     });
 
     testWidgets('tap on group card opens GroupDebtDetailView and Back returns to list', (tester) async {

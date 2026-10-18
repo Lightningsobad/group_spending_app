@@ -92,6 +92,8 @@ enum NotificationType {
 enum NotificationReferenceType {
   expense('EXPENSE'),
   debt('DEBT'),
+  simplifiedDebt('SIMPLIFIED_DEBT'),
+  debtSettlement('DEBT_SETTLEMENT'),
   fund('FUND'),
   group('GROUP'),
   unknown('UNKNOWN');

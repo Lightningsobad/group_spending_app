@@ -62,6 +62,8 @@ class ActualDebtCardWidget extends StatelessWidget {
         return colors.debtStatusPendingDot;
       case DebtStatus.waitingForConfirmation:
         return colors.debtStatusWaitingDot;
+      case DebtStatus.rejected:
+        return colors.debtStatusPendingDot;
     }
   }
 
@@ -141,6 +143,11 @@ class ActualDebtCardWidget extends StatelessWidget {
             break;
           case DebtStatus.pending:
             statusLabel = tr.debtStatusPending;
+            statusBg = colors.debtPendingBg;
+            statusFg = colors.debtPendingText;
+            break;
+          case DebtStatus.rejected:
+            statusLabel = tr.rejectReceivedAction;
             statusBg = colors.debtPendingBg;
             statusFg = colors.debtPendingText;
             break;

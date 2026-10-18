@@ -1,6 +1,7 @@
 import '../../../groups/data/models/group_model.dart';
 import '../../domain/entities/debt_enums.dart';
 import '../../domain/entities/debt_overview_entity.dart';
+import '../../domain/entities/debt_settlement_entity.dart';
 import '../../domain/entities/group_debt_entity.dart';
 
 enum DebtsStatus { initial, loading, success, failure }
@@ -16,6 +17,7 @@ class DebtsState {
   final int activeDetailTab; // 0: Nợ tối giản, 1: Nợ thực tế
   final GroupSimplifiedDebtsEntity? simplifiedDebts;
   final GroupActualDebtsEntity? actualDebts;
+  final List<DebtSettlementEntity> settlements;
   final String? actualDebtStatusFilter;
   final bool isDetailLoading;
   final bool isActionSubmitting;
@@ -33,6 +35,7 @@ class DebtsState {
     this.activeDetailTab = 0,
     this.simplifiedDebts,
     this.actualDebts,
+    this.settlements = const [],
     this.actualDebtStatusFilter,
     this.isDetailLoading = false,
     this.isActionSubmitting = false,
@@ -43,6 +46,9 @@ class DebtsState {
   bool get isLoading => status == DebtsStatus.loading;
   bool get isSuccess => status == DebtsStatus.success;
   bool get isFailure => status == DebtsStatus.failure;
+
+  List<DebtSettlementEntity> get pendingSettlements =>
+      settlements.where((s) => s.isWaitingForConfirmation).toList();
 
   int get totalGroupCount => overview?.groupBalances.length ?? 0;
 
@@ -100,6 +106,7 @@ class DebtsState {
     int? activeDetailTab,
     GroupSimplifiedDebtsEntity? simplifiedDebts,
     GroupActualDebtsEntity? actualDebts,
+    List<DebtSettlementEntity>? settlements,
     String? actualDebtStatusFilter,
     bool? isDetailLoading,
     bool? isActionSubmitting,
@@ -125,6 +132,8 @@ class DebtsState {
           clearGroupDetails ? null : (simplifiedDebts ?? this.simplifiedDebts),
       actualDebts:
           clearGroupDetails ? null : (actualDebts ?? this.actualDebts),
+      settlements:
+          clearGroupDetails ? const [] : (settlements ?? this.settlements),
       actualDebtStatusFilter:
           actualDebtStatusFilter ?? this.actualDebtStatusFilter,
       isDetailLoading: isDetailLoading ?? this.isDetailLoading,

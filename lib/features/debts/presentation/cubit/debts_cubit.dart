@@ -6,6 +6,7 @@ import '../../../groups/data/models/group_model.dart';
 import '../../../groups/domain/repositories/groups_repository.dart';
 import '../../domain/entities/debt_enums.dart';
 import '../../domain/entities/debt_overview_entity.dart';
+import '../../domain/entities/debt_settlement_entity.dart';
 import '../../domain/entities/group_debt_entity.dart';
 import '../../domain/repositories/debts_repository.dart';
 import 'debts_state.dart';
@@ -199,11 +200,18 @@ class DebtsCubit extends Cubit<DebtsState> {
     }
 
     try {
-      var simplified = await _repository.getGroupSimplifiedDebts(groupId);
-      var actual = await _repository.getGroupActualDebts(
-        groupId,
-        status: state.actualDebtStatusFilter,
-      );
+      final results = await Future.wait([
+        _repository.getGroupSimplifiedDebts(groupId),
+        _repository.getGroupActualDebts(
+          groupId,
+          status: state.actualDebtStatusFilter,
+        ),
+        _repository.getGroupDebtSettlements(groupId),
+      ]);
+
+      var simplified = results[0] as GroupSimplifiedDebtsEntity;
+      var actual = results[1] as GroupActualDebtsEntity;
+      final settlements = results[2] as List<DebtSettlementEntity>;
 
       final matchedGroup =
           state.userGroups.where((g) => g.id == groupId).firstOrNull;
@@ -243,6 +251,7 @@ class DebtsCubit extends Cubit<DebtsState> {
           isDetailLoading: false,
           simplifiedDebts: simplified,
           actualDebts: actual,
+          settlements: settlements,
           clearMessages: !silent,
         ),
       );
@@ -423,6 +432,190 @@ class DebtsCubit extends Cubit<DebtsState> {
           successMessage: 'Đã gửi thông báo nhắc nợ thành công!',
         ),
       );
+      return true;
+    } on AppException catch (e) {
+      if (isClosed ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+        return false;
+      }
+      emit(
+        state.copyWith(
+          isActionSubmitting: false,
+          errorMessage: e.message,
+        ),
+      );
+      return false;
+    } catch (e) {
+      if (isClosed ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+        return false;
+      }
+      emit(
+        state.copyWith(
+          isActionSubmitting: false,
+          errorMessage: e.toString(),
+        ),
+      );
+      return false;
+    }
+  }
+
+  Future<bool> sendSimplifiedDebtReminder(
+    int groupId, {
+    required int debtorId,
+    required int creditorId,
+  }) async {
+    final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
+    emit(state.copyWith(isActionSubmitting: true, clearMessages: true));
+
+    try {
+      await _repository.sendSimplifiedDebtReminder(
+        groupId,
+        debtorId: debtorId,
+        creditorId: creditorId,
+      );
+      if (isClosed ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+        return false;
+      }
+
+      emit(
+        state.copyWith(
+          isActionSubmitting: false,
+          successMessage: 'Đã gửi thông báo nhắc nợ thành công!',
+        ),
+      );
+      return true;
+    } on AppException catch (e) {
+      if (isClosed ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+        return false;
+      }
+      emit(
+        state.copyWith(
+          isActionSubmitting: false,
+          errorMessage: e.message,
+        ),
+      );
+      return false;
+    } catch (e) {
+      if (isClosed ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+        return false;
+      }
+      emit(
+        state.copyWith(
+          isActionSubmitting: false,
+          errorMessage: e.toString(),
+        ),
+      );
+      return false;
+    }
+  }
+
+  Future<bool> paySimplifiedDebt(
+    int groupId, {
+    required int creditorId,
+    num? amount,
+    String? paymentProofUrl,
+    String? note,
+  }) async {
+    final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
+    emit(state.copyWith(isActionSubmitting: true, clearMessages: true));
+
+    try {
+      await _repository.paySimplifiedDebt(
+        groupId,
+        creditorId: creditorId,
+        amount: amount,
+        paymentProofUrl: paymentProofUrl,
+        note: note,
+      );
+      if (isClosed ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+        return false;
+      }
+
+      emit(
+        state.copyWith(
+          isActionSubmitting: false,
+          successMessage: 'Đã gửi yêu cầu xác nhận tất toán công nợ!',
+        ),
+      );
+
+      dataSyncCoordinator?.notifyDataChanged(DataSyncScope.debts);
+      if (state.selectedGroupId != null) {
+        await loadGroupDebts(state.selectedGroupId!, silent: true);
+      }
+      await loadOverview(silent: true);
+      return true;
+    } on AppException catch (e) {
+      if (isClosed ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+        return false;
+      }
+      emit(
+        state.copyWith(
+          isActionSubmitting: false,
+          errorMessage: e.message,
+        ),
+      );
+      return false;
+    } catch (e) {
+      if (isClosed ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+        return false;
+      }
+      emit(
+        state.copyWith(
+          isActionSubmitting: false,
+          errorMessage: e.toString(),
+        ),
+      );
+      return false;
+    }
+  }
+
+  Future<bool> confirmDebtSettlement(
+    int settlementId, {
+    required bool confirmed,
+  }) async {
+    final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
+    emit(state.copyWith(isActionSubmitting: true, clearMessages: true));
+
+    try {
+      await _repository.confirmDebtSettlement(
+        settlementId,
+        confirmed: confirmed,
+      );
+      if (isClosed ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+        return false;
+      }
+
+      emit(
+        state.copyWith(
+          isActionSubmitting: false,
+          successMessage: confirmed
+              ? 'Đã xác nhận tất toán công nợ thành công!'
+              : 'Đã từ chối tất toán công nợ.',
+        ),
+      );
+
+      dataSyncCoordinator?.notifyDataChanged(DataSyncScope.debts);
+      if (state.selectedGroupId != null) {
+        await loadGroupDebts(state.selectedGroupId!, silent: true);
+      }
+      await loadOverview(silent: true);
       return true;
     } on AppException catch (e) {
       if (isClosed ||

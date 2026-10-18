@@ -13,6 +13,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
   final VoidCallback? onPay;
   final ValueChanged<bool>? onConfirm;
   final VoidCallback? onRemind;
+  final bool isWaitingForConfirmation;
 
   const SimplifiedDebtCardWidget({
     super.key,
@@ -21,6 +22,7 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
     this.onPay,
     this.onConfirm,
     this.onRemind,
+    this.isWaitingForConfirmation = false,
   });
 
   @override
@@ -33,13 +35,18 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
     final isCurrentUserCreditor =
         currentUserId != null && debt.creditorId == currentUserId;
 
+    final effectiveWaiting = isWaitingForConfirmation ||
+        debt.action == DebtAction.confirm;
+
     final effectiveAction = debt.action != DebtAction.none
         ? debt.action
-        : (isCurrentUserDebtor
-            ? DebtAction.pay
-            : (isCurrentUserCreditor
-                ? DebtAction.remind
-                : DebtAction.none));
+        : (effectiveWaiting
+            ? (isCurrentUserCreditor ? DebtAction.confirm : DebtAction.none)
+            : (isCurrentUserDebtor
+                ? DebtAction.pay
+                : (isCurrentUserCreditor
+                    ? DebtAction.remind
+                    : DebtAction.none)));
 
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
@@ -73,14 +80,20 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                  color: colors.debtPendingBg,
+                  color: effectiveWaiting
+                      ? colors.debtWaitingBg
+                      : colors.debtPendingBg,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  tr.debtStatusPending,
+                  effectiveWaiting
+                      ? tr.debtStatusWaiting
+                      : tr.debtStatusPending,
                   style: AppTextStyle.bold(
                     fontSize: AppFontSize.caption,
-                    color: colors.debtPendingText,
+                    color: effectiveWaiting
+                        ? colors.debtWaitingText
+                        : colors.debtPendingText,
                   ),
                 ),
               ),
@@ -233,7 +246,34 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
           ),
 
           // 4. Action Buttons (PAY / CONFIRM / REMIND)
-          if (effectiveAction != DebtAction.none) ...[
+          if (effectiveWaiting && isCurrentUserDebtor) ...[
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              decoration: BoxDecoration(
+                color: colors.debtWaitingBg,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    LucideIcons.clock,
+                    size: 16,
+                    color: colors.debtWaitingText,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Đã chuyển tiền • Chờ xác nhận',
+                    style: AppTextStyle.bold(
+                      fontSize: AppFontSize.secondary,
+                      color: colors.debtWaitingText,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ] else if (effectiveAction != DebtAction.none) ...[
             const SizedBox(height: 12),
             _buildActionButtons(context, tr, colors, effectiveAction),
           ],
