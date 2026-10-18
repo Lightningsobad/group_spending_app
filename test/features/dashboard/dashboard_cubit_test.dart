@@ -52,6 +52,9 @@ class FakeDebtsRepository implements DebtsRepository {
 
   @override
   Future<void> sendDebtReminder(int debtId) async {}
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
 class FakeGroupsRepository implements GroupsRepository {
