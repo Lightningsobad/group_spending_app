@@ -624,27 +624,33 @@ Chủ nợ hoặc Admin của nhóm có thể gửi thông báo nhắc nợ dự
   "expectedAmount": 350
 }
 ```
-*(Ghi chú: `expectedAmount` là số tiền nợ tối giản dự kiến, đơn vị `k` tương ứng với trường `amount` trong kết quả tính nợ tối giản).*
+- **Mô tả các trường trong Request Body:**
+  - `debtorId` (Long, bắt buộc, > 0): ID của con nợ (người cần thanh toán).
+  - `creditorId` (Long, bắt buộc, > 0): ID của chủ nợ (người nhận tiền).
+  - `expectedAmount` (Long, bắt buộc, > 0): Số tiền nợ đang hiển thị trên client (đơn vị: nghìn VNĐ, ví dụ `350` tương ứng 350.000 VNĐ). Backend sẽ đối chiếu với kết quả tính toán nợ tối giản thời gian thực để đảm bảo dữ liệu hiển thị trên Mobile không bị cũ/lệch.
+  *(Ghi chú: Tin nhắn nhắc nợ được hệ thống tự động chuẩn hóa để đảm bảo tính nhất quán và chống spam).*
 
-- **Quyền hạn:** Người gọi API phải là Chủ nợ (`creditorId`) hoặc Admin của nhóm.
+- **Quyền hạn:** Người gọi API phải là Chủ nợ (`creditorId`) hoặc Admin của nhóm (không được là chính con nợ).
 - **Mã phản hồi thành công (HTTP 200 OK):**
 ```json
 {
   "success": true,
-  "message": "Đã gửi thông báo nhắc nợ thành công",
+  "message": "Đã gửi yêu cầu nhắc nợ",
   "data": null,
-  "timestamp": "2026-10-16T15:00:00Z"
+  "timestamp": "2026-10-19T13:10:00Z"
 }
 ```
 - **Mã lỗi thường gặp:**
-  - `400 Bad Request`: `INVALID_DEBT_REMINDER` - Không tìm thấy giao dịch nợ tối giản hợp lệ giữa con nợ và chủ nợ trong nhóm.
+  - `400 Bad Request`: `INVALID_DEBT_REMINDER` - Người nợ và người nhận trùng nhau (`debtorId == creditorId`).
+  - `400 Bad Request`: `SIMPLIFIED_DEBT_CHANGED` - Số tiền nợ hoặc giao dịch tối giản giữa 2 thành viên đã thay đổi hoặc không còn tồn tại.
   - `403 Forbidden`: `UNAUTHORIZED` - Chỉ chủ nợ hoặc Admin mới có quyền gửi thông báo nhắc nợ.
+  - `403 Forbidden`: `NOT_GROUP_MEMBER` - Người dùng không phải thành viên nhóm.
 
 ---
 
 ### 3.9. Xem trước cấn trừ nợ tối giản (Simplified Debt Payment Preview)
 
-Trước khi con nợ bấm thanh toán, Mobile gọi API này để hệ thống tính toán thuật toán giải nợ đa bước (multi-hop) và hiển thị cho người dùng biết số tiền nợ tối giản sẽ cấn trừ vào các khoản chi (ExpenseSplit) cụ thể nào.
+Trước khi con nợ bấm thanh toán, Mobile gọi API này để hệ thống tính toán phân bổ giải nợ chi tiết (multi-hop/direct) và cấp một `planToken` có hiệu lực 15 phút.
 
 - **Method:** `POST`
 - **Path:** `/groups/{groupId}/debts/simplified/payment-preview`
@@ -660,23 +666,30 @@ Trước khi con nợ bấm thanh toán, Mobile gọi API này để hệ thốn
 ```json
 {
   "creditorId": 2,
-  "amount": 150
+  "expectedAmount": 150
 }
 ```
-*(Ghi chú: `amount` theo đơn vị k VNĐ. Nếu bỏ trống hoặc null, hệ thống sẽ tự động lấy toàn bộ số tiền nợ tối giản còn lại giữa hai người).*
+- **Mô tả các trường trong Request Body:**
+  - `creditorId` (Long, bắt buộc, > 0): ID của chủ nợ (người nhận tiền).
+  - `expectedAmount` (Long, bắt buộc, > 0): Số tiền dự kiến thanh toán (đơn vị nghìn VNĐ, ví dụ `150` tương ứng 150.000 VNĐ).
 
 - **Quyền hạn:** Người gọi API phải là Con nợ trong giao dịch tối giản.
 - **Mã phản hồi thành công (HTTP 200 OK):**
 ```json
 {
   "success": true,
-  "message": "Xem trước cấn trừ nợ thành công",
+  "message": "Lập kế hoạch thanh toán thành công",
   "data": {
+    "planToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
     "groupId": 10,
     "debtorId": 1,
+    "debtorName": "Nguyễn Văn A",
     "creditorId": 2,
+    "creditorName": "Trần Văn B",
+    "creditorAvatar": "https://cdn.example.com/avatar/user2.jpg",
     "amount": 150,
     "amountVnd": 150000,
+    "expiresAt": "2026-10-19T13:25:00Z",
     "allocatedSplits": [
       {
         "expenseSplitId": 12,
@@ -699,17 +712,21 @@ Trước khi con nợ bấm thanh toán, Mobile gọi API này để hệ thốn
       }
     ]
   },
-  "timestamp": "2026-10-16T15:00:00Z"
+  "timestamp": "2026-10-19T13:10:00Z"
 }
 ```
+> **LƯU Ý QUAN TRỌNG CHO MOBILE:**
+> Mobile cần lưu giá trị `planToken` nhận được từ phản hồi này để gửi kèm trong yêu cầu xác nhận thanh toán ở API `3.10`. `planToken` có thời hạn 15 phút (`expiresAt`).
+
 - **Mã lỗi thường gặp:**
-  - `400 Bad Request`: `SIMPLIFIED_DEBT_CHANGED` - Khoản nợ tối giản không tồn tại hoặc số tiền yêu cầu thanh toán vượt quá số nợ tối giản hiện tại.
+  - `400 Bad Request`: `SIMPLIFIED_DEBT_CHANGED` - Khoản nợ tối giản không tồn tại hoặc số tiền yêu cầu thanh toán không khớp với nợ tối giản hiện tại.
+  - `403 Forbidden`: `NOT_GROUP_MEMBER` - Người dùng không phải thành viên nhóm.
 
 ---
 
 ### 3.10. Thanh toán nợ tối giản (Pay Simplified Debt)
 
-Con nợ bấm xác nhận thanh toán nợ tối giản (kèm ảnh bằng chứng chuyển khoản nếu có). Hệ thống sẽ tạo một yêu cầu tất toán (`DebtSettlement`) ở trạng thái `WAITING_FOR_CONFIRMATION`, đồng thời tạm khóa (RESERVED) các khoản `ExpenseSplit` tương ứng để tránh bị cấn trừ trùng lặp hoặc sửa đổi dữ liệu chi tiêu trong lúc chờ xác nhận.
+Con nợ bấm xác nhận thanh toán nợ tối giản sau khi đã chuyển khoản ngoài thực tế. Hệ thống sử dụng `planToken` đã cấp để tạo một yêu cầu tất toán (`DebtSettlement`) ở trạng thái `WAITING_FOR_CONFIRMATION`, đồng thời tạm khóa (`RESERVED`) các khoản `ExpenseSplit` tương ứng và tự động gửi Push Notification yêu cầu xác nhận tới Chủ nợ.
 
 - **Method:** `POST`
 - **Path:** `/groups/{groupId}/debts/simplified/pay`
@@ -720,23 +737,24 @@ Con nợ bấm xác nhận thanh toán nợ tối giản (kèm ảnh bằng ch�
   ```http
   Authorization: Bearer <accessToken>
   Content-Type: application/json
+  Idempotency-Key: <UUID>
   ```
+  *(Ghi chú: Header `Idempotency-Key` là tùy chọn nhưng được khuyến nghị sử dụng để tránh tạo trùng đợt tất toán khi người dùng ấn nhiều lần hoặc mạng gián đoạn).*
 - **Request Body:**
 ```json
 {
-  "creditorId": 2,
-  "amount": 150,
-  "paymentProofUrl": "https://cdn.example.com/receipt.jpg",
-  "note": "Đã chuyển khoản qua Vietcombank"
+  "planToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 }
 ```
+- **Mô tả trường:**
+  - `planToken` (String, bắt buộc): Chuỗi token kế hoạch thanh toán được cấp từ API `3.9 (payment-preview)`.
 
-- **Quyền hạn:** Người gọi API phải là Con nợ.
-- **Mã phản hồi thành công (HTTP 200 OK):**
+- **Quyền hạn:** Người gọi API phải là Con nợ trong kế hoạch thanh toán.
+- **Mã phản hồi thành công (HTTP 201 Created):**
 ```json
 {
   "success": true,
-  "message": "Đã gửi yêu cầu xác nhận tất toán công nợ",
+  "message": "Đã gửi yêu cầu xác nhận trả nợ",
   "data": {
     "id": 501,
     "groupId": 10,
@@ -749,8 +767,10 @@ Con nợ bấm xác nhận thanh toán nợ tối giản (kèm ảnh bằng ch�
     "amount": 150,
     "amountVnd": 150000,
     "status": "WAITING_FOR_CONFIRMATION",
-    "paymentProofUrl": "https://cdn.example.com/receipt.jpg",
-    "note": "Đã chuyển khoản qua Vietcombank",
+    "rejectionReason": null,
+    "createdAt": "2026-10-19T13:10:00Z",
+    "resolvedAt": null,
+    "action": "NONE",
     "allocatedSplits": [
       {
         "expenseSplitId": 12,
@@ -771,16 +791,21 @@ Con nợ bấm xác nhận thanh toán nợ tối giản (kèm ảnh bằng ch�
         "allocatedAmountVnd": 150000,
         "allocationType": "DIRECT"
       }
-    ],
-    "createdAt": "2026-10-16T15:00:00Z",
-    "confirmedAt": null
+    ]
   },
-  "timestamp": "2026-10-16T15:00:00Z"
+  "timestamp": "2026-10-19T13:10:00Z"
 }
 ```
+- **Thông báo tự động gửi tới Chủ nợ:**
+  - Loại: `NotificationType.DEBT_PAY_REQUEST`
+  - Tiêu đề: `"Xác nhận thanh toán nợ"`
+  - Nội dung: `"<Tên con nợ> đã chuyển khoản <amountVnd> VNĐ. Vui lòng kiểm tra và xác nhận 'Đã nhận'!"`
+  - Target: `"DEBT_SETTLEMENT"`, kèm `settlementId` và metadata liên quan.
 - **Mã lỗi thường gặp:**
-  - `400 Bad Request`: `SIMPLIFIED_DEBT_CHANGED` - Công nợ tối giản đã thay đổi kể từ lúc xem trước.
-  - `400 Bad Request`: `SETTLEMENT_IN_PROGRESS` - Đang có đợt thanh toán khác giữa hai người trong nhóm đang chờ xác nhận.
+  - `400 Bad Request`: `SIMPLIFIED_DEBT_CHANGED` - Kế hoạch thanh toán đã hết hạn (sau 15 phút), không tồn tại, hoặc các khoản chi tiêu liên quan đã bị thay đổi. Cần gọi lại preview để lấy token mới.
+  - `400 Bad Request`: `INVALID_DEBT_SETTLEMENT` - Token thanh toán không khớp với người dùng hoặc nhóm hiện tại.
+  - `400 Bad Request`: `GROUP_ARCHIVED` - Nhóm đã bị lưu trữ.
+  - `403 Forbidden`: `NOT_GROUP_MEMBER` - Người dùng không phải thành viên nhóm.
 
 ---
 
@@ -803,16 +828,18 @@ Chủ nợ kiểm tra tài khoản ngân hàng và bấm xác nhận nhận ti�
 - **Request Body:**
 ```json
 {
-  "confirmed": true
+  "confirmed": true,
+  "reason": null
 }
 ```
+*(Nếu từ chối, gửi `"confirmed": false` kèm `"reason": "Chưa nhận được tiền vào tài khoản ngân hàng"`).*
 
 - **Quyền hạn:** **Chỉ Chủ nợ** (`creditorId`) trong đợt tất toán mới có quyền xác nhận (Admin không xác nhận thay).
-- **Mã phản hồi thành công (HTTP 200 OK):**
+- **Mã phản hồi thành công khi `confirmed = true` (HTTP 200 OK):**
 ```json
 {
   "success": true,
-  "message": "Đã xác nhận tất toán công nợ",
+  "message": "Đã xác nhận nhận tiền thành công",
   "data": {
     "id": 501,
     "groupId": 10,
@@ -825,13 +852,39 @@ Chủ nợ kiểm tra tài khoản ngân hàng và bấm xác nhận nhận ti�
     "amount": 150,
     "amountVnd": 150000,
     "status": "SETTLED",
-    "paymentProofUrl": "https://cdn.example.com/receipt.jpg",
-    "note": "Đã chuyển khoản qua Vietcombank",
-    "allocatedSplits": [ ... ],
-    "createdAt": "2026-10-16T15:00:00Z",
-    "confirmedAt": "2026-10-16T15:05:00Z"
+    "rejectionReason": null,
+    "createdAt": "2026-10-19T13:10:00Z",
+    "resolvedAt": "2026-10-19T13:15:00Z",
+    "action": "NONE",
+    "allocatedSplits": [ ... ]
   },
-  "timestamp": "2026-10-16T15:05:00Z"
+  "timestamp": "2026-10-19T13:15:00Z"
+}
+```
+- **Mã phản hồi thành công khi `confirmed = false` (HTTP 200 OK):**
+```json
+{
+  "success": true,
+  "message": "Đã từ chối xác nhận",
+  "data": {
+    "id": 501,
+    "groupId": 10,
+    "debtorId": 1,
+    "debtorName": "Nguyễn Văn A",
+    "debtorAvatar": "https://cdn.example.com/avatar/user1.jpg",
+    "creditorId": 2,
+    "creditorName": "Trần Văn B",
+    "creditorAvatar": "https://cdn.example.com/avatar/user2.jpg",
+    "amount": 150,
+    "amountVnd": 150000,
+    "status": "REJECTED",
+    "rejectionReason": "Chưa nhận được tiền vào tài khoản ngân hàng",
+    "createdAt": "2026-10-19T13:10:00Z",
+    "resolvedAt": "2026-10-19T13:15:00Z",
+    "action": "NONE",
+    "allocatedSplits": [ ... ]
+  },
+  "timestamp": "2026-10-19T13:15:00Z"
 }
 ```
 - **Mã lỗi thường gặp:**
@@ -855,38 +908,54 @@ Chủ nợ kiểm tra tài khoản ngân hàng và bấm xác nhận nhận ti�
 
 ### 3.13. Lấy lịch sử các đợt tất toán trong nhóm (Get Group Debt Settlements)
 
+Hỗ trợ phân trang và lọc theo trạng thái yêu cầu tất toán (`WAITING_FOR_CONFIRMATION`, `SETTLED`, `REJECTED`).
+
 - **Method:** `GET`
 - **Path:** `/groups/{groupId}/debt-settlements`
 - **Full URL:** `/api/v1/groups/{groupId}/debt-settlements`
 - **Path Variables:**
   - `groupId` (Long): ID của nhóm
+- **Query Parameters:**
+  - `status` (String, tùy chọn): Lọc theo trạng thái (`WAITING_FOR_CONFIRMATION`, `SETTLED`, `REJECTED`). Để trống để lấy tất cả.
+  - `page` (Integer, tùy chọn, mặc định `0`): Chỉ số trang (0-indexed).
+  - `size` (Integer, tùy chọn, mặc định `20`): Kích thước trang.
+  - `sort` (String, tùy chọn, mặc định `createdAt,desc`): Sắp xếp.
 - **Quyền hạn:** Thành viên của nhóm.
 - **Mã phản hồi thành công (HTTP 200 OK):**
 ```json
 {
   "success": true,
-  "message": "Lấy danh sách các đợt tất toán thành công",
-  "data": [
-    {
-      "id": 501,
-      "groupId": 10,
-      "debtorId": 1,
-      "debtorName": "Nguyễn Văn A",
-      "debtorAvatar": "https://cdn.example.com/avatar/user1.jpg",
-      "creditorId": 2,
-      "creditorName": "Trần Văn B",
-      "creditorAvatar": "https://cdn.example.com/avatar/user2.jpg",
-      "amount": 150,
-      "amountVnd": 150000,
-      "status": "SETTLED",
-      "paymentProofUrl": "https://cdn.example.com/receipt.jpg",
-      "note": "Đã chuyển khoản qua Vietcombank",
-      "allocatedSplits": [ ... ],
-      "createdAt": "2026-10-16T15:00:00Z",
-      "confirmedAt": "2026-10-16T15:05:00Z"
-    }
-  ],
-  "timestamp": "2026-10-16T15:06:00Z"
+  "message": "Thành công",
+  "data": {
+    "content": [
+      {
+        "id": 501,
+        "groupId": 10,
+        "debtorId": 1,
+        "debtorName": "Nguyễn Văn A",
+        "debtorAvatar": "https://cdn.example.com/avatar/user1.jpg",
+        "creditorId": 2,
+        "creditorName": "Trần Văn B",
+        "creditorAvatar": "https://cdn.example.com/avatar/user2.jpg",
+        "amount": 150,
+        "amountVnd": 150000,
+        "status": "SETTLED",
+        "rejectionReason": null,
+        "createdAt": "2026-10-19T13:10:00Z",
+        "resolvedAt": "2026-10-19T13:15:00Z",
+        "action": "NONE",
+        "allocatedSplits": [ ... ]
+      }
+    ],
+    "pageable": {
+      "pageNumber": 0,
+      "pageSize": 20
+    },
+    "totalElements": 1,
+    "totalPages": 1,
+    "last": true
+  },
+  "timestamp": "2026-10-19T13:16:00Z"
 }
 ```
 
