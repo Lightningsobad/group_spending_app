@@ -75,6 +75,7 @@ class _MockDebtsRepo implements DebtsRepository {
     int groupId, {
     required int debtorId,
     required int creditorId,
+    required num expectedAmount,
   }) async {}
 
   @override

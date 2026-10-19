@@ -22,6 +22,7 @@ abstract class DebtsRepository {
     int groupId, {
     required int debtorId,
     required int creditorId,
+    required num expectedAmount,
   });
 
   Future<DebtSettlementEntity> paySimplifiedDebt(

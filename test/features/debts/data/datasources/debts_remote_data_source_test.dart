@@ -70,6 +70,7 @@ void main() {
         10,
         debtorId: 2,
         creditorId: 1,
+        expectedAmount: 350,
       );
 
       expect(capturedOptions?.method, 'POST');
@@ -78,6 +79,7 @@ void main() {
       final map = capturedData as Map<String, dynamic>;
       expect(map['debtorId'], 2);
       expect(map['creditorId'], 1);
+      expect(map['expectedAmount'], 350);
       expect(map.containsKey('customMessage'), isFalse);
     });
 

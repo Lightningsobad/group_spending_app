@@ -47,11 +47,13 @@ class DebtsRepositoryImpl implements DebtsRepository {
     int groupId, {
     required int debtorId,
     required int creditorId,
+    required num expectedAmount,
   }) {
     return remoteDataSource.sendSimplifiedDebtReminder(
       groupId,
       debtorId: debtorId,
       creditorId: creditorId,
+      expectedAmount: expectedAmount,
     );
   }
 
