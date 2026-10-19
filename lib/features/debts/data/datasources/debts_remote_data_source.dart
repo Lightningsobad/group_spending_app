@@ -23,6 +23,7 @@ abstract class DebtsRemoteDataSource {
     int groupId, {
     required int debtorId,
     required int creditorId,
+    required num expectedAmount,
   });
 
   Future<DebtSettlementModel> paySimplifiedDebt(
@@ -118,12 +119,14 @@ class DebtsRemoteDataSourceImpl implements DebtsRemoteDataSource {
     int groupId, {
     required int debtorId,
     required int creditorId,
+    required num expectedAmount,
   }) async {
     await _apiClient.post<Map<String, dynamic>>(
       '/groups/$groupId/debts/simplified/remind',
       data: {
         'debtorId': debtorId,
         'creditorId': creditorId,
+        'expectedAmount': expectedAmount,
       },
     );
   }

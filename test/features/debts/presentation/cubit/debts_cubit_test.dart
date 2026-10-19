@@ -90,6 +90,7 @@ class MockDebtsRepository implements DebtsRepository {
   int remindCalls = 0;
   int simplifiedRemindCalls = 0;
   int? lastRemindedDebtorId;
+  num? lastRemindedExpectedAmount;
   int paySimplifiedCalls = 0;
   int? lastPayCreditorId;
   num? lastPayAmount;
@@ -130,9 +131,11 @@ class MockDebtsRepository implements DebtsRepository {
     int groupId, {
     required int debtorId,
     required int creditorId,
+    required num expectedAmount,
   }) async {
     simplifiedRemindCalls++;
     lastRemindedDebtorId = debtorId;
+    lastRemindedExpectedAmount = expectedAmount;
   }
 
   @override
@@ -439,11 +442,13 @@ void main() {
         10,
         debtorId: 2,
         creditorId: 1,
+        expectedAmount: 350,
       );
 
       expect(success, isTrue);
       expect(repository.simplifiedRemindCalls, 1);
       expect(repository.lastRemindedDebtorId, 2);
+      expect(repository.lastRemindedExpectedAmount, 350);
       expect(cubit.state.successMessage, isNotNull);
     });
 

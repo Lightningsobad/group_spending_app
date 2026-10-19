@@ -343,10 +343,16 @@ class GroupDebtDetailView extends StatelessWidget {
                                   CurrencyUtils.formatVnd(debt.amountVnd),
                             );
                             if (ok == true) {
+                              final expectedAmount = debt.amount > 0
+                                  ? debt.amount
+                                  : (debt.amountVnd > 0
+                                      ? (debt.amountVnd / 1000)
+                                      : 0);
                               await cubit.sendSimplifiedDebtReminder(
                                 groupId,
                                 debtorId: debt.debtorId,
                                 creditorId: debt.creditorId,
+                                expectedAmount: expectedAmount,
                               );
                             }
                           },

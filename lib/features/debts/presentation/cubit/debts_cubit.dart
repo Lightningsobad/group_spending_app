@@ -466,6 +466,7 @@ class DebtsCubit extends Cubit<DebtsState> {
     int groupId, {
     required int debtorId,
     required int creditorId,
+    required num expectedAmount,
   }) async {
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
     emit(state.copyWith(isActionSubmitting: true, clearMessages: true));
@@ -475,6 +476,7 @@ class DebtsCubit extends Cubit<DebtsState> {
         groupId,
         debtorId: debtorId,
         creditorId: creditorId,
+        expectedAmount: expectedAmount,
       );
       if (isClosed ||
           (sessionCoordinator != null &&

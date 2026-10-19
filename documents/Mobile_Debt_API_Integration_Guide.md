@@ -619,12 +619,12 @@ Chủ nợ hoặc Admin của nhóm có thể gửi thông báo nhắc nợ dự
 - **Request Body:**
 ```json
 {
-  "debtorId": 1,
-  "creditorId": 2,
-  "customMessage": "Nhớ gửi tiền cà phê nha bạn ơi!"
+  "debtorId": 2,
+  "creditorId": 1,
+  "expectedAmount": 350
 }
 ```
-*(Ghi chú: `customMessage` là tùy chọn. Nếu không truyền, hệ thống sẽ sử dụng tin nhắn nhắc nợ mặc định).*
+*(Ghi chú: `expectedAmount` là số tiền nợ tối giản dự kiến, đơn vị `k` tương ứng với trường `amount` trong kết quả tính nợ tối giản).*
 
 - **Quyền hạn:** Người gọi API phải là Chủ nợ (`creditorId`) hoặc Admin của nhóm.
 - **Mã phản hồi thành công (HTTP 200 OK):**
