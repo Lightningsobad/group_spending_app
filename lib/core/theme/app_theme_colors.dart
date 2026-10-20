@@ -296,6 +296,27 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color inviteBannerButtonBg;
   final Color inviteBannerButtonFg;
 
+  // Financial Balance Card Semantic Tokens
+  final Color financialCardBgStart;
+  final Color financialCardBgMiddle;
+  final Color financialCardBgEnd;
+  final Color financialCardBorder;
+  final BoxShadow financialCardShadow;
+  final Color financialCardIconBg;
+  final Color financialCardIcon;
+  final Color financialCardTitle;
+  final Color financialCardEyeToggle;
+  final Color financialCardBoxBg;
+  final Color financialCardBoxBorder;
+  final Color financialCardOweIcon;
+  final Color financialCardOweLabel;
+  final Color financialCardOweAmount;
+  final Color financialCardOweSubtitle;
+  final Color financialCardReceiveIcon;
+  final Color financialCardReceiveLabel;
+  final Color financialCardReceiveAmount;
+  final Color financialCardReceiveSubtitle;
+
   const AppThemeColors({
     required this.background,
     required this.cardBackground,
@@ -536,6 +557,25 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.expenseQuickDeleteBg,
     required this.expenseQuickDeleteFg,
     required this.expenseReceiptZoomText,
+    required this.financialCardBgStart,
+    required this.financialCardBgMiddle,
+    required this.financialCardBgEnd,
+    required this.financialCardBorder,
+    required this.financialCardShadow,
+    required this.financialCardIconBg,
+    required this.financialCardIcon,
+    required this.financialCardTitle,
+    required this.financialCardEyeToggle,
+    required this.financialCardBoxBg,
+    required this.financialCardBoxBorder,
+    required this.financialCardOweIcon,
+    required this.financialCardOweLabel,
+    required this.financialCardOweAmount,
+    required this.financialCardOweSubtitle,
+    required this.financialCardReceiveIcon,
+    required this.financialCardReceiveLabel,
+    required this.financialCardReceiveAmount,
+    required this.financialCardReceiveSubtitle,
   });
 
   /// Bảng màu cho Light Theme
@@ -787,6 +827,29 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     expenseQuickDeleteBg: Color(0xFFFEE2E2),
     expenseQuickDeleteFg: AppColors.error,
     expenseReceiptZoomText: Color(0xFF14532D),
+    financialCardBgStart: AppColors.deepEmeraldDark,
+    financialCardBgMiddle: AppColors.deepEmerald,
+    financialCardBgEnd: AppColors.deepEmeraldForest,
+    financialCardBorder: Color(0x24FFFFFF),
+    financialCardShadow: BoxShadow(
+      color: Color(0x26042F24),
+      blurRadius: 18,
+      offset: Offset(0, 8),
+    ),
+    financialCardIconBg: Color(0x1FFFFFFF),
+    financialCardIcon: AppColors.emeraldLight,
+    financialCardTitle: AppColors.borderLight,
+    financialCardEyeToggle: AppColors.borderCard,
+    financialCardBoxBg: Color(0x12FFFFFF),
+    financialCardBoxBorder: Color(0x1FFFFFFF),
+    financialCardOweIcon: AppColors.coralSoft,
+    financialCardOweLabel: AppColors.borderLight,
+    financialCardOweAmount: AppColors.coralSoft,
+    financialCardOweSubtitle: AppColors.textMuted,
+    financialCardReceiveIcon: AppColors.mintLight,
+    financialCardReceiveLabel: AppColors.borderLight,
+    financialCardReceiveAmount: AppColors.mintLight,
+    financialCardReceiveSubtitle: AppColors.textMuted,
   );
 
   /// Bảng màu cho Dark Theme
@@ -1038,6 +1101,29 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     expenseQuickDeleteBg: Color(0x33450A0A),
     expenseQuickDeleteFg: Color(0xFFF87171),
     expenseReceiptZoomText: Color(0xFF34D399),
+    financialCardBgStart: Color(0xFF03221A),
+    financialCardBgMiddle: Color(0xFF04382A),
+    financialCardBgEnd: AppColors.deepEmerald,
+    financialCardBorder: Color(0x26FFFFFF),
+    financialCardShadow: BoxShadow(
+      color: Color(0x66000000),
+      blurRadius: 20,
+      offset: Offset(0, 8),
+    ),
+    financialCardIconBg: Color(0x1FFFFFFF),
+    financialCardIcon: AppColors.emeraldLight,
+    financialCardTitle: AppColors.borderLight,
+    financialCardEyeToggle: AppColors.borderCard,
+    financialCardBoxBg: Color(0x14FFFFFF),
+    financialCardBoxBorder: Color(0x1FFFFFFF),
+    financialCardOweIcon: AppColors.coralSoft,
+    financialCardOweLabel: AppColors.borderLight,
+    financialCardOweAmount: AppColors.coralSoft,
+    financialCardOweSubtitle: AppColors.textLightSecondary,
+    financialCardReceiveIcon: AppColors.mintLight,
+    financialCardReceiveLabel: AppColors.borderLight,
+    financialCardReceiveAmount: AppColors.mintLight,
+    financialCardReceiveSubtitle: AppColors.textLightSecondary,
   );
 
   /// Lấy bảng màu tương ứng với Theme hiện tại
@@ -1287,6 +1373,25 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? expenseQuickDeleteBg,
     Color? expenseQuickDeleteFg,
     Color? expenseReceiptZoomText,
+    Color? financialCardBgStart,
+    Color? financialCardBgMiddle,
+    Color? financialCardBgEnd,
+    Color? financialCardBorder,
+    BoxShadow? financialCardShadow,
+    Color? financialCardIconBg,
+    Color? financialCardIcon,
+    Color? financialCardTitle,
+    Color? financialCardEyeToggle,
+    Color? financialCardBoxBg,
+    Color? financialCardBoxBorder,
+    Color? financialCardOweIcon,
+    Color? financialCardOweLabel,
+    Color? financialCardOweAmount,
+    Color? financialCardOweSubtitle,
+    Color? financialCardReceiveIcon,
+    Color? financialCardReceiveLabel,
+    Color? financialCardReceiveAmount,
+    Color? financialCardReceiveSubtitle,
   }) {
     return AppThemeColors(
       background: background ?? this.background,
@@ -1562,6 +1667,35 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       expenseQuickDeleteFg: expenseQuickDeleteFg ?? this.expenseQuickDeleteFg,
       expenseReceiptZoomText:
           expenseReceiptZoomText ?? this.expenseReceiptZoomText,
+      financialCardBgStart: financialCardBgStart ?? this.financialCardBgStart,
+      financialCardBgMiddle:
+          financialCardBgMiddle ?? this.financialCardBgMiddle,
+      financialCardBgEnd: financialCardBgEnd ?? this.financialCardBgEnd,
+      financialCardBorder: financialCardBorder ?? this.financialCardBorder,
+      financialCardShadow: financialCardShadow ?? this.financialCardShadow,
+      financialCardIconBg: financialCardIconBg ?? this.financialCardIconBg,
+      financialCardIcon: financialCardIcon ?? this.financialCardIcon,
+      financialCardTitle: financialCardTitle ?? this.financialCardTitle,
+      financialCardEyeToggle:
+          financialCardEyeToggle ?? this.financialCardEyeToggle,
+      financialCardBoxBg: financialCardBoxBg ?? this.financialCardBoxBg,
+      financialCardBoxBorder:
+          financialCardBoxBorder ?? this.financialCardBoxBorder,
+      financialCardOweIcon: financialCardOweIcon ?? this.financialCardOweIcon,
+      financialCardOweLabel:
+          financialCardOweLabel ?? this.financialCardOweLabel,
+      financialCardOweAmount:
+          financialCardOweAmount ?? this.financialCardOweAmount,
+      financialCardOweSubtitle:
+          financialCardOweSubtitle ?? this.financialCardOweSubtitle,
+      financialCardReceiveIcon:
+          financialCardReceiveIcon ?? this.financialCardReceiveIcon,
+      financialCardReceiveLabel:
+          financialCardReceiveLabel ?? this.financialCardReceiveLabel,
+      financialCardReceiveAmount:
+          financialCardReceiveAmount ?? this.financialCardReceiveAmount,
+      financialCardReceiveSubtitle:
+          financialCardReceiveSubtitle ?? this.financialCardReceiveSubtitle,
     );
   }
 
@@ -1948,6 +2082,44 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           Color.lerp(expenseQuickDeleteFg, other.expenseQuickDeleteFg, t)!,
       expenseReceiptZoomText: Color.lerp(
           expenseReceiptZoomText, other.expenseReceiptZoomText, t)!,
+      financialCardBgStart:
+          Color.lerp(financialCardBgStart, other.financialCardBgStart, t)!,
+      financialCardBgMiddle:
+          Color.lerp(financialCardBgMiddle, other.financialCardBgMiddle, t)!,
+      financialCardBgEnd:
+          Color.lerp(financialCardBgEnd, other.financialCardBgEnd, t)!,
+      financialCardBorder:
+          Color.lerp(financialCardBorder, other.financialCardBorder, t)!,
+      financialCardShadow:
+          BoxShadow.lerp(financialCardShadow, other.financialCardShadow, t)!,
+      financialCardIconBg:
+          Color.lerp(financialCardIconBg, other.financialCardIconBg, t)!,
+      financialCardIcon:
+          Color.lerp(financialCardIcon, other.financialCardIcon, t)!,
+      financialCardTitle:
+          Color.lerp(financialCardTitle, other.financialCardTitle, t)!,
+      financialCardEyeToggle:
+          Color.lerp(financialCardEyeToggle, other.financialCardEyeToggle, t)!,
+      financialCardBoxBg:
+          Color.lerp(financialCardBoxBg, other.financialCardBoxBg, t)!,
+      financialCardBoxBorder:
+          Color.lerp(financialCardBoxBorder, other.financialCardBoxBorder, t)!,
+      financialCardOweIcon:
+          Color.lerp(financialCardOweIcon, other.financialCardOweIcon, t)!,
+      financialCardOweLabel:
+          Color.lerp(financialCardOweLabel, other.financialCardOweLabel, t)!,
+      financialCardOweAmount:
+          Color.lerp(financialCardOweAmount, other.financialCardOweAmount, t)!,
+      financialCardOweSubtitle: Color.lerp(
+          financialCardOweSubtitle, other.financialCardOweSubtitle, t)!,
+      financialCardReceiveIcon: Color.lerp(
+          financialCardReceiveIcon, other.financialCardReceiveIcon, t)!,
+      financialCardReceiveLabel: Color.lerp(
+          financialCardReceiveLabel, other.financialCardReceiveLabel, t)!,
+      financialCardReceiveAmount: Color.lerp(
+          financialCardReceiveAmount, other.financialCardReceiveAmount, t)!,
+      financialCardReceiveSubtitle: Color.lerp(
+          financialCardReceiveSubtitle, other.financialCardReceiveSubtitle, t)!,
     );
   }
 }

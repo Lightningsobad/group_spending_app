@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
@@ -24,6 +25,7 @@ class _FinancialBalanceCardState extends State<FinancialBalanceCard> {
   @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
+    final colors = context.colors;
     final owedText = _isBalanceHidden
         ? '••••••••'
         : CurrencyUtils.formatVnd(widget.totalOwedVnd);
@@ -35,21 +37,21 @@ class _FinancialBalanceCardState extends State<FinancialBalanceCard> {
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           colors: [
-            Color(0xFF0F172A),
-            Color(0xFF1E293B),
-            Color(0xFF1E1B4B),
+            colors.financialCardBgStart,
+            colors.financialCardBgMiddle,
+            colors.financialCardBgEnd,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
+        border: Border.all(
+          color: colors.financialCardBorder,
+          width: 1.2,
+        ),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.15),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
-          ),
+          colors.financialCardShadow,
         ],
       ),
       child: Column(
@@ -65,13 +67,13 @@ class _FinancialBalanceCardState extends State<FinancialBalanceCard> {
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.1),
+                      color: colors.financialCardIconBg,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       LucideIcons.wallet,
                       size: 18,
-                      color: Color(0xFF34D399),
+                      color: colors.financialCardIcon,
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -79,7 +81,7 @@ class _FinancialBalanceCardState extends State<FinancialBalanceCard> {
                     tr.financialOverviewTitle,
                     style: AppTextStyle.bold(
                       fontSize: 12,
-                      color: const Color(0xFFCBD5E1),
+                      color: colors.financialCardTitle,
                     ),
                   ),
                 ],
@@ -88,7 +90,7 @@ class _FinancialBalanceCardState extends State<FinancialBalanceCard> {
                 icon: Icon(
                   _isBalanceHidden ? LucideIcons.eyeOff : LucideIcons.eye,
                   size: 18,
-                  color: const Color(0xFFCBD5E1),
+                  color: colors.financialCardEyeToggle,
                 ),
                 tooltip: _isBalanceHidden ? 'Hiện số dư' : 'Ẩn số dư',
                 onPressed: () {
@@ -112,10 +114,10 @@ class _FinancialBalanceCardState extends State<FinancialBalanceCard> {
                     vertical: 12,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.08),
+                    color: colors.financialCardBoxBg,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.12),
+                      color: colors.financialCardBoxBorder,
                     ),
                   ),
                   child: Column(
@@ -123,38 +125,47 @@ class _FinancialBalanceCardState extends State<FinancialBalanceCard> {
                     children: [
                       Row(
                         children: [
-                          const Icon(
+                          Icon(
                             LucideIcons.trendingDown,
                             size: 14,
-                            color: Color(0xFFF87171),
+                            color: colors.financialCardOweIcon,
                           ),
                           const SizedBox(width: 6),
-                          Text(
-                            tr.youOwe,
-                            style: AppTextStyle.medium(
-                              fontSize: 12,
-                              color: const Color(0xFFE2E8F0),
+                          Expanded(
+                            child: Text(
+                              tr.youOwe,
+                              style: AppTextStyle.medium(
+                                fontSize: 12,
+                                color: colors.financialCardOweLabel,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        owedText,
-                        style: AppTextStyle.bold(
-                          fontSize: 18,
-                          color: const Color(0xFFF87171),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          owedText,
+                          style: AppTextStyle.bold(
+                            fontSize: 18,
+                            color: colors.financialCardOweAmount,
+                          ),
+                          maxLines: 1,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 2),
                       Text(
                         tr.paySoonSubtitle,
                         style: AppTextStyle.regular(
                           fontSize: 12,
-                          color: const Color(0xFF94A3B8),
+                          color: colors.financialCardOweSubtitle,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
@@ -170,10 +181,10 @@ class _FinancialBalanceCardState extends State<FinancialBalanceCard> {
                     vertical: 12,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.08),
+                    color: colors.financialCardBoxBg,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.12),
+                      color: colors.financialCardBoxBorder,
                     ),
                   ),
                   child: Column(
@@ -181,38 +192,47 @@ class _FinancialBalanceCardState extends State<FinancialBalanceCard> {
                     children: [
                       Row(
                         children: [
-                          const Icon(
+                          Icon(
                             LucideIcons.trendingUp,
                             size: 14,
-                            color: Color(0xFF34D399),
+                            color: colors.financialCardReceiveIcon,
                           ),
                           const SizedBox(width: 6),
-                          Text(
-                            tr.youAreOwed,
-                            style: AppTextStyle.medium(
-                              fontSize: 12,
-                              color: const Color(0xFFE2E8F0),
+                          Expanded(
+                            child: Text(
+                              tr.youAreOwed,
+                              style: AppTextStyle.medium(
+                                fontSize: 12,
+                                color: colors.financialCardReceiveLabel,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        receivableText,
-                        style: AppTextStyle.bold(
-                          fontSize: 18,
-                          color: const Color(0xFF34D399),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          receivableText,
+                          style: AppTextStyle.bold(
+                            fontSize: 18,
+                            color: colors.financialCardReceiveAmount,
+                          ),
+                          maxLines: 1,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
                       ),
                       const SizedBox(height: 2),
                       Text(
                         tr.friendsOweYouSubtitle,
                         style: AppTextStyle.regular(
                           fontSize: 12,
-                          color: const Color(0xFF94A3B8),
+                          color: colors.financialCardReceiveSubtitle,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),

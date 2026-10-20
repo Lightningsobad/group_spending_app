@@ -44,6 +44,13 @@ class AppColors {
   static const Color textLight = Color(0xFFF8FAFC);
   static const Color textLightSecondary = Color(0xFF94A3B8);
 
+  // Financial Card Luxury Emerald Palette
+  static const Color deepEmeraldDark = Color(0xFF042F24);
+  static const Color deepEmerald = Color(0xFF064E3B);
+  static const Color deepEmeraldForest = Color(0xFF065F46);
+  static const Color mintLight = Color(0xFF6EE7B7);
+  static const Color coralSoft = Color(0xFFFCA5A5);
+
   // Gradient for Flash screen luxury background
   static const List<Color> luxuryGradient = [
     Color(0xFF064E3B),

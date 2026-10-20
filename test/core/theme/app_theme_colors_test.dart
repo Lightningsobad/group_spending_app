@@ -29,6 +29,11 @@ void main() {
       expect(AppThemeColors.light.expenseCategoryTagBg, isNotNull);
       expect(AppThemeColors.light.expenseActionEditBg, isNotNull);
       expect(AppThemeColors.light.expenseActionDeleteBg, isNotNull);
+      expect(AppThemeColors.light.financialCardBgStart, isNotNull);
+      expect(AppThemeColors.light.financialCardBorder, isNotNull);
+      expect(AppThemeColors.light.financialCardShadow, isNotNull);
+      expect(AppThemeColors.light.financialCardOweAmount, isNotNull);
+      expect(AppThemeColors.light.financialCardReceiveAmount, isNotNull);
 
       expect(AppThemeColors.dark.background, isNotNull);
       expect(AppThemeColors.dark.cardBackground, isNot(equals(Colors.white)));
@@ -53,6 +58,11 @@ void main() {
       expect(AppThemeColors.dark.expenseCategoryTagBg, isNotNull);
       expect(AppThemeColors.dark.expenseActionEditBg, isNotNull);
       expect(AppThemeColors.dark.expenseActionDeleteBg, isNotNull);
+      expect(AppThemeColors.dark.financialCardBgStart, isNotNull);
+      expect(AppThemeColors.dark.financialCardBorder, isNotNull);
+      expect(AppThemeColors.dark.financialCardShadow, isNotNull);
+      expect(AppThemeColors.dark.financialCardOweAmount, isNotNull);
+      expect(AppThemeColors.dark.financialCardReceiveAmount, isNotNull);
     });
 
     testWidgets('context.colors resolves light and dark palettes accurately', (tester) async {
