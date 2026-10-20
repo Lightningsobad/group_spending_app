@@ -25,6 +25,10 @@ void main() {
       expect(AppThemeColors.light.qrMockupCard, equals(Colors.white));
       expect(AppThemeColors.light.qrMockupFinder, isNotNull);
       expect(AppThemeColors.light.qrMockupDot, isNotNull);
+      expect(AppThemeColors.light.expenseHeroAmount, isNotNull);
+      expect(AppThemeColors.light.expenseCategoryTagBg, isNotNull);
+      expect(AppThemeColors.light.expenseActionEditBg, isNotNull);
+      expect(AppThemeColors.light.expenseActionDeleteBg, isNotNull);
 
       expect(AppThemeColors.dark.background, isNotNull);
       expect(AppThemeColors.dark.cardBackground, isNot(equals(Colors.white)));
@@ -45,6 +49,10 @@ void main() {
       expect(AppThemeColors.dark.qrMockupCard, isNot(equals(Colors.white)));
       expect(AppThemeColors.dark.qrMockupFinder, isNotNull);
       expect(AppThemeColors.dark.qrMockupDot, isNotNull);
+      expect(AppThemeColors.dark.expenseHeroAmount, isNotNull);
+      expect(AppThemeColors.dark.expenseCategoryTagBg, isNotNull);
+      expect(AppThemeColors.dark.expenseActionEditBg, isNotNull);
+      expect(AppThemeColors.dark.expenseActionDeleteBg, isNotNull);
     });
 
     testWidgets('context.colors resolves light and dark palettes accurately', (tester) async {
