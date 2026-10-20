@@ -237,6 +237,30 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color expenseCardSelectedBg;
   final Color expenseCardSelectedBorder;
 
+  // Expense Detail Semantic Tokens
+  final Color expenseHeroAmount;
+  final Color expenseCategoryTagBg;
+  final Color expenseCategoryTagBorder;
+  final Color expenseCategoryTagText;
+  final Color expensePayerBadgeBg;
+  final Color expensePayerBadgeText;
+  final Color expensePayerAdvanceText;
+  final Color expenseSplitPaidBg;
+  final Color expenseSplitPaidText;
+  final Color expenseSplitUnpaidBg;
+  final Color expenseSplitUnpaidText;
+  final Color expenseSplitPendingBg;
+  final Color expenseSplitPendingText;
+  final Color expenseActionEditBg;
+  final Color expenseActionEditBorder;
+  final Color expenseActionEditText;
+  final Color expenseActionDeleteBg;
+  final Color expenseActionDeleteBorder;
+  final Color expenseActionDeleteText;
+  final Color expenseQuickDeleteBg;
+  final Color expenseQuickDeleteFg;
+  final Color expenseReceiptZoomText;
+
   // Scanner & QR Mockup Tokens
   final Color scannerBackground;
   final Color scannerCorner;
@@ -468,6 +492,28 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.scannerHighlightText,
     required this.expenseCardSelectedBg,
     required this.expenseCardSelectedBorder,
+    required this.expenseHeroAmount,
+    required this.expenseCategoryTagBg,
+    required this.expenseCategoryTagBorder,
+    required this.expenseCategoryTagText,
+    required this.expensePayerBadgeBg,
+    required this.expensePayerBadgeText,
+    required this.expensePayerAdvanceText,
+    required this.expenseSplitPaidBg,
+    required this.expenseSplitPaidText,
+    required this.expenseSplitUnpaidBg,
+    required this.expenseSplitUnpaidText,
+    required this.expenseSplitPendingBg,
+    required this.expenseSplitPendingText,
+    required this.expenseActionEditBg,
+    required this.expenseActionEditBorder,
+    required this.expenseActionEditText,
+    required this.expenseActionDeleteBg,
+    required this.expenseActionDeleteBorder,
+    required this.expenseActionDeleteText,
+    required this.expenseQuickDeleteBg,
+    required this.expenseQuickDeleteFg,
+    required this.expenseReceiptZoomText,
   });
 
   /// Bảng màu cho Light Theme
@@ -686,6 +732,28 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     scannerHighlightText: Color(0xFF14532D),
     expenseCardSelectedBg: Color(0xFFF0FDF4),
     expenseCardSelectedBorder: Color(0xFF16A34A),
+    expenseHeroAmount: Color(0xFF14532D),
+    expenseCategoryTagBg: Color(0xFFF0FDF4),
+    expenseCategoryTagBorder: Color(0xFF86EFAC),
+    expenseCategoryTagText: Color(0xFF14532D),
+    expensePayerBadgeBg: Color(0xFFDCFCE7),
+    expensePayerBadgeText: Color(0xFF15803D),
+    expensePayerAdvanceText: Color(0xFF15803D),
+    expenseSplitPaidBg: Color(0xFFDCFCE7),
+    expenseSplitPaidText: Color(0xFF15803D),
+    expenseSplitUnpaidBg: Color(0xFFFEE2E2),
+    expenseSplitUnpaidText: Color(0xFFDC2626),
+    expenseSplitPendingBg: Color(0xFFFEF3C7),
+    expenseSplitPendingText: Color(0xFFD97706),
+    expenseActionEditBg: Color(0xFFF0FDF4),
+    expenseActionEditBorder: Color(0xFF86EFAC),
+    expenseActionEditText: Color(0xFF15803D),
+    expenseActionDeleteBg: Color(0xFFFEF2F2),
+    expenseActionDeleteBorder: Color(0xFFFECACA),
+    expenseActionDeleteText: Color(0xFFDC2626),
+    expenseQuickDeleteBg: Color(0xFFFEE2E2),
+    expenseQuickDeleteFg: AppColors.error,
+    expenseReceiptZoomText: Color(0xFF14532D),
   );
 
   /// Bảng màu cho Dark Theme
@@ -904,6 +972,28 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     scannerHighlightText: Color(0xFF6EE7B7),
     expenseCardSelectedBg: Color(0xFF064E3B),
     expenseCardSelectedBorder: Color(0xFF059669),
+    expenseHeroAmount: Color(0xFF4ADE80),
+    expenseCategoryTagBg: Color(0xFF064E3B),
+    expenseCategoryTagBorder: Color(0xFF065F46),
+    expenseCategoryTagText: Color(0xFF86EFAC),
+    expensePayerBadgeBg: Color(0xFF064E3B),
+    expensePayerBadgeText: Color(0xFF6EE7B7),
+    expensePayerAdvanceText: Color(0xFF6EE7B7),
+    expenseSplitPaidBg: Color(0x4D064E3B),
+    expenseSplitPaidText: Color(0xFF6EE7B7),
+    expenseSplitUnpaidBg: Color(0x4D4C0519),
+    expenseSplitUnpaidText: Color(0xFFFDA4AF),
+    expenseSplitPendingBg: Color(0x4D713F12),
+    expenseSplitPendingText: Color(0xFFFDE047),
+    expenseActionEditBg: Color(0x33064E3B),
+    expenseActionEditBorder: Color(0xFF065F46),
+    expenseActionEditText: Color(0xFF34D399),
+    expenseActionDeleteBg: Color(0x33450A0A),
+    expenseActionDeleteBorder: Color(0xFF991B1B),
+    expenseActionDeleteText: Color(0xFFF87171),
+    expenseQuickDeleteBg: Color(0x33450A0A),
+    expenseQuickDeleteFg: Color(0xFFF87171),
+    expenseReceiptZoomText: Color(0xFF34D399),
   );
 
   /// Lấy bảng màu tương ứng với Theme hiện tại
@@ -1120,6 +1210,28 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? scannerHighlightText,
     Color? expenseCardSelectedBg,
     Color? expenseCardSelectedBorder,
+    Color? expenseHeroAmount,
+    Color? expenseCategoryTagBg,
+    Color? expenseCategoryTagBorder,
+    Color? expenseCategoryTagText,
+    Color? expensePayerBadgeBg,
+    Color? expensePayerBadgeText,
+    Color? expensePayerAdvanceText,
+    Color? expenseSplitPaidBg,
+    Color? expenseSplitPaidText,
+    Color? expenseSplitUnpaidBg,
+    Color? expenseSplitUnpaidText,
+    Color? expenseSplitPendingBg,
+    Color? expenseSplitPendingText,
+    Color? expenseActionEditBg,
+    Color? expenseActionEditBorder,
+    Color? expenseActionEditText,
+    Color? expenseActionDeleteBg,
+    Color? expenseActionDeleteBorder,
+    Color? expenseActionDeleteText,
+    Color? expenseQuickDeleteBg,
+    Color? expenseQuickDeleteFg,
+    Color? expenseReceiptZoomText,
   }) {
     return AppThemeColors(
       background: background ?? this.background,
@@ -1347,6 +1459,41 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           expenseCardSelectedBg ?? this.expenseCardSelectedBg,
       expenseCardSelectedBorder:
           expenseCardSelectedBorder ?? this.expenseCardSelectedBorder,
+      expenseHeroAmount: expenseHeroAmount ?? this.expenseHeroAmount,
+      expenseCategoryTagBg: expenseCategoryTagBg ?? this.expenseCategoryTagBg,
+      expenseCategoryTagBorder:
+          expenseCategoryTagBorder ?? this.expenseCategoryTagBorder,
+      expenseCategoryTagText:
+          expenseCategoryTagText ?? this.expenseCategoryTagText,
+      expensePayerBadgeBg: expensePayerBadgeBg ?? this.expensePayerBadgeBg,
+      expensePayerBadgeText:
+          expensePayerBadgeText ?? this.expensePayerBadgeText,
+      expensePayerAdvanceText:
+          expensePayerAdvanceText ?? this.expensePayerAdvanceText,
+      expenseSplitPaidBg: expenseSplitPaidBg ?? this.expenseSplitPaidBg,
+      expenseSplitPaidText: expenseSplitPaidText ?? this.expenseSplitPaidText,
+      expenseSplitUnpaidBg: expenseSplitUnpaidBg ?? this.expenseSplitUnpaidBg,
+      expenseSplitUnpaidText:
+          expenseSplitUnpaidText ?? this.expenseSplitUnpaidText,
+      expenseSplitPendingBg:
+          expenseSplitPendingBg ?? this.expenseSplitPendingBg,
+      expenseSplitPendingText:
+          expenseSplitPendingText ?? this.expenseSplitPendingText,
+      expenseActionEditBg: expenseActionEditBg ?? this.expenseActionEditBg,
+      expenseActionEditBorder:
+          expenseActionEditBorder ?? this.expenseActionEditBorder,
+      expenseActionEditText:
+          expenseActionEditText ?? this.expenseActionEditText,
+      expenseActionDeleteBg:
+          expenseActionDeleteBg ?? this.expenseActionDeleteBg,
+      expenseActionDeleteBorder:
+          expenseActionDeleteBorder ?? this.expenseActionDeleteBorder,
+      expenseActionDeleteText:
+          expenseActionDeleteText ?? this.expenseActionDeleteText,
+      expenseQuickDeleteBg: expenseQuickDeleteBg ?? this.expenseQuickDeleteBg,
+      expenseQuickDeleteFg: expenseQuickDeleteFg ?? this.expenseQuickDeleteFg,
+      expenseReceiptZoomText:
+          expenseReceiptZoomText ?? this.expenseReceiptZoomText,
     );
   }
 
@@ -1670,6 +1817,50 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           Color.lerp(expenseCardSelectedBg, other.expenseCardSelectedBg, t)!,
       expenseCardSelectedBorder: Color.lerp(
           expenseCardSelectedBorder, other.expenseCardSelectedBorder, t)!,
+      expenseHeroAmount:
+          Color.lerp(expenseHeroAmount, other.expenseHeroAmount, t)!,
+      expenseCategoryTagBg:
+          Color.lerp(expenseCategoryTagBg, other.expenseCategoryTagBg, t)!,
+      expenseCategoryTagBorder: Color.lerp(
+          expenseCategoryTagBorder, other.expenseCategoryTagBorder, t)!,
+      expenseCategoryTagText: Color.lerp(
+          expenseCategoryTagText, other.expenseCategoryTagText, t)!,
+      expensePayerBadgeBg:
+          Color.lerp(expensePayerBadgeBg, other.expensePayerBadgeBg, t)!,
+      expensePayerBadgeText:
+          Color.lerp(expensePayerBadgeText, other.expensePayerBadgeText, t)!,
+      expensePayerAdvanceText: Color.lerp(
+          expensePayerAdvanceText, other.expensePayerAdvanceText, t)!,
+      expenseSplitPaidBg:
+          Color.lerp(expenseSplitPaidBg, other.expenseSplitPaidBg, t)!,
+      expenseSplitPaidText:
+          Color.lerp(expenseSplitPaidText, other.expenseSplitPaidText, t)!,
+      expenseSplitUnpaidBg:
+          Color.lerp(expenseSplitUnpaidBg, other.expenseSplitUnpaidBg, t)!,
+      expenseSplitUnpaidText:
+          Color.lerp(expenseSplitUnpaidText, other.expenseSplitUnpaidText, t)!,
+      expenseSplitPendingBg:
+          Color.lerp(expenseSplitPendingBg, other.expenseSplitPendingBg, t)!,
+      expenseSplitPendingText: Color.lerp(
+          expenseSplitPendingText, other.expenseSplitPendingText, t)!,
+      expenseActionEditBg:
+          Color.lerp(expenseActionEditBg, other.expenseActionEditBg, t)!,
+      expenseActionEditBorder: Color.lerp(
+          expenseActionEditBorder, other.expenseActionEditBorder, t)!,
+      expenseActionEditText:
+          Color.lerp(expenseActionEditText, other.expenseActionEditText, t)!,
+      expenseActionDeleteBg:
+          Color.lerp(expenseActionDeleteBg, other.expenseActionDeleteBg, t)!,
+      expenseActionDeleteBorder: Color.lerp(
+          expenseActionDeleteBorder, other.expenseActionDeleteBorder, t)!,
+      expenseActionDeleteText: Color.lerp(
+          expenseActionDeleteText, other.expenseActionDeleteText, t)!,
+      expenseQuickDeleteBg:
+          Color.lerp(expenseQuickDeleteBg, other.expenseQuickDeleteBg, t)!,
+      expenseQuickDeleteFg:
+          Color.lerp(expenseQuickDeleteFg, other.expenseQuickDeleteFg, t)!,
+      expenseReceiptZoomText: Color.lerp(
+          expenseReceiptZoomText, other.expenseReceiptZoomText, t)!,
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../../../../core/theme/app_theme_colors.dart';
 
 enum ExpenseCategoryType {
   food('FOOD', 'Food', 'Ăn uống', LucideIcons.utensils, Color(0xFFF59E0B)),
@@ -144,6 +145,28 @@ enum ExpenseSplitStatus {
   final Color bgColor;
 
   const ExpenseSplitStatus(this.key, this.label, this.textColor, this.bgColor);
+
+  Color resolveBgColor(AppThemeColors colors) {
+    switch (this) {
+      case ExpenseSplitStatus.paid:
+        return colors.expenseSplitPaidBg;
+      case ExpenseSplitStatus.unpaid:
+        return colors.expenseSplitUnpaidBg;
+      case ExpenseSplitStatus.pendingApproval:
+        return colors.expenseSplitPendingBg;
+    }
+  }
+
+  Color resolveTextColor(AppThemeColors colors) {
+    switch (this) {
+      case ExpenseSplitStatus.paid:
+        return colors.expenseSplitPaidText;
+      case ExpenseSplitStatus.unpaid:
+        return colors.expenseSplitUnpaidText;
+      case ExpenseSplitStatus.pendingApproval:
+        return colors.expenseSplitPendingText;
+    }
+  }
 
   static ExpenseSplitStatus fromString(String? val, {bool? isPaid}) {
     if (isPaid == true) return ExpenseSplitStatus.paid;
