@@ -25,20 +25,30 @@ abstract class DebtsRepository {
     required num expectedAmount,
   });
 
-  Future<DebtSettlementEntity> paySimplifiedDebt(
+  Future<DebtPaymentPreviewEntity> previewSimplifiedDebtPayment(
     int groupId, {
     required int creditorId,
-    num? amount,
-    String? paymentProofUrl,
-    String? note,
+    required num expectedAmount,
+  });
+
+  Future<DebtSettlementEntity> paySimplifiedDebt(
+    int groupId, {
+    required String planToken,
+    String? idempotencyKey,
   });
 
   Future<DebtSettlementEntity> confirmDebtSettlement(
     int settlementId, {
     required bool confirmed,
+    String? reason,
   });
 
   Future<DebtSettlementEntity> getDebtSettlementDetail(int settlementId);
 
-  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(int groupId);
+  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(
+    int groupId, {
+    String? status,
+    int page = 0,
+    int size = 20,
+  });
 }

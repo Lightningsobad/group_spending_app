@@ -482,6 +482,9 @@
       }
     }
   },
+  "rejectReceiveReasonLabel": "Lý do từ chối",
+  "rejectReceiveReasonHint": "Nhập lý do chưa nhận được tiền...",
+  "defaultRejectReceiveReason": "Chưa nhận được tiền vào tài khoản ngân hàng",
   "confirmRemindDebtTitle": "Gửi thông báo nhắc nợ",
   "confirmRemindDebtMessage": "Gửi thông báo nhắc nhở thanh toán khoản nợ {amount} đến {debtor}?",
   "@confirmRemindDebtMessage": {

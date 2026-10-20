@@ -208,6 +208,103 @@ class SettleDebtDialogs {
     );
   }
 
+  static Future<String?> showRejectSettledDialog(
+    BuildContext context, {
+    required String debtorName,
+  }) {
+    final tr = context.l10n;
+    final colors = context.colors;
+    final controller = TextEditingController(
+      text: tr.defaultRejectReceiveReason,
+    );
+
+    return showDialog<String>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: colors.cardBackground,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Text(
+          tr.rejectReceiveDebtTitle,
+          style: AppTextStyle.bold(
+            fontSize: AppFontSize.body,
+            color: colors.debtOweText,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              tr.rejectReceiveDebtMessage(debtorName),
+              style: AppTextStyle.regular(
+                fontSize: AppFontSize.secondary,
+                color: colors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: 14),
+            TextField(
+              controller: controller,
+              maxLines: 2,
+              decoration: InputDecoration(
+                labelText: tr.rejectReceiveReasonLabel,
+                hintText: tr.rejectReceiveReasonHint,
+                filled: true,
+                fillColor: colors.inputBackground,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: colors.cardBorder),
+                ),
+              ),
+              style: AppTextStyle.regular(
+                fontSize: AppFontSize.secondary,
+                color: colors.textPrimary,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            style: TextButton.styleFrom(
+              minimumSize: const Size(64, 44),
+            ),
+            onPressed: () => Navigator.of(ctx).pop(null),
+            child: Text(
+              tr.cancel,
+              style: AppTextStyle.bold(
+                fontSize: AppFontSize.secondary,
+                color: colors.textMuted,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: colors.debtOweText,
+              foregroundColor: colors.onPrimaryButton,
+              minimumSize: const Size(64, 44),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            onPressed: () {
+              final reason = controller.text.trim();
+              Navigator.of(ctx).pop(
+                reason.isNotEmpty
+                    ? reason
+                    : tr.defaultRejectReceiveReason,
+              );
+            },
+            child: Text(
+              tr.confirm,
+              style: AppTextStyle.bold(fontSize: AppFontSize.secondary),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   static Future<bool?> showRemindConfirm(
     BuildContext context, {
     required String debtorName,

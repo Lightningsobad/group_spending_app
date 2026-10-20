@@ -58,19 +58,28 @@ class DebtsRepositoryImpl implements DebtsRepository {
   }
 
   @override
-  Future<DebtSettlementEntity> paySimplifiedDebt(
+  Future<DebtPaymentPreviewEntity> previewSimplifiedDebtPayment(
     int groupId, {
     required int creditorId,
-    num? amount,
-    String? paymentProofUrl,
-    String? note,
+    required num expectedAmount,
+  }) {
+    return remoteDataSource.previewSimplifiedDebtPayment(
+      groupId,
+      creditorId: creditorId,
+      expectedAmount: expectedAmount,
+    );
+  }
+
+  @override
+  Future<DebtSettlementEntity> paySimplifiedDebt(
+    int groupId, {
+    required String planToken,
+    String? idempotencyKey,
   }) {
     return remoteDataSource.paySimplifiedDebt(
       groupId,
-      creditorId: creditorId,
-      amount: amount,
-      paymentProofUrl: paymentProofUrl,
-      note: note,
+      planToken: planToken,
+      idempotencyKey: idempotencyKey,
     );
   }
 
@@ -78,10 +87,12 @@ class DebtsRepositoryImpl implements DebtsRepository {
   Future<DebtSettlementEntity> confirmDebtSettlement(
     int settlementId, {
     required bool confirmed,
+    String? reason,
   }) {
     return remoteDataSource.confirmDebtSettlement(
       settlementId,
       confirmed: confirmed,
+      reason: reason,
     );
   }
 
@@ -91,7 +102,17 @@ class DebtsRepositoryImpl implements DebtsRepository {
   }
 
   @override
-  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(int groupId) {
-    return remoteDataSource.getGroupDebtSettlements(groupId);
+  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(
+    int groupId, {
+    String? status,
+    int page = 0,
+    int size = 20,
+  }) {
+    return remoteDataSource.getGroupDebtSettlements(
+      groupId,
+      status: status,
+      page: page,
+      size: size,
+    );
   }
 }

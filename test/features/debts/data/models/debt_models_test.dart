@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:group_spending_app/features/debts/data/models/actual_debt_model.dart';
 import 'package:group_spending_app/features/debts/data/models/debt_overview_model.dart';
+import 'package:group_spending_app/features/debts/data/models/debt_settlement_model.dart';
 import 'package:group_spending_app/features/debts/data/models/group_debts_models.dart';
 import 'package:group_spending_app/features/debts/data/models/simplified_debt_model.dart';
 import 'package:group_spending_app/features/debts/domain/entities/debt_enums.dart';
@@ -261,6 +262,72 @@ void main() {
       expect(actual.userBalance.netBalanceVnd, 350000);
       expect(actual.actualDebts.length, 1);
       expect(actual.actualDebts.first.debtors.first.action, DebtAction.pay);
+    });
+
+    test('DebtPaymentPreviewModel & DebtSettlementModel parse with allocatedSplits correctly', () {
+      final previewJson = {
+        'planToken': 'jwt_plan_token_preview',
+        'groupId': 10,
+        'debtorId': 1,
+        'debtorName': 'Minh',
+        'creditorId': 2,
+        'creditorName': 'Hương',
+        'amount': 150,
+        'amountVnd': 150000,
+        'expiresAt': '2026-10-20T22:15:00Z',
+        'allocatedSplits': [
+          {
+            'expenseSplitId': 55,
+            'expenseId': 12,
+            'expenseTitle': 'Lẩu cuối tuần',
+            'payerId': 2,
+            'payerName': 'Hương',
+            'participantId': 1,
+            'participantName': 'Minh',
+            'originalAmount': 150,
+            'originalAmountVnd': 150000,
+            'remainingAmount': 150,
+            'remainingAmountVnd': 150000,
+            'allocatedAmount': 150,
+            'allocatedAmountVnd': 150000,
+            'allocationType': 'DIRECT',
+          }
+        ],
+      };
+
+      final preview = DebtPaymentPreviewModel.fromJson(previewJson);
+      expect(preview.planToken, 'jwt_plan_token_preview');
+      expect(preview.amountVnd, 150000);
+      expect(preview.allocatedSplits.length, 1);
+      expect(preview.allocatedSplits.first.expenseTitle, 'Lẩu cuối tuần');
+
+      final settlementJson = {
+        'id': 501,
+        'groupId': 10,
+        'debtorId': 1,
+        'debtorName': 'Minh',
+        'creditorId': 2,
+        'creditorName': 'Hương',
+        'amount': 150,
+        'amountVnd': 150000,
+        'status': 'REJECTED',
+        'rejectionReason': 'Chưa thấy tiền trong tài khoản',
+        'resolvedAt': '2026-10-20T22:20:00Z',
+        'action': 'NONE',
+        'allocatedSplits': previewJson['allocatedSplits'],
+      };
+
+      final settlement = DebtSettlementModel.fromJson(settlementJson);
+      expect(settlement.id, 501);
+      expect(settlement.status, DebtStatus.rejected);
+      expect(settlement.isRejected, isTrue);
+      expect(settlement.rejectionReason, 'Chưa thấy tiền trong tài khoản');
+      expect(settlement.resolvedAt, '2026-10-20T22:20:00Z');
+      expect(settlement.allocatedSplits.length, 1);
+
+      final serializedSettlement = settlement.toJson();
+      expect(serializedSettlement['rejectionReason'], 'Chưa thấy tiền trong tài khoản');
+      expect(serializedSettlement['status'], 'REJECTED');
     });
   });
 }

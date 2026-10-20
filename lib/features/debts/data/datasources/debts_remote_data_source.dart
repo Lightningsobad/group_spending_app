@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import '../../../../core/network/api_client.dart';
 import '../models/debt_overview_model.dart';
 import '../models/debt_settlement_model.dart';
@@ -26,22 +27,32 @@ abstract class DebtsRemoteDataSource {
     required num expectedAmount,
   });
 
-  Future<DebtSettlementModel> paySimplifiedDebt(
+  Future<DebtPaymentPreviewModel> previewSimplifiedDebtPayment(
     int groupId, {
     required int creditorId,
-    num? amount,
-    String? paymentProofUrl,
-    String? note,
+    required num expectedAmount,
+  });
+
+  Future<DebtSettlementModel> paySimplifiedDebt(
+    int groupId, {
+    required String planToken,
+    String? idempotencyKey,
   });
 
   Future<DebtSettlementModel> confirmDebtSettlement(
     int settlementId, {
     required bool confirmed,
+    String? reason,
   });
 
   Future<DebtSettlementModel> getDebtSettlementDetail(int settlementId);
 
-  Future<List<DebtSettlementModel>> getGroupDebtSettlements(int groupId);
+  Future<List<DebtSettlementModel>> getGroupDebtSettlements(
+    int groupId, {
+    String? status,
+    int page = 0,
+    int size = 20,
+  });
 }
 
 class DebtsRemoteDataSourceImpl implements DebtsRemoteDataSource {
@@ -132,21 +143,48 @@ class DebtsRemoteDataSourceImpl implements DebtsRemoteDataSource {
   }
 
   @override
-  Future<DebtSettlementModel> paySimplifiedDebt(
+  Future<DebtPaymentPreviewModel> previewSimplifiedDebtPayment(
     int groupId, {
     required int creditorId,
-    num? amount,
-    String? paymentProofUrl,
-    String? note,
+    required num expectedAmount,
+  }) async {
+    final response = await _apiClient.post<Map<String, dynamic>>(
+      '/groups/$groupId/debts/simplified/payment-preview',
+      data: {
+        'creditorId': creditorId,
+        'expectedAmount': expectedAmount,
+      },
+    );
+    final data = response.data;
+    if (data != null && data['data'] is Map<String, dynamic>) {
+      return DebtPaymentPreviewModel.fromJson(
+        data['data'] as Map<String, dynamic>,
+      );
+    }
+    return DebtPaymentPreviewModel(
+      planToken: '',
+      groupId: groupId,
+      debtorId: 0,
+      creditorId: creditorId,
+    );
+  }
+
+  @override
+  Future<DebtSettlementModel> paySimplifiedDebt(
+    int groupId, {
+    required String planToken,
+    String? idempotencyKey,
   }) async {
     final response = await _apiClient.post<Map<String, dynamic>>(
       '/groups/$groupId/debts/simplified/pay',
+      options: Options(
+        headers: {
+          if (idempotencyKey != null && idempotencyKey.isNotEmpty)
+            'Idempotency-Key': idempotencyKey,
+        },
+      ),
       data: {
-        'creditorId': creditorId,
-        'amount': ?amount,
-        if (paymentProofUrl != null && paymentProofUrl.trim().isNotEmpty)
-          'paymentProofUrl': paymentProofUrl.trim(),
-        if (note != null && note.trim().isNotEmpty) 'note': note.trim(),
+        'planToken': planToken,
       },
     );
     final data = response.data;
@@ -157,9 +195,7 @@ class DebtsRemoteDataSourceImpl implements DebtsRemoteDataSource {
       id: 0,
       groupId: groupId,
       debtorId: 0,
-      debtorName: '',
-      creditorId: creditorId,
-      creditorName: '',
+      creditorId: 0,
     );
   }
 
@@ -167,10 +203,14 @@ class DebtsRemoteDataSourceImpl implements DebtsRemoteDataSource {
   Future<DebtSettlementModel> confirmDebtSettlement(
     int settlementId, {
     required bool confirmed,
+    String? reason,
   }) async {
     final response = await _apiClient.post<Map<String, dynamic>>(
       '/debt-settlements/$settlementId/confirm',
-      data: {'confirmed': confirmed},
+      data: {
+        'confirmed': confirmed,
+        'reason': reason,
+      },
     );
     final data = response.data;
     if (data != null && data['data'] is Map<String, dynamic>) {
@@ -180,9 +220,7 @@ class DebtsRemoteDataSourceImpl implements DebtsRemoteDataSource {
       id: settlementId,
       groupId: 0,
       debtorId: 0,
-      debtorName: '',
       creditorId: 0,
-      creditorName: '',
     );
   }
 
@@ -199,23 +237,38 @@ class DebtsRemoteDataSourceImpl implements DebtsRemoteDataSource {
       id: settlementId,
       groupId: 0,
       debtorId: 0,
-      debtorName: '',
       creditorId: 0,
-      creditorName: '',
     );
   }
 
   @override
-  Future<List<DebtSettlementModel>> getGroupDebtSettlements(int groupId) async {
+  Future<List<DebtSettlementModel>> getGroupDebtSettlements(
+    int groupId, {
+    String? status,
+    int page = 0,
+    int size = 20,
+  }) async {
     final response = await _apiClient.get<Map<String, dynamic>>(
       '/groups/$groupId/debt-settlements',
+      queryParameters: {
+        if (status != null && status.isNotEmpty) 'status': status,
+        if (page > 0) 'page': page,
+        if (size != 20) 'size': size,
+      },
     );
     final data = response.data;
-    if (data != null && data['data'] is List) {
-      return (data['data'] as List)
-          .whereType<Map<String, dynamic>>()
-          .map((item) => DebtSettlementModel.fromJson(item))
-          .toList();
+    if (data != null) {
+      final rawData = data['data'];
+      final List? items = rawData is Map<String, dynamic>
+          ? (rawData['content'] as List?)
+          : (rawData is List ? rawData : null);
+
+      if (items != null) {
+        return items
+            .whereType<Map<String, dynamic>>()
+            .map((item) => DebtSettlementModel.fromJson(item))
+            .toList();
+      }
     }
     return const [];
   }

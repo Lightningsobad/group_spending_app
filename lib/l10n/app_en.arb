@@ -482,6 +482,9 @@
       }
     }
   },
+  "rejectReceiveReasonLabel": "Rejection reason",
+  "rejectReceiveReasonHint": "Enter reason for not receiving money...",
+  "defaultRejectReceiveReason": "Have not received money in bank account",
   "confirmRemindDebtTitle": "Send debt reminder",
   "confirmRemindDebtMessage": "Send a reminder notification for debt of {amount} to {debtor}?",
   "@confirmRemindDebtMessage": {

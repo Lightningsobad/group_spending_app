@@ -124,269 +124,287 @@ class GroupDebtDetailView extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(16),
                                   border: Border.all(color: colors.cardBorder),
                                 ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      LucideIcons.arrowLeft,
+                                      size: 16,
+                                      color: colors.textPrimary,
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      tr.backAction,
+                                      style: AppTextStyle.bold(
+                                        fontSize: AppFontSize.secondary,
+                                        color: colors.textPrimary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          // Group Pill
+                          Flexible(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                color: colors.debtReceiveBg,
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: colors.debtReceiveBorder,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  GroupCategoryHelper.buildIcon(
+                                    userBalance.category,
+                                    width: 14,
+                                    height: 14,
+                                    fit: BoxFit.contain,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Flexible(
+                                    child: Text(
+                                      userBalance.groupName,
+                                      style: AppTextStyle.bold(
+                                        fontSize: AppFontSize.caption,
+                                        color: colors.debtReceiveText,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 14),
+
+                      // 2. Group Summary Card
+                      GroupDebtSummaryCard(
+                        userBalance: userBalance,
+                      ),
+                      const SizedBox(height: 14),
+
+                      // 3. Segmented Tab Switcher (Nợ tối giản / Nợ thực tế)
+                      GroupDebtSegmentedTab(
+                        activeTab: activeTab,
+                        simplifiedCount: simplifiedList.length,
+                        actualCount: actualList.length,
+                        onTabChanged: (index) => cubit.setDetailTab(index),
+                      ),
+                      const SizedBox(height: 12),
+
+                      // 4. Info Banner Box (chỉ hiện ở tab Nợ tối giản)
+                      if (activeTab == 0) ...[
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: colors.debtReceiveBg,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: colors.debtReceiveBorder,
+                            ),
+                          ),
                           child: Row(
-                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Icon(
-                                LucideIcons.arrowLeft,
+                                LucideIcons.info,
                                 size: 16,
-                                color: colors.textPrimary,
+                                color: colors.debtReceiveText,
                               ),
-                              const SizedBox(width: 6),
-                              Text(
-                                tr.backAction,
-                                style: AppTextStyle.bold(
-                                  fontSize: AppFontSize.secondary,
-                                  color: colors.textPrimary,
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  tr.simplifiedDebtsBanner,
+                                  style: AppTextStyle.medium(
+                                    fontSize: AppFontSize.caption,
+                                    color: colors.debtReceiveText,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ),
-                    ),
+                        const SizedBox(height: 14),
+                      ],
 
-                    // Group Pill
-                    Flexible(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: colors.debtReceiveBg,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: colors.debtReceiveBorder,
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            GroupCategoryHelper.buildIcon(
-                              userBalance.category,
-                              width: 14,
-                              height: 14,
-                              fit: BoxFit.contain,
-                            ),
-                            const SizedBox(width: 6),
-                            Flexible(
-                              child: Text(
-                                userBalance.groupName,
-                                style: AppTextStyle.bold(
-                                  fontSize: AppFontSize.caption,
-                                  color: colors.debtReceiveText,
+                      // 5. Section Header for Tab 0
+                      if (activeTab == 0)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  tr.debtsToHandleCount(simplifiedList.length),
+                                  style: AppTextStyle.bold(
+                                    fontSize: AppFontSize.caption,
+                                    color: colors.textPrimary,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 14),
-
-                // 2. Group Summary Card
-                GroupDebtSummaryCard(
-                  userBalance: userBalance,
-                ),
-                const SizedBox(height: 14),
-
-                // 3. Segmented Tab Switcher (Nợ tối giản / Nợ thực tế)
-                GroupDebtSegmentedTab(
-                  activeTab: activeTab,
-                  simplifiedCount: simplifiedList.length,
-                  actualCount: actualList.length,
-                  onTabChanged: (index) => cubit.setDetailTab(index),
-                ),
-                const SizedBox(height: 12),
-
-                // 4. Info Banner Box (chỉ hiện ở tab Nợ tối giản, tab Nợ thực tế hiển thị trực tiếp danh sách theo thiết kế)
-                if (activeTab == 0) ...[
-                  Container(
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: colors.debtReceiveBg,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: colors.debtReceiveBorder,
-                      ),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Icon(
-                          LucideIcons.info,
-                          size: 16,
-                          color: colors.debtReceiveText,
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            tr.simplifiedDebtsBanner,
-                            style: AppTextStyle.medium(
-                              fontSize: AppFontSize.caption,
-                              color: colors.debtReceiveText,
-                            ),
+                              const SizedBox(width: 8),
+                              Flexible(
+                                child: Text(
+                                  tr.simplifiedDebtAlgorithm,
+                                  style: AppTextStyle.semiBold(
+                                    fontSize: AppFontSize.caption,
+                                    color: colors.debtReceiveText,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.end,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 14),
-                ],
 
-                // 5. Section Header for Tab 0
-                if (activeTab == 0)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            tr.debtsToHandleCount(simplifiedList.length),
-                            style: AppTextStyle.bold(
-                              fontSize: AppFontSize.caption,
-                              color: colors.textPrimary,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Flexible(
-                          child: Text(
-                            tr.simplifiedDebtAlgorithm,
-                            style: AppTextStyle.semiBold(
-                              fontSize: AppFontSize.caption,
-                              color: colors.debtReceiveText,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.end,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                // 6. Content Body
-                if (isDetailLoading &&
-                    simplifiedList.isEmpty &&
-                    actualList.isEmpty)
-                  ...List.generate(
-                    3,
-                    (index) => const GroupDebtCardSkeleton(),
-                  )
-                else if (activeTab == 0) ...[
-                  if (state.pendingSettlements.isNotEmpty)
-                    ...state.pendingSettlements.map(
-                      (settlement) => _buildSettlementCard(
-                        context,
-                        settlement: settlement,
-                        currentUserId: currentUserId,
-                        cubit: cubit,
-                        colors: colors,
-                      ),
-                    ),
-                  if (simplifiedList.isEmpty && state.pendingSettlements.isEmpty)
-                    _buildEmptyDebtView(context, tr, colors)
-                  else
-                    ...simplifiedList.map(
-                      (debt) {
-                        final matchingSettlement = state.pendingSettlements
-                            .where((s) =>
-                                s.debtorId == debt.debtorId &&
-                                s.creditorId == debt.creditorId)
-                            .firstOrNull;
-                        final isWaiting = matchingSettlement != null ||
-                            debt.action == DebtAction.confirm;
-
-                        return SimplifiedDebtCardWidget(
-                          debt: debt,
-                          currentUserId: currentUserId,
-                          isWaitingForConfirmation: isWaiting,
-                          onPay: () => _handlePaySimplifiedDebt(
-                            context,
-                            debt: debt,
-                            groupName: userBalance.groupName,
-                            cubit: cubit,
-                          ),
-                          onConfirm: (confirmed) async {
-                            final settlementId =
-                                matchingSettlement?.id ?? debt.id;
-                            final ok =
-                                await SettleDebtDialogs.showConfirmSettled(
+                      // 6. Content Body
+                      if (isDetailLoading &&
+                          simplifiedList.isEmpty &&
+                          actualList.isEmpty)
+                        ...List.generate(
+                          3,
+                          (index) => const GroupDebtCardSkeleton(),
+                        )
+                      else if (activeTab == 0) ...[
+                        if (state.pendingSettlements.isNotEmpty)
+                          ...state.pendingSettlements.map(
+                            (settlement) => _buildSettlementCard(
                               context,
-                              debtorName: debt.debtorName,
-                              formattedAmount:
-                                  CurrencyUtils.formatVnd(debt.amountVnd),
-                              confirmed: confirmed,
-                            );
-                            if (ok == true && settlementId != null) {
-                              await cubit.confirmDebtSettlement(
-                                settlementId,
-                                confirmed: confirmed,
+                              settlement: settlement,
+                              currentUserId: currentUserId,
+                              cubit: cubit,
+                              colors: colors,
+                            ),
+                          ),
+                        if (simplifiedList.isEmpty &&
+                            state.pendingSettlements.isEmpty)
+                          _buildEmptyDebtView(context, tr, colors)
+                        else
+                          ...simplifiedList.map(
+                            (debt) {
+                              final matchingSettlement = state.pendingSettlements
+                                  .where((s) =>
+                                      s.debtorId == debt.debtorId &&
+                                      s.creditorId == debt.creditorId)
+                                  .firstOrNull;
+                              final isWaiting = matchingSettlement != null ||
+                                  debt.action == DebtAction.confirm;
+
+                              return SimplifiedDebtCardWidget(
+                                debt: debt,
+                                currentUserId: currentUserId,
+                                isWaitingForConfirmation: isWaiting,
+                                onPay: () => _handlePaySimplifiedDebt(
+                                  context,
+                                  debt: debt,
+                                  groupName: userBalance.groupName,
+                                  cubit: cubit,
+                                ),
+                                onConfirm: (confirmed) async {
+                                  final settlementId =
+                                      matchingSettlement?.id ?? debt.id;
+                                  if (settlementId == null) return;
+
+                                  if (confirmed) {
+                                    final ok =
+                                        await SettleDebtDialogs.showConfirmSettled(
+                                      context,
+                                      debtorName: debt.debtorName,
+                                      formattedAmount:
+                                          CurrencyUtils.formatVnd(debt.amountVnd),
+                                      confirmed: true,
+                                    );
+                                    if (ok == true) {
+                                      await cubit.confirmDebtSettlement(
+                                        settlementId,
+                                        confirmed: true,
+                                      );
+                                    }
+                                  } else {
+                                    final reason = await SettleDebtDialogs
+                                        .showRejectSettledDialog(
+                                      context,
+                                      debtorName: debt.debtorName,
+                                    );
+                                    if (reason != null) {
+                                      await cubit.confirmDebtSettlement(
+                                        settlementId,
+                                        confirmed: false,
+                                        reason: reason,
+                                      );
+                                    }
+                                  }
+                                },
+                                onRemind: () async {
+                                  final ok =
+                                      await SettleDebtDialogs.showRemindConfirm(
+                                    context,
+                                    debtorName: debt.debtorName,
+                                    formattedAmount:
+                                        CurrencyUtils.formatVnd(debt.amountVnd),
+                                  );
+                                  if (ok == true) {
+                                    final expectedAmount = debt.amount > 0
+                                        ? debt.amount
+                                        : (debt.amountVnd > 0
+                                            ? (debt.amountVnd / 1000)
+                                            : 0);
+                                    await cubit.sendSimplifiedDebtReminder(
+                                      groupId,
+                                      debtorId: debt.debtorId,
+                                      creditorId: debt.creditorId,
+                                      expectedAmount: expectedAmount,
+                                    );
+                                  }
+                                },
                               );
-                            }
-                          },
-                          onRemind: () async {
-                            final ok =
-                                await SettleDebtDialogs.showRemindConfirm(
-                              context,
-                              debtorName: debt.debtorName,
-                              formattedAmount:
-                                  CurrencyUtils.formatVnd(debt.amountVnd),
-                            );
-                            if (ok == true) {
-                              final expectedAmount = debt.amount > 0
-                                  ? debt.amount
-                                  : (debt.amountVnd > 0
-                                      ? (debt.amountVnd / 1000)
-                                      : 0);
-                              await cubit.sendSimplifiedDebtReminder(
-                                groupId,
-                                debtorId: debt.debtorId,
-                                creditorId: debt.creditorId,
-                                expectedAmount: expectedAmount,
-                              );
-                            }
-                          },
-                        );
-                      },
-                    ),
-                ] else ...[
-                  if (actualList.isEmpty)
-                    _buildEmptyDebtView(context, tr, colors)
-                  else
-                    ...actualList.map(
-                      (debt) => ActualDebtCardWidget(
-                        debt: debt,
-                        onDebtorPay: (debtor) {
-                          cubit.markDebtAsPaid(debtor.splitId);
-                        },
-                        onDebtorConfirm: (debtor, confirmed) {
-                          cubit.confirmDebtSettled(
-                            debtor.splitId,
-                            confirmed: confirmed,
-                          );
-                        },
-                        onDebtorRemind: (debtor) {
-                          cubit.sendDebtReminder(debtor.splitId);
-                        },
-                      ),
-                    ),
-                ],
-              ],
+                            },
+                          ),
+                      ] else ...[
+                        if (actualList.isEmpty)
+                          _buildEmptyDebtView(context, tr, colors)
+                        else
+                          ...actualList.map(
+                            (debt) => ActualDebtCardWidget(
+                              debt: debt,
+                              onDebtorPay: (debtor) {
+                                cubit.markDebtAsPaid(debtor.splitId);
+                              },
+                              onDebtorConfirm: (debtor, confirmed) {
+                                cubit.confirmDebtSettled(
+                                  debtor.splitId,
+                                  confirmed: confirmed,
+                                );
+                              },
+                              onDebtorRemind: (debtor) {
+                                cubit.sendDebtReminder(debtor.splitId);
+                              },
+                            ),
+                          ),
+                      ],
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-        ),
-      ),
-    ),
         );
       },
     );
@@ -479,6 +497,20 @@ class GroupDebtDetailView extends StatelessWidget {
       return;
     }
 
+    final expectedAmount = debt.amount > 0
+        ? debt.amount
+        : (debt.amountVnd > 0 ? (debt.amountVnd / 1000) : 0);
+
+    final preview = await cubit.previewSimplifiedDebtPayment(
+      groupId,
+      creditorId: debt.creditorId,
+      expectedAmount: expectedAmount,
+    );
+
+    if (!context.mounted || preview == null || preview.planToken.isEmpty) {
+      return;
+    }
+
     final transferNote = debt.note != null && debt.note!.trim().isNotEmpty
         ? debt.note!.trim()
         : '${debt.debtorName} tra no $groupName'.trim();
@@ -490,16 +522,15 @@ class GroupDebtDetailView extends StatelessWidget {
       accountName: (bankAccountName != null && bankAccountName.trim().isNotEmpty)
           ? bankAccountName
           : debt.creditorName,
-      amount: debt.amountVnd,
+      amount: preview.amountVnd > 0 ? preview.amountVnd : debt.amountVnd,
       note: transferNote,
       onPaidConfirmed: () async {
+        // shortcut: sinh timestamp-based idempotency key để tránh gửi lặp, nâng cấp uuid package nếu cần
+        final idempotencyKey = 'pay_${DateTime.now().microsecondsSinceEpoch}';
         await cubit.paySimplifiedDebt(
           groupId,
-          creditorId: debt.creditorId,
-          amount: debt.amountVnd > 0
-              ? debt.amountVnd
-              : (debt.amount > 0 ? debt.amount : null),
-          note: transferNote,
+          planToken: preview.planToken,
+          idempotencyKey: idempotencyKey,
         );
       },
     );
@@ -683,17 +714,16 @@ class GroupDebtDetailView extends StatelessWidget {
                       ),
                     ),
                     onPressed: () async {
-                      final ok = await SettleDebtDialogs.showConfirmSettled(
+                      final reason =
+                          await SettleDebtDialogs.showRejectSettledDialog(
                         context,
                         debtorName: settlement.debtorName,
-                        formattedAmount:
-                            CurrencyUtils.formatVnd(settlement.amountVnd),
-                        confirmed: false,
                       );
-                      if (ok == true) {
+                      if (reason != null) {
                         await cubit.confirmDebtSettlement(
                           settlement.id,
                           confirmed: false,
+                          reason: reason,
                         );
                       }
                     },
