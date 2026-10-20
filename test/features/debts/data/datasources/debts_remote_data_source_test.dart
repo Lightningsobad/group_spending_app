@@ -17,7 +17,8 @@ class TestStubAdapter implements HttpClientAdapter {
     RequestOptions options,
     Stream<Uint8List>? requestStream,
     Future<void>? cancelFuture,
-  ) => handler(options);
+  ) =>
+      handler(options);
 
   @override
   void close({bool force = false}) {}
@@ -83,7 +84,7 @@ void main() {
       expect(map.containsKey('customMessage'), isFalse);
     });
 
-    test('paySimplifiedDebt sends POST /groups/{groupId}/debts/simplified/pay and returns settlement', () async {
+    test('previewSimplifiedDebtPayment sends POST /groups/{groupId}/debts/simplified/payment-preview', () async {
       RequestOptions? capturedOptions;
       dynamic capturedData;
 
@@ -93,20 +94,84 @@ void main() {
         capturedData = options.data;
         return jsonResponse({
           'success': true,
-          'message': 'Đã gửi yêu cầu xác nhận tất toán công nợ',
+          'message': 'Lập kế hoạch thanh toán thành công',
+          'data': {
+            'planToken': 'test_plan_token_123',
+            'groupId': 10,
+            'debtorId': 1,
+            'debtorName': 'Nguyễn Văn A',
+            'creditorId': 2,
+            'creditorName': 'Trần Văn B',
+            'amount': 150,
+            'amountVnd': 150000,
+            'expiresAt': '2026-10-20T22:00:00Z',
+            'allocatedSplits': [
+              {
+                'expenseSplitId': 12,
+                'expenseId': 5,
+                'expenseTitle': 'Lẩu Haidilao',
+                'payerId': 2,
+                'payerName': 'Trần Văn B',
+                'participantId': 1,
+                'participantName': 'Nguyễn Văn A',
+                'originalAmount': 150,
+                'originalAmountVnd': 150000,
+                'settledAmount': 0,
+                'settledAmountVnd': 0,
+                'remainingAmount': 150,
+                'remainingAmountVnd': 150000,
+                'allocatedAmount': 150,
+                'allocatedAmountVnd': 150000,
+                'allocationType': 'DIRECT',
+              }
+            ],
+          },
+        });
+      });
+
+      final apiClient = ApiClient(tokenStorage: tokenStorage, customDio: customDio);
+      final dataSource = DebtsRemoteDataSourceImpl(apiClient);
+
+      final result = await dataSource.previewSimplifiedDebtPayment(
+        10,
+        creditorId: 2,
+        expectedAmount: 150,
+      );
+
+      expect(capturedOptions?.method, 'POST');
+      expect(capturedOptions?.path, '/groups/10/debts/simplified/payment-preview');
+      expect(capturedData['creditorId'], 2);
+      expect(capturedData['expectedAmount'], 150);
+      expect(result.planToken, 'test_plan_token_123');
+      expect(result.amountVnd, 150000);
+      expect(result.allocatedSplits.length, 1);
+      expect(result.allocatedSplits.first.expenseSplitId, 12);
+    });
+
+    test('paySimplifiedDebt sends POST /groups/{groupId}/debts/simplified/pay with planToken', () async {
+      RequestOptions? capturedOptions;
+      dynamic capturedData;
+
+      final customDio = Dio(BaseOptions(baseUrl: 'https://api.groupspending.xyz/api/v1'));
+      customDio.httpClientAdapter = TestStubAdapter((options) async {
+        capturedOptions = options;
+        capturedData = options.data;
+        return jsonResponse({
+          'success': true,
+          'message': 'Đã gửi yêu cầu xác nhận trả nợ',
           'data': {
             'id': 501,
             'groupId': 10,
-            'debtorId': 2,
+            'debtorId': 1,
             'debtorName': 'Nguyễn Văn Debtor',
-            'creditorId': 1,
+            'creditorId': 2,
             'creditorName': 'Trần Văn Creditor',
             'amount': 150,
             'amountVnd': 150000,
             'status': 'WAITING_FOR_CONFIRMATION',
-            'note': 'Đã chuyển MBBank',
+            'action': 'NONE',
           },
-        });
+        }, statusCode: 201);
       });
 
       final apiClient = ApiClient(tokenStorage: tokenStorage, customDio: customDio);
@@ -114,22 +179,20 @@ void main() {
 
       final result = await dataSource.paySimplifiedDebt(
         10,
-        creditorId: 1,
-        amount: 150000,
-        note: 'Đã chuyển MBBank',
+        planToken: 'test_plan_token_123',
+        idempotencyKey: 'idemp_uuid_001',
       );
 
       expect(capturedOptions?.method, 'POST');
       expect(capturedOptions?.path, '/groups/10/debts/simplified/pay');
-      expect(capturedData['creditorId'], 1);
-      expect(capturedData['amount'], 150000);
-      expect(capturedData['note'], 'Đã chuyển MBBank');
+      expect(capturedOptions?.headers['Idempotency-Key'], 'idemp_uuid_001');
+      expect(capturedData['planToken'], 'test_plan_token_123');
       expect(result.id, 501);
       expect(result.status, DebtStatus.waitingForConfirmation);
       expect(result.amountVnd, 150000);
     });
 
-    test('confirmDebtSettlement sends POST /debt-settlements/{settlementId}/confirm', () async {
+    test('confirmDebtSettlement sends POST /debt-settlements/{settlementId}/confirm with reason', () async {
       RequestOptions? capturedOptions;
       dynamic capturedData;
 
@@ -139,17 +202,19 @@ void main() {
         capturedData = options.data;
         return jsonResponse({
           'success': true,
-          'message': 'Đã xác nhận tất toán thành công',
+          'message': 'Đã từ chối xác nhận',
           'data': {
             'id': 501,
             'groupId': 10,
-            'debtorId': 2,
+            'debtorId': 1,
             'debtorName': 'Nguyễn Văn Debtor',
-            'creditorId': 1,
+            'creditorId': 2,
             'creditorName': 'Trần Văn Creditor',
             'amount': 150,
             'amountVnd': 150000,
-            'status': 'SETTLED',
+            'status': 'REJECTED',
+            'rejectionReason': 'Chưa thấy tiền vào tài khoản',
+            'action': 'NONE',
           },
         });
       });
@@ -157,16 +222,22 @@ void main() {
       final apiClient = ApiClient(tokenStorage: tokenStorage, customDio: customDio);
       final dataSource = DebtsRemoteDataSourceImpl(apiClient);
 
-      final result = await dataSource.confirmDebtSettlement(501, confirmed: true);
+      final result = await dataSource.confirmDebtSettlement(
+        501,
+        confirmed: false,
+        reason: 'Chưa thấy tiền vào tài khoản',
+      );
 
       expect(capturedOptions?.method, 'POST');
       expect(capturedOptions?.path, '/debt-settlements/501/confirm');
-      expect(capturedData['confirmed'], isTrue);
+      expect(capturedData['confirmed'], isFalse);
+      expect(capturedData['reason'], 'Chưa thấy tiền vào tài khoản');
       expect(result.id, 501);
-      expect(result.status, DebtStatus.settled);
+      expect(result.status, DebtStatus.rejected);
+      expect(result.rejectionReason, 'Chưa thấy tiền vào tài khoản');
     });
 
-    test('getGroupDebtSettlements sends GET /groups/{groupId}/debts/settlements and parses list', () async {
+    test('getGroupDebtSettlements sends GET /groups/{groupId}/debt-settlements and parses paginated content', () async {
       RequestOptions? capturedOptions;
 
       final customDio = Dio(BaseOptions(baseUrl: 'https://api.groupspending.xyz/api/v1'));
@@ -174,27 +245,33 @@ void main() {
         capturedOptions = options;
         return jsonResponse({
           'success': true,
-          'data': [
-            {
-              'id': 501,
-              'groupId': 10,
-              'debtorId': 2,
-              'creditorId': 1,
-              'amount': 150,
-              'amountVnd': 150000,
-              'status': 'WAITING_FOR_CONFIRMATION',
-            },
-          ],
+          'data': {
+            'content': [
+              {
+                'id': 501,
+                'groupId': 10,
+                'debtorId': 2,
+                'creditorId': 1,
+                'amount': 150,
+                'amountVnd': 150000,
+                'status': 'WAITING_FOR_CONFIRMATION',
+              },
+            ],
+            'pageable': {'pageNumber': 0, 'pageSize': 20},
+            'totalElements': 1,
+            'totalPages': 1,
+          },
         });
       });
 
       final apiClient = ApiClient(tokenStorage: tokenStorage, customDio: customDio);
       final dataSource = DebtsRemoteDataSourceImpl(apiClient);
 
-      final result = await dataSource.getGroupDebtSettlements(10);
+      final result = await dataSource.getGroupDebtSettlements(10, status: 'WAITING_FOR_CONFIRMATION');
 
       expect(capturedOptions?.method, 'GET');
       expect(capturedOptions?.path, '/groups/10/debt-settlements');
+      expect(capturedOptions?.queryParameters['status'], 'WAITING_FOR_CONFIRMATION');
       expect(result.length, 1);
       expect(result.first.id, 501);
       expect(result.first.isWaitingForConfirmation, isTrue);

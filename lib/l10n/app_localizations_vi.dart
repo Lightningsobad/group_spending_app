@@ -972,6 +972,16 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get rejectReceiveReasonLabel => 'Lý do từ chối';
+
+  @override
+  String get rejectReceiveReasonHint => 'Nhập lý do chưa nhận được tiền...';
+
+  @override
+  String get defaultRejectReceiveReason =>
+      'Chưa nhận được tiền vào tài khoản ngân hàng';
+
+  @override
   String get confirmRemindDebtTitle => 'Gửi thông báo nhắc nợ';
 
   @override

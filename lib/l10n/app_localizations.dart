@@ -1844,6 +1844,24 @@ abstract class AppLocalizations {
   /// **'Bạn chưa nhận được số tiền này và muốn yêu cầu {debtor} kiểm tra lại?'**
   String rejectReceiveDebtMessage(String debtor);
 
+  /// No description provided for @rejectReceiveReasonLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Lý do từ chối'**
+  String get rejectReceiveReasonLabel;
+
+  /// No description provided for @rejectReceiveReasonHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhập lý do chưa nhận được tiền...'**
+  String get rejectReceiveReasonHint;
+
+  /// No description provided for @defaultRejectReceiveReason.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chưa nhận được tiền vào tài khoản ngân hàng'**
+  String get defaultRejectReceiveReason;
+
   /// No description provided for @confirmRemindDebtTitle.
   ///
   /// In vi, this message translates to:

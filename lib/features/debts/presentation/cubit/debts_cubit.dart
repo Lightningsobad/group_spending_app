@@ -520,12 +520,65 @@ class DebtsCubit extends Cubit<DebtsState> {
     }
   }
 
-  Future<bool> paySimplifiedDebt(
+  Future<DebtPaymentPreviewEntity?> previewSimplifiedDebtPayment(
     int groupId, {
     required int creditorId,
-    num? amount,
-    String? paymentProofUrl,
-    String? note,
+    required num expectedAmount,
+  }) async {
+    final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
+    emit(state.copyWith(isActionSubmitting: true, clearMessages: true));
+
+    try {
+      final preview = await _repository.previewSimplifiedDebtPayment(
+        groupId,
+        creditorId: creditorId,
+        expectedAmount: expectedAmount,
+      );
+      if (isClosed ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+        return null;
+      }
+
+      emit(state.copyWith(isActionSubmitting: false));
+      return preview;
+    } on AppException catch (e) {
+      if (isClosed ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+        return null;
+      }
+      emit(
+        state.copyWith(
+          isActionSubmitting: false,
+          errorMessage: e.message,
+        ),
+      );
+      if (e.message.contains('SIMPLIFIED_DEBT_CHANGED') ||
+          e.message.contains('thay đổi')) {
+        await loadGroupDebts(groupId, silent: true);
+      }
+      return null;
+    } catch (e) {
+      if (isClosed ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+        return null;
+      }
+      emit(
+        state.copyWith(
+          isActionSubmitting: false,
+          errorMessage: e.toString(),
+        ),
+      );
+      return null;
+    }
+  }
+
+  Future<bool> paySimplifiedDebt(
+    int groupId, {
+    required String planToken,
+    String? idempotencyKey,
   }) async {
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
     emit(state.copyWith(isActionSubmitting: true, clearMessages: true));
@@ -533,10 +586,8 @@ class DebtsCubit extends Cubit<DebtsState> {
     try {
       await _repository.paySimplifiedDebt(
         groupId,
-        creditorId: creditorId,
-        amount: amount,
-        paymentProofUrl: paymentProofUrl,
-        note: note,
+        planToken: planToken,
+        idempotencyKey: idempotencyKey,
       );
       if (isClosed ||
           (sessionCoordinator != null &&
@@ -547,7 +598,7 @@ class DebtsCubit extends Cubit<DebtsState> {
       emit(
         state.copyWith(
           isActionSubmitting: false,
-          successMessage: 'Đã gửi yêu cầu xác nhận tất toán công nợ!',
+          successMessage: 'Đã gửi yêu cầu xác nhận trả nợ!',
         ),
       );
 
@@ -569,6 +620,10 @@ class DebtsCubit extends Cubit<DebtsState> {
           errorMessage: e.message,
         ),
       );
+      if (e.message.contains('SIMPLIFIED_DEBT_CHANGED') ||
+          e.message.contains('thay đổi')) {
+        await loadGroupDebts(groupId, silent: true);
+      }
       return false;
     } catch (e) {
       if (isClosed ||
@@ -589,6 +644,7 @@ class DebtsCubit extends Cubit<DebtsState> {
   Future<bool> confirmDebtSettlement(
     int settlementId, {
     required bool confirmed,
+    String? reason,
   }) async {
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
     emit(state.copyWith(isActionSubmitting: true, clearMessages: true));
@@ -597,6 +653,7 @@ class DebtsCubit extends Cubit<DebtsState> {
       await _repository.confirmDebtSettlement(
         settlementId,
         confirmed: confirmed,
+        reason: reason,
       );
       if (isClosed ||
           (sessionCoordinator != null &&
@@ -608,8 +665,8 @@ class DebtsCubit extends Cubit<DebtsState> {
         state.copyWith(
           isActionSubmitting: false,
           successMessage: confirmed
-              ? 'Đã xác nhận tất toán công nợ thành công!'
-              : 'Đã từ chối tất toán công nợ.',
+              ? 'Đã xác nhận nhận tiền thành công!'
+              : 'Đã từ chối xác nhận nhận tiền.',
         ),
       );
 

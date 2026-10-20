@@ -110,12 +110,26 @@ class FakeDebtsRepo implements DebtsRepository {
   }) async {}
 
   @override
-  Future<DebtSettlementEntity> paySimplifiedDebt(
+  Future<DebtPaymentPreviewEntity> previewSimplifiedDebtPayment(
     int groupId, {
     required int creditorId,
-    num? amount,
-    String? paymentProofUrl,
-    String? note,
+    required num expectedAmount,
+  }) async {
+    return DebtPaymentPreviewEntity(
+      planToken: 'test_token',
+      groupId: groupId,
+      debtorId: 1,
+      creditorId: creditorId,
+      amount: expectedAmount,
+      amountVnd: expectedAmount * 1000,
+    );
+  }
+
+  @override
+  Future<DebtSettlementEntity> paySimplifiedDebt(
+    int groupId, {
+    required String planToken,
+    String? idempotencyKey,
   }) async {
     return const DebtSettlementEntity(
       id: 1,
@@ -130,6 +144,7 @@ class FakeDebtsRepo implements DebtsRepository {
   Future<DebtSettlementEntity> confirmDebtSettlement(
     int settlementId, {
     required bool confirmed,
+    String? reason,
   }) async {
     return DebtSettlementEntity(
       id: settlementId,
@@ -138,6 +153,7 @@ class FakeDebtsRepo implements DebtsRepository {
       creditorId: 2,
       amount: 150000,
       status: confirmed ? DebtStatus.settled : DebtStatus.rejected,
+      rejectionReason: reason,
     );
   }
 
@@ -153,7 +169,12 @@ class FakeDebtsRepo implements DebtsRepository {
   }
 
   @override
-  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(int groupId) async {
+  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(
+    int groupId, {
+    String? status,
+    int page = 0,
+    int size = 20,
+  }) async {
     return [];
   }
 }

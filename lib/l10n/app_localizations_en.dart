@@ -975,6 +975,17 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get rejectReceiveReasonLabel => 'Rejection reason';
+
+  @override
+  String get rejectReceiveReasonHint =>
+      'Enter reason for not receiving money...';
+
+  @override
+  String get defaultRejectReceiveReason =>
+      'Have not received money in bank account';
+
+  @override
   String get confirmRemindDebtTitle => 'Send debt reminder';
 
   @override

@@ -79,21 +79,36 @@ class _MockDebtsRepo implements DebtsRepository {
   }) async {}
 
   @override
-  Future<DebtSettlementEntity> paySimplifiedDebt(
+  Future<DebtPaymentPreviewEntity> previewSimplifiedDebtPayment(
     int groupId, {
     required int creditorId,
-    num? amount,
-    String? paymentProofUrl,
-    String? note,
+    required num expectedAmount,
   }) async {
     paidCreditorId = creditorId;
-    paidAmount = amount;
+    paidAmount = expectedAmount > 1000 ? expectedAmount : expectedAmount * 1000;
+    return DebtPaymentPreviewEntity(
+      planToken: 'test_plan_token',
+      groupId: groupId,
+      debtorId: 1,
+      creditorId: creditorId,
+      amount: expectedAmount,
+      amountVnd: paidAmount!,
+    );
+  }
+
+  @override
+  Future<DebtSettlementEntity> paySimplifiedDebt(
+    int groupId, {
+    required String planToken,
+    String? idempotencyKey,
+  }) async {
     return DebtSettlementEntity(
       id: 1,
       groupId: 10,
       debtorId: 1,
-      creditorId: creditorId,
-      amount: amount ?? 150000,
+      creditorId: paidCreditorId ?? 2,
+      amount: paidAmount ?? 150000,
+      amountVnd: paidAmount ?? 150000,
     );
   }
 
@@ -101,6 +116,7 @@ class _MockDebtsRepo implements DebtsRepository {
   Future<DebtSettlementEntity> confirmDebtSettlement(
     int settlementId, {
     required bool confirmed,
+    String? reason,
   }) async {
     return DebtSettlementEntity(
       id: settlementId,
@@ -108,7 +124,9 @@ class _MockDebtsRepo implements DebtsRepository {
       debtorId: 1,
       creditorId: 2,
       amount: 150000,
+      amountVnd: 150000,
       status: confirmed ? DebtStatus.settled : DebtStatus.rejected,
+      rejectionReason: reason,
     );
   }
 
@@ -120,11 +138,17 @@ class _MockDebtsRepo implements DebtsRepository {
       debtorId: 1,
       creditorId: 2,
       amount: 150000,
+      amountVnd: 150000,
     );
   }
 
   @override
-  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(int groupId) async {
+  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(
+    int groupId, {
+    String? status,
+    int page = 0,
+    int size = 20,
+  }) async {
     return [];
   }
 }

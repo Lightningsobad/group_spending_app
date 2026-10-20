@@ -91,12 +91,16 @@ class MockDebtsRepository implements DebtsRepository {
   int simplifiedRemindCalls = 0;
   int? lastRemindedDebtorId;
   num? lastRemindedExpectedAmount;
+  int previewCalls = 0;
+  int? lastPreviewCreditorId;
+  num? lastPreviewExpectedAmount;
   int paySimplifiedCalls = 0;
-  int? lastPayCreditorId;
-  num? lastPayAmount;
+  String? lastPayPlanToken;
+  String? lastPayIdempotencyKey;
   int confirmSettlementCalls = 0;
   int? lastConfirmedSettlementId;
   bool? lastConfirmedStatus;
+  String? lastConfirmedReason;
   List<DebtSettlementEntity> settlementsResult = [];
 
   @override
@@ -139,23 +143,48 @@ class MockDebtsRepository implements DebtsRepository {
   }
 
   @override
-  Future<DebtSettlementEntity> paySimplifiedDebt(
+  Future<DebtPaymentPreviewEntity> previewSimplifiedDebtPayment(
     int groupId, {
     required int creditorId,
-    num? amount,
-    String? paymentProofUrl,
-    String? note,
+    required num expectedAmount,
+  }) async {
+    previewCalls++;
+    lastPreviewCreditorId = creditorId;
+    lastPreviewExpectedAmount = expectedAmount;
+    return const DebtPaymentPreviewEntity(
+      planToken: 'test-plan-token',
+      groupId: 10,
+      debtorId: 2,
+      creditorId: 1,
+      amount: 150000,
+      allocatedSplits: [
+        AllocatedSplitEntity(
+          expenseSplitId: 101,
+          expenseId: 1,
+          expenseTitle: 'Ăn trưa',
+          payerId: 1,
+          participantId: 2,
+          allocatedAmount: 150000,
+        ),
+      ],
+    );
+  }
+
+  @override
+  Future<DebtSettlementEntity> paySimplifiedDebt(
+    int groupId, {
+    required String planToken,
+    String? idempotencyKey,
   }) async {
     paySimplifiedCalls++;
-    lastPayCreditorId = creditorId;
-    lastPayAmount = amount;
-    return DebtSettlementEntity(
+    lastPayPlanToken = planToken;
+    lastPayIdempotencyKey = idempotencyKey;
+    return const DebtSettlementEntity(
       id: 99,
-      groupId: groupId,
+      groupId: 10,
       debtorId: 2,
-      creditorId: creditorId,
-      amount: amount ?? 150000,
-      note: note,
+      creditorId: 1,
+      amount: 150000,
       status: DebtStatus.waitingForConfirmation,
     );
   }
@@ -164,24 +193,27 @@ class MockDebtsRepository implements DebtsRepository {
   Future<DebtSettlementEntity> confirmDebtSettlement(
     int settlementId, {
     required bool confirmed,
+    String? reason,
   }) async {
     confirmSettlementCalls++;
     lastConfirmedSettlementId = settlementId;
     lastConfirmedStatus = confirmed;
+    lastConfirmedReason = reason;
     return DebtSettlementEntity(
       id: settlementId,
       groupId: 10,
       debtorId: 2,
       creditorId: 1,
       amount: 150000,
+      rejectionReason: reason,
       status: confirmed ? DebtStatus.settled : DebtStatus.rejected,
     );
   }
 
   @override
   Future<DebtSettlementEntity> getDebtSettlementDetail(int settlementId) async {
-    return DebtSettlementEntity(
-      id: settlementId,
+    return const DebtSettlementEntity(
+      id: 1,
       groupId: 10,
       debtorId: 2,
       creditorId: 1,
@@ -190,7 +222,12 @@ class MockDebtsRepository implements DebtsRepository {
   }
 
   @override
-  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(int groupId) async {
+  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(
+    int groupId, {
+    String? status,
+    int page = 0,
+    int size = 20,
+  }) async {
     return settlementsResult;
   }
 }
@@ -452,18 +489,31 @@ void main() {
       expect(cubit.state.successMessage, isNotNull);
     });
 
+    test('previewSimplifiedDebtPayment calls repository and returns preview', () async {
+      final preview = await cubit.previewSimplifiedDebtPayment(
+        10,
+        creditorId: 1,
+        expectedAmount: 150000,
+      );
+
+      expect(preview, isNotNull);
+      expect(preview?.planToken, 'test-plan-token');
+      expect(repository.previewCalls, 1);
+      expect(repository.lastPreviewCreditorId, 1);
+      expect(repository.lastPreviewExpectedAmount, 150000);
+    });
+
     test('paySimplifiedDebt calls repository, triggers sync and reloads debts', () async {
       final success = await cubit.paySimplifiedDebt(
         10,
-        creditorId: 2,
-        amount: 150000,
-        note: 'Đã chuyển MBBank',
+        planToken: 'test-plan-token',
+        idempotencyKey: 'idem-123',
       );
 
       expect(success, isTrue);
       expect(repository.paySimplifiedCalls, 1);
-      expect(repository.lastPayCreditorId, 2);
-      expect(repository.lastPayAmount, 150000);
+      expect(repository.lastPayPlanToken, 'test-plan-token');
+      expect(repository.lastPayIdempotencyKey, 'idem-123');
       expect(cubit.state.successMessage, isNotNull);
     });
 
@@ -477,6 +527,21 @@ void main() {
       expect(repository.confirmSettlementCalls, 1);
       expect(repository.lastConfirmedSettlementId, 99);
       expect(repository.lastConfirmedStatus, isTrue);
+      expect(cubit.state.successMessage, isNotNull);
+    });
+
+    test('confirmDebtSettlement with rejection reason calls repository', () async {
+      final success = await cubit.confirmDebtSettlement(
+        99,
+        confirmed: false,
+        reason: 'Chưa nhận được tiền',
+      );
+
+      expect(success, isTrue);
+      expect(repository.confirmSettlementCalls, 1);
+      expect(repository.lastConfirmedSettlementId, 99);
+      expect(repository.lastConfirmedStatus, isFalse);
+      expect(repository.lastConfirmedReason, 'Chưa nhận được tiền');
       expect(cubit.state.successMessage, isNotNull);
     });
 
