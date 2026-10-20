@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/constants/app_colors.dart';
 import '../../../../shared/widgets/app_shimmer.dart';
 
 class FinancialBalanceCardSkeleton extends StatelessWidget {
@@ -8,31 +9,33 @@ class FinancialBalanceCardSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           colors: [
-            Color(0xFF0F172A),
-            Color(0xFF1E293B),
-            Color(0xFF1E1B4B),
+            colors.financialCardBgStart,
+            colors.financialCardBgMiddle,
+            colors.financialCardBgEnd,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
+        border: Border.all(
+          color: colors.financialCardBorder,
+          width: 1.2,
+        ),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.15),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
-          ),
+          colors.financialCardShadow,
         ],
       ),
       child: AppShimmer(
         enabled: enabled,
-        baseColor: Colors.white.withValues(alpha: 0.12),
-        highlightColor: Colors.white.withValues(alpha: 0.28),
+        baseColor: colors.financialCardIconBg,
+        highlightColor: colors.financialCardBoxBorder,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -43,7 +46,7 @@ class FinancialBalanceCardSkeleton extends StatelessWidget {
                   width: 34,
                   height: 34,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: colors.financialCardIconBg,
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
@@ -60,10 +63,10 @@ class FinancialBalanceCardSkeleton extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.08),
+                      color: colors.financialCardBoxBg,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.12),
+                        color: colors.financialCardBoxBorder,
                       ),
                     ),
                     child: const Column(
@@ -83,10 +86,10 @@ class FinancialBalanceCardSkeleton extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.08),
+                      color: colors.financialCardBoxBg,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: Colors.white.withValues(alpha: 0.12),
+                        color: colors.financialCardBoxBorder,
                       ),
                     ),
                     child: const Column(
