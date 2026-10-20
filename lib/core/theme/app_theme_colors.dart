@@ -166,6 +166,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color fundProgressStart;
   final Color fundProgressEnd;
   final Color fundProgressText;
+  final Color fundStatusUnpaidBg;
+  final Color fundStatusUnpaidText;
+  final Color fundRemindButtonBg;
+  final Color fundRemindButtonBorder;
+  final Color fundRemindButtonIcon;
+  final Color fundEditButtonBg;
+  final Color fundEditButtonFg;
+  final Color fundEditButtonBorder;
+  final Color fundCsvButtonBg;
+  final Color fundCsvButtonFg;
+  final Color fundCsvIcon;
   // Thẻ Chi tiêu (Expense Card & Category)
   final Color expenseCategoryIconBg;
   final Color expenseCategoryIcon;
@@ -387,6 +398,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.fundProgressStart,
     required this.fundProgressEnd,
     required this.fundProgressText,
+    required this.fundStatusUnpaidBg,
+    required this.fundStatusUnpaidText,
+    required this.fundRemindButtonBg,
+    required this.fundRemindButtonBorder,
+    required this.fundRemindButtonIcon,
+    required this.fundEditButtonBg,
+    required this.fundEditButtonFg,
+    required this.fundEditButtonBorder,
+    required this.fundCsvButtonBg,
+    required this.fundCsvButtonFg,
+    required this.fundCsvIcon,
     required this.expenseCategoryIconBg,
     required this.expenseCategoryIcon,
     required this.expenseCategoryTag,
@@ -605,6 +627,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     fundProgressStart: Color(0xFF2563EB),
     fundProgressEnd: Color(0xFF059669),
     fundProgressText: Color(0xFF047857),
+    fundStatusUnpaidBg: Color(0xFFFEE2E2),
+    fundStatusUnpaidText: Color(0xFFDC2626),
+    fundRemindButtonBg: Color(0xFFFEF3C7),
+    fundRemindButtonBorder: Color(0xFFFDE68A),
+    fundRemindButtonIcon: Color(0xFFD97706),
+    fundEditButtonBg: Color(0xFFF0FDF4),
+    fundEditButtonFg: Color(0xFF15803D),
+    fundEditButtonBorder: Color(0xFF86EFAC),
+    fundCsvButtonBg: Color(0xFFF1F5F9),
+    fundCsvButtonFg: Color(0xFF334155),
+    fundCsvIcon: Color(0xFF16A34A),
     expenseCategoryIconBg: Color(0xFFE8F5E9),
     expenseCategoryIcon: Color(0xFF2E7D32),
     expenseCategoryTag: Color(0xFF10B981),
@@ -823,6 +856,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     fundProgressStart: Color(0xFF3B82F6),
     fundProgressEnd: Color(0xFF10B981),
     fundProgressText: Color(0xFF34D399),
+    fundStatusUnpaidBg: Color(0xFF450A0A),
+    fundStatusUnpaidText: Color(0xFFF87171),
+    fundRemindButtonBg: Color(0xFF713F12),
+    fundRemindButtonBorder: Color(0xFF854D0E),
+    fundRemindButtonIcon: Color(0xFFFBBF24),
+    fundEditButtonBg: Color(0x33064E3B),
+    fundEditButtonFg: Color(0xFF6EE7B7),
+    fundEditButtonBorder: Color(0xFF065F46),
+    fundCsvButtonBg: Color(0xFF1E293B),
+    fundCsvButtonFg: Color(0xFFCBD5E1),
+    fundCsvIcon: Color(0xFF34D399),
     expenseCategoryIconBg: Color(0xFF064E3B),
     expenseCategoryIcon: Color(0xFF34D399),
     expenseCategoryTag: Color(0xFF34D399),
@@ -1039,6 +1083,17 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? fundProgressStart,
     Color? fundProgressEnd,
     Color? fundProgressText,
+    Color? fundStatusUnpaidBg,
+    Color? fundStatusUnpaidText,
+    Color? fundRemindButtonBg,
+    Color? fundRemindButtonBorder,
+    Color? fundRemindButtonIcon,
+    Color? fundEditButtonBg,
+    Color? fundEditButtonFg,
+    Color? fundEditButtonBorder,
+    Color? fundCsvButtonBg,
+    Color? fundCsvButtonFg,
+    Color? fundCsvIcon,
     Color? expenseCategoryIconBg,
     Color? expenseCategoryIcon,
     Color? expenseCategoryTag,
@@ -1256,6 +1311,19 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       fundProgressStart: fundProgressStart ?? this.fundProgressStart,
       fundProgressEnd: fundProgressEnd ?? this.fundProgressEnd,
       fundProgressText: fundProgressText ?? this.fundProgressText,
+      fundStatusUnpaidBg: fundStatusUnpaidBg ?? this.fundStatusUnpaidBg,
+      fundStatusUnpaidText: fundStatusUnpaidText ?? this.fundStatusUnpaidText,
+      fundRemindButtonBg: fundRemindButtonBg ?? this.fundRemindButtonBg,
+      fundRemindButtonBorder:
+          fundRemindButtonBorder ?? this.fundRemindButtonBorder,
+      fundRemindButtonIcon: fundRemindButtonIcon ?? this.fundRemindButtonIcon,
+      fundEditButtonBg: fundEditButtonBg ?? this.fundEditButtonBg,
+      fundEditButtonFg: fundEditButtonFg ?? this.fundEditButtonFg,
+      fundEditButtonBorder:
+          fundEditButtonBorder ?? this.fundEditButtonBorder,
+      fundCsvButtonBg: fundCsvButtonBg ?? this.fundCsvButtonBg,
+      fundCsvButtonFg: fundCsvButtonFg ?? this.fundCsvButtonFg,
+      fundCsvIcon: fundCsvIcon ?? this.fundCsvIcon,
       expenseCategoryIconBg:
           expenseCategoryIconBg ?? this.expenseCategoryIconBg,
       expenseCategoryIcon: expenseCategoryIcon ?? this.expenseCategoryIcon,
@@ -1542,6 +1610,25 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       fundProgressEnd: Color.lerp(fundProgressEnd, other.fundProgressEnd, t)!,
       fundProgressText:
           Color.lerp(fundProgressText, other.fundProgressText, t)!,
+      fundStatusUnpaidBg:
+          Color.lerp(fundStatusUnpaidBg, other.fundStatusUnpaidBg, t)!,
+      fundStatusUnpaidText:
+          Color.lerp(fundStatusUnpaidText, other.fundStatusUnpaidText, t)!,
+      fundRemindButtonBg:
+          Color.lerp(fundRemindButtonBg, other.fundRemindButtonBg, t)!,
+      fundRemindButtonBorder:
+          Color.lerp(fundRemindButtonBorder, other.fundRemindButtonBorder, t)!,
+      fundRemindButtonIcon:
+          Color.lerp(fundRemindButtonIcon, other.fundRemindButtonIcon, t)!,
+      fundEditButtonBg:
+          Color.lerp(fundEditButtonBg, other.fundEditButtonBg, t)!,
+      fundEditButtonFg:
+          Color.lerp(fundEditButtonFg, other.fundEditButtonFg, t)!,
+      fundEditButtonBorder:
+          Color.lerp(fundEditButtonBorder, other.fundEditButtonBorder, t)!,
+      fundCsvButtonBg: Color.lerp(fundCsvButtonBg, other.fundCsvButtonBg, t)!,
+      fundCsvButtonFg: Color.lerp(fundCsvButtonFg, other.fundCsvButtonFg, t)!,
+      fundCsvIcon: Color.lerp(fundCsvIcon, other.fundCsvIcon, t)!,
       expenseCategoryIconBg:
           Color.lerp(expenseCategoryIconBg, other.expenseCategoryIconBg, t)!,
       expenseCategoryIcon:

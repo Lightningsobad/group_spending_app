@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../core/theme/app_theme_colors.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../domain/entities/fund_entities.dart';
@@ -45,7 +45,7 @@ class FundMemberTile extends StatelessWidget {
     final paidDateText = _formatPaidDate(member.paidAt);
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 6),
       decoration: BoxDecoration(
         border: Border(
           bottom: BorderSide(
@@ -59,14 +59,14 @@ class FundMemberTile extends StatelessWidget {
           // Avatar
           CircleAvatar(
             radius: 18,
-            backgroundColor: AppColors.emerald.withValues(alpha: 0.15),
+            backgroundColor: colors.brandEmerald.withValues(alpha: 0.15),
             backgroundImage: member.avatarUrl != null && member.avatarUrl!.isNotEmpty
                 ? NetworkImage(member.avatarUrl!)
                 : null,
             child: member.avatarUrl == null || member.avatarUrl!.isEmpty
                 ? Text(
                     member.fullName.isNotEmpty ? member.fullName[0].toUpperCase() : '?',
-                    style: AppTextStyle.bold(fontSize: 14, color: AppColors.emeraldForest),
+                    style: AppTextStyle.bold(fontSize: 14, color: colors.brandEmerald),
                   )
                 : null,
           ),
@@ -80,33 +80,32 @@ class FundMemberTile extends StatelessWidget {
                 Text(
                   member.fullName,
                   style: AppTextStyle.bold(
-                    fontSize: 13,
+                    fontSize: AppFontSize.secondary, // 14px
                     color: colors.textPrimary,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(height: 3),
-                Row(
-                  children: [
-                    Text(
-                      CurrencyUtils.formatVnd(amountVnd),
-                      style: AppTextStyle.medium(
-                        fontSize: 11,
-                        color: colors.textSecondary,
-                      ),
+                Text.rich(
+                  TextSpan(
+                    text: CurrencyUtils.formatVnd(amountVnd),
+                    style: AppTextStyle.medium(
+                      fontSize: AppFontSize.caption, // 12px
+                      color: colors.textSecondary,
                     ),
-                    if (isPaid && paidDateText.isNotEmpty) ...[
-                      const SizedBox(width: 6),
-                      Text(
-                        '• $paidDateText',
-                        style: AppTextStyle.bold(
-                          fontSize: 10,
-                          color: const Color(0xFF059669),
+                    children: [
+                      if (isPaid && paidDateText.isNotEmpty)
+                        TextSpan(
+                          text: ' • $paidDateText',
+                          style: AppTextStyle.bold(
+                            fontSize: AppFontSize.caption, // 12px
+                            color: colors.fundAmountText,
+                          ),
                         ),
-                      ),
                     ],
-                  ],
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -116,25 +115,26 @@ class FundMemberTile extends StatelessWidget {
           // Status & Action button
           if (isPaid) ...[
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              constraints: const BoxConstraints(minHeight: 36),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
-                color: const Color(0xFFDCFCE7),
+                color: colors.fundStatusCompletedBg,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Icon(
+                  Icon(
                     LucideIcons.circleCheck,
-                    size: 13,
-                    color: Color(0xFF15803D),
+                    size: 14,
+                    color: colors.fundStatusCompletedText,
                   ),
                   const SizedBox(width: 4),
                   Text(
                     tr.statusPaid,
                     style: AppTextStyle.bold(
-                      fontSize: 11,
-                      color: const Color(0xFF15803D),
+                      fontSize: AppFontSize.caption, // 12px
+                      color: colors.fundStatusCompletedText,
                     ),
                   ),
                 ],
@@ -144,59 +144,77 @@ class FundMemberTile extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                InkWell(
-                  borderRadius: BorderRadius.circular(20),
-                  onTap: isAdmin ? onToggleStatus : null,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFEE2E2),
+                // Unpaid toggle button with minimum 48px touch target
+                ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    minHeight: 48,
+                    minWidth: 48,
+                  ),
+                  child: Center(
+                    child: InkWell(
                       borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          LucideIcons.circleX,
-                          size: 13,
-                          color: Color(0xFFDC2626),
+                      onTap: isAdmin ? onToggleStatus : null,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                        decoration: BoxDecoration(
+                          color: colors.fundStatusUnpaidBg,
+                          borderRadius: BorderRadius.circular(20),
                         ),
-                        const SizedBox(width: 4),
-                        Text(
-                          tr.statusUnpaid,
-                          style: AppTextStyle.bold(
-                            fontSize: 11,
-                            color: const Color(0xFFDC2626),
-                          ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              LucideIcons.circleX,
+                              size: 14,
+                              color: colors.fundStatusUnpaidText,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              tr.statusUnpaid,
+                              style: AppTextStyle.bold(
+                                fontSize: AppFontSize.caption, // 12px
+                                color: colors.fundStatusUnpaidText,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ),
                 if (isAdmin) ...[
-                  const SizedBox(width: 6),
-                  InkWell(
-                    borderRadius: BorderRadius.circular(10),
-                    onTap: isCooldownActive ? null : onRemind,
-                    child: Container(
-                      padding: const EdgeInsets.all(7),
-                      decoration: BoxDecoration(
-                        color: isCooldownActive
-                            ? colors.surfaceMuted
-                            : const Color(0xFFFEF3C7),
+                  const SizedBox(width: 8), // Gap >= 8px
+                  // Remind button with minimum 48x48px touch target
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      minWidth: 48,
+                      minHeight: 48,
+                    ),
+                    child: Center(
+                      child: InkWell(
                         borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: isCooldownActive
-                              ? colors.cardBorder
-                              : const Color(0xFFFDE68A),
+                        onTap: isCooldownActive ? null : onRemind,
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: isCooldownActive
+                                ? colors.surfaceMuted
+                                : colors.fundRemindButtonBg,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: isCooldownActive
+                                ? colors.cardBorder
+                                : colors.fundRemindButtonBorder,
+                            ),
+                          ),
+                          child: Icon(
+                            LucideIcons.bellRing,
+                            size: 16,
+                            color: isCooldownActive
+                                ? colors.textMuted
+                                : colors.fundRemindButtonIcon,
+                          ),
                         ),
-                      ),
-                      child: Icon(
-                        LucideIcons.bellRing,
-                        size: 15,
-                        color: isCooldownActive
-                            ? colors.textMuted
-                            : const Color(0xFFD97706),
                       ),
                     ),
                   ),

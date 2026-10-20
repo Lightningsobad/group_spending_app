@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../../core/constants/app_colors.dart';
 import '../../../../core/sync/data_sync_coordinator.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../core/theme/app_theme_colors.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../groups/data/models/group_model.dart';
@@ -12,6 +12,7 @@ import '../../domain/entities/fund_entities.dart';
 import '../../domain/repositories/funds_repository.dart';
 import '../cubit/fund_detail_cubit.dart';
 import '../cubit/fund_detail_state.dart';
+import '../widgets/fund_detail_skeleton.dart';
 import '../widgets/fund_member_tile.dart';
 import 'fund_form_screen.dart';
 
@@ -72,6 +73,7 @@ class _FundDetailViewState extends State<_FundDetailView> {
 
   Future<void> _confirmDelete(FundCollectionEntity fund) async {
     final tr = context.l10n;
+    final colors = context.colors;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -83,7 +85,7 @@ class _FundDetailViewState extends State<_FundDetailView> {
             child: Text(tr.cancel),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: AppColors.error),
+            style: ElevatedButton.styleFrom(backgroundColor: colors.dangerText),
             onPressed: () => Navigator.of(ctx).pop(true),
             child: Text(tr.deleteConfirmButton, style: const TextStyle(color: Colors.white)),
           ),
@@ -104,6 +106,7 @@ class _FundDetailViewState extends State<_FundDetailView> {
     num amountVnd,
   ) async {
     final tr = context.l10n;
+    final colors = context.colors;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -120,7 +123,7 @@ class _FundDetailViewState extends State<_FundDetailView> {
             child: Text(tr.cancel),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF14532D)),
+            style: ElevatedButton.styleFrom(backgroundColor: colors.brandEmerald),
             onPressed: () => Navigator.of(ctx).pop(true),
             child: Text(tr.confirm, style: const TextStyle(color: Colors.white)),
           ),
@@ -157,197 +160,230 @@ class _FundDetailViewState extends State<_FundDetailView> {
     final isAdmin = widget.group?.isAdmin ?? false;
     final groupName = widget.group?.name ?? '';
 
-    return BlocConsumer<FundDetailCubit, FundDetailState>(
-      listenWhen: (prev, curr) =>
-          prev.errorMessage != curr.errorMessage ||
-          prev.successMessage != curr.successMessage ||
-          prev.isDeleted != curr.isDeleted,
-      listener: (ctx, state) {
-        if (state.errorMessage != null) {
-          ScaffoldMessenger.of(ctx).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage!),
-              backgroundColor: AppColors.error,
-            ),
-          );
-          ctx.read<FundDetailCubit>().clearMessages();
-        }
-        if (state.successMessage != null) {
-          ScaffoldMessenger.of(ctx).showSnackBar(
-            SnackBar(
-              content: Text(state.successMessage!),
-              backgroundColor: AppColors.emerald,
-            ),
-          );
-          ctx.read<FundDetailCubit>().clearMessages();
-        }
-      },
-      builder: (ctx, state) {
-        final fund = state.fund;
+    // Non-linear TextScaler with safe boundary clamping
+    final textScaler = MediaQuery.textScalerOf(context).clamp(
+      minScaleFactor: 0.85,
+      maxScaleFactor: 1.30,
+    );
 
-        return Scaffold(
-          backgroundColor: colors.background,
-          body: SafeArea(
-            child: Column(
-              children: [
-                // Top Header Bar
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                  child: Row(
-                    children: [
-                      // Back Button
-                      InkWell(
-                        borderRadius: BorderRadius.circular(12),
-                        onTap: () => Navigator.of(context).pop(),
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: colors.surfaceMuted,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Icon(
-                            LucideIcons.arrowLeft,
-                            size: 18,
-                            color: colors.textPrimary,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaler: textScaler),
+      child: BlocConsumer<FundDetailCubit, FundDetailState>(
+        listenWhen: (prev, curr) =>
+            prev.errorMessage != curr.errorMessage ||
+            prev.successMessage != curr.successMessage ||
+            prev.isDeleted != curr.isDeleted,
+        listener: (ctx, state) {
+          if (state.errorMessage != null) {
+            ScaffoldMessenger.of(ctx).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage!),
+                backgroundColor: colors.errorAccent,
+              ),
+            );
+            ctx.read<FundDetailCubit>().clearMessages();
+          }
+          if (state.successMessage != null) {
+            ScaffoldMessenger.of(ctx).showSnackBar(
+              SnackBar(
+                content: Text(state.successMessage!),
+                backgroundColor: colors.brandEmerald,
+              ),
+            );
+            ctx.read<FundDetailCubit>().clearMessages();
+          }
+        },
+        builder: (ctx, state) {
+          final fund = state.fund;
 
-                      // Title & Group Name
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              tr.fundDetailTitle,
-                              style: AppTextStyle.bold(
-                                fontSize: 18,
-                                color: colors.textPrimary,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            if (groupName.isNotEmpty)
-                              Text(
-                                groupName,
-                                style: AppTextStyle.bold(
-                                  fontSize: 11,
-                                  color: const Color(0xFF047857),
+          return Scaffold(
+            backgroundColor: colors.background,
+            body: SafeArea(
+              child: Column(
+                children: [
+                  // Top Header Bar
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Row(
+                      children: [
+                        // Back Button with minimum 48x48px touch target
+                        ConstrainedBox(
+                          constraints: const BoxConstraints(
+                            minWidth: 48,
+                            minHeight: 48,
+                          ),
+                          child: Center(
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(12),
+                              onTap: () => Navigator.of(context).pop(),
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: colors.surfaceMuted,
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                                child: Icon(
+                                  LucideIcons.arrowLeft,
+                                  size: 18,
+                                  color: colors.textPrimary,
+                                ),
                               ),
-                          ],
-                        ),
-                      ),
-
-                      // Header Actions (Admin only: Quick Edit & Quick Delete)
-                      if (isAdmin && fund != null) ...[
-                        InkWell(
-                          borderRadius: BorderRadius.circular(10),
-                          onTap: () => _openEditScreen(fund),
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: colors.surfaceMuted,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Icon(
-                              LucideIcons.penLine,
-                              size: 17,
-                              color: colors.textSecondary,
                             ),
                           ),
                         ),
                         const SizedBox(width: 8),
-                        InkWell(
-                          borderRadius: BorderRadius.circular(10),
-                          onTap: () => _confirmDelete(fund),
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFFEF2F2),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Icon(
-                              LucideIcons.trash2,
-                              size: 17,
-                              color: Color(0xFFDC2626),
-                            ),
+
+                        // Title & Group Name
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                tr.fundDetailTitle,
+                                style: AppTextStyle.bold(
+                                  fontSize: AppFontSize.h4, // 18px
+                                  color: colors.textPrimary,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              if (groupName.isNotEmpty)
+                                Text(
+                                  groupName,
+                                  style: AppTextStyle.bold(
+                                    fontSize: AppFontSize.caption, // 12px
+                                    color: colors.brandEmerald,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                            ],
                           ),
                         ),
-                      ],
-                    ],
-                  ),
-                ),
 
-                // Content
-                Expanded(
-                  child: state.isLoading && fund == null
-                      ? const Center(child: CircularProgressIndicator())
-                      : fund == null
-                          ? Center(
-                              child: Text(
-                                tr.underDevelopment,
-                                style: AppTextStyle.medium(
-                                  fontSize: 14,
-                                  color: colors.textMuted,
-                                ),
-                              ),
-                            )
-                          : RefreshIndicator(
-                              color: AppColors.emerald,
-                              onRefresh: () => ctx
-                                  .read<FundDetailCubit>()
-                                  .loadFundDetails(fund.id, silent: true),
-                              child: SingleChildScrollView(
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                padding: const EdgeInsets.fromLTRB(16, 6, 16, 30),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  children: [
-                                    // Card 1: Fund Info & Progress
-                                    _buildFundInfoCard(context, fund, colors, tr),
-                                    const SizedBox(height: 16),
-
-                                    // Card 2: Members Payment Status List
-                                    _buildMemberStatusCard(
-                                      context,
-                                      fund,
-                                      state,
-                                      colors,
-                                      tr,
-                                      isAdmin,
-                                    ),
-                                    const SizedBox(height: 20),
-
-                                    // Bottom 3 Full-Width Action Buttons
-                                    _buildBottomActions(
-                                      context,
-                                      fund,
-                                      state,
-                                      colors,
-                                      tr,
-                                      isAdmin,
-                                    ),
-                                  ],
+                        // Header Actions (Admin only: Quick Edit & Quick Delete)
+                        if (isAdmin && fund != null) ...[
+                          ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: 48,
+                              minHeight: 48,
+                            ),
+                            child: Center(
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(10),
+                                onTap: () => _openEditScreen(fund),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: colors.surfaceMuted,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Icon(
+                                    LucideIcons.penLine,
+                                    size: 17,
+                                    color: colors.textSecondary,
+                                  ),
                                 ),
                               ),
                             ),
-                ),
-              ],
+                          ),
+                          const SizedBox(width: 8), // Gap >= 8px
+                          ConstrainedBox(
+                            constraints: const BoxConstraints(
+                              minWidth: 48,
+                              minHeight: 48,
+                            ),
+                            child: Center(
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(10),
+                                onTap: () => _confirmDelete(fund),
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: colors.dangerSurface,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Icon(
+                                    LucideIcons.trash2,
+                                    size: 17,
+                                    color: colors.dangerText,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+
+                  // Content
+                  Expanded(
+                    child: state.isLoading && fund == null
+                        ? const FundDetailSkeleton()
+                        : fund == null
+                            ? Center(
+                                child: Text(
+                                  tr.underDevelopment,
+                                  style: AppTextStyle.medium(
+                                    fontSize: AppFontSize.secondary, // 14px
+                                    color: colors.textMuted,
+                                  ),
+                                ),
+                              )
+                            : RefreshIndicator(
+                                color: colors.brandEmerald,
+                                onRefresh: () => ctx
+                                    .read<FundDetailCubit>()
+                                    .loadFundDetails(fund.id, silent: true),
+                                child: SingleChildScrollView(
+                                  physics: const AlwaysScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.fromLTRB(16, 6, 16, 30),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      // Card 1: Fund Info & Progress
+                                      _buildFundInfoCard(context, fund, colors, tr),
+                                      const SizedBox(height: 16),
+
+                                      // Card 2: Members Payment Status List
+                                      _buildMemberStatusCard(
+                                        context,
+                                        fund,
+                                        state,
+                                        colors,
+                                        tr,
+                                        isAdmin,
+                                      ),
+                                      const SizedBox(height: 20),
+
+                                      // Bottom 3 Full-Width Action Buttons
+                                      _buildBottomActions(
+                                        context,
+                                        fund,
+                                        state,
+                                        colors,
+                                        tr,
+                                        isAdmin,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 
   Widget _buildFundInfoCard(
     BuildContext context,
     FundCollectionEntity fund,
-    dynamic colors,
+    AppThemeColors colors,
     dynamic tr,
   ) {
     final isCollecting = fund.isCollecting;
@@ -359,82 +395,93 @@ class _FundDetailViewState extends State<_FundDetailView> {
         color: colors.cardBackground,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: colors.cardBorder),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 3),
-          ),
-        ],
+        boxShadow: [colors.cardShadow],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Row 1: Status Chip & Close fund / refresh
+          // Row 1: Status Chip & CSV Export button
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(
-                  color: isCollecting
-                      ? const Color(0xFFDBEAFE)
-                      : const Color(0xFFDCFCE7),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      isCollecting ? LucideIcons.clock : LucideIcons.circleCheck,
-                      size: 13,
-                      color: isCollecting
-                          ? const Color(0xFF1E40AF)
-                          : const Color(0xFF15803D),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      isCollecting
-                          ? tr.statusCollectingBadge
-                          : tr.statusCompletedBadge,
-                      style: AppTextStyle.bold(
-                        fontSize: 10,
-                        color: isCollecting
-                            ? const Color(0xFF1E40AF)
-                            : const Color(0xFF15803D),
-                        letterSpacing: 0.4,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              InkWell(
-                borderRadius: BorderRadius.circular(12),
-                onTap: () => context.read<FundDetailCubit>().exportCsv(),
+              Flexible(
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
-                    color: colors.surfaceMuted,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: colors.cardBorder),
+                    color: isCollecting
+                        ? colors.fundStatusCollectingBg
+                        : colors.fundStatusCompletedBg,
+                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(
-                        LucideIcons.fileSpreadsheet,
-                        size: 13,
-                        color: Color(0xFF16A34A),
+                      Icon(
+                        isCollecting ? LucideIcons.clock : LucideIcons.circleCheck,
+                        size: 14,
+                        color: isCollecting
+                            ? colors.fundStatusCollectingText
+                            : colors.fundStatusCompletedText,
                       ),
                       const SizedBox(width: 4),
-                      Text(
-                        'CSV',
-                        style: AppTextStyle.bold(
-                          fontSize: 11,
-                          color: colors.textSecondary,
+                      Flexible(
+                        child: Text(
+                          isCollecting
+                              ? tr.statusCollectingBadge
+                              : tr.statusCompletedBadge,
+                          style: AppTextStyle.bold(
+                            fontSize: AppFontSize.caption, // 12px
+                            color: isCollecting
+                                ? colors.fundStatusCollectingText
+                                : colors.fundStatusCompletedText,
+                            letterSpacing: 0.4,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+
+              // CSV Chip with minimum 48px touch target
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minHeight: 48,
+                  minWidth: 48,
+                ),
+                child: Center(
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () => context.read<FundDetailCubit>().exportCsv(),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: colors.fundCsvButtonBg,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: colors.cardBorder),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            LucideIcons.fileSpreadsheet,
+                            size: 14,
+                            color: colors.fundCsvIcon,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            'CSV',
+                            style: AppTextStyle.bold(
+                              fontSize: AppFontSize.caption, // 12px
+                              color: colors.fundCsvButtonFg,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -446,7 +493,7 @@ class _FundDetailViewState extends State<_FundDetailView> {
           Text(
             fund.name,
             style: AppTextStyle.bold(
-              fontSize: 19,
+              fontSize: AppFontSize.h3, // 20px
               color: colors.textPrimary,
             ),
           ),
@@ -464,7 +511,7 @@ class _FundDetailViewState extends State<_FundDetailView> {
               child: Text(
                 fund.description!,
                 style: AppTextStyle.regular(
-                  fontSize: 12,
+                  fontSize: AppFontSize.secondary, // 14px
                   color: colors.textSecondary,
                 ),
               ),
@@ -472,79 +519,102 @@ class _FundDetailViewState extends State<_FundDetailView> {
             const SizedBox(height: 10),
           ],
 
-          // Due Date
+          // Due Date with overflow protection
           Row(
             children: [
-              const Icon(
+              Icon(
                 LucideIcons.calendar,
                 size: 14,
-                color: Color(0xFF059669),
+                color: colors.brandEmerald,
               ),
               const SizedBox(width: 6),
-              Text(
-                tr.dueDatePrefix,
-                style: AppTextStyle.regular(
-                  fontSize: 12,
-                  color: colors.textSecondary,
-                ),
-              ),
-              Text(
-                _formatDate(fund.dueDate),
-                style: AppTextStyle.bold(
-                  fontSize: 12,
-                  color: colors.textPrimary,
+              Flexible(
+                child: Text.rich(
+                  TextSpan(
+                    text: tr.dueDatePrefix,
+                    style: AppTextStyle.regular(
+                      fontSize: AppFontSize.caption, // 12px
+                      color: colors.textSecondary,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: _formatDate(fund.dueDate),
+                        style: AppTextStyle.bold(
+                          fontSize: AppFontSize.caption, // 12px
+                          color: colors.textPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 14),
 
-          // Amounts
+          // Amounts with flex layout to prevent overflow on small screens
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    tr.collectedAmountLabel,
-                    style: AppTextStyle.bold(
-                      fontSize: 10,
-                      color: colors.textMuted,
-                      letterSpacing: 0.5,
+              Expanded(
+                flex: 6,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      tr.collectedAmountLabel,
+                      style: AppTextStyle.bold(
+                        fontSize: AppFontSize.caption, // 12px
+                        color: colors.textMuted,
+                        letterSpacing: 0.5,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    CurrencyUtils.formatVnd(fund.totalCollectedAmountVnd),
-                    style: AppTextStyle.bold(
-                      fontSize: 22,
-                      color: const Color(0xFF047857),
+                    const SizedBox(height: 4),
+                    Text(
+                      CurrencyUtils.formatVnd(fund.totalCollectedAmountVnd),
+                      style: AppTextStyle.bold(
+                        fontSize: AppFontSize.h2, // 24px
+                        color: colors.fundAmountText,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    tr.targetAmountLabel,
-                    style: AppTextStyle.bold(
-                      fontSize: 10,
-                      color: colors.textMuted,
-                      letterSpacing: 0.5,
+              const SizedBox(width: 8),
+              Expanded(
+                flex: 4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      tr.targetAmountLabel,
+                      style: AppTextStyle.bold(
+                        fontSize: AppFontSize.caption, // 12px
+                        color: colors.textMuted,
+                        letterSpacing: 0.5,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    CurrencyUtils.formatVnd(fund.totalTargetAmountVnd),
-                    style: AppTextStyle.bold(
-                      fontSize: 14,
-                      color: colors.textPrimary,
+                    const SizedBox(height: 4),
+                    Text(
+                      CurrencyUtils.formatVnd(fund.totalTargetAmountVnd),
+                      style: AppTextStyle.bold(
+                        fontSize: AppFontSize.secondary, // 14px
+                        color: colors.textPrimary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
@@ -564,9 +634,12 @@ class _FundDetailViewState extends State<_FundDetailView> {
                   FractionallySizedBox(
                     widthFactor: progressFraction,
                     child: Container(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [Color(0xFF10B981), Color(0xFF14B8A6)],
+                          colors: [
+                            colors.fundProgressStart,
+                            colors.fundProgressEnd,
+                          ],
                         ),
                       ),
                     ),
@@ -581,18 +654,23 @@ class _FundDetailViewState extends State<_FundDetailView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                tr.membersPaidRatio(fund.paidCount, fund.totalMemberCount),
-                style: AppTextStyle.medium(
-                  fontSize: 11,
-                  color: colors.textSecondary,
+              Flexible(
+                child: Text(
+                  tr.membersPaidRatio(fund.paidCount, fund.totalMemberCount),
+                  style: AppTextStyle.medium(
+                    fontSize: AppFontSize.caption, // 12px
+                    color: colors.textSecondary,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
+              const SizedBox(width: 8),
               Text(
                 '${fund.completionPercentage.toStringAsFixed(0)}%',
                 style: AppTextStyle.bold(
-                  fontSize: 12,
-                  color: const Color(0xFF047857),
+                  fontSize: AppFontSize.secondary, // 14px
+                  color: colors.fundAmountText,
                 ),
               ),
             ],
@@ -606,7 +684,7 @@ class _FundDetailViewState extends State<_FundDetailView> {
     BuildContext context,
     FundCollectionEntity fund,
     FundDetailState state,
-    dynamic colors,
+    AppThemeColors colors,
     dynamic tr,
     bool isAdmin,
   ) {
@@ -619,47 +697,53 @@ class _FundDetailViewState extends State<_FundDetailView> {
         color: colors.cardBackground,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: colors.cardBorder),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
+        boxShadow: [colors.cardShadow],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Section header
+          // Section header with overflow protection
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  const Icon(
-                    LucideIcons.users,
-                    size: 15,
-                    color: Color(0xFF047857),
-                  ),
-                  const SizedBox(width: 6),
-                  Text(
-                    tr.memberPaymentStatusTitle,
-                    style: AppTextStyle.bold(
-                      fontSize: 11,
-                      color: colors.textPrimary,
-                      letterSpacing: 0.5,
+              Expanded(
+                child: Row(
+                  children: [
+                    Icon(
+                      LucideIcons.users,
+                      size: 15,
+                      color: colors.brandEmerald,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 6),
+                    Flexible(
+                      child: Text(
+                        tr.memberPaymentStatusTitle,
+                        style: AppTextStyle.bold(
+                          fontSize: AppFontSize.secondary, // 14px
+                          color: colors.textPrimary,
+                          letterSpacing: 0.5,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              if (isAdmin)
-                Text(
-                  tr.tapToChangeStatusHint,
-                  style: AppTextStyle.regular(
-                    fontSize: 11,
-                    color: colors.textMuted,
+              if (isAdmin) ...[
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    tr.tapToChangeStatusHint,
+                    style: AppTextStyle.regular(
+                      fontSize: AppFontSize.caption, // 12px
+                      color: colors.textMuted,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
+              ],
             ],
           ),
           const SizedBox(height: 12),
@@ -688,7 +772,7 @@ class _FundDetailViewState extends State<_FundDetailView> {
     BuildContext context,
     FundCollectionEntity fund,
     FundDetailState state,
-    dynamic colors,
+    AppThemeColors colors,
     dynamic tr,
     bool isAdmin,
   ) {
@@ -700,24 +784,25 @@ class _FundDetailViewState extends State<_FundDetailView> {
           OutlinedButton.icon(
             onPressed: () => _openEditScreen(fund),
             style: OutlinedButton.styleFrom(
+              minimumSize: const Size.fromHeight(48),
               padding: const EdgeInsets.symmetric(vertical: 14),
-              backgroundColor: const Color(0xFFF0FDF4),
-              foregroundColor: const Color(0xFF15803D),
-              side: const BorderSide(color: Color(0xFF86EFAC)),
+              backgroundColor: colors.fundEditButtonBg,
+              foregroundColor: colors.fundEditButtonFg,
+              side: BorderSide(color: colors.fundEditButtonBorder),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
             ),
-            icon: const Icon(LucideIcons.penLine, size: 16, color: Color(0xFF15803D)),
+            icon: Icon(LucideIcons.penLine, size: 16, color: colors.fundEditButtonFg),
             label: Text(
               tr.editFundCampaignAction,
               style: AppTextStyle.bold(
-                fontSize: 13,
-                color: const Color(0xFF15803D),
+                fontSize: AppFontSize.secondary, // 14px
+                color: colors.fundEditButtonFg,
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 10), // Gap >= 8px
         ],
 
         // 2. Xuất báo cáo CSV đợt thu quỹ (All members)
@@ -726,49 +811,54 @@ class _FundDetailViewState extends State<_FundDetailView> {
               ? null
               : () => context.read<FundDetailCubit>().exportCsv(),
           style: ElevatedButton.styleFrom(
+            minimumSize: const Size.fromHeight(48),
             padding: const EdgeInsets.symmetric(vertical: 13),
-            backgroundColor: const Color(0xFFF1F5F9),
-            foregroundColor: const Color(0xFF334155),
+            backgroundColor: colors.fundCsvButtonBg,
+            foregroundColor: colors.fundCsvButtonFg,
             elevation: 0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
           ),
           icon: state.isExporting
-              ? const SizedBox(
+              ? SizedBox(
                   width: 16,
                   height: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(colors.fundCsvButtonFg),
+                  ),
                 )
-              : const Icon(
+              : Icon(
                   LucideIcons.fileSpreadsheet,
                   size: 16,
-                  color: Color(0xFF16A34A),
+                  color: colors.fundCsvIcon,
                 ),
           label: Text(
             tr.exportFundCsvAction,
             style: AppTextStyle.bold(
-              fontSize: 12,
-              color: const Color(0xFF334155),
+              fontSize: AppFontSize.secondary, // 14px
+              color: colors.fundCsvButtonFg,
             ),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 10), // Gap >= 8px
 
         // 3. Xóa đợt đóng quỹ này (Admin only)
         if (isAdmin) ...[
           TextButton.icon(
             onPressed: () => _confirmDelete(fund),
             style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              foregroundColor: const Color(0xFFDC2626),
+              minimumSize: const Size.fromHeight(48),
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              foregroundColor: colors.dangerText,
             ),
-            icon: const Icon(LucideIcons.trash2, size: 15, color: Color(0xFFDC2626)),
+            icon: Icon(LucideIcons.trash2, size: 16, color: colors.dangerText),
             label: Text(
               tr.deleteFundCampaignAction,
               style: AppTextStyle.bold(
-                fontSize: 12,
-                color: const Color(0xFFDC2626),
+                fontSize: AppFontSize.secondary, // 14px
+                color: colors.dangerText,
               ),
             ),
           ),
