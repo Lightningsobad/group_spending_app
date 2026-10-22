@@ -1924,4 +1924,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get categoryOthers => 'Others';
+
+  @override
+  String get expandNoteAction => 'Expand';
+
+  @override
+  String get expenseNoteEditorTitle => 'Expense Note Details';
+
+  @override
+  String get clearNoteAction => 'Clear notes';
+
+  @override
+  String get doneAction => 'Done';
+
+  @override
+  String viewAllNotesHint(int lines) {
+    return 'View all ($lines lines)...';
+  }
 }

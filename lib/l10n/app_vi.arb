@@ -950,5 +950,17 @@
   "categoryEntertainment": "Giải trí",
   "categoryGroceries": "Siêu thị",
   "categoryHealthcare": "Y tế & Sức khỏe",
-  "categoryOthers": "Khác"
+  "categoryOthers": "Khác",
+  "expandNoteAction": "Mở rộng",
+  "expenseNoteEditorTitle": "Ghi chú chi tiêu",
+  "clearNoteAction": "Xóa nội dung",
+  "doneAction": "Xong",
+  "viewAllNotesHint": "Xem toàn bộ ({lines} dòng)...",
+  "@viewAllNotesHint": {
+    "placeholders": {
+      "lines": {
+        "type": "int"
+      }
+    }
+  }
 }

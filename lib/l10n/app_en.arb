@@ -950,5 +950,17 @@
   "categoryEntertainment": "Entertainment",
   "categoryGroceries": "Groceries",
   "categoryHealthcare": "Healthcare",
-  "categoryOthers": "Others"
+  "categoryOthers": "Others",
+  "expandNoteAction": "Expand",
+  "expenseNoteEditorTitle": "Expense Note Details",
+  "clearNoteAction": "Clear notes",
+  "doneAction": "Done",
+  "viewAllNotesHint": "View all ({lines} lines)...",
+  "@viewAllNotesHint": {
+    "placeholders": {
+      "lines": {
+        "type": "int"
+      }
+    }
+  }
 }
