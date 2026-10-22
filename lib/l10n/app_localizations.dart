@@ -3575,6 +3575,36 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Khác'**
   String get categoryOthers;
+
+  /// No description provided for @expandNoteAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Mở rộng'**
+  String get expandNoteAction;
+
+  /// No description provided for @expenseNoteEditorTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ghi chú chi tiêu'**
+  String get expenseNoteEditorTitle;
+
+  /// No description provided for @clearNoteAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xóa nội dung'**
+  String get clearNoteAction;
+
+  /// No description provided for @doneAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xong'**
+  String get doneAction;
+
+  /// No description provided for @viewAllNotesHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xem toàn bộ ({lines} dòng)...'**
+  String viewAllNotesHint(int lines);
 }
 
 class _AppLocalizationsDelegate

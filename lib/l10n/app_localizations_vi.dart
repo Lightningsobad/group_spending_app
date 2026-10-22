@@ -1921,4 +1921,21 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get categoryOthers => 'Khác';
+
+  @override
+  String get expandNoteAction => 'Mở rộng';
+
+  @override
+  String get expenseNoteEditorTitle => 'Ghi chú chi tiêu';
+
+  @override
+  String get clearNoteAction => 'Xóa nội dung';
+
+  @override
+  String get doneAction => 'Xong';
+
+  @override
+  String viewAllNotesHint(int lines) {
+    return 'Xem toàn bộ ($lines dòng)...';
+  }
 }

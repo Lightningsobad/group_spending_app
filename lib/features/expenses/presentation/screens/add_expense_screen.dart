@@ -20,6 +20,7 @@ import '../widgets/add_expense_skeleton.dart';
 import '../widgets/ai_receipt_scanner_card.dart';
 import '../widgets/category_selector_grid.dart';
 import '../widgets/custom_numeric_keypad.dart';
+import '../widgets/expense_note_input_field.dart';
 import '../widgets/expense_receipt_viewer_dialog.dart';
 import '../widgets/split_members_section.dart';
 import '../../../../l10n/l10n.dart';
@@ -593,63 +594,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                 ),
                               ),
                               const SizedBox(height: 14),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Icon(LucideIcons.fileText, size: 14, color: colors.textSecondary),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        l10n.expenseNotesCaps,
-                                        style: AppTextStyle.bold(
-                                          fontSize: AppFontSize.caption,
-                                          letterSpacing: 0.5,
-                                          color: colors.textSecondary,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Text(
-                                    l10n.optionalLabel,
-                                    style: AppTextStyle.regular(
-                                      fontSize: AppFontSize.caption,
-                                      color: colors.textMuted,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              TextField(
+                              ExpenseNoteInputField(
                                 controller: _notesCtrl,
                                 onChanged: cubit.setNotes,
-                                maxLines: 2,
-                                style: AppTextStyle.medium(
-                                  fontSize: AppFontSize.secondary,
-                                  color: colors.textPrimary,
-                                ),
-                                decoration: InputDecoration(
-                                  hintText: l10n.expenseNotesHint,
-                                  hintStyle: AppTextStyle.regular(
-                                    fontSize: AppFontSize.secondary,
-                                    color: colors.textMuted,
-                                  ),
-                                  filled: true,
-                                  fillColor: colors.surfaceMuted,
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(14),
-                                    borderSide: BorderSide(color: colors.cardBorder),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(14),
-                                    borderSide: BorderSide(color: colors.cardBorder),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(14),
-                                    borderSide: BorderSide(color: colors.brandEmerald, width: 1.5),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-                                ),
                               ),
                             ],
                           ),
