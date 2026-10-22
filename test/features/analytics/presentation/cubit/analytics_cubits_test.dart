@@ -12,6 +12,9 @@ import 'package:group_spending_app/features/analytics/presentation/cubit/global_
 import 'package:group_spending_app/features/analytics/presentation/cubit/global_analytics_state.dart';
 import 'package:group_spending_app/features/analytics/presentation/cubit/group_analytics_cubit.dart';
 import 'package:group_spending_app/features/analytics/presentation/cubit/group_analytics_state.dart';
+import 'package:group_spending_app/features/expenses/data/models/expense_enums.dart' as exp_enums;
+import 'package:group_spending_app/features/expenses/data/models/expense_models.dart';
+import 'package:group_spending_app/features/expenses/domain/repositories/expenses_repository.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
 import 'package:group_spending_app/features/groups/domain/repositories/groups_repository.dart';
 
@@ -173,6 +176,46 @@ class FakeGroupsRepository implements GroupsRepository {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
+class FakeExpensesRepository implements ExpensesRepository {
+  List<ExpenseListItemModel> mockExpenses = [
+    const ExpenseListItemModel(
+      id: 101,
+      title: 'Lẩu Haidilao cuối tuần',
+      amount: 1280,
+      amountVnd: 1280000,
+      expenseDate: '2026-09-10',
+      paidBy: 'Nguyễn Nhật Minh',
+      paidByUserId: 1,
+      status: 'PAID_BY_ME',
+      myAmountOwed: 0,
+      myAmountOwedVnd: 0,
+      categoryName: 'Food',
+    ),
+  ];
+
+  exp_enums.ExpenseTimeFilter? lastTimeFilter;
+
+  @override
+  Future<GroupExpensesResponseModel> getGroupExpenses(
+    int groupId, {
+    exp_enums.ExpenseTimeFilter? timeFilter,
+    exp_enums.ExpensePayerFilter? payerFilter,
+    exp_enums.ExpenseCategoryFilter? categoryFilter,
+    String? search,
+  }) async {
+    lastTimeFilter = timeFilter;
+    return GroupExpensesResponseModel(
+      totalSpending: 1280,
+      totalSpendingVnd: 1280000,
+      expenseCount: mockExpenses.length,
+      expenses: mockExpenses,
+    );
+  }
+
+  @override
+  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+}
+
 void main() {
   group('Analytics Cubits Tests', () {
     late FakeAnalyticsRepository analyticsRepo;
@@ -268,10 +311,17 @@ void main() {
     });
 
     group('GroupAnalyticsCubit', () {
-      test('loadGroupAnalytics loads group statistics and leaderboard', () async {
+      late FakeExpensesRepository expensesRepo;
+
+      setUp(() {
+        expensesRepo = FakeExpensesRepository();
+      });
+
+      test('loadGroupAnalytics loads group statistics, leaderboard, and recent expenses', () async {
         final cubit = GroupAnalyticsCubit(
           groupId: 10,
           analyticsRepository: analyticsRepo,
+          expensesRepository: expensesRepo,
         );
 
         expect(cubit.state.status, GroupAnalyticsStatus.initial);
@@ -281,6 +331,24 @@ void main() {
         expect(cubit.state.status, GroupAnalyticsStatus.success);
         expect(cubit.state.groupStatistics.totalSpendingVnd, 20490000);
         expect(cubit.state.leaderboard.length, 1);
+        expect(cubit.state.recentExpenses.length, 1);
+        expect(cubit.state.recentExpenses.first.title, 'Lẩu Haidilao cuối tuần');
+        expect(cubit.state.recentExpenses.first.totalAmountVnd, 1280000);
+      });
+
+      test('setPeriod triggers reload with matching ExpenseTimeFilter', () async {
+        final cubit = GroupAnalyticsCubit(
+          groupId: 10,
+          analyticsRepository: analyticsRepo,
+          expensesRepository: expensesRepo,
+        );
+
+        cubit.setPeriod(StatisticsPeriod.lastMonth);
+        expect(cubit.state.period, StatisticsPeriod.lastMonth);
+        await cubit.loadGroupAnalytics();
+
+        expect(cubit.state.status, GroupAnalyticsStatus.success);
+        expect(expensesRepo.lastTimeFilter, exp_enums.ExpenseTimeFilter.lastMonth);
       });
     });
   });

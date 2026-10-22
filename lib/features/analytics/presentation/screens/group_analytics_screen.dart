@@ -8,6 +8,7 @@ import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/widgets/app_shimmer.dart';
+import '../../../expenses/domain/repositories/expenses_repository.dart';
 import '../../domain/repositories/analytics_repository.dart';
 import '../cubit/group_analytics_cubit.dart';
 import '../cubit/group_analytics_state.dart';
@@ -15,7 +16,9 @@ import '../widgets/analytics_kpi_card.dart';
 import '../widgets/analytics_period_bar.dart';
 import '../widgets/category_distribution_bar.dart';
 import '../widgets/category_distribution_list.dart';
+import '../widgets/expense_history_detail_sheet.dart';
 import '../widgets/leaderboard_section.dart';
+import '../widgets/recent_expenses_section.dart';
 
 class GroupAnalyticsScreen extends StatelessWidget {
   final int groupId;
@@ -50,6 +53,7 @@ class GroupAnalyticsScreen extends StatelessWidget {
       create: (context) => GroupAnalyticsCubit(
         groupId: groupId,
         analyticsRepository: context.read<AnalyticsRepository>(),
+        expensesRepository: context.read<ExpensesRepository>(),
         sessionCoordinator: context.read<SessionCoordinator>(),
         dataSyncCoordinator: context.read<DataSyncCoordinator>(),
       )..loadGroupAnalytics(),
@@ -148,6 +152,18 @@ class _GroupAnalyticsView extends StatelessWidget {
                               title: tr.memberContributionTitle,
                               memberCount: effectiveMembers,
                               members: state.leaderboard,
+                            ),
+                            const SizedBox(height: 24),
+
+                            // Section: HÓA ĐƠN CHI TIÊU GẦN ĐÂY
+                            RecentExpensesSection(
+                              expenses: state.recentExpenses,
+                              onTapItem: (expense) {
+                                ExpenseHistoryDetailSheet.show(
+                                  context,
+                                  expense: expense,
+                                );
+                              },
                             ),
                             const SizedBox(height: 32),
                           ],
