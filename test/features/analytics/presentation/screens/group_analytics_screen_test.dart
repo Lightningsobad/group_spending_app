@@ -10,13 +10,16 @@ import '../cubit/analytics_cubits_test.dart';
 void main() {
   group('GroupAnalyticsScreen Widget Tests', () {
     late FakeAnalyticsRepository analyticsRepo;
+    late FakeExpensesRepository expensesRepo;
     late GroupAnalyticsCubit cubit;
 
     setUp(() {
       analyticsRepo = FakeAnalyticsRepository();
+      expensesRepo = FakeExpensesRepository();
       cubit = GroupAnalyticsCubit(
         groupId: 10,
         analyticsRepository: analyticsRepo,
+        expensesRepository: expensesRepo,
       );
     });
 
@@ -41,7 +44,11 @@ void main() {
       );
     }
 
-    testWidgets('renders group header, financial metrics and member contribution in Vietnamese', (tester) async {
+    testWidgets('renders group header, financial metrics, leaderboard and recent expenses in Vietnamese', (tester) async {
+      tester.view.physicalSize = const Size(800, 1400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
+
       await tester.pumpWidget(createWidgetUnderTest());
       cubit.loadGroupAnalytics();
       await tester.pumpAndSettle();
@@ -69,6 +76,12 @@ void main() {
       // Member contribution leaderboard
       expect(find.text('ĐÓNG GÓP & CHI TIÊU THÀNH VIÊN'), findsOneWidget);
       expect(find.text('Nguyễn Nhật Minh'), findsAtLeastNWidgets(1));
+
+      // Recent expenses section
+      expect(find.text('HÓA ĐƠN CHI TIÊU GẦN ĐÂY'), findsOneWidget);
+      expect(find.text('Lẩu Haidilao cuối tuần'), findsOneWidget);
+      expect(find.text('1.280.000 đ'), findsOneWidget);
+      expect(find.text('Chi tiết →'), findsOneWidget);
     });
 
     testWidgets('changing period triggers cubit period update', (tester) async {
@@ -78,6 +91,7 @@ void main() {
 
       final yearChip = find.text('Cả năm');
       expect(yearChip, findsOneWidget);
+      await tester.ensureVisible(yearChip);
       await tester.tap(yearChip);
       await tester.pumpAndSettle();
 

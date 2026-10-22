@@ -1,4 +1,5 @@
 import '../../domain/entities/analytics_enums.dart';
+import '../../domain/entities/expense_history_entity.dart';
 import '../../domain/entities/expense_statistics_entity.dart';
 import '../../domain/entities/leaderboard_entity.dart';
 
@@ -12,6 +13,7 @@ class GroupAnalyticsState {
   final int? year;
   final ExpenseStatisticsEntity groupStatistics;
   final List<LeaderboardMemberEntity> leaderboard;
+  final List<ExpenseHistoryItemEntity> recentExpenses;
   final String? errorMessage;
 
   const GroupAnalyticsState({
@@ -22,6 +24,7 @@ class GroupAnalyticsState {
     this.year,
     this.groupStatistics = const ExpenseStatisticsEntity.empty(),
     this.leaderboard = const [],
+    this.recentExpenses = const [],
     this.errorMessage,
   });
 
@@ -37,6 +40,7 @@ class GroupAnalyticsState {
     int? year,
     ExpenseStatisticsEntity? groupStatistics,
     List<LeaderboardMemberEntity>? leaderboard,
+    List<ExpenseHistoryItemEntity>? recentExpenses,
     String? errorMessage,
     bool clearError = false,
   }) {
@@ -48,6 +52,7 @@ class GroupAnalyticsState {
       year: year ?? this.year,
       groupStatistics: groupStatistics ?? this.groupStatistics,
       leaderboard: leaderboard ?? this.leaderboard,
+      recentExpenses: recentExpenses ?? this.recentExpenses,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
     );
   }
