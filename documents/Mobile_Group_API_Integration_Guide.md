@@ -24,6 +24,7 @@
    - [2.8. Lấy danh sách và số lượng yêu cầu gia nhập nhóm (Get Pending Join Requests)](#28-lấy-danh-sách-và-số-lượng-yêu-cầu-gia-nhập-nhóm-get-pending-join-requests)
    - [2.9. Lấy thông tin chi tiết của một thành viên trong nhóm (Get Member Details)](#29-lấy-thông-tin-chi-tiết-của-một-thành-viên-trong-nhóm-get-member-details)
    - [2.10. Xóa thành viên khỏi nhóm (Remove Member)](#210-xóa-thành-viên-khỏi-nhóm-remove-member)
+   - [2.11. Lấy danh sách tóm tắt các nhóm (Get Group Summaries)](#211-lấy-danh-sách-tóm-tắt-các-nhóm-get-group-summaries)
 3. [Bảng mã lỗi (Error Codes) & Hướng dẫn xử lý UI](#3-bảng-mã-lỗi-error-codes--hướng-dẫn-xử-lý-ui)
 4. [Quy tắc nghiệp vụ & Trải nghiệm người dùng (UX Guidelines)](#4-quy-tắc-nghiệp-vụ--trải-nghiệm-người-dùng-ux-guidelines)
 
@@ -714,6 +715,66 @@ Quản trị viên (`ADMIN`) thực hiện xóa một thành viên thường (`M
   - `401 Unauthorized`: `INVALID_TOKEN` - Phiên đăng nhập hết hạn.
   - `403 Forbidden`: `NOT_GROUP_ADMIN` - Chỉ quản trị viên nhóm mới có quyền xóa thành viên.
   - `404 Not Found`: `GROUP_NOT_FOUND` - Không tìm thấy nhóm chi tiêu.
+
+---
+
+### 2.11. Lấy danh sách tóm tắt các nhóm (Get Group Summaries)
+
+Lấy danh sách tóm tắt rút gọn các nhóm chi tiêu của người dùng hiện tại. Dữ liệu trả về chỉ tập trung vào các trường cần thiết (Tên nhóm, Tổng tiền đã chi tiêu, Số lượng thành viên của nhóm) nhằm tối ưu băng thông mạng. Hỗ trợ tìm kiếm gần đúng theo tên nhóm, bộ lọc trạng thái (Đang hoạt động, Lưu trữ) và bộ lọc theo thể loại/chủ đề nhóm.
+
+- **Method:** `GET`
+- **Path:** `/groups/summary`
+- **Full URL:** `/api/v1/groups/summary`
+- **Query Parameters:**
+
+| Tên tham số | Kiểu dữ liệu | Bắt buộc | Mặc định | Mô tả |
+| :--- | :--- | :--- | :--- | :--- |
+| `search` | String | Không | *null* | Ô nhập tìm kiếm gần đúng theo tên nhóm (không phân biệt hoa thường) |
+| `status` | String (`GroupStatus`) | Không | *null* | Bộ lọc trạng thái: `ACTIVE` (Đang hoạt động), `ARCHIVED` (Lưu trữ). Để trống nếu lấy tất cả |
+| `category` | String (`GroupCategory`) | Không | *null* | Ô chọn lọc theo chủ đề/thể loại nhóm: `Apartment`, `Travel & Trip`, `Sport & Clubs`, `Friends & Dining`, `Works & Project`, `Other`. Để trống nếu lấy tất cả |
+
+- **Header:**
+  ```http
+  Authorization: Bearer <accessToken>
+  ```
+
+- **Mã phản hồi thành công:** `200 OK`
+- **Response Body mẫu:**
+```json
+{
+  "success": true,
+  "message": "Thành công",
+  "data": [
+    {
+      "id": 10,
+      "name": "Nhóm bóng đá thứ 6",
+      "totalSpending": 1500,
+      "totalSpendingVnd": 1500000,
+      "memberCount": 6
+    },
+    {
+      "id": 11,
+      "name": "Tiền phòng 301",
+      "totalSpending": 2400,
+      "totalSpendingVnd": 2400000,
+      "memberCount": 3
+    }
+  ],
+  "timestamp": "2026-10-22T21:30:00Z"
+}
+```
+
+- **Mô tả các trường dữ liệu (`GroupSummaryResponse`):**
+  - `id` (Number): Mã định danh của nhóm.
+  - `name` (String): Tên nhóm.
+  - `totalSpending` (Number): Tổng số tiền đã chi tiêu của cả nhóm (đơn vị: Nghìn VNĐ - k).
+  - `totalSpendingVnd` (Number): Tổng số tiền đã chi tiêu của cả nhóm (đơn vị: VNĐ đầy đủ).
+  - `memberCount` (Number): Số lượng thành viên của nhóm.
+
+
+
+- **Mã lỗi thường gặp:**
+  - `401 Unauthorized`: `INVALID_TOKEN` - Phiên đăng nhập hết hạn hoặc chưa truyền token.
 
 ---
 
