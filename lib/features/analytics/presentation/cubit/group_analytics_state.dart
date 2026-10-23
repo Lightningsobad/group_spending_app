@@ -14,6 +14,9 @@ class GroupAnalyticsState {
   final ExpenseStatisticsEntity groupStatistics;
   final List<LeaderboardMemberEntity> leaderboard;
   final List<ExpenseHistoryItemEntity> recentExpenses;
+  final String? groupName;
+  final String? groupCategory;
+  final int? memberCount;
   final String? errorMessage;
 
   const GroupAnalyticsState({
@@ -25,6 +28,9 @@ class GroupAnalyticsState {
     this.groupStatistics = const ExpenseStatisticsEntity.empty(),
     this.leaderboard = const [],
     this.recentExpenses = const [],
+    this.groupName,
+    this.groupCategory,
+    this.memberCount,
     this.errorMessage,
   });
 
@@ -41,6 +47,9 @@ class GroupAnalyticsState {
     ExpenseStatisticsEntity? groupStatistics,
     List<LeaderboardMemberEntity>? leaderboard,
     List<ExpenseHistoryItemEntity>? recentExpenses,
+    String? groupName,
+    String? groupCategory,
+    int? memberCount,
     String? errorMessage,
     bool clearError = false,
   }) {
@@ -53,6 +62,9 @@ class GroupAnalyticsState {
       groupStatistics: groupStatistics ?? this.groupStatistics,
       leaderboard: leaderboard ?? this.leaderboard,
       recentExpenses: recentExpenses ?? this.recentExpenses,
+      groupName: groupName ?? this.groupName,
+      groupCategory: groupCategory ?? this.groupCategory,
+      memberCount: memberCount ?? this.memberCount,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
     );
   }

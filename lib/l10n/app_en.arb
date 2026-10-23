@@ -860,6 +860,8 @@
       }
     }
   },
+  "groupAnalyticsDetailsTitle": "Group Analytics",
+  "groupAnalyticsDefaultSubtitle": "Detailed spending report",
   "expenseDetailModalTitle": "Expense Details",
   "viewGroupAnalyticsAction": "View Group Analytics",
   "clearSearchAction": "Clear Search",
