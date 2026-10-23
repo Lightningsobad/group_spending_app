@@ -5,6 +5,8 @@ import '../../../../core/sync/data_sync_coordinator.dart';
 import '../../../expenses/data/models/expense_enums.dart';
 import '../../../expenses/data/models/expense_models.dart';
 import '../../../expenses/domain/repositories/expenses_repository.dart';
+import '../../../groups/data/models/group_model.dart';
+import '../../../groups/domain/repositories/groups_repository.dart';
 import '../../domain/entities/analytics_enums.dart' hide ExpenseTimeFilter;
 import '../../domain/entities/expense_history_entity.dart';
 import '../../domain/entities/expense_statistics_entity.dart';
@@ -16,6 +18,7 @@ class GroupAnalyticsCubit extends Cubit<GroupAnalyticsState> {
   final int groupId;
   final AnalyticsRepository analyticsRepository;
   final ExpensesRepository? expensesRepository;
+  final GroupsRepository? groupsRepository;
   final SessionCoordinator? sessionCoordinator;
   final DataSyncCoordinator? dataSyncCoordinator;
 
@@ -25,9 +28,20 @@ class GroupAnalyticsCubit extends Cubit<GroupAnalyticsState> {
     required this.groupId,
     required this.analyticsRepository,
     this.expensesRepository,
+    this.groupsRepository,
     this.sessionCoordinator,
     this.dataSyncCoordinator,
-  }) : super(GroupAnalyticsState(groupId: groupId)) {
+    String? initialGroupName,
+    String? initialGroupCategory,
+    int? initialMemberCount,
+  }) : super(
+          GroupAnalyticsState(
+            groupId: groupId,
+            groupName: initialGroupName,
+            groupCategory: initialGroupCategory,
+            memberCount: initialMemberCount,
+          ),
+        ) {
     dataSyncCoordinator?.addListener(_onDataSync);
   }
 
@@ -84,11 +98,16 @@ class GroupAnalyticsCubit extends Cubit<GroupAnalyticsState> {
         groupId,
         timeFilter: _mapPeriodToExpenseTimeFilter(period),
       );
+      final groupDetailsFuture = (state.groupName == null || state.groupCategory == null || state.memberCount == null) &&
+              groupsRepository != null
+          ? groupsRepository!.getGroupDetails(groupId).then<GroupModel?>((g) => g).catchError((_) => null)
+          : Future<GroupModel?>.value(null);
 
       final results = await Future.wait<dynamic>([
         groupStatsFuture,
         leaderboardFuture,
         if (expensesFuture != null) expensesFuture else Future.value(null),
+        groupDetailsFuture,
       ]);
 
       if (isClosed ||
@@ -101,12 +120,19 @@ class GroupAnalyticsCubit extends Cubit<GroupAnalyticsState> {
       final groupStats = results[0] as ExpenseStatisticsEntity;
       final leaderboard = results[1] as List<LeaderboardMemberEntity>;
       final expensesResponse = results[2] as GroupExpensesResponseModel?;
+      final groupDetails = results[3] as GroupModel?;
+
+      final resolvedGroupName = (groupStats.groupName != null && groupStats.groupName!.trim().isNotEmpty)
+          ? groupStats.groupName
+          : (state.groupName ?? groupDetails?.name);
+      final resolvedCategory = state.groupCategory ?? groupDetails?.category;
+      final resolvedMemberCount = state.memberCount ?? groupDetails?.memberCount;
 
       final recentExpenses = expensesResponse?.expenses.map((item) {
         return ExpenseHistoryItemEntity(
           id: item.id,
           groupId: groupId,
-          groupName: groupStats.groupName ?? state.groupStatistics.groupName ?? '',
+          groupName: resolvedGroupName ?? groupStats.groupName ?? state.groupStatistics.groupName ?? '',
           title: item.title,
           expenseDate: item.expenseDate ?? '',
           totalAmountVnd: item.amountVnd,
@@ -121,6 +147,9 @@ class GroupAnalyticsCubit extends Cubit<GroupAnalyticsState> {
           groupStatistics: groupStats,
           leaderboard: leaderboard,
           recentExpenses: recentExpenses,
+          groupName: resolvedGroupName,
+          groupCategory: resolvedCategory,
+          memberCount: resolvedMemberCount,
           isRefreshing: false,
           clearError: true,
         ),

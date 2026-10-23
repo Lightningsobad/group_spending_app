@@ -9,6 +9,8 @@ import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/widgets/app_shimmer.dart';
 import '../../../expenses/domain/repositories/expenses_repository.dart';
+import '../../../groups/domain/repositories/groups_repository.dart';
+import '../../../groups/presentation/widgets/group_category_helper.dart';
 import '../../domain/repositories/analytics_repository.dart';
 import '../cubit/group_analytics_cubit.dart';
 import '../cubit/group_analytics_state.dart';
@@ -54,8 +56,12 @@ class GroupAnalyticsScreen extends StatelessWidget {
         groupId: groupId,
         analyticsRepository: context.read<AnalyticsRepository>(),
         expensesRepository: context.read<ExpensesRepository>(),
+        groupsRepository: context.read<GroupsRepository>(),
         sessionCoordinator: context.read<SessionCoordinator>(),
         dataSyncCoordinator: context.read<DataSyncCoordinator>(),
+        initialGroupName: groupName,
+        initialGroupCategory: groupCategory,
+        initialMemberCount: memberCount,
       )..loadGroupAnalytics(),
       child: _GroupAnalyticsView(
         groupName: groupName,
@@ -97,16 +103,32 @@ class _GroupAnalyticsView extends StatelessWidget {
             }
           },
           builder: (context, state) {
-            final effectiveGroupName = groupName ??
-                state.groupStatistics.groupName ??
-                tr.groupAnalyticsFallbackTitle(state.groupId);
+            final effectiveGroupName = (groupName != null && groupName!.trim().isNotEmpty)
+                ? groupName
+                : ((state.groupName != null && state.groupName!.trim().isNotEmpty)
+                    ? state.groupName
+                    : ((state.groupStatistics.groupName != null && state.groupStatistics.groupName!.trim().isNotEmpty)
+                        ? state.groupStatistics.groupName
+                        : null));
+
+            final effectiveCategory = (groupCategory != null && groupCategory!.trim().isNotEmpty)
+                ? groupCategory
+                : state.groupCategory;
+
             final effectiveMembers = memberCount ??
+                state.memberCount ??
                 state.groupStatistics.totalUniqueMembers;
 
             return Column(
               children: [
                 // Top Custom Header
-                _buildAppBar(context, effectiveGroupName, effectiveMembers),
+                _buildAppBar(
+                  context,
+                  isLoading: state.isLoading && !state.isRefreshing,
+                  groupTitle: effectiveGroupName,
+                  groupCategory: effectiveCategory,
+                  members: effectiveMembers,
+                ),
                 const SizedBox(height: 8),
 
                 // Period Filter Chips
@@ -181,25 +203,34 @@ class _GroupAnalyticsView extends StatelessWidget {
   }
 
   Widget _buildAppBar(
-    BuildContext context,
-    String groupTitle,
-    int members,
-  ) {
+    BuildContext context, {
+    required bool isLoading,
+    required String? groupTitle,
+    required String? groupCategory,
+    required int members,
+  }) {
     final tr = context.l10n;
     final colors = context.colors;
 
-    final subtitle = groupCategory != null
-        ? '$groupCategory • ${tr.membersCountSubtitle(members)}'
-        : tr.membersCountSubtitle(members);
+    final localizedCategory = (groupCategory != null && groupCategory.trim().isNotEmpty)
+        ? (GroupCategoryHelper.categories.contains(groupCategory)
+            ? GroupCategoryHelper.getLabel(groupCategory)
+            : groupCategory)
+        : null;
+
+    final subtitle = localizedCategory != null
+        ? '$localizedCategory • ${tr.membersCountSubtitle(members)}'
+        : (members > 0 ? tr.membersCountSubtitle(members) : tr.groupAnalyticsDefaultSubtitle);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          // Back button
+          // Back button (48x48 min touch target)
           Container(
-            width: 40,
-            height: 40,
+            width: 48,
+            height: 48,
+            alignment: Alignment.center,
             decoration: BoxDecoration(
               color: colors.cardBackground,
               borderRadius: BorderRadius.circular(12),
@@ -218,33 +249,45 @@ class _GroupAnalyticsView extends StatelessWidget {
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 14),
           // Title & Subtitle
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  groupTitle,
-                  style: AppTextStyle.extraBold(
-                    color: colors.textPrimary,
-                    fontSize: 18,
+            child: (isLoading && groupTitle == null)
+                ? const AppShimmer(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AppShimmerBox(width: 140, height: 20, borderRadius: 4),
+                        SizedBox(height: 6),
+                        AppShimmerBox(width: 90, height: 14, borderRadius: 4),
+                      ],
+                    ),
+                  )
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        groupTitle ?? tr.groupAnalyticsDetailsTitle,
+                        style: AppTextStyle.extraBold(
+                          color: colors.textPrimary,
+                          fontSize: 18,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        subtitle,
+                        style: AppTextStyle.regular(
+                          color: colors.textSecondary,
+                          fontSize: 12,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  subtitle,
-                  style: AppTextStyle.regular(
-                    color: colors.textSecondary,
-                    fontSize: 12,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
           ),
         ],
       ),

@@ -23,7 +23,12 @@ void main() {
       );
     });
 
-    Widget createWidgetUnderTest({Locale locale = const Locale('vi')}) {
+    Widget createWidgetUnderTest({
+      Locale locale = const Locale('vi'),
+      String? groupName = 'Chung cư Sunrise Room',
+      String? groupCategory = 'Nhà ở',
+      int? memberCount = 4,
+    }) {
       return BlocProvider<GroupAnalyticsCubit>.value(
         value: cubit,
         child: MaterialApp(
@@ -34,9 +39,9 @@ void main() {
           home: Scaffold(
             body: GroupAnalyticsScreen(
               groupId: 10,
-              groupName: 'Chung cư Sunrise Room',
-              groupCategory: 'Nhà ở',
-              memberCount: 4,
+              groupName: groupName,
+              groupCategory: groupCategory,
+              memberCount: memberCount,
               cubit: cubit,
             ),
           ),
@@ -117,6 +122,39 @@ void main() {
       expect(backButton, findsOneWidget);
       await tester.tap(backButton);
       await tester.pumpAndSettle();
+    });
+
+    testWidgets('renders shimmer in header while loading without groupName', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest(
+        groupName: null,
+        groupCategory: null,
+        memberCount: null,
+      ));
+
+      // Verify header renders shimmer placeholder, never raw fallback title
+      expect(find.textContaining('Thống kê nhóm #10'), findsNothing);
+    });
+
+    testWidgets('renders translated category and 48x48 back button container', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest(
+        groupName: 'Chung cư Sunrise Room',
+        groupCategory: 'Apartment',
+        memberCount: 5,
+      ));
+      cubit.loadGroupAnalytics();
+      await tester.pumpAndSettle();
+
+      expect(find.text('Chung cư Sunrise Room'), findsOneWidget);
+      expect(find.text('Căn hộ & Phòng trọ • 5 thành viên'), findsOneWidget);
+
+      // Back button container must have 48x48 min touch target
+      final backContainerFinder = find.ancestor(
+        of: find.byType(IconButton),
+        matching: find.byType(Container),
+      ).first;
+      final RenderBox backBox = tester.renderObject(backContainerFinder);
+      expect(backBox.size.width, 48.0);
+      expect(backBox.size.height, 48.0);
     });
   });
 }

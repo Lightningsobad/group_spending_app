@@ -7,6 +7,8 @@ import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/widgets/app_shimmer.dart';
+import '../../../groups/data/models/group_summary_model.dart';
+import '../../../groups/presentation/widgets/group_filter_chip.dart';
 import '../cubit/analytics_tab_cubit.dart';
 import '../cubit/analytics_tab_state.dart';
 import '../widgets/analytics_group_card.dart';
@@ -43,11 +45,21 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
     super.dispose();
   }
 
-  void _onGroupTap(int groupId) {
+  void _onGroupTap(GroupSummaryModel group) {
     if (widget.onNavigateToGroupAnalytics != null) {
-      widget.onNavigateToGroupAnalytics!(groupId);
+      widget.onNavigateToGroupAnalytics!(group.id);
     } else {
-      context.push('/groups/$groupId/analytics');
+      final queryParams = <String, String>{
+        'name': group.name,
+        if (group.category != null && group.category!.trim().isNotEmpty)
+          'category': group.category!,
+        'memberCount': group.memberCount.toString(),
+      };
+      final uri = Uri(
+        path: '/groups/${group.id}/analytics',
+        queryParameters: queryParams,
+      );
+      context.push(uri.toString());
     }
   }
 
@@ -126,7 +138,7 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
                     ...state.filteredGroups.map(
                       (g) => AnalyticsGroupCard(
                         group: g,
-                        onTap: () => _onGroupTap(g.id),
+                        onTap: () => _onGroupTap(g),
                       ),
                     ),
                   const SizedBox(height: 24),
@@ -377,57 +389,29 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
 
   Widget _buildFilterChips(BuildContext context, AnalyticsTabState state) {
     final tr = context.l10n;
-    final colors = context.colors;
-
-    final filters = [
-      {'key': 'ALL', 'label': tr.filterAllTab(state.allCount)},
-      {'key': 'ACTIVE', 'label': tr.filterActiveTab},
-      {'key': 'ARCHIVED', 'label': tr.filterArchivedTab},
-    ];
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        children: filters.map((f) {
-          final isSelected = state.filter == f['key'];
-          return Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(20),
-              onTap: () {
-                context.read<AnalyticsTabCubit>().setFilter(f['key'] as String);
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 150),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? colors.analyticsAccent
-                      : colors.cardBackground,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: isSelected
-                        ? colors.analyticsAccent
-                        : colors.cardBorder,
-                    width: 1,
-                  ),
-                ),
-                child: Text(
-                  f['label'] as String,
-                  style: isSelected
-                      ? AppTextStyle.bold(
-                          color: Colors.white,
-                          fontSize: 12,
-                        )
-                      : AppTextStyle.semiBold(
-                          color: colors.textSecondary,
-                          fontSize: 12,
-                        ),
-                ),
-              ),
-            ),
-          );
-        }).toList(),
+        children: [
+          GroupFilterChip(
+            label: tr.filterAllCount(state.allCount),
+            isSelected: state.filter == 'ALL',
+            onTap: () => context.read<AnalyticsTabCubit>().setFilter('ALL'),
+          ),
+          const SizedBox(width: 8),
+          GroupFilterChip(
+            label: tr.filterActiveCount(state.activeCount),
+            isSelected: state.filter == 'ACTIVE',
+            onTap: () => context.read<AnalyticsTabCubit>().setFilter('ACTIVE'),
+          ),
+          const SizedBox(width: 8),
+          GroupFilterChip(
+            label: tr.filterArchivedCount(state.archivedCount),
+            isSelected: state.filter == 'ARCHIVED',
+            onTap: () => context.read<AnalyticsTabCubit>().setFilter('ARCHIVED'),
+          ),
+        ],
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:group_spending_app/core/theme/app_theme.dart';
 import 'package:group_spending_app/features/analytics/presentation/cubit/analytics_tab_cubit.dart';
 import 'package:group_spending_app/features/analytics/presentation/screens/analytics_tab_screen.dart';
+import 'package:group_spending_app/features/groups/presentation/widgets/group_filter_chip.dart';
 import 'package:group_spending_app/l10n/app_localizations.dart';
 import '../../../groups/groups_cubit_test.dart';
 import '../cubit/analytics_cubits_test.dart';
@@ -112,6 +113,28 @@ void main() {
 
       expect(find.text('Chung cư Sunrise Room'), findsNothing);
       expect(find.text('Đi phượt Đà Lạt 2024'), findsOneWidget);
+    });
+
+    testWidgets('renders standardized GroupFilterChips with counts and 48px touch targets', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Check standardized count labels
+      expect(find.text('Tất cả (3)'), findsOneWidget);
+      expect(find.text('Đang hoạt động (2)'), findsOneWidget);
+      expect(find.text('Đã lưu trữ (1)'), findsOneWidget);
+
+      // Verify minHeight 48 on GroupFilterChip
+      final filterChips = find.byType(GroupFilterChip);
+      expect(filterChips, findsNWidgets(3));
+
+      // Tap 'Đã lưu trữ (1)' filter chip
+      await tester.tap(find.text('Đã lưu trữ (1)'));
+      await tester.pumpAndSettle();
+
+      expect(cubit.state.filter, 'ARCHIVED');
+      expect(cubit.state.filteredGroups.length, 1);
+      expect(cubit.state.filteredGroups.first.name, 'Đi phượt Đà Lạt 2024');
     });
   });
 }

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../../core/constants/app_colors.dart';
-import '../../../../core/theme/app_text_style.dart';
-import '../../../../core/theme/app_theme_colors.dart';
 import '../../../../l10n/l10n.dart';
+import '../../../groups/presentation/widgets/group_filter_chip.dart';
 import '../../domain/entities/analytics_enums.dart';
 
 class AnalyticsPeriodBar extends StatelessWidget {
@@ -36,8 +34,6 @@ class AnalyticsPeriodBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
-
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),
@@ -47,40 +43,13 @@ class AnalyticsPeriodBar extends StatelessWidget {
           final isSelected = period == currentPeriod;
           return Padding(
             padding: const EdgeInsets.only(right: 8),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(24),
+            child: GroupFilterChip(
+              label: _getPeriodLabel(context, period),
+              isSelected: isSelected,
               onTap: () {
                 HapticFeedback.selectionClick();
                 onPeriodChanged(period);
               },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? colors.analyticsAccent
-                      : colors.cardBackground,
-                  borderRadius: BorderRadius.circular(24),
-                  border: Border.all(
-                    color: isSelected
-                        ? colors.analyticsAccent
-                        : colors.cardBorder,
-                    width: 1,
-                  ),
-                ),
-                child: Text(
-                  _getPeriodLabel(context, period),
-                  style: isSelected
-                      ? AppTextStyle.bold(
-                          color: Colors.white,
-                          fontSize: 13,
-                        )
-                      : AppTextStyle.semiBold(
-                          color: colors.textSecondary,
-                          fontSize: 13,
-                        ),
-                ),
-              ),
             ),
           );
         }).toList(),

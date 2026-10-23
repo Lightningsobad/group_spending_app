@@ -860,6 +860,8 @@
       }
     }
   },
+  "groupAnalyticsDetailsTitle": "Thống kê chi tiết nhóm",
+  "groupAnalyticsDefaultSubtitle": "Báo cáo chi tiêu chi tiết",
   "expenseDetailModalTitle": "Chi tiết hóa đơn",
   "viewGroupAnalyticsAction": "Xem thống kê nhóm",
   "clearSearchAction": "Xóa tìm kiếm",

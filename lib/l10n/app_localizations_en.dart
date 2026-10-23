@@ -1714,6 +1714,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get groupAnalyticsDetailsTitle => 'Group Analytics';
+
+  @override
+  String get groupAnalyticsDefaultSubtitle => 'Detailed spending report';
+
+  @override
   String get expenseDetailModalTitle => 'Expense Details';
 
   @override

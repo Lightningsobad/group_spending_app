@@ -1710,6 +1710,12 @@ class AppLocalizationsVi extends AppLocalizations {
   }
 
   @override
+  String get groupAnalyticsDetailsTitle => 'Thống kê chi tiết nhóm';
+
+  @override
+  String get groupAnalyticsDefaultSubtitle => 'Báo cáo chi tiêu chi tiết';
+
+  @override
   String get expenseDetailModalTitle => 'Chi tiết hóa đơn';
 
   @override

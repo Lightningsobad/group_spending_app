@@ -3188,6 +3188,18 @@ abstract class AppLocalizations {
   /// **'Thống kê nhóm #{id}'**
   String groupAnalyticsFallbackTitle(int id);
 
+  /// No description provided for @groupAnalyticsDetailsTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thống kê chi tiết nhóm'**
+  String get groupAnalyticsDetailsTitle;
+
+  /// No description provided for @groupAnalyticsDefaultSubtitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Báo cáo chi tiêu chi tiết'**
+  String get groupAnalyticsDefaultSubtitle;
+
   /// No description provided for @expenseDetailModalTitle.
   ///
   /// In vi, this message translates to:

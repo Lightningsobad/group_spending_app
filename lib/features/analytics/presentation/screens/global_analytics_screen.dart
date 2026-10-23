@@ -157,10 +157,11 @@ class _GlobalAnalyticsView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
-          // Back button
+          // Back button (48x48 min touch target)
           Container(
-            width: 40,
-            height: 40,
+            width: 48,
+            height: 48,
+            alignment: Alignment.center,
             decoration: BoxDecoration(
               color: colors.cardBackground,
               borderRadius: BorderRadius.circular(12),
@@ -176,7 +177,7 @@ class _GlobalAnalyticsView extends StatelessWidget {
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 14),
           // Title & Subtitle
           Expanded(
             child: Column(
