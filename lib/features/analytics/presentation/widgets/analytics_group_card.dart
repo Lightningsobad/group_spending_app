@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
-import '../../../groups/data/models/group_model.dart';
-import '../../../groups/presentation/widgets/group_category_helper.dart';
+import '../../../groups/data/models/group_summary_model.dart';
 
 class AnalyticsGroupCard extends StatelessWidget {
-  final GroupModel group;
+  final GroupSummaryModel group;
   final VoidCallback onTap;
 
   const AnalyticsGroupCard({
@@ -22,8 +21,7 @@ class AnalyticsGroupCard extends StatelessWidget {
     final tr = context.l10n;
     final colors = context.colors;
 
-    final spendingVnd = group.totalSpendingVnd ??
-        (group.totalSpending != null ? group.totalSpending! * 1000 : 0);
+    final isArchived = group.status?.toUpperCase() == 'ARCHIVED';
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -43,23 +41,10 @@ class AnalyticsGroupCard extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                // Top row: Category icon, Name, Chevron button
+                // Top row: Group Name, Member count, Chevron button
+                // (Group icon skipped per requirement, will add later)
                 Row(
                   children: [
-                    Container(
-                      width: 44,
-                      height: 44,
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: colors.surfaceMuted,
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: GroupCategoryHelper.buildIcon(
-                        group.category,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +62,7 @@ class AnalyticsGroupCard extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              if (group.isArchived) ...[
+                              if (isArchived) ...[
                                 const SizedBox(width: 6),
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
@@ -96,9 +81,9 @@ class AnalyticsGroupCard extends StatelessWidget {
                               ],
                             ],
                           ),
-                          const SizedBox(height: 2),
+                          const SizedBox(height: 4),
                           Text(
-                            '${group.category} • ${tr.membersCountSubtitle(group.memberCount)}',
+                            tr.membersCountSubtitle(group.memberCount),
                             style: AppTextStyle.regular(
                               color: colors.textSecondary,
                               fontSize: 12,
@@ -144,7 +129,7 @@ class AnalyticsGroupCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      CurrencyUtils.formatVnd(spendingVnd),
+                      CurrencyUtils.formatVnd(group.spendingVnd),
                       style: AppTextStyle.extraBold(
                         color: colors.textPrimary,
                         fontSize: 16,

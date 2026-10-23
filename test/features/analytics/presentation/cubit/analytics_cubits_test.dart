@@ -16,6 +16,7 @@ import 'package:group_spending_app/features/expenses/data/models/expense_enums.d
 import 'package:group_spending_app/features/expenses/data/models/expense_models.dart';
 import 'package:group_spending_app/features/expenses/domain/repositories/expenses_repository.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
+import 'package:group_spending_app/features/groups/data/models/group_summary_model.dart';
 import 'package:group_spending_app/features/groups/domain/repositories/groups_repository.dart';
 
 class FakeAnalyticsRepository implements AnalyticsRepository {
@@ -125,6 +126,43 @@ class FakeAnalyticsRepository implements AnalyticsRepository {
 }
 
 class FakeGroupsRepository implements GroupsRepository {
+  List<GroupSummaryModel> mockSummaries = [
+    const GroupSummaryModel(
+      id: 1,
+      name: 'Chung cư Sunrise Room',
+      category: 'Housing',
+      totalSpendingVnd: 6830000,
+      memberCount: 5,
+      status: 'ACTIVE',
+    ),
+    const GroupSummaryModel(
+      id: 2,
+      name: 'Đội Cầu Lông Ba Đình',
+      category: 'Sport',
+      totalSpendingVnd: 6830000,
+      memberCount: 6,
+      status: 'ARCHIVED',
+    ),
+  ];
+
+  @override
+  Future<List<GroupSummaryModel>> getGroupSummaries({
+    String? search,
+    String? status,
+    String? category,
+  }) async {
+    var list = mockSummaries;
+    if (status != null && status != 'ALL') {
+      list = list.where((g) => g.status?.toUpperCase() == status.toUpperCase()).toList();
+    }
+    if (category != null && category != 'ALL') {
+      list = list.where((g) => g.category?.toLowerCase() == category.toLowerCase()).toList();
+    }
+    if (search != null && search.trim().isNotEmpty) {
+      list = list.where((g) => g.name.toLowerCase().contains(search.trim().toLowerCase())).toList();
+    }
+    return list;
+  }
   List<GroupModel> mockGroups = [
     const GroupModel(
       id: 1,
@@ -252,15 +290,15 @@ void main() {
         );
         await cubit.loadOverview();
 
-        cubit.setFilter('ACTIVE');
+        await cubit.setFilter('ACTIVE');
         expect(cubit.state.filteredGroups.length, 1);
         expect(cubit.state.filteredGroups.first.name, 'Chung cư Sunrise Room');
 
-        cubit.setFilter('ARCHIVED');
+        await cubit.setFilter('ARCHIVED');
         expect(cubit.state.filteredGroups.length, 1);
         expect(cubit.state.filteredGroups.first.name, 'Đội Cầu Lông Ba Đình');
 
-        cubit.setFilter('ALL');
+        await cubit.setFilter('ALL');
         cubit.setSearchQuery('Sunrise');
         expect(cubit.state.filteredGroups.length, 1);
 

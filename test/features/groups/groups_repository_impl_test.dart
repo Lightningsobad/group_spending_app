@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:group_spending_app/features/groups/data/datasources/groups_remote_data_source.dart';
 import 'package:group_spending_app/features/groups/data/models/group_member_models.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
+import 'package:group_spending_app/features/groups/data/models/group_summary_model.dart';
 import 'package:group_spending_app/features/groups/data/repositories/groups_repository_impl.dart';
 
 class FakeGroupsRemoteDataSource implements GroupsRemoteDataSource {
@@ -25,6 +26,20 @@ class FakeGroupsRemoteDataSource implements GroupsRemoteDataSource {
     }
     return members;
   }
+
+  @override
+  Future<List<GroupSummaryModel>> getGroupSummaries({
+    String? search,
+    String? status,
+    String? category,
+  }) async => [
+    GroupSummaryModel(
+      id: groupDetail.id,
+      name: groupDetail.name,
+      totalSpendingVnd: groupDetail.totalSpendingVnd,
+      memberCount: groupDetail.memberCount,
+    ),
+  ];
 
   @override
   Future<List<GroupModel>> getMyGroups({
@@ -130,6 +145,21 @@ void main() {
       expect(group.id, 10);
       expect(group.members, isNull);
       expect(group.memberCount, 2);
+    });
+    test('getGroupSummaries delegates to remoteDataSource', () async {
+      final fakeDataSource = FakeGroupsRemoteDataSource(
+        groupDetail: const GroupModel(
+          id: 10,
+          name: 'Chuyến đi Đà Lạt',
+          ownerId: 1,
+        ),
+        members: const [],
+      );
+      final repo = GroupsRepositoryImpl(remoteDataSource: fakeDataSource);
+      final summaries = await repo.getGroupSummaries(status: 'ACTIVE');
+      expect(summaries.length, 1);
+      expect(summaries.first.id, 10);
+      expect(summaries.first.name, 'Chuyến đi Đà Lạt');
     });
   });
 }
