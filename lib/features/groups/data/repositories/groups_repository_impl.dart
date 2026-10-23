@@ -2,11 +2,26 @@ import '../../domain/repositories/groups_repository.dart';
 import '../datasources/groups_remote_data_source.dart';
 import '../models/group_member_models.dart';
 import '../models/group_model.dart';
+import '../models/group_summary_model.dart';
 
 class GroupsRepositoryImpl implements GroupsRepository {
   final GroupsRemoteDataSource remoteDataSource;
 
   GroupsRepositoryImpl({required this.remoteDataSource});
+
+  @override
+  Future<List<GroupSummaryModel>> getGroupSummaries({
+    String? search,
+    String? status,
+    String? category,
+  }) {
+    return remoteDataSource.getGroupSummaries(
+      search: search,
+      status: status,
+      category: category,
+    );
+  }
+
 
   @override
   Future<List<GroupModel>> getMyGroups({

@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/session/session_coordinator.dart';
 import '../../../../core/sync/data_sync_coordinator.dart';
+import '../../../groups/data/models/group_summary_model.dart';
 import '../../../groups/domain/repositories/groups_repository.dart';
 import '../../domain/repositories/analytics_repository.dart';
 import 'analytics_tab_state.dart';
@@ -31,8 +32,30 @@ class AnalyticsTabCubit extends Cubit<AnalyticsTabState> {
     emit(const AnalyticsTabState());
   }
 
-  void setFilter(String filter) {
+  Future<void> setFilter(String filter) async {
+    if (state.filter == filter) return;
     emit(state.copyWith(filter: filter));
+
+    final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
+    try {
+      final statusParam = filter == 'ALL' ? null : filter;
+      final groups = await groupsRepository.getGroupSummaries(status: statusParam);
+
+      if (isClosed ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+        return;
+      }
+
+      emit(
+        state.copyWith(
+          groups: groups,
+          totalAllCount: filter == 'ALL' ? groups.length : state.totalAllCount,
+        ),
+      );
+    } catch (_) {
+      // Keep existing groups if network filter fails
+    }
   }
 
   void setSearchQuery(String query) {
@@ -49,9 +72,10 @@ class AnalyticsTabCubit extends Cubit<AnalyticsTabState> {
     }
 
     try {
+      final statusParam = state.filter == 'ALL' ? null : state.filter;
       final results = await Future.wait([
         analyticsRepository.getPersonalOverview(),
-        groupsRepository.getMyGroups(filter: 'ALL'),
+        groupsRepository.getGroupSummaries(status: statusParam),
       ]);
 
       if (isClosed ||
@@ -61,13 +85,14 @@ class AnalyticsTabCubit extends Cubit<AnalyticsTabState> {
       }
 
       final overview = results[0];
-      final groups = results[1];
+      final groups = results[1] as List<GroupSummaryModel>;
 
       emit(
         state.copyWith(
           status: AnalyticsTabStatus.success,
           overview: overview as dynamic,
-          groups: groups as dynamic,
+          groups: groups,
+          totalAllCount: state.filter == 'ALL' ? groups.length : state.totalAllCount,
           isRefreshing: false,
           clearError: true,
         ),

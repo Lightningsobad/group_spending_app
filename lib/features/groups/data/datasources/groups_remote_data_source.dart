@@ -1,8 +1,14 @@
 import '../../../../core/network/api_client.dart';
 import '../models/group_member_models.dart';
 import '../models/group_model.dart';
+import '../models/group_summary_model.dart';
 
 abstract class GroupsRemoteDataSource {
+  Future<List<GroupSummaryModel>> getGroupSummaries({
+    String? search,
+    String? status,
+    String? category,
+  });
   Future<List<GroupModel>> getMyGroups({
     String? filter,
     String? category,
@@ -49,6 +55,39 @@ class GroupsRemoteDataSourceImpl implements GroupsRemoteDataSource {
   final ApiClient _apiClient;
 
   GroupsRemoteDataSourceImpl(this._apiClient);
+
+  @override
+  Future<List<GroupSummaryModel>> getGroupSummaries({
+    String? search,
+    String? status,
+    String? category,
+  }) async {
+    final queryParams = <String, dynamic>{};
+    if (search != null && search.trim().isNotEmpty) {
+      queryParams['search'] = search.trim();
+    }
+    if (status != null && status.isNotEmpty && status != 'ALL') {
+      queryParams['status'] = status;
+    }
+    if (category != null && category.isNotEmpty && category != 'ALL') {
+      queryParams['category'] = category;
+    }
+
+    final response = await _apiClient.get<Map<String, dynamic>>(
+      '/groups/summary',
+      queryParameters: queryParams.isNotEmpty ? queryParams : null,
+    );
+
+    final data = response.data;
+    if (data != null && data['data'] is List) {
+      return (data['data'] as List)
+          .whereType<Map<String, dynamic>>()
+          .map((item) => GroupSummaryModel.fromJson(item))
+          .toList();
+    }
+    return [];
+  }
+
 
   @override
   Future<List<GroupModel>> getMyGroups({

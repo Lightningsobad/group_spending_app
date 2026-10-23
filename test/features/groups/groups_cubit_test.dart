@@ -6,6 +6,7 @@ import 'package:group_spending_app/core/storage/token_storage.dart';
 import 'package:group_spending_app/core/sync/data_sync_coordinator.dart';
 import 'package:group_spending_app/features/groups/data/models/group_member_models.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
+import 'package:group_spending_app/features/groups/data/models/group_summary_model.dart';
 import 'package:group_spending_app/features/groups/domain/repositories/groups_repository.dart';
 import 'package:group_spending_app/features/groups/presentation/cubit/groups_cubit.dart';
 import 'package:group_spending_app/features/groups/presentation/cubit/groups_state.dart';
@@ -42,6 +43,34 @@ class FakeGroupsRepo implements GroupsRepository {
   ];
   AppException? exception;
   Duration delay = Duration.zero;
+
+  @override
+  Future<List<GroupSummaryModel>> getGroupSummaries({
+    String? search,
+    String? status,
+    String? category,
+  }) async {
+    if (delay > Duration.zero) await Future.delayed(delay);
+    if (exception != null) throw exception!;
+    var list = groups;
+    if (status != null && status != 'ALL') {
+      list = list.where((g) => g.status.toUpperCase() == status.toUpperCase()).toList();
+    }
+    if (category != null && category != 'ALL') {
+      list = list.where((g) => g.category.toLowerCase() == category.toLowerCase()).toList();
+    }
+    if (search != null && search.trim().isNotEmpty) {
+      list = list.where((g) => g.name.toLowerCase().contains(search.trim().toLowerCase())).toList();
+    }
+    return list.map((g) => GroupSummaryModel(
+      id: g.id,
+      name: g.name,
+      totalSpendingVnd: g.totalSpendingVnd ?? (g.totalSpending != null ? g.totalSpending! * 1000 : 0),
+      memberCount: g.memberCount,
+      status: g.status,
+      category: g.category,
+    )).toList();
+  }
 
   @override
   Future<List<GroupModel>> getMyGroups({

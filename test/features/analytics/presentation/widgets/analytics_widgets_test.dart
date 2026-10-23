@@ -4,7 +4,9 @@ import 'package:group_spending_app/core/theme/app_theme.dart';
 import 'package:group_spending_app/features/analytics/domain/entities/expense_history_entity.dart';
 import 'package:group_spending_app/features/analytics/domain/entities/leaderboard_entity.dart';
 import 'package:group_spending_app/features/analytics/presentation/widgets/expense_history_detail_sheet.dart';
+import 'package:group_spending_app/features/analytics/presentation/widgets/analytics_group_card.dart';
 import 'package:group_spending_app/features/analytics/presentation/widgets/leaderboard_section.dart';
+import 'package:group_spending_app/features/groups/data/models/group_summary_model.dart';
 import 'package:group_spending_app/l10n/app_localizations.dart';
 
 void main() {
@@ -132,6 +134,36 @@ void main() {
         expect(find.text('3.000.000 đ'), findsOneWidget);
         expect(find.text('2.000.000 đ'), findsOneWidget);
       }
+    });
+    testWidgets('AnalyticsGroupCard renders group summary info and handles tap without group icon', (tester) async {
+      bool tapped = false;
+      const summary = GroupSummaryModel(
+        id: 10,
+        name: 'Nhóm bóng đá thứ 6',
+        totalSpendingVnd: 1500000,
+        memberCount: 6,
+      );
+
+      await tester.pumpWidget(
+        buildTestHarness(
+          AnalyticsGroupCard(
+            group: summary,
+            onTap: () {
+              tapped = true;
+            },
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Nhóm bóng đá thứ 6'), findsOneWidget);
+      expect(find.text('6 thành viên'), findsOneWidget);
+      expect(find.text('Tổng chi tiêu'), findsOneWidget);
+      expect(find.text('1.500.000 đ'), findsOneWidget);
+
+      await tester.tap(find.text('Nhóm bóng đá thứ 6'));
+      await tester.pumpAndSettle();
+      expect(tapped, isTrue);
     });
   });
 }

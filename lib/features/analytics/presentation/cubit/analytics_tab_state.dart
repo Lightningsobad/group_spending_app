@@ -1,4 +1,4 @@
-import '../../../groups/data/models/group_model.dart';
+import '../../../groups/data/models/group_summary_model.dart';
 import '../../domain/entities/personal_overview_entity.dart';
 
 enum AnalyticsTabStatus { initial, loading, success, failure }
@@ -7,9 +7,10 @@ class AnalyticsTabState {
   final AnalyticsTabStatus status;
   final bool isRefreshing;
   final PersonalOverviewEntity overview;
-  final List<GroupModel> groups;
+  final List<GroupSummaryModel> groups;
   final String filter; // 'ALL', 'ACTIVE', 'ARCHIVED'
   final String searchQuery;
+  final int? totalAllCount;
   final String? errorMessage;
 
   const AnalyticsTabState({
@@ -19,6 +20,7 @@ class AnalyticsTabState {
     this.groups = const [],
     this.filter = 'ALL',
     this.searchQuery = '',
+    this.totalAllCount,
     this.errorMessage,
   });
 
@@ -26,31 +28,32 @@ class AnalyticsTabState {
   bool get isSuccess => status == AnalyticsTabStatus.success;
   bool get isFailure => status == AnalyticsTabStatus.failure;
 
-  List<GroupModel> get filteredGroups {
+  List<GroupSummaryModel> get filteredGroups {
     return groups.where((g) {
-      if (filter == 'ACTIVE' && g.isArchived) return false;
-      if (filter == 'ARCHIVED' && !g.isArchived) return false;
+      if (filter == 'ACTIVE' && g.status?.toUpperCase() == 'ARCHIVED') return false;
+      if (filter == 'ARCHIVED' && g.status?.toUpperCase() == 'ACTIVE') return false;
       if (searchQuery.trim().isNotEmpty) {
         final query = searchQuery.trim().toLowerCase();
         final nameMatches = g.name.toLowerCase().contains(query);
-        final catMatches = g.category.toLowerCase().contains(query);
+        final catMatches = g.category?.toLowerCase().contains(query) ?? false;
         return nameMatches || catMatches;
       }
       return true;
     }).toList();
   }
 
-  int get allCount => groups.length;
-  int get activeCount => groups.where((g) => !g.isArchived).length;
-  int get archivedCount => groups.where((g) => g.isArchived).length;
+  int get allCount => totalAllCount ?? (filter == 'ALL' ? groups.length : groups.length);
+  int get activeCount => groups.where((g) => g.status?.toUpperCase() != 'ARCHIVED').length;
+  int get archivedCount => groups.where((g) => g.status?.toUpperCase() == 'ARCHIVED').length;
 
   AnalyticsTabState copyWith({
     AnalyticsTabStatus? status,
     bool? isRefreshing,
     PersonalOverviewEntity? overview,
-    List<GroupModel>? groups,
+    List<GroupSummaryModel>? groups,
     String? filter,
     String? searchQuery,
+    int? totalAllCount,
     String? errorMessage,
     bool clearError = false,
   }) {
@@ -61,6 +64,7 @@ class AnalyticsTabState {
       groups: groups ?? this.groups,
       filter: filter ?? this.filter,
       searchQuery: searchQuery ?? this.searchQuery,
+      totalAllCount: totalAllCount ?? this.totalAllCount,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
     );
   }

@@ -1,6 +1,13 @@
 import '../../data/models/group_member_models.dart';
 import '../../data/models/group_model.dart';
+import '../../data/models/group_summary_model.dart';
+
 abstract class GroupsRepository {
+  Future<List<GroupSummaryModel>> getGroupSummaries({
+    String? search,
+    String? status,
+    String? category,
+  });
   Future<List<GroupModel>> getMyGroups({
     String? filter,
     String? category,
