@@ -9,6 +9,7 @@ import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/widgets/app_shimmer.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../domain/repositories/analytics_repository.dart';
 import '../cubit/global_analytics_cubit.dart';
 import '../cubit/global_analytics_state.dart';
@@ -59,12 +60,7 @@ class _GlobalAnalyticsView extends StatelessWidget {
         child: BlocConsumer<GlobalAnalyticsCubit, GlobalAnalyticsState>(
           listener: (context, state) {
             if (state.isFailure && state.errorMessage != null) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(state.errorMessage!),
-                  backgroundColor: AppColors.error,
-                ),
-              );
+              AppSnackBar.showError(context, state.errorMessage!);
             }
           },
           builder: (context, state) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../l10n/l10n.dart';
@@ -90,26 +91,7 @@ class _ChangePasswordDialogState extends State<ChangePasswordDialog> {
       widget.onSuccess?.call();
       Navigator.of(context).pop(true);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              const Icon(LucideIcons.circleCheck, color: Colors.white, size: 20),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  tr.changePasswordSuccess,
-                  style: AppTextStyle.medium(fontSize: 13, color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-          backgroundColor: const Color(0xFF10B981),
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        ),
-      );
+      AppSnackBar.showSuccess(context, tr.changePasswordSuccess);
     } on AppException catch (e) {
       if (!mounted) return;
       setState(() {

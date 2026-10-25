@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
@@ -49,12 +50,10 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
 
   void _copyToClipboard(String text, String successMsg) {
     Clipboard.setData(ClipboardData(text: text));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(successMsg),
-        backgroundColor: AppColors.emerald,
-        duration: const Duration(seconds: 2),
-      ),
+    AppSnackBar.showSuccess(
+      context,
+      successMsg,
+      duration: const Duration(seconds: 2),
     );
   }
 
@@ -178,21 +177,11 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
           prev.successMessage != curr.successMessage,
       listener: (context, state) {
         if (state.errorMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage!),
-              backgroundColor: AppColors.error,
-            ),
-          );
+          AppSnackBar.showError(context, state.errorMessage!);
           context.read<GroupMembersCubit>().clearMessages();
         }
         if (state.successMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.successMessage!),
-              backgroundColor: AppColors.emerald,
-            ),
-          );
+          AppSnackBar.showSuccess(context, state.successMessage!);
           context.read<GroupMembersCubit>().clearMessages();
         }
       },

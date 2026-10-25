@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
@@ -61,12 +62,10 @@ class _GroupDetailSheetState extends State<GroupDetailSheet> {
 
   void _copyInviteCode(String code) {
     Clipboard.setData(ClipboardData(text: code));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('${context.l10n.groupInviteCodePrefix} $code'),
-        backgroundColor: AppColors.emerald,
-        duration: const Duration(seconds: 2),
-      ),
+    AppSnackBar.showSuccess(
+      context,
+      '${context.l10n.groupInviteCodePrefix} $code',
+      duration: const Duration(seconds: 2),
     );
   }
 
