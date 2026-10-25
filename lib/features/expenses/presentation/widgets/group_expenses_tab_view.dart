@@ -5,6 +5,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../shared/widgets/app_shimmer.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../groups/data/models/group_model.dart';
 import '../../../groups/presentation/cubit/groups_cubit.dart';
 import '../../data/models/expense_enums.dart';
@@ -62,11 +63,9 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
 
   void _navigateToAddExpense() {
     if (widget.group.isArchived) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Nhóm này đã được lưu trữ, không thể thêm khoản chi.'),
-          backgroundColor: Colors.amber,
-        ),
+      AppSnackBar.showWarning(
+        context,
+        'Nhóm này đã được lưu trữ, không thể thêm khoản chi.',
       );
       return;
     }
@@ -157,21 +156,11 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
       child: BlocConsumer<ExpensesCubit, ExpensesState>(
         listener: (context, state) {
           if (state.errorMessage != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage!),
-                backgroundColor: AppColors.error,
-              ),
-            );
+            AppSnackBar.showError(context, state.errorMessage!);
             context.read<ExpensesCubit>().clearMessages();
           }
           if (state.successMessage != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.successMessage!),
-                backgroundColor: AppColors.emerald,
-              ),
-            );
+            AppSnackBar.showSuccess(context, state.successMessage!);
             context.read<ExpensesCubit>().clearMessages();
           }
         },

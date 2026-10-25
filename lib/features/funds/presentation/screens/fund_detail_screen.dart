@@ -6,6 +6,7 @@ import '../../../../core/sync/data_sync_coordinator.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/theme/app_theme_colors.dart';
 import '../../../../core/utils/currency_utils.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../groups/data/models/group_model.dart';
 import '../../domain/entities/fund_entities.dart';
@@ -175,21 +176,11 @@ class _FundDetailViewState extends State<_FundDetailView> {
             prev.isDeleted != curr.isDeleted,
         listener: (ctx, state) {
           if (state.errorMessage != null) {
-            ScaffoldMessenger.of(ctx).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage!),
-                backgroundColor: colors.errorAccent,
-              ),
-            );
+            AppSnackBar.showError(ctx, state.errorMessage!);
             ctx.read<FundDetailCubit>().clearMessages();
           }
           if (state.successMessage != null) {
-            ScaffoldMessenger.of(ctx).showSnackBar(
-              SnackBar(
-                content: Text(state.successMessage!),
-                backgroundColor: colors.brandEmerald,
-              ),
-            );
+            AppSnackBar.showSuccess(ctx, state.successMessage!);
             ctx.read<FundDetailCubit>().clearMessages();
           }
         },

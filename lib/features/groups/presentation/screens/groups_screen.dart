@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../l10n/l10n.dart';
 import '../cubit/groups_cubit.dart';
@@ -102,21 +103,11 @@ class GroupsScreenState extends State<GroupsScreen> {
           previous.successMessage != current.successMessage,
       listener: (context, state) {
         if (state.errorMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage!),
-              backgroundColor: AppColors.error,
-            ),
-          );
+          AppSnackBar.showError(context, state.errorMessage!);
           context.read<GroupsCubit>().clearMessages();
         }
         if (state.successMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.successMessage!),
-              backgroundColor: AppColors.emerald,
-            ),
-          );
+          AppSnackBar.showSuccess(context, state.successMessage!);
           context.read<GroupsCubit>().clearMessages();
         }
       },
@@ -284,13 +275,10 @@ class GroupsScreenState extends State<GroupsScreen> {
                       group: group,
                       onTap: () => openGroupDetail(group),
                       onToggleMute: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              tr.notificationsToggledForGroup(group.name),
-                            ),
-                            duration: const Duration(seconds: 1),
-                          ),
+                        AppSnackBar.showInfo(
+                          context,
+                          tr.notificationsToggledForGroup(group.name),
+                          duration: const Duration(seconds: 1),
                         );
                       },
                     ),

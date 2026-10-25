@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
@@ -73,24 +74,20 @@ class VietQrModalSheet extends StatelessWidget {
 
   void _copyAccountNumber(BuildContext context) {
     Clipboard.setData(ClipboardData(text: accountNumber));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(context.l10n.copiedAccountNumber),
-        backgroundColor: AppColors.emerald,
-        duration: const Duration(seconds: 2),
-      ),
+    AppSnackBar.showSuccess(
+      context,
+      context.l10n.copiedAccountNumber,
+      duration: const Duration(seconds: 2),
     );
   }
 
   void _copyNote(BuildContext context) {
     if (note == null || note!.trim().isEmpty) return;
     Clipboard.setData(ClipboardData(text: note!.trim()));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(context.l10n.copiedTransferContent),
-        backgroundColor: AppColors.emerald,
-        duration: const Duration(seconds: 2),
-      ),
+    AppSnackBar.showSuccess(
+      context,
+      context.l10n.copiedTransferContent,
+      duration: const Duration(seconds: 2),
     );
   }
 

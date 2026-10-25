@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/name_utils.dart';
@@ -208,26 +209,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
       widget.onSuccess?.call();
       Navigator.of(context).pop(true);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Row(
-            children: [
-              const Icon(LucideIcons.circleCheck, color: Colors.white, size: 20),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  tr.updateProfileSuccess,
-                  style: AppTextStyle.medium(fontSize: 13, color: Colors.white),
-                ),
-              ),
-            ],
-          ),
-          backgroundColor: AppColors.emeraldForest,
-          behavior: SnackBarBehavior.floating,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          margin: const EdgeInsets.all(16),
-        ),
-      );
+      AppSnackBar.showSuccess(context, tr.updateProfileSuccess);
     } on AppException catch (e) {
       if (!mounted) return;
       setState(() {

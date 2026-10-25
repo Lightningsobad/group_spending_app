@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../groups/presentation/cubit/groups_cubit.dart';
 import '../../../groups/presentation/cubit/groups_state.dart';
@@ -219,13 +220,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               }
                             },
                             onToggleMute: () {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    tr.notificationsToggledForGroup(group.name),
-                                  ),
-                                  duration: const Duration(seconds: 1),
-                                ),
+                              AppSnackBar.showInfo(
+                                context,
+                                tr.notificationsToggledForGroup(group.name),
+                                duration: const Duration(seconds: 1),
                               );
                             },
                           );

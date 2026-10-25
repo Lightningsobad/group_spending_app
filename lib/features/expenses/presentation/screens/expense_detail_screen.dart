@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../../core/sync/data_sync_coordinator.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
@@ -120,21 +121,11 @@ class _ExpenseDetailScreenState extends State<ExpenseDetailScreen> {
       child: BlocConsumer<ExpenseDetailCubit, ExpenseDetailState>(
         listener: (context, state) {
           if (state.errorMessage != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage!),
-                backgroundColor: AppColors.error,
-              ),
-            );
+            AppSnackBar.showError(context, state.errorMessage!);
             context.read<ExpenseDetailCubit>().clearMessages();
           }
           if (state.deleteSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Xóa khoản chi thành công'),
-                backgroundColor: AppColors.emerald,
-              ),
-            );
+            AppSnackBar.showSuccess(context, 'Xóa khoản chi thành công');
           }
         },
         builder: (context, state) {
@@ -656,13 +647,9 @@ class _ExpenseDetailScreenState extends State<ExpenseDetailScreen> {
                                                         child: InkWell(
                                                           borderRadius: BorderRadius.circular(12),
                                                           onTap: () {
-                                                            ScaffoldMessenger.of(context).showSnackBar(
-                                                              SnackBar(
-                                                                content: Text(
-                                                                  'Đã gửi nhắc nhở thanh toán đến ${split.fullName}',
-                                                                ),
-                                                                backgroundColor: colors.brandEmerald,
-                                                              ),
+                                                            AppSnackBar.showSuccess(
+                                                              context,
+                                                              'Đã gửi nhắc nhở thanh toán đến ${split.fullName}',
                                                             );
                                                           },
                                                           child: Container(

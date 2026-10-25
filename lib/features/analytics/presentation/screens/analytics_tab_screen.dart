@@ -7,6 +7,7 @@ import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/widgets/app_shimmer.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../groups/data/models/group_summary_model.dart';
 import '../../../groups/presentation/widgets/group_filter_chip.dart';
 import '../cubit/analytics_tab_cubit.dart';
@@ -78,12 +79,7 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
     return BlocConsumer<AnalyticsTabCubit, AnalyticsTabState>(
       listener: (context, state) {
         if (state.isFailure && state.errorMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage!),
-              backgroundColor: AppColors.error,
-            ),
-          );
+          AppSnackBar.showError(context, state.errorMessage!);
         }
       },
       builder: (context, state) {
