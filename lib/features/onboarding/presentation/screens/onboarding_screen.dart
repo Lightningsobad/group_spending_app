@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/constants/app_colors.dart';
 import '../../../../core/storage/app_preferences.dart';
 import '../../../../core/theme/app_text_style.dart';
+import '../../../../core/theme/app_theme_colors.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/widgets/organic_wavy_divider.dart';
 
@@ -60,6 +60,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final tr = context.l10n;
+    final colors = context.colors;
     final items = [
       _OnboardingSlide(
         pill: tr.onboardingSlide1Pill,
@@ -89,55 +90,32 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final item = items[_currentIndex];
 
     return Scaffold(
-      backgroundColor: AppColors.canvasLight,
+      backgroundColor: colors.onboardingCanvasBg,
       body: SafeArea(
         bottom: false,
         child: Column(
           children: [
-            // Top Action Row (Step indicator & Skip button)
+            // Top Action Row (Skip button aligned right)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Step indicator
-                  Row(
-                    children: [
-                      Container(
-                        width: 8,
-                        height: 8,
-                        decoration: const BoxDecoration(
-                          color: AppColors.primaryGreen,
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        tr.onboardingStep(_currentIndex + 1, items.length),
-                        style: AppTextStyle.bold(
-                          fontSize: 12,
-                          color: AppColors.primaryGreen,
-                        ),
-                      ),
-                    ],
-                  ),
-                  TextButton(
-                    onPressed: _completeOnboarding,
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 4,
-                      ),
-                    ),
-                    child: Text(
-                      tr.skip,
-                      style: AppTextStyle.extraBold(
-                        fontSize: 13,
-                        color: AppColors.primaryGreen,
-                      ),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: _completeOnboarding,
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
                     ),
                   ),
-                ],
+                  child: Text(
+                    tr.skip,
+                    style: AppTextStyle.extraBold(
+                      fontSize: 13,
+                      color: colors.onboardingSkipText,
+                    ),
+                  ),
+                ),
               ),
             ),
 
@@ -166,7 +144,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
-                            // Ambient warm gold glow matching HTML design
+                            // Ambient glow matching theme
                             Container(
                               width: 230,
                               height: 230,
@@ -174,9 +152,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 shape: BoxShape.circle,
                                 boxShadow: [
                                   BoxShadow(
-                                    color: const Color(
-                                      0xFFFEE685,
-                                    ).withValues(alpha: 0.5),
+                                    color: colors.onboardingGlow,
                                     blurRadius: 36,
                                     spreadRadius: 8,
                                   ),
@@ -199,15 +175,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
 
             // Signature Organic Wavy Divider
-            const OrganicWavyDivider(
+            OrganicWavyDivider(
               height: 52,
-              fillColor: AppColors.primaryGreen,
+              fillColor: colors.onboardingBottomBg,
             ),
 
-            // Lower Section: Rich Green Background
+            // Lower Section: Rich Theme-matched Background
             Container(
               width: double.infinity,
-              color: AppColors.primaryGreen,
+              color: colors.onboardingBottomBg,
               padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -219,14 +195,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       vertical: 4,
                     ),
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.15),
+                      color: colors.onboardingPillBg,
                       borderRadius: BorderRadius.circular(9999),
                     ),
                     child: Text(
                       item.pill.toUpperCase(),
                       style: AppTextStyle.extraBold(
                         fontSize: 11,
-                        color: const Color(0xFFD1FAE5),
+                        color: colors.onboardingPillText,
                         letterSpacing: 0.6,
                       ),
                     ),
@@ -240,7 +216,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     textAlign: TextAlign.center,
                     style: AppTextStyle.black(
                       fontSize: 19,
-                      color: Colors.white,
+                      color: colors.onboardingTitleText,
                       letterSpacing: 0.4,
                       height: 1.25,
                     ),
@@ -254,7 +230,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     textAlign: TextAlign.center,
                     style: AppTextStyle.regular(
                       fontSize: 13,
-                      color: const Color(0xEBEEFDF4),
+                      color: colors.onboardingDescText,
                       height: 1.5,
                     ),
                   ),
@@ -273,15 +249,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         width: isActive ? 24 : 8,
                         decoration: BoxDecoration(
                           color: isActive
-                              ? Colors.white
-                              : Colors.white.withValues(alpha: 0.35),
+                              ? colors.onboardingDotActive
+                              : colors.onboardingDotInactive,
                           borderRadius: BorderRadius.circular(9999),
                           boxShadow: isActive
                               ? [
-                                  const BoxShadow(
-                                    color: Color(0x33000000),
+                                  BoxShadow(
+                                    color: colors.cardShadowColor,
                                     blurRadius: 3,
-                                    offset: Offset(0, 1),
+                                    offset: const Offset(0, 1),
                                   ),
                                 ]
                               : null,
@@ -292,31 +268,31 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
                   const SizedBox(height: 16),
 
-                  // Circular White Next Button with Green Arrow
+                  // Circular Next Button with Directional Arrow
                   GestureDetector(
                     onTap: () => _onNext(items.length),
                     child: Container(
                       width: 56,
                       height: 56,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: colors.onboardingNextBtnBg,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.95),
+                          color: colors.onboardingNextBtnBorder,
                           width: 2,
                         ),
-                        boxShadow: const [
+                        boxShadow: [
                           BoxShadow(
-                            color: Color(0x4D000000),
+                            color: colors.cardShadowColor,
                             blurRadius: 16,
-                            offset: Offset(0, 8),
+                            offset: const Offset(0, 8),
                           ),
                         ],
                       ),
-                      child: const Center(
+                      child: Center(
                         child: Icon(
                           Icons.arrow_forward_rounded,
-                          color: AppColors.primaryGreen,
+                          color: colors.onboardingNextBtnFg,
                           size: 26,
                         ),
                       ),

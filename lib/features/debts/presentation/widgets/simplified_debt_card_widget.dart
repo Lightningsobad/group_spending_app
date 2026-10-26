@@ -216,34 +216,6 @@ class SimplifiedDebtCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 14),
-
-          // 3. Hint / Reason Banner
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: colors.debtHintBg,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: colors.debtHintBorder),
-            ),
-            child: Row(
-              children: [
-                const Text('💡', style: TextStyle(fontSize: 13)),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    debt.note ?? 'Gộp nợ tối ưu giữa các thành viên trong nhóm',
-                    style: AppTextStyle.medium(
-                      fontSize: AppFontSize.caption,
-                      color: colors.debtHintText,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
 
           // 4. Action Buttons (PAY / CONFIRM / REMIND)
           if (effectiveWaiting && isCurrentUserDebtor) ...[

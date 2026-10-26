@@ -239,40 +239,6 @@ class GroupDebtDetailView extends StatelessWidget {
                         const SizedBox(height: 14),
                       ],
 
-                      // 5. Section Header for Tab 0
-                      if (activeTab == 0)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  tr.debtsToHandleCount(simplifiedList.length),
-                                  style: AppTextStyle.bold(
-                                    fontSize: AppFontSize.caption,
-                                    color: colors.textPrimary,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Flexible(
-                                child: Text(
-                                  tr.simplifiedDebtAlgorithm,
-                                  style: AppTextStyle.semiBold(
-                                    fontSize: AppFontSize.caption,
-                                    color: colors.debtReceiveText,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  textAlign: TextAlign.end,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
 
                       // 6. Content Body
                       if (isDetailLoading &&
