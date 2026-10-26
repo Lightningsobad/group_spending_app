@@ -317,6 +317,21 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color financialCardReceiveAmount;
   final Color financialCardReceiveSubtitle;
 
+  // Onboarding Tokens
+  final Color onboardingCanvasBg;
+  final Color onboardingSkipText;
+  final Color onboardingGlow;
+  final Color onboardingBottomBg;
+  final Color onboardingPillBg;
+  final Color onboardingPillText;
+  final Color onboardingTitleText;
+  final Color onboardingDescText;
+  final Color onboardingDotActive;
+  final Color onboardingDotInactive;
+  final Color onboardingNextBtnBg;
+  final Color onboardingNextBtnFg;
+  final Color onboardingNextBtnBorder;
+
   const AppThemeColors({
     required this.background,
     required this.cardBackground,
@@ -576,6 +591,19 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.financialCardReceiveLabel,
     required this.financialCardReceiveAmount,
     required this.financialCardReceiveSubtitle,
+    required this.onboardingCanvasBg,
+    required this.onboardingSkipText,
+    required this.onboardingGlow,
+    required this.onboardingBottomBg,
+    required this.onboardingPillBg,
+    required this.onboardingPillText,
+    required this.onboardingTitleText,
+    required this.onboardingDescText,
+    required this.onboardingDotActive,
+    required this.onboardingDotInactive,
+    required this.onboardingNextBtnBg,
+    required this.onboardingNextBtnFg,
+    required this.onboardingNextBtnBorder,
   });
 
   /// Bảng màu cho Light Theme
@@ -850,6 +878,19 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     financialCardReceiveLabel: AppColors.borderLight,
     financialCardReceiveAmount: AppColors.mintLight,
     financialCardReceiveSubtitle: AppColors.textMuted,
+    onboardingCanvasBg: Color(0xFFF2F9F3),
+    onboardingSkipText: AppColors.primaryGreen,
+    onboardingGlow: Color(0x80FEE685),
+    onboardingBottomBg: AppColors.primaryGreen,
+    onboardingPillBg: Color(0x26FFFFFF),
+    onboardingPillText: Color(0xFFD1FAE5),
+    onboardingTitleText: Colors.white,
+    onboardingDescText: Color(0xEBEEFDF4),
+    onboardingDotActive: Colors.white,
+    onboardingDotInactive: Color(0x59FFFFFF),
+    onboardingNextBtnBg: Colors.white,
+    onboardingNextBtnFg: AppColors.primaryGreen,
+    onboardingNextBtnBorder: Color(0xF2FFFFFF),
   );
 
   /// Bảng màu cho Dark Theme
@@ -1124,6 +1165,19 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     financialCardReceiveLabel: AppColors.borderLight,
     financialCardReceiveAmount: AppColors.mintLight,
     financialCardReceiveSubtitle: AppColors.textLightSecondary,
+    onboardingCanvasBg: AppColors.backgroundDark,
+    onboardingSkipText: AppColors.emeraldLight,
+    onboardingGlow: Color(0x3310B981),
+    onboardingBottomBg: Color(0xFF064E3B),
+    onboardingPillBg: Color(0x1FFFFFFF),
+    onboardingPillText: Color(0xFF6EE7B7),
+    onboardingTitleText: AppColors.textLight,
+    onboardingDescText: Color(0xFFCBD5E1),
+    onboardingDotActive: AppColors.emeraldLight,
+    onboardingDotInactive: Color(0x40FFFFFF),
+    onboardingNextBtnBg: Colors.white,
+    onboardingNextBtnFg: Color(0xFF064E3B),
+    onboardingNextBtnBorder: Color(0x33FFFFFF),
   );
 
   /// Lấy bảng màu tương ứng với Theme hiện tại
@@ -1392,6 +1446,19 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? financialCardReceiveLabel,
     Color? financialCardReceiveAmount,
     Color? financialCardReceiveSubtitle,
+    Color? onboardingCanvasBg,
+    Color? onboardingSkipText,
+    Color? onboardingGlow,
+    Color? onboardingBottomBg,
+    Color? onboardingPillBg,
+    Color? onboardingPillText,
+    Color? onboardingTitleText,
+    Color? onboardingDescText,
+    Color? onboardingDotActive,
+    Color? onboardingDotInactive,
+    Color? onboardingNextBtnBg,
+    Color? onboardingNextBtnFg,
+    Color? onboardingNextBtnBorder,
   }) {
     return AppThemeColors(
       background: background ?? this.background,
@@ -1696,6 +1763,21 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           financialCardReceiveAmount ?? this.financialCardReceiveAmount,
       financialCardReceiveSubtitle:
           financialCardReceiveSubtitle ?? this.financialCardReceiveSubtitle,
+      onboardingCanvasBg: onboardingCanvasBg ?? this.onboardingCanvasBg,
+      onboardingSkipText: onboardingSkipText ?? this.onboardingSkipText,
+      onboardingGlow: onboardingGlow ?? this.onboardingGlow,
+      onboardingBottomBg: onboardingBottomBg ?? this.onboardingBottomBg,
+      onboardingPillBg: onboardingPillBg ?? this.onboardingPillBg,
+      onboardingPillText: onboardingPillText ?? this.onboardingPillText,
+      onboardingTitleText: onboardingTitleText ?? this.onboardingTitleText,
+      onboardingDescText: onboardingDescText ?? this.onboardingDescText,
+      onboardingDotActive: onboardingDotActive ?? this.onboardingDotActive,
+      onboardingDotInactive:
+          onboardingDotInactive ?? this.onboardingDotInactive,
+      onboardingNextBtnBg: onboardingNextBtnBg ?? this.onboardingNextBtnBg,
+      onboardingNextBtnFg: onboardingNextBtnFg ?? this.onboardingNextBtnFg,
+      onboardingNextBtnBorder:
+          onboardingNextBtnBorder ?? this.onboardingNextBtnBorder,
     );
   }
 
@@ -2120,6 +2202,31 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           financialCardReceiveAmount, other.financialCardReceiveAmount, t)!,
       financialCardReceiveSubtitle: Color.lerp(
           financialCardReceiveSubtitle, other.financialCardReceiveSubtitle, t)!,
+      onboardingCanvasBg:
+          Color.lerp(onboardingCanvasBg, other.onboardingCanvasBg, t)!,
+      onboardingSkipText:
+          Color.lerp(onboardingSkipText, other.onboardingSkipText, t)!,
+      onboardingGlow: Color.lerp(onboardingGlow, other.onboardingGlow, t)!,
+      onboardingBottomBg:
+          Color.lerp(onboardingBottomBg, other.onboardingBottomBg, t)!,
+      onboardingPillBg:
+          Color.lerp(onboardingPillBg, other.onboardingPillBg, t)!,
+      onboardingPillText:
+          Color.lerp(onboardingPillText, other.onboardingPillText, t)!,
+      onboardingTitleText:
+          Color.lerp(onboardingTitleText, other.onboardingTitleText, t)!,
+      onboardingDescText:
+          Color.lerp(onboardingDescText, other.onboardingDescText, t)!,
+      onboardingDotActive:
+          Color.lerp(onboardingDotActive, other.onboardingDotActive, t)!,
+      onboardingDotInactive:
+          Color.lerp(onboardingDotInactive, other.onboardingDotInactive, t)!,
+      onboardingNextBtnBg:
+          Color.lerp(onboardingNextBtnBg, other.onboardingNextBtnBg, t)!,
+      onboardingNextBtnFg:
+          Color.lerp(onboardingNextBtnFg, other.onboardingNextBtnFg, t)!,
+      onboardingNextBtnBorder:
+          Color.lerp(onboardingNextBtnBorder, other.onboardingNextBtnBorder, t)!,
     );
   }
 }

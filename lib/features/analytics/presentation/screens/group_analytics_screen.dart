@@ -298,9 +298,6 @@ class _GroupAnalyticsView extends StatelessWidget {
     final colors = context.colors;
     final stats = state.groupStatistics;
 
-    final remainingDebt = (100 - stats.debtSettlementRate)
-        .clamp(0.0, 100.0)
-        .toStringAsFixed(0);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -389,8 +386,6 @@ class _GroupAnalyticsView extends StatelessWidget {
                 badgeBgColor: colors.badgeInfoBg,
                 badgeTextColor: colors.badgeInfoText,
                 progressBarPercent: stats.debtSettlementRate / 100,
-                progressSubtitleLeft: tr.groupDebtLabel,
-                progressSubtitleRight: tr.remainingDebtRate(remainingDebt),
               ),
             ),
           ],
