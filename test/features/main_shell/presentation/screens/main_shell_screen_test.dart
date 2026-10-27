@@ -172,5 +172,44 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.byType(NotificationModal), findsOneWidget);
     });
+
+    testWidgets('tapping user avatar/name cluster navigates to settings tab and closes subviews', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+
+      // Initially on tab 0 (Overview)
+      expect(find.text('Tổng quan'), findsAtLeastNWidgets(1));
+      expect(find.text('Đăng xuất tài khoản'), findsNothing);
+
+      // Tap on avatar initials "NM" in header
+      final avatarTarget = find.descendant(
+        of: find.byType(AppHeader),
+        matching: find.text('NM'),
+      );
+      expect(avatarTarget, findsOneWidget);
+      await tester.tap(avatarTarget);
+      await tester.pumpAndSettle();
+
+      // Now on Settings tab
+      expect(find.text('Đăng xuất tài khoản'), findsOneWidget);
+
+      // Open Privacy Policy inside Settings
+      final privacyPolicyItem = find.text('Chính sách bảo mật & Quyền riêng tư');
+      await tester.scrollUntilVisible(privacyPolicyItem, 100);
+      await tester.tap(privacyPolicyItem);
+      await tester.pumpAndSettle();
+      expect(find.text('Đăng xuất tài khoản'), findsNothing);
+
+      // Tap on user full name in header while in Privacy Policy
+      final nameTarget = find.descendant(
+        of: find.byType(AppHeader),
+        matching: find.text('Test User'),
+      );
+      expect(nameTarget, findsOneWidget);
+      await tester.tap(nameTarget);
+      await tester.pumpAndSettle();
+
+      // Should close Privacy Policy and show main Settings content again
+      expect(find.text('Đăng xuất tài khoản'), findsOneWidget);
+    });
   });
 }
