@@ -90,6 +90,10 @@ List<RouteBase> buildAppRoutes({
       },
     ),
     GoRoute(
+      path: '/settings',
+      redirect: (context, state) => '/dashboard?tab=4',
+    ),
+    GoRoute(
       path: '/settings/privacy-policy',
       builder: (context, state) => const PrivacyPolicyScreen(),
     ),

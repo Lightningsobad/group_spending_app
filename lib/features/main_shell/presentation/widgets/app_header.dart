@@ -13,7 +13,12 @@ import '../../../notifications/presentation/cubit/notifications_cubit.dart';
 import 'notification_modal.dart';
 
 class AppHeader extends StatelessWidget {
-  const AppHeader({super.key});
+  final VoidCallback? onProfileTap;
+
+  const AppHeader({
+    super.key,
+    this.onProfileTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -43,93 +48,113 @@ class AppHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       child: Row(
         children: [
-          // User Avatar with Online Dot
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Container(
-                width: 44,
-                height: 44,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: AppColors.emerald.withValues(alpha: 0.5),
-                    width: 1.5,
-                  ),
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF065F46), Color(0xFF047857)],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                clipBehavior: Clip.antiAlias,
-                child: avatarUrl != null && avatarUrl.isNotEmpty
-                    ? Image.network(
-                        avatarUrl,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, _, _) => Center(
-                          child: Text(
-                            initials,
-                            style: AppTextStyle.bold(
-                              fontSize: 16,
-                              color: Colors.white,
+          // User Avatar & Name Cluster (tappable to Settings)
+          Expanded(
+            child: Tooltip(
+              message: tr.settingsTitle,
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: onProfileTap,
+                  borderRadius: BorderRadius.circular(12),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                    child: Row(
+                      children: [
+                        // User Avatar with Online Dot
+                        Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            Container(
+                              width: 44,
+                              height: 44,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColors.emerald.withValues(alpha: 0.5),
+                                  width: 1.5,
+                                ),
+                                gradient: const LinearGradient(
+                                  colors: [Color(0xFF065F46), Color(0xFF047857)],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAlias,
+                              child: avatarUrl != null && avatarUrl.isNotEmpty
+                                  ? Image.network(
+                                      avatarUrl,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (_, _, _) => Center(
+                                        child: Text(
+                                          initials,
+                                          style: AppTextStyle.bold(
+                                            fontSize: 16,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : Center(
+                                      child: Text(
+                                        initials,
+                                        style: AppTextStyle.bold(
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
                             ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                width: 12,
+                                height: 12,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF10B981),
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    color: colors.background,
+                                    width: 2,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 12),
+                        // Greeting & Name
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                tr.greeting,
+                                style: AppTextStyle.medium(
+                                  fontSize: 11,
+                                  color: colors.textSecondary,
+                                ),
+                              ),
+                              Text(
+                                name,
+                                style: AppTextStyle.bold(
+                                  fontSize: 15,
+                                  color: colors.textPrimary,
+                                  letterSpacing: -0.3,
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
                           ),
                         ),
-                      )
-                    : Center(
-                        child: Text(
-                          initials,
-                          style: AppTextStyle.bold(
-                            fontSize: 16,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  width: 12,
-                  height: 12,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF10B981),
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: colors.background,
-                      width: 2,
+                      ],
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
-          const SizedBox(width: 12),
-          // Greeting & Name
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  tr.greeting,
-                  style: AppTextStyle.medium(
-                    fontSize: 11,
-                    color: colors.textSecondary,
-                  ),
-                ),
-                Text(
-                  name,
-                  style: AppTextStyle.bold(
-                    fontSize: 15,
-                    color: colors.textPrimary,
-                    letterSpacing: -0.3,
-                  ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
             ),
           ),
           const SizedBox(width: 8),

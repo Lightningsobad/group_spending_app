@@ -49,6 +49,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
   late int _currentIndex;
   bool _isGroupsDeepView = false;
   final GlobalKey<GroupsScreenState> _groupsKey = GlobalKey<GroupsScreenState>();
+  final GlobalKey<SettingsScreenState> _settingsKey = GlobalKey<SettingsScreenState>();
 
   @override
   void initState() {
@@ -60,6 +61,16 @@ class _MainShellScreenState extends State<MainShellScreen> {
         authCubit.loadUserProfile();
       }
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant MainShellScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialTabIndex != widget.initialTabIndex) {
+      setState(() {
+        _currentIndex = widget.initialTabIndex;
+      });
+    }
   }
 
   @override
@@ -84,7 +95,19 @@ class _MainShellScreenState extends State<MainShellScreen> {
               AnimatedSize(
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeInOut,
-                child: hideHeader ? const SizedBox.shrink() : const AppHeader(),
+                child: hideHeader
+                    ? const SizedBox.shrink()
+                    : AppHeader(
+                        onProfileTap: () {
+                          if (_currentIndex == 4) {
+                            _settingsKey.currentState?.closePrivacyPolicy();
+                          } else {
+                            setState(() {
+                              _currentIndex = 4;
+                            });
+                          }
+                        },
+                      ),
               ),
               // Shell body with IndexedStack to preserve tab states
               Expanded(
@@ -127,7 +150,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
                     ),
                     const DebtsScreen(),
                     const AnalyticsTabScreen(),
-                    const SettingsScreen(),
+                    SettingsScreen(key: _settingsKey),
                   ],
                 ),
               ),
