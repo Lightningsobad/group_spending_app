@@ -175,20 +175,11 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
                   Expanded(
                     child: Row(
                       children: [
-                        Container(
-                          width: 44,
-                          height: 44,
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: colors.primaryContainer,
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(color: colors.cardBorder),
-                          ),
-                          child: GroupCategoryHelper.buildIcon(
-                            _selectedCategory,
-                            width: 28,
-                            height: 28,
-                          ),
+                        GroupCategoryHelper.buildCategoryBadge(
+                          context,
+                          _selectedCategory,
+                          size: 44,
+                          borderRadius: 14,
                         ),
                         const SizedBox(width: 12),
                         Expanded(
@@ -371,8 +362,10 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
                       children: [
                         GroupCategoryHelper.buildIcon(
                           cat,
+                          context: context,
                           width: 20,
                           height: 20,
+                          color: isSelected ? Colors.white : null,
                         ),
                         const SizedBox(width: 8),
                         Text(

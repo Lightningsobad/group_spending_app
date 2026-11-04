@@ -167,6 +167,7 @@ class GroupDebtDetailView extends StatelessWidget {
                                     userBalance.category,
                                     width: 14,
                                     height: 14,
+                                    color: colors.debtReceiveText,
                                     fit: BoxFit.contain,
                                   ),
                                   const SizedBox(width: 6),

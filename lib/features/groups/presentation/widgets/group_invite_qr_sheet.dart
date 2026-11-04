@@ -302,21 +302,11 @@ class _GroupInviteQrSheetState extends State<GroupInviteQrSheet> {
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              width: 44,
-              height: 44,
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: colors.surfaceMuted,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: colors.cardBorder),
-              ),
-              alignment: Alignment.center,
-              child: GroupCategoryHelper.buildIcon(
-                _group.category,
-                width: 24,
-                height: 24,
-              ),
+            GroupCategoryHelper.buildCategoryBadge(
+              context,
+              _group.category,
+              size: 44,
+              borderRadius: 14,
             ),
             const SizedBox(width: 12),
             Expanded(

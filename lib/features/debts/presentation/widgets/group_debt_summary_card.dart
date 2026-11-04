@@ -43,22 +43,11 @@ class GroupDebtSummaryCard extends StatelessWidget {
           // 1. Top Row: Icon, Group Name, Subtitle, Status Badge
           Row(
             children: [
-              Container(
-                width: 44,
-                height: 44,
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: colors.surfaceMuted,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: colors.cardBorder),
-                ),
-                alignment: Alignment.center,
-                child: GroupCategoryHelper.buildIcon(
-                  userBalance.category,
-                  width: 26,
-                  height: 26,
-                  fit: BoxFit.contain,
-                ),
+              GroupCategoryHelper.buildCategoryBadge(
+                context,
+                userBalance.category,
+                size: 44,
+                borderRadius: 14,
               ),
               const SizedBox(width: 12),
               Expanded(

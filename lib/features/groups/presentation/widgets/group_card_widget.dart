@@ -60,22 +60,11 @@ class GroupCardWidget extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // Category SVG Icon Box
-                      Container(
-                        width: 48,
-                        height: 48,
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: colors.surfaceMuted,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: colors.cardBorder),
-                        ),
-                        alignment: Alignment.center,
-                        child: GroupCategoryHelper.buildIcon(
-                          group.category,
-                          width: 28,
-                          height: 28,
-                        ),
+                      // Category Badge Box
+                      GroupCategoryHelper.buildCategoryBadge(
+                        context,
+                        group.category,
+                        size: 48,
                       ),
                       const SizedBox(width: 12),
 

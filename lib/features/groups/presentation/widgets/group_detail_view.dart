@@ -1155,15 +1155,12 @@ class _GroupDetailViewState extends State<GroupDetailView> {
       ),
       child: Row(
         children: [
-          Container(
-            width: 32,
-            height: 32,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: colors.primaryContainer,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: GroupCategoryHelper.buildIcon(_group.category, width: 18, height: 18),
+          GroupCategoryHelper.buildCategoryBadge(
+            context,
+            _group.category,
+            size: 32,
+            iconSize: 18,
+            borderRadius: 8,
           ),
           const SizedBox(width: 10),
           Expanded(

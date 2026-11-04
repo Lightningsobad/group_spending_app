@@ -34,6 +34,18 @@ void main() {
       expect(AppThemeColors.light.financialCardShadow, isNotNull);
       expect(AppThemeColors.light.financialCardOweAmount, isNotNull);
       expect(AppThemeColors.light.financialCardReceiveAmount, isNotNull);
+      expect(AppThemeColors.light.topicApartment, isNotNull);
+      expect(AppThemeColors.light.topicApartmentBg, isNotNull);
+      expect(AppThemeColors.light.topicSport, isNotNull);
+      expect(AppThemeColors.light.topicSportBg, isNotNull);
+      expect(AppThemeColors.light.topicTravel, isNotNull);
+      expect(AppThemeColors.light.topicTravelBg, isNotNull);
+      expect(AppThemeColors.light.topicDining, isNotNull);
+      expect(AppThemeColors.light.topicDiningBg, isNotNull);
+      expect(AppThemeColors.light.topicWork, isNotNull);
+      expect(AppThemeColors.light.topicWorkBg, isNotNull);
+      expect(AppThemeColors.light.topicOther, isNotNull);
+      expect(AppThemeColors.light.topicOtherBg, isNotNull);
 
       expect(AppThemeColors.dark.background, isNotNull);
       expect(AppThemeColors.dark.cardBackground, isNot(equals(Colors.white)));
@@ -58,6 +70,27 @@ void main() {
       expect(AppThemeColors.dark.expenseCategoryTagBg, isNotNull);
       expect(AppThemeColors.dark.expenseActionEditBg, isNotNull);
       expect(AppThemeColors.dark.expenseActionDeleteBg, isNotNull);
+      expect(AppThemeColors.dark.topicApartment, isNotNull);
+      expect(AppThemeColors.dark.topicApartmentBg, isNotNull);
+      expect(AppThemeColors.dark.topicSport, isNotNull);
+      expect(AppThemeColors.dark.topicSportBg, isNotNull);
+      expect(AppThemeColors.dark.topicTravel, isNotNull);
+      expect(AppThemeColors.dark.topicTravelBg, isNotNull);
+      expect(AppThemeColors.dark.topicDining, isNotNull);
+      expect(AppThemeColors.dark.topicDiningBg, isNotNull);
+      expect(AppThemeColors.dark.topicWork, isNotNull);
+      expect(AppThemeColors.dark.topicWorkBg, isNotNull);
+      expect(AppThemeColors.dark.topicOther, isNotNull);
+      expect(AppThemeColors.dark.topicOtherBg, isNotNull);
+
+      // Verify topicColors returns correct pairs
+      final lightApartment = AppThemeColors.light.topicColors('Apartment');
+      expect(lightApartment.iconColor, equals(AppThemeColors.light.topicApartment));
+      expect(lightApartment.backgroundColor, equals(AppThemeColors.light.topicApartmentBg));
+
+      final darkSport = AppThemeColors.dark.topicColors('Sport & Clubs');
+      expect(darkSport.iconColor, equals(AppThemeColors.dark.topicSport));
+      expect(darkSport.backgroundColor, equals(AppThemeColors.dark.topicSportBg));
       expect(AppThemeColors.dark.financialCardBgStart, isNotNull);
       expect(AppThemeColors.dark.financialCardBorder, isNotNull);
       expect(AppThemeColors.dark.financialCardShadow, isNotNull);
