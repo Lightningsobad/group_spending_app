@@ -87,7 +87,6 @@ flutter:
     - assets/onbroading/
     - assets/auth/
     - assets/fonts/
-    - assets/group_category_icons/
 
   fonts:
     - family: Nunito

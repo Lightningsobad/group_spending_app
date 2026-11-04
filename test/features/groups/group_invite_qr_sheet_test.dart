@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:group_spending_app/core/theme/app_theme.dart';
 import 'package:group_spending_app/core/theme/app_theme_colors.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
@@ -60,8 +60,8 @@ void main() {
       expect(find.textContaining('Chung cư Sunrise Room'), findsWidgets);
       expect(find.textContaining('5 thành viên'), findsOneWidget);
 
-      // SVG icon for Apartment category
-      expect(find.byType(SvgPicture), findsOneWidget);
+      // Category icon for Apartment category
+      expect(find.byIcon(LucideIcons.home), findsOneWidget);
 
       // Mode tabs: titles present, subtitles removed
       expect(find.text('Mã QR Code'), findsOneWidget);

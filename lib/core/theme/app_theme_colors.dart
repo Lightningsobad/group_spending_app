@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
+/// Đại diện cho cặp màu icon và background của một chủ đề nhóm theo theme
+@immutable
+class CategoryThemeColors {
+  final Color iconColor;
+  final Color backgroundColor;
+
+  const CategoryThemeColors({
+    required this.iconColor,
+    required this.backgroundColor,
+  });
+}
+
 /// Quản lý tập trung toàn bộ mã màu cho 2 theme Light và Dark của các thành phần trong toàn ứng dụng.
 /// Sử dụng thông qua: `context.colors.<tên_màu>` hoặc `AppThemeColors.of(context).<tên_màu>`.
 @immutable
@@ -332,6 +344,20 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
   final Color onboardingNextBtnFg;
   final Color onboardingNextBtnBorder;
 
+  // Topic / Category Semantic Tokens
+  final Color topicApartment;
+  final Color topicApartmentBg;
+  final Color topicSport;
+  final Color topicSportBg;
+  final Color topicTravel;
+  final Color topicTravelBg;
+  final Color topicDining;
+  final Color topicDiningBg;
+  final Color topicWork;
+  final Color topicWorkBg;
+  final Color topicOther;
+  final Color topicOtherBg;
+
   const AppThemeColors({
     required this.background,
     required this.cardBackground,
@@ -604,6 +630,18 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     required this.onboardingNextBtnBg,
     required this.onboardingNextBtnFg,
     required this.onboardingNextBtnBorder,
+    required this.topicApartment,
+    required this.topicApartmentBg,
+    required this.topicSport,
+    required this.topicSportBg,
+    required this.topicTravel,
+    required this.topicTravelBg,
+    required this.topicDining,
+    required this.topicDiningBg,
+    required this.topicWork,
+    required this.topicWorkBg,
+    required this.topicOther,
+    required this.topicOtherBg,
   });
 
   /// Bảng màu cho Light Theme
@@ -891,6 +929,18 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     onboardingNextBtnBg: Colors.white,
     onboardingNextBtnFg: AppColors.primaryGreen,
     onboardingNextBtnBorder: Color(0xF2FFFFFF),
+    topicApartment: Color(0xFF0284C7),
+    topicApartmentBg: Color(0xFFE0F2FE),
+    topicSport: Color(0xFF16A34A),
+    topicSportBg: Color(0xFFDCFCE7),
+    topicTravel: Color(0xFFEA580C),
+    topicTravelBg: Color(0xFFFFEDD5),
+    topicDining: Color(0xFFE11D48),
+    topicDiningBg: Color(0xFFFFE4E6),
+    topicWork: Color(0xFF9333EA),
+    topicWorkBg: Color(0xFFF3E8FF),
+    topicOther: Color(0xFF64748B),
+    topicOtherBg: Color(0xFFF1F5F9),
   );
 
   /// Bảng màu cho Dark Theme
@@ -1178,12 +1228,61 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     onboardingNextBtnBg: Colors.white,
     onboardingNextBtnFg: Color(0xFF064E3B),
     onboardingNextBtnBorder: Color(0x33FFFFFF),
+    topicApartment: Color(0xFF38BDF8),
+    topicApartmentBg: Color(0xFF0C4A6E),
+    topicSport: Color(0xFF4ADE80),
+    topicSportBg: Color(0xFF14532D),
+    topicTravel: Color(0xFFFB923C),
+    topicTravelBg: Color(0xFF7C2D12),
+    topicDining: Color(0xFFFB7185),
+    topicDiningBg: Color(0xFF881337),
+    topicWork: Color(0xFFC084FC),
+    topicWorkBg: Color(0xFF581C87),
+    topicOther: Color(0xFF94A3B8),
+    topicOtherBg: Color(0xFF1E293B),
   );
 
   /// Lấy bảng màu tương ứng với Theme hiện tại
   static AppThemeColors of(BuildContext context) {
     return Theme.of(context).extension<AppThemeColors>() ??
         (Theme.of(context).brightness == Brightness.dark ? dark : light);
+  }
+
+  /// Lấy cặp màu icon và background của một chủ đề nhóm
+  CategoryThemeColors topicColors(String category) {
+    switch (category) {
+      case 'Apartment':
+        return CategoryThemeColors(
+          iconColor: topicApartment,
+          backgroundColor: topicApartmentBg,
+        );
+      case 'Sport & Clubs':
+        return CategoryThemeColors(
+          iconColor: topicSport,
+          backgroundColor: topicSportBg,
+        );
+      case 'Travel & Trip':
+        return CategoryThemeColors(
+          iconColor: topicTravel,
+          backgroundColor: topicTravelBg,
+        );
+      case 'Friends & Dining':
+        return CategoryThemeColors(
+          iconColor: topicDining,
+          backgroundColor: topicDiningBg,
+        );
+      case 'Works & Project':
+        return CategoryThemeColors(
+          iconColor: topicWork,
+          backgroundColor: topicWorkBg,
+        );
+      case 'Other':
+      default:
+        return CategoryThemeColors(
+          iconColor: topicOther,
+          backgroundColor: topicOtherBg,
+        );
+    }
   }
 
   @override
@@ -1459,6 +1558,18 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
     Color? onboardingNextBtnBg,
     Color? onboardingNextBtnFg,
     Color? onboardingNextBtnBorder,
+    Color? topicApartment,
+    Color? topicApartmentBg,
+    Color? topicSport,
+    Color? topicSportBg,
+    Color? topicTravel,
+    Color? topicTravelBg,
+    Color? topicDining,
+    Color? topicDiningBg,
+    Color? topicWork,
+    Color? topicWorkBg,
+    Color? topicOther,
+    Color? topicOtherBg,
   }) {
     return AppThemeColors(
       background: background ?? this.background,
@@ -1778,6 +1889,18 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
       onboardingNextBtnFg: onboardingNextBtnFg ?? this.onboardingNextBtnFg,
       onboardingNextBtnBorder:
           onboardingNextBtnBorder ?? this.onboardingNextBtnBorder,
+      topicApartment: topicApartment ?? this.topicApartment,
+      topicApartmentBg: topicApartmentBg ?? this.topicApartmentBg,
+      topicSport: topicSport ?? this.topicSport,
+      topicSportBg: topicSportBg ?? this.topicSportBg,
+      topicTravel: topicTravel ?? this.topicTravel,
+      topicTravelBg: topicTravelBg ?? this.topicTravelBg,
+      topicDining: topicDining ?? this.topicDining,
+      topicDiningBg: topicDiningBg ?? this.topicDiningBg,
+      topicWork: topicWork ?? this.topicWork,
+      topicWorkBg: topicWorkBg ?? this.topicWorkBg,
+      topicOther: topicOther ?? this.topicOther,
+      topicOtherBg: topicOtherBg ?? this.topicOtherBg,
     );
   }
 
@@ -2227,6 +2350,19 @@ class AppThemeColors extends ThemeExtension<AppThemeColors> {
           Color.lerp(onboardingNextBtnFg, other.onboardingNextBtnFg, t)!,
       onboardingNextBtnBorder:
           Color.lerp(onboardingNextBtnBorder, other.onboardingNextBtnBorder, t)!,
+      topicApartment: Color.lerp(topicApartment, other.topicApartment, t)!,
+      topicApartmentBg:
+          Color.lerp(topicApartmentBg, other.topicApartmentBg, t)!,
+      topicSport: Color.lerp(topicSport, other.topicSport, t)!,
+      topicSportBg: Color.lerp(topicSportBg, other.topicSportBg, t)!,
+      topicTravel: Color.lerp(topicTravel, other.topicTravel, t)!,
+      topicTravelBg: Color.lerp(topicTravelBg, other.topicTravelBg, t)!,
+      topicDining: Color.lerp(topicDining, other.topicDining, t)!,
+      topicDiningBg: Color.lerp(topicDiningBg, other.topicDiningBg, t)!,
+      topicWork: Color.lerp(topicWork, other.topicWork, t)!,
+      topicWorkBg: Color.lerp(topicWorkBg, other.topicWorkBg, t)!,
+      topicOther: Color.lerp(topicOther, other.topicOther, t)!,
+      topicOtherBg: Color.lerp(topicOtherBg, other.topicOtherBg, t)!,
     );
   }
 }

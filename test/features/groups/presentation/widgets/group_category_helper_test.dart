@@ -1,22 +1,115 @@
-import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:group_spending_app/core/theme/app_theme.dart';
+import 'package:group_spending_app/core/theme/app_theme_colors.dart';
 import 'package:group_spending_app/features/groups/presentation/widgets/group_category_helper.dart';
 
 void main() {
-  group('GroupCategoryHelper', () {
-    test('all categories have a valid and existing SVG icon path', () {
+  group('GroupCategoryHelper Unit Tests', () {
+    test('all categories have a valid Lucide icon', () {
       for (final cat in GroupCategoryHelper.categories) {
-        final svgPath = GroupCategoryHelper.getSvgPath(cat);
-        expect(svgPath, startsWith('assets/group_category_icons/'));
-        expect(svgPath, endsWith('.svg'));
-        expect(File(svgPath).existsSync(), isTrue, reason: 'File $svgPath should exist');
+        final icon = GroupCategoryHelper.getIcon(cat);
+        expect(icon, isA<IconData>());
       }
+
+      expect(GroupCategoryHelper.getIcon('Apartment'), equals(LucideIcons.home));
+      expect(GroupCategoryHelper.getIcon('Sport & Clubs'), equals(LucideIcons.trophy));
+      expect(GroupCategoryHelper.getIcon('Travel & Trip'), equals(LucideIcons.plane));
+      expect(GroupCategoryHelper.getIcon('Friends & Dining'), equals(LucideIcons.utensils));
+      expect(GroupCategoryHelper.getIcon('Works & Project'), equals(LucideIcons.briefcase));
+      expect(GroupCategoryHelper.getIcon('Other'), equals(LucideIcons.layoutGrid));
     });
 
-    test('fallback category defaults to other_icon.svg', () {
-      final svgPath = GroupCategoryHelper.getSvgPath('Unknown_Category_XYZ');
-      expect(svgPath, 'assets/group_category_icons/other_icon.svg');
-      expect(File(svgPath).existsSync(), isTrue);
+    test('unknown category falls back to layoutGrid (Other)', () {
+      final icon = GroupCategoryHelper.getIcon('Unknown_Random_Category');
+      expect(icon, equals(LucideIcons.layoutGrid));
+    });
+
+    test('labels and shortLabels are defined for all categories', () {
+      for (final cat in GroupCategoryHelper.categories) {
+        expect(GroupCategoryHelper.getLabel(cat).isNotEmpty, isTrue);
+        expect(GroupCategoryHelper.getShortLabel(cat).isNotEmpty, isTrue);
+      }
+      expect(GroupCategoryHelper.getLabel('Unknown'), equals('Khác'));
+      expect(GroupCategoryHelper.getShortLabel('Unknown'), equals('Khác'));
+    });
+  });
+
+  group('GroupCategoryHelper Widget Tests', () {
+    testWidgets('buildIcon renders Icon widget with correct IconData and custom color', (tester) async {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightTheme,
+          home: Scaffold(
+            body: GroupCategoryHelper.buildIcon(
+              'Apartment',
+              width: 32,
+              height: 32,
+              color: Colors.red,
+            ),
+          ),
+        ),
+      );
+
+      final iconFinder = find.byType(Icon);
+      expect(iconFinder, findsOneWidget);
+
+      final iconWidget = tester.widget<Icon>(iconFinder);
+      expect(iconWidget.icon, equals(LucideIcons.home));
+      expect(iconWidget.size, equals(32));
+      expect(iconWidget.color, equals(Colors.red));
+    });
+
+    testWidgets('buildCategoryBadge resolves colors dynamically from AppThemeColors in Light and Dark mode', (tester) async {
+      // 1. Test Light Mode
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.lightTheme,
+          home: Scaffold(
+            body: Builder(
+              builder: (context) => GroupCategoryHelper.buildCategoryBadge(
+                context,
+                'Sport & Clubs',
+                size: 48,
+              ),
+            ),
+          ),
+        ),
+      );
+
+      final lightBadgeContainer = tester.widget<Container>(find.byType(Container).first);
+      final lightBoxDecoration = lightBadgeContainer.decoration as BoxDecoration;
+      expect(lightBoxDecoration.color, equals(AppThemeColors.light.topicSportBg));
+
+      final lightIconWidget = tester.widget<Icon>(find.byType(Icon));
+      expect(lightIconWidget.icon, equals(LucideIcons.trophy));
+      expect(lightIconWidget.color, equals(AppThemeColors.light.topicSport));
+
+      // 2. Test Dark Mode
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: AppTheme.darkTheme,
+          home: Scaffold(
+            body: Builder(
+              builder: (context) => GroupCategoryHelper.buildCategoryBadge(
+                context,
+                'Sport & Clubs',
+                size: 48,
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final darkBadgeContainer = tester.widget<Container>(find.byType(Container).first);
+      final darkBoxDecoration = darkBadgeContainer.decoration as BoxDecoration;
+      expect(darkBoxDecoration.color, equals(AppThemeColors.dark.topicSportBg));
+
+      final darkIconWidget = tester.widget<Icon>(find.byType(Icon));
+      expect(darkIconWidget.icon, equals(LucideIcons.trophy));
+      expect(darkIconWidget.color, equals(AppThemeColors.dark.topicSport));
     });
   });
 }

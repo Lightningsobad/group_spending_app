@@ -1,5 +1,6 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/material.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../../../../core/constants/app_colors.dart';
 
 class GroupCategoryHelper {
   GroupCategoryHelper._();
@@ -13,54 +14,71 @@ class GroupCategoryHelper {
     'Other',
   ];
 
-  static String getSvgPath(String category) {
+  static IconData getIcon(String category) {
     switch (category) {
       case 'Apartment':
-        return 'assets/group_category_icons/department_icon.svg';
+        return LucideIcons.home;
       case 'Sport & Clubs':
-        return 'assets/group_category_icons/sport_icon.svg';
+        return LucideIcons.trophy;
       case 'Travel & Trip':
-        return 'assets/group_category_icons/travel_icon.svg';
+        return LucideIcons.plane;
       case 'Friends & Dining':
-        return 'assets/group_category_icons/pizza_icon.svg';
+        return LucideIcons.utensils;
       case 'Works & Project':
-        return 'assets/group_category_icons/work_icon.svg';
+        return LucideIcons.briefcase;
       case 'Other':
       default:
-        return 'assets/group_category_icons/other_icon.svg';
+        return LucideIcons.layoutGrid;
     }
   }
 
   static Widget buildIcon(
     String category, {
+    BuildContext? context,
     double? width,
     double? height,
+    Color? color,
     BoxFit fit = BoxFit.contain,
   }) {
-    return SvgPicture.asset(
-      getSvgPath(category),
-      width: width,
-      height: height,
-      fit: fit,
+    final size = width ?? height ?? 24.0;
+    final resolvedColor = color ??
+        (context != null
+            ? context.colors.topicColors(category).iconColor
+            : null);
+    return Icon(
+      getIcon(category),
+      size: size,
+      color: resolvedColor,
     );
   }
 
-  static String getEmoji(String category) {
-    switch (category) {
-      case 'Apartment':
-        return '🏢';
-      case 'Sport & Clubs':
-        return '🏸';
-      case 'Travel & Trip':
-        return '🏕️';
-      case 'Friends & Dining':
-        return '🍽️';
-      case 'Works & Project':
-        return '💼';
-      case 'Other':
-      default:
-        return '👥';
-    }
+  static Widget buildCategoryBadge(
+    BuildContext context,
+    String category, {
+    double size = 48,
+    double? iconSize,
+    double borderRadius = 16,
+    Border? border,
+  }) {
+    final topic = context.colors.topicColors(category);
+    return Container(
+      width: size,
+      height: size,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: topic.backgroundColor,
+        borderRadius: BorderRadius.circular(borderRadius),
+        border: border ??
+            Border.all(
+              color: topic.iconColor.withValues(alpha: 0.2),
+            ),
+      ),
+      child: Icon(
+        getIcon(category),
+        size: iconSize ?? (size * 0.5),
+        color: topic.iconColor,
+      ),
+    );
   }
 
   static String getLabel(String category) {

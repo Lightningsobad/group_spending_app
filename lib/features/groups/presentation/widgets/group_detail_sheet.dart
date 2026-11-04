@@ -163,7 +163,7 @@ class _GroupDetailSheetState extends State<GroupDetailSheet> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            GroupCategoryHelper.buildIcon(c, width: 20, height: 20),
+                            GroupCategoryHelper.buildIcon(c, context: context, width: 20, height: 20),
                             const SizedBox(width: 8),
                             Text(GroupCategoryHelper.getLabel(c)),
                           ],
@@ -239,21 +239,11 @@ class _GroupDetailSheetState extends State<GroupDetailSheet> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             child: Row(
               children: [
-                Container(
-                  width: 52,
-                  height: 52,
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: colors.surfaceMuted,
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(color: colors.cardBorder),
-                  ),
-                  alignment: Alignment.center,
-                  child: GroupCategoryHelper.buildIcon(
-                    _group.category,
-                    width: 32,
-                    height: 32,
-                  ),
+                GroupCategoryHelper.buildCategoryBadge(
+                  context,
+                  _group.category,
+                  size: 52,
+                  borderRadius: 18,
                 ),
                 const SizedBox(width: 14),
                 Expanded(
