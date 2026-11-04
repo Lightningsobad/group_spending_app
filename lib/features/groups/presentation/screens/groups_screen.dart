@@ -37,6 +37,7 @@ class GroupsScreenState extends State<GroupsScreen> {
   final _searchController = TextEditingController();
   late bool _isJoiningGroup;
   GroupModel? _selectedGroup;
+  VoidCallback? _onBackFromJoin;
 
   bool get isDeepView => _selectedGroup != null || _isJoiningGroup;
 
@@ -72,18 +73,22 @@ class GroupsScreenState extends State<GroupsScreen> {
     _notifyDeepView();
   }
 
-  void openJoinGroup() {
+  void openJoinGroup([VoidCallback? onBack]) {
     setState(() {
       _isJoiningGroup = true;
+      _onBackFromJoin = onBack;
     });
     _notifyDeepView();
   }
 
-  void closeJoinGroup() {
+  void closeJoinGroup([bool executeBackHandler = true]) {
+    final customBack = executeBackHandler ? _onBackFromJoin : null;
     setState(() {
       _isJoiningGroup = false;
+      _onBackFromJoin = null;
     });
     _notifyDeepView();
+    customBack?.call();
   }
 
   @override
@@ -125,7 +130,7 @@ class GroupsScreenState extends State<GroupsScreen> {
           return JoinGroupView(
             onBack: closeJoinGroup,
             onSuccess: () {
-              closeJoinGroup();
+              closeJoinGroup(false);
               final latestGroup =
                   context.read<GroupsCubit>().state.groups.firstOrNull;
               if (latestGroup != null) {
