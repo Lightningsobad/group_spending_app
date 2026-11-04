@@ -211,5 +211,73 @@ void main() {
       // Should close Privacy Policy and show main Settings content again
       expect(find.text('Đăng xuất tài khoản'), findsOneWidget);
     });
+
+    testWidgets('tapping join now on dashboard navigates to join view and tapping back returns to dashboard', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Initially on tab 0 (Dashboard / Overview)
+      expect(find.text('TỔNG QUAN SỐ DƯ TÀI CHÍNH'), findsOneWidget);
+
+      // Tap "Gia nhập nhóm" (Join now) on Dashboard quick actions
+      final joinAction = find.text('Gia nhập nhóm');
+      expect(joinAction, findsOneWidget);
+      await tester.tap(joinAction);
+      await tester.pumpAndSettle();
+
+      // JoinGroupView is displayed
+      expect(find.text('Gia nhập bằng mã / QR'), findsOneWidget);
+      expect(find.text('Quay lại'), findsOneWidget);
+
+      // Tap "Quay lại" (Back) button
+      await tester.tap(find.text('Quay lại'));
+      await tester.pumpAndSettle();
+
+      // Must return to Dashboard (Overview), NOT stay on Groups screen list
+      expect(find.text('TỔNG QUAN SỐ DƯ TÀI CHÍNH'), findsOneWidget);
+      expect(find.text('Danh sách nhóm của bạn'), findsNothing);
+    });
+
+    testWidgets('system back navigation from join view returns to dashboard when opened from dashboard', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Tap "Gia nhập nhóm" on Dashboard
+      await tester.tap(find.text('Gia nhập nhóm'));
+      await tester.pumpAndSettle();
+      expect(find.text('Gia nhập bằng mã / QR'), findsOneWidget);
+
+      // Trigger system back pop
+      final dynamic widgetsAppState = tester.state(find.byType(WidgetsApp));
+      await widgetsAppState.didPopRoute();
+      await tester.pumpAndSettle();
+
+      // Should return to Dashboard
+      expect(find.text('TỔNG QUAN SỐ DƯ TÀI CHÍNH'), findsOneWidget);
+      expect(find.text('Danh sách nhóm của bạn'), findsNothing);
+    });
+
+    testWidgets('tapping join group from groups tab returns to groups list, not dashboard', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Switch to Groups tab directly
+      await tester.tap(find.text('Nhóm'));
+      await tester.pumpAndSettle();
+      expect(find.text('Danh sách nhóm của bạn'), findsOneWidget);
+
+      // Tap "Gia nhập nhóm" on Groups screen
+      await tester.tap(find.text('Gia nhập nhóm'));
+      await tester.pumpAndSettle();
+      expect(find.text('Gia nhập bằng mã / QR'), findsOneWidget);
+
+      // Tap "Quay lại"
+      await tester.tap(find.text('Quay lại'));
+      await tester.pumpAndSettle();
+
+      // Should return to Groups list
+      expect(find.text('Danh sách nhóm của bạn'), findsOneWidget);
+      expect(find.text('TỔNG QUAN SỐ DƯ TÀI CHÍNH'), findsNothing);
+    });
   });
 }

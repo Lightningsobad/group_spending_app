@@ -124,7 +124,13 @@ class _MainShellScreenState extends State<MainShellScreen> {
                         setState(() {
                           _currentIndex = 1;
                         });
-                        _groupsKey.currentState?.openJoinGroup();
+                        _groupsKey.currentState?.openJoinGroup(() {
+                          if (mounted) {
+                            setState(() {
+                              _currentIndex = 0;
+                            });
+                          }
+                        });
                       },
                       onNavigateToGroupDetail: (group) {
                         setState(() {
@@ -162,7 +168,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
           onTap: (index) {
             if (_currentIndex == index && index == 1) {
               _groupsKey.currentState?.closeGroupDetail();
-              _groupsKey.currentState?.closeJoinGroup();
+              _groupsKey.currentState?.closeJoinGroup(false);
             }
             setState(() {
               _currentIndex = index;
