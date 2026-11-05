@@ -1179,7 +1179,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  GroupCategoryHelper.getLabel(_group.category),
+                  GroupCategoryHelper.getLabel(_group.category, context),
                   style: AppTextStyle.bold(
                     fontSize: AppFontSize.secondary,
                     color: colors.textPrimary,

@@ -964,5 +964,54 @@
         "type": "int"
       }
     }
+  },
+  "groupCategoryApartment": "Apartment & Housing",
+  "groupCategorySport": "Sports & Clubs",
+  "groupCategoryTravel": "Travel & Trips",
+  "groupCategoryDining": "Friends & Dining",
+  "groupCategoryWork": "Work & Projects",
+  "groupCategoryOther": "Other",
+  "groupCategoryApartmentShort": "Apartment",
+  "groupCategorySportShort": "Sports",
+  "groupCategoryTravelShort": "Travel",
+  "groupCategoryDiningShort": "Dining",
+  "groupCategoryWorkShort": "Work",
+  "groupCategoryOtherShort": "Other",
+  "filterPaidByMe": "Paid by me",
+  "filterPendingSettlement": "Pending settlement",
+  "filterAllTopicsCount": "All categories ({count})",
+  "@filterAllTopicsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupStatusActive": "Active",
+  "groupStatusArchived": "Archived",
+  "unmuteNotifications": "Turn on notifications",
+  "muteNotifications": "Turn off notifications",
+  "showBalanceTooltip": "Show balance",
+  "hideBalanceTooltip": "Hide balance",
+  "totalGroupExpensesTitle": "TOTAL GROUP EXPENSES",
+  "incurredInvoicesCount": "{count} invoices recorded",
+  "@incurredInvoicesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchExpenseByNamePlaceholder": "Search expenses by name...",
+  "createFirstExpenseHint": "Tap the button below to create the first expense for the group.",
+  "addNewExpenseAction": "Add new expense",
+  "youHavePaidBadge": "You have paid",
+  "youOweAmountPrefix": "You owe: {amount}",
+  "@youOweAmountPrefix": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/theme/app_theme_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 
 enum ExpenseCategoryType {
   food('FOOD', 'Food', 'Ăn uống', LucideIcons.utensils, Color(0xFFF59E0B)),
@@ -61,6 +62,29 @@ enum ExpenseCategoryType {
     }
 
     return ExpenseCategoryType.others;
+  }
+}
+
+extension ExpenseCategoryTypeL10n on ExpenseCategoryType {
+  String getLocalizedLabel(AppLocalizations l10n) {
+    switch (this) {
+      case ExpenseCategoryType.food:
+        return l10n.categoryFood;
+      case ExpenseCategoryType.transport:
+        return l10n.categoryTransport;
+      case ExpenseCategoryType.shopping:
+        return l10n.categoryShopping;
+      case ExpenseCategoryType.housing:
+        return l10n.categoryHousing;
+      case ExpenseCategoryType.entertainment:
+        return l10n.categoryEntertainment;
+      case ExpenseCategoryType.groceries:
+        return l10n.categoryGroceries;
+      case ExpenseCategoryType.healthcare:
+        return l10n.categoryHealthcare;
+      case ExpenseCategoryType.others:
+        return l10n.categoryOthers;
+    }
   }
 }
 

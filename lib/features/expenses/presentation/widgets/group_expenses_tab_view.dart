@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
+import '../../../../l10n/l10n.dart';
 import '../../../../shared/widgets/app_shimmer.dart';
 import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../groups/data/models/group_model.dart';
@@ -65,7 +66,7 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
     if (widget.group.isArchived) {
       AppSnackBar.showWarning(
         context,
-        'Nhóm này đã được lưu trữ, không thể thêm khoản chi.',
+        context.l10n.cannotAddExpenseToArchivedGroup,
       );
       return;
     }
@@ -148,6 +149,7 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
 
   @override
   Widget build(BuildContext context) {
+    final tr = context.l10n;
     final colors = context.colors;
 
     return MediaQuery.withClampedTextScaling(
@@ -197,7 +199,7 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'TỔNG CHI TIÊU NHÓM',
+                            tr.totalGroupExpensesTitle,
                             style: AppTextStyle.bold(
                               fontSize: 12,
                               color: colors.textSecondary,
@@ -236,7 +238,7 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              '$expenseCount hóa đơn phát sinh',
+                              tr.incurredInvoicesCount(expenseCount),
                               style: AppTextStyle.regular(
                                 fontSize: 12,
                                 color: colors.textMuted,
@@ -260,9 +262,9 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
                       ),
                       onPressed: _navigateToAddExpense,
                       icon: const Icon(LucideIcons.plus, size: 16),
-                      label: const Text(
-                        'Thêm khoản chi',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                      label: Text(
+                        tr.addExpenseAction,
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
                       ),
                     ),
                   ],
@@ -281,7 +283,7 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
                   controller: _searchCtrl,
                   onChanged: cubit.onSearchChanged,
                   decoration: InputDecoration(
-                    hintText: 'Tìm khoản chi theo tên...',
+                    hintText: tr.searchExpenseByNamePlaceholder,
                     hintStyle: AppTextStyle.regular(fontSize: 13, color: colors.textMuted),
                     prefixIcon: Icon(LucideIcons.search, size: 18, color: colors.textMuted),
                     suffixIcon: _searchCtrl.text.isNotEmpty
@@ -307,28 +309,28 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
               child: Row(
                 children: [
                   _buildFilterPill(
-                    label: 'Tất cả',
+                    label: tr.filterAll,
                     isSelected: state.timeFilter == ExpenseTimeFilter.all,
                     onTap: () => cubit.setTimeFilter(ExpenseTimeFilter.all),
                     colors: colors,
                   ),
                   const SizedBox(width: 8),
                   _buildFilterPill(
-                    label: 'Tháng này',
+                    label: tr.filterThisMonth,
                     isSelected: state.timeFilter == ExpenseTimeFilter.thisMonth,
                     onTap: () => cubit.setTimeFilter(ExpenseTimeFilter.thisMonth),
                     colors: colors,
                   ),
                   const SizedBox(width: 8),
                   _buildFilterPill(
-                    label: 'Tháng trước',
+                    label: tr.filterLastMonth,
                     isSelected: state.timeFilter == ExpenseTimeFilter.lastMonth,
                     onTap: () => cubit.setTimeFilter(ExpenseTimeFilter.lastMonth),
                     colors: colors,
                   ),
                   const SizedBox(width: 8),
                   _buildFilterPill(
-                    label: 'Quý này',
+                    label: tr.filterThisQuarter,
                     isSelected: state.timeFilter == ExpenseTimeFilter.thisQuarter,
                     onTap: () => cubit.setTimeFilter(ExpenseTimeFilter.thisQuarter),
                     colors: colors,
@@ -344,56 +346,56 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
               child: Row(
                 children: [
                   _buildFilterPill(
-                    label: 'Tất cả chủ đề ($expenseCount)',
+                    label: tr.filterAllTopicsCount(expenseCount),
                     isSelected: state.categoryFilter == ExpenseCategoryFilter.all,
                     onTap: () => cubit.setCategoryFilter(ExpenseCategoryFilter.all),
                     colors: colors,
                   ),
                   const SizedBox(width: 8),
                   _buildFilterPill(
-                    label: 'Ăn uống',
+                    label: tr.categoryFood,
                     isSelected: state.categoryFilter == ExpenseCategoryFilter.food,
                     onTap: () => cubit.setCategoryFilter(ExpenseCategoryFilter.food),
                     colors: colors,
                   ),
                   const SizedBox(width: 8),
                   _buildFilterPill(
-                    label: 'Nhà ở & Điện nước',
+                    label: tr.categoryHousing,
                     isSelected: state.categoryFilter == ExpenseCategoryFilter.housing,
                     onTap: () => cubit.setCategoryFilter(ExpenseCategoryFilter.housing),
                     colors: colors,
                   ),
                   const SizedBox(width: 8),
                   _buildFilterPill(
-                    label: 'Di chuyển',
+                    label: tr.categoryTransport,
                     isSelected: state.categoryFilter == ExpenseCategoryFilter.transport,
                     onTap: () => cubit.setCategoryFilter(ExpenseCategoryFilter.transport),
                     colors: colors,
                   ),
                   const SizedBox(width: 8),
                   _buildFilterPill(
-                    label: 'Mua sắm',
+                    label: tr.categoryShopping,
                     isSelected: state.categoryFilter == ExpenseCategoryFilter.shopping,
                     onTap: () => cubit.setCategoryFilter(ExpenseCategoryFilter.shopping),
                     colors: colors,
                   ),
                   const SizedBox(width: 8),
                   _buildFilterPill(
-                    label: 'Giải trí',
+                    label: tr.categoryEntertainment,
                     isSelected: state.categoryFilter == ExpenseCategoryFilter.entertainment,
                     onTap: () => cubit.setCategoryFilter(ExpenseCategoryFilter.entertainment),
                     colors: colors,
                   ),
                   const SizedBox(width: 8),
                   _buildFilterPill(
-                    label: 'Siêu thị',
+                    label: tr.categoryGroceries,
                     isSelected: state.categoryFilter == ExpenseCategoryFilter.groceries,
                     onTap: () => cubit.setCategoryFilter(ExpenseCategoryFilter.groceries),
                     colors: colors,
                   ),
                   const SizedBox(width: 8),
                   _buildFilterPill(
-                    label: 'Y tế',
+                    label: tr.categoryHealthcare,
                     isSelected: state.categoryFilter == ExpenseCategoryFilter.healthcare,
                     onTap: () => cubit.setCategoryFilter(ExpenseCategoryFilter.healthcare),
                     colors: colors,
@@ -412,21 +414,21 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
                     child: Row(
                       children: [
                         _buildFilterPill(
-                          label: 'Tất cả',
+                          label: tr.filterAll,
                           isSelected: state.payerFilter == ExpensePayerFilter.all,
                           onTap: () => cubit.setPayerFilter(ExpensePayerFilter.all),
                           colors: colors,
                         ),
                         const SizedBox(width: 8),
                         _buildFilterPill(
-                          label: 'Của tôi',
+                          label: tr.filterPaidByMe,
                           isSelected: state.payerFilter == ExpensePayerFilter.paidByMe,
                           onTap: () => cubit.setPayerFilter(ExpensePayerFilter.paidByMe),
                           colors: colors,
                         ),
                         const SizedBox(width: 8),
                         _buildFilterPill(
-                          label: 'Chờ quyết toán',
+                          label: tr.filterPendingSettlement,
                           isSelected: state.payerFilter == ExpensePayerFilter.paidByOthers,
                           onTap: () => cubit.setPayerFilter(ExpensePayerFilter.paidByOthers),
                           colors: colors,
@@ -436,7 +438,7 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
                   ),
                 ),
                 Text(
-                  '${expenses.length} / $expenseCount khoản chi',
+                  '${expenses.length} / $expenseCount ${tr.expensesUnit}',
                   style: AppTextStyle.bold(fontSize: 12, color: colors.textMuted),
                 ),
               ],
@@ -465,12 +467,12 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
                     Icon(LucideIcons.receipt, size: 48, color: colors.textMuted),
                     const SizedBox(height: 12),
                     Text(
-                      'Chưa có khoản chi tiêu nào',
+                      tr.noExpensesRecorded,
                       style: AppTextStyle.bold(fontSize: 16, color: colors.textPrimary),
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      'Bấm nút bên dưới để tạo khoản chi đầu tiên cho nhóm.',
+                      tr.createFirstExpenseHint,
                       style: AppTextStyle.regular(fontSize: 14, color: colors.textSecondary),
                       textAlign: TextAlign.center,
                     ),
@@ -486,7 +488,7 @@ class _GroupExpensesTabViewState extends State<GroupExpensesTabView> {
                       ),
                       onPressed: _navigateToAddExpense,
                       icon: const Icon(LucideIcons.plus, size: 16),
-                      label: const Text('Thêm khoản chi mới'),
+                      label: Text(tr.addNewExpenseAction),
                     ),
                   ],
                 ),

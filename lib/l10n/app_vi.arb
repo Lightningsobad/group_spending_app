@@ -964,5 +964,54 @@
         "type": "int"
       }
     }
+  },
+  "groupCategoryApartment": "Căn hộ & Phòng trọ",
+  "groupCategorySport": "Thể thao & CLB",
+  "groupCategoryTravel": "Du lịch & Dã ngoại",
+  "groupCategoryDining": "Bạn bè & Ăn uống",
+  "groupCategoryWork": "Công việc & Dự án",
+  "groupCategoryOther": "Khác",
+  "groupCategoryApartmentShort": "Căn hộ chung",
+  "groupCategorySportShort": "Thể thao",
+  "groupCategoryTravelShort": "Du lịch",
+  "groupCategoryDiningShort": "Ăn uống",
+  "groupCategoryWorkShort": "Công việc",
+  "groupCategoryOtherShort": "Khác",
+  "filterPaidByMe": "Của tôi",
+  "filterPendingSettlement": "Chờ quyết toán",
+  "filterAllTopicsCount": "Tất cả chủ đề ({count})",
+  "@filterAllTopicsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupStatusActive": "Đang hoạt động",
+  "groupStatusArchived": "Đã lưu trữ",
+  "unmuteNotifications": "Bật thông báo",
+  "muteNotifications": "Tắt thông báo",
+  "showBalanceTooltip": "Hiện số dư",
+  "hideBalanceTooltip": "Ẩn số dư",
+  "totalGroupExpensesTitle": "TỔNG CHI TIÊU NHÓM",
+  "incurredInvoicesCount": "{count} hóa đơn phát sinh",
+  "@incurredInvoicesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchExpenseByNamePlaceholder": "Tìm khoản chi theo tên...",
+  "createFirstExpenseHint": "Bấm nút bên dưới để tạo khoản chi đầu tiên cho nhóm.",
+  "addNewExpenseAction": "Thêm khoản chi mới",
+  "youHavePaidBadge": "Bạn đã thanh toán",
+  "youOweAmountPrefix": "Bạn nợ: {amount}",
+  "@youOweAmountPrefix": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
   }
 }

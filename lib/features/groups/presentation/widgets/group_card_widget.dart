@@ -3,6 +3,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
+import '../../../../l10n/l10n.dart';
 import '../../data/models/group_model.dart';
 import 'group_category_helper.dart';
 
@@ -20,6 +21,7 @@ class GroupCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = context.l10n;
     final colors = context.colors;
     final isArchived = group.isArchived;
 
@@ -132,7 +134,7 @@ class GroupCardWidget extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Text(
-                                      'THÀNH VIÊN',
+                                      tr.roleMemberBadge,
                                       style: AppTextStyle.bold(
                                         fontSize: 11,
                                         color: colors.textSecondary,
@@ -152,7 +154,7 @@ class GroupCardWidget extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child: Text(
-                                      'Đang hoạt động',
+                                      tr.groupStatusActive,
                                       style: AppTextStyle.bold(
                                         fontSize: 11,
                                         color: colors.statusActiveText,
@@ -179,7 +181,7 @@ class GroupCardWidget extends StatelessWidget {
                                         ),
                                         const SizedBox(width: 3),
                                         Text(
-                                          'Đã lưu trữ',
+                                          tr.groupStatusArchived,
                                           style: AppTextStyle.bold(
                                             fontSize: 11,
                                             color: colors.statusArchivedText,
@@ -209,8 +211,8 @@ class GroupCardWidget extends StatelessWidget {
                                   : colors.primaryButton,
                             ),
                             tooltip: isArchived
-                                ? 'Bật thông báo'
-                                : 'Tắt thông báo',
+                                ? tr.unmuteNotifications
+                                : tr.muteNotifications,
                             padding: const EdgeInsets.all(6),
                             constraints: const BoxConstraints(),
                             onPressed: onToggleMute,
@@ -241,7 +243,7 @@ class GroupCardWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Số dư của bạn:',
+                        tr.yourBalanceLabel,
                         style: AppTextStyle.regular(
                           fontSize: 14,
                           color: colors.textSecondary,

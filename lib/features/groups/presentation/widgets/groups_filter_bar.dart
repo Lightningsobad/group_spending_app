@@ -78,7 +78,7 @@ class GroupsFilterBar extends StatelessWidget {
                 for (final cat in GroupCategoryHelper.categories) ...[
                   const SizedBox(width: 8),
                   GroupFilterChip(
-                    label: GroupCategoryHelper.getLabel(cat),
+                    label: GroupCategoryHelper.getLabel(cat, context),
                     isSelected: activeCategory == cat,
                     onTap: () => onCategoryChanged!(cat),
                   ),

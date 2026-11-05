@@ -1944,4 +1944,95 @@ class AppLocalizationsVi extends AppLocalizations {
   String viewAllNotesHint(int lines) {
     return 'Xem toàn bộ ($lines dòng)...';
   }
+
+  @override
+  String get groupCategoryApartment => 'Căn hộ & Phòng trọ';
+
+  @override
+  String get groupCategorySport => 'Thể thao & CLB';
+
+  @override
+  String get groupCategoryTravel => 'Du lịch & Dã ngoại';
+
+  @override
+  String get groupCategoryDining => 'Bạn bè & Ăn uống';
+
+  @override
+  String get groupCategoryWork => 'Công việc & Dự án';
+
+  @override
+  String get groupCategoryOther => 'Khác';
+
+  @override
+  String get groupCategoryApartmentShort => 'Căn hộ chung';
+
+  @override
+  String get groupCategorySportShort => 'Thể thao';
+
+  @override
+  String get groupCategoryTravelShort => 'Du lịch';
+
+  @override
+  String get groupCategoryDiningShort => 'Ăn uống';
+
+  @override
+  String get groupCategoryWorkShort => 'Công việc';
+
+  @override
+  String get groupCategoryOtherShort => 'Khác';
+
+  @override
+  String get filterPaidByMe => 'Của tôi';
+
+  @override
+  String get filterPendingSettlement => 'Chờ quyết toán';
+
+  @override
+  String filterAllTopicsCount(int count) {
+    return 'Tất cả chủ đề ($count)';
+  }
+
+  @override
+  String get groupStatusActive => 'Đang hoạt động';
+
+  @override
+  String get groupStatusArchived => 'Đã lưu trữ';
+
+  @override
+  String get unmuteNotifications => 'Bật thông báo';
+
+  @override
+  String get muteNotifications => 'Tắt thông báo';
+
+  @override
+  String get showBalanceTooltip => 'Hiện số dư';
+
+  @override
+  String get hideBalanceTooltip => 'Ẩn số dư';
+
+  @override
+  String get totalGroupExpensesTitle => 'TỔNG CHI TIÊU NHÓM';
+
+  @override
+  String incurredInvoicesCount(int count) {
+    return '$count hóa đơn phát sinh';
+  }
+
+  @override
+  String get searchExpenseByNamePlaceholder => 'Tìm khoản chi theo tên...';
+
+  @override
+  String get createFirstExpenseHint =>
+      'Bấm nút bên dưới để tạo khoản chi đầu tiên cho nhóm.';
+
+  @override
+  String get addNewExpenseAction => 'Thêm khoản chi mới';
+
+  @override
+  String get youHavePaidBadge => 'Bạn đã thanh toán';
+
+  @override
+  String youOweAmountPrefix(String amount) {
+    return 'Bạn nợ: $amount';
+  }
 }

@@ -197,7 +197,7 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                GroupCategoryHelper.getLabel(_selectedCategory),
+                                GroupCategoryHelper.getLabel(_selectedCategory, context),
                                 style: AppTextStyle.medium(
                                   fontSize: 13,
                                   color: colors.textSecondary,
@@ -353,7 +353,7 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
                 runSpacing: 8,
                 children: GroupCategoryHelper.categories.map((cat) {
                   final isSelected = _selectedCategory == cat;
-                  final label = GroupCategoryHelper.getLabel(cat);
+                  final label = GroupCategoryHelper.getLabel(cat, context);
 
                   return ChoiceChip(
                     showCheckmark: false,

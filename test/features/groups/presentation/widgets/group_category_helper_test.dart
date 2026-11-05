@@ -4,6 +4,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:group_spending_app/core/theme/app_theme.dart';
 import 'package:group_spending_app/core/theme/app_theme_colors.dart';
 import 'package:group_spending_app/features/groups/presentation/widgets/group_category_helper.dart';
+import 'package:group_spending_app/l10n/app_localizations.dart';
 
 void main() {
   group('GroupCategoryHelper Unit Tests', () {
@@ -110,6 +111,44 @@ void main() {
       final darkIconWidget = tester.widget<Icon>(find.byType(Icon));
       expect(darkIconWidget.icon, equals(LucideIcons.trophy));
       expect(darkIconWidget.color, equals(AppThemeColors.dark.topicSport));
+    });
+
+    testWidgets('getLabel and getShortLabel return localized strings for vi and en locales', (tester) async {
+      late BuildContext viContext;
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('vi'),
+          home: Builder(
+            builder: (ctx) {
+              viContext = ctx;
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+      expect(GroupCategoryHelper.getLabel('Apartment', viContext), equals('Căn hộ & Phòng trọ'));
+      expect(GroupCategoryHelper.getShortLabel('Apartment', viContext), equals('Căn hộ chung'));
+      expect(GroupCategoryHelper.getLabel('Sport & Clubs', viContext), equals('Thể thao & CLB'));
+
+      late BuildContext enContext;
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: const Locale('en'),
+          home: Builder(
+            builder: (ctx) {
+              enContext = ctx;
+              return const SizedBox();
+            },
+          ),
+        ),
+      );
+      expect(GroupCategoryHelper.getLabel('Apartment', enContext), equals('Apartment & Housing'));
+      expect(GroupCategoryHelper.getShortLabel('Apartment', enContext), equals('Apartment'));
+      expect(GroupCategoryHelper.getLabel('Sport & Clubs', enContext), equals('Sports & Clubs'));
     });
   });
 }

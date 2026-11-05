@@ -1947,4 +1947,95 @@ class AppLocalizationsEn extends AppLocalizations {
   String viewAllNotesHint(int lines) {
     return 'View all ($lines lines)...';
   }
+
+  @override
+  String get groupCategoryApartment => 'Apartment & Housing';
+
+  @override
+  String get groupCategorySport => 'Sports & Clubs';
+
+  @override
+  String get groupCategoryTravel => 'Travel & Trips';
+
+  @override
+  String get groupCategoryDining => 'Friends & Dining';
+
+  @override
+  String get groupCategoryWork => 'Work & Projects';
+
+  @override
+  String get groupCategoryOther => 'Other';
+
+  @override
+  String get groupCategoryApartmentShort => 'Apartment';
+
+  @override
+  String get groupCategorySportShort => 'Sports';
+
+  @override
+  String get groupCategoryTravelShort => 'Travel';
+
+  @override
+  String get groupCategoryDiningShort => 'Dining';
+
+  @override
+  String get groupCategoryWorkShort => 'Work';
+
+  @override
+  String get groupCategoryOtherShort => 'Other';
+
+  @override
+  String get filterPaidByMe => 'Paid by me';
+
+  @override
+  String get filterPendingSettlement => 'Pending settlement';
+
+  @override
+  String filterAllTopicsCount(int count) {
+    return 'All categories ($count)';
+  }
+
+  @override
+  String get groupStatusActive => 'Active';
+
+  @override
+  String get groupStatusArchived => 'Archived';
+
+  @override
+  String get unmuteNotifications => 'Turn on notifications';
+
+  @override
+  String get muteNotifications => 'Turn off notifications';
+
+  @override
+  String get showBalanceTooltip => 'Show balance';
+
+  @override
+  String get hideBalanceTooltip => 'Hide balance';
+
+  @override
+  String get totalGroupExpensesTitle => 'TOTAL GROUP EXPENSES';
+
+  @override
+  String incurredInvoicesCount(int count) {
+    return '$count invoices recorded';
+  }
+
+  @override
+  String get searchExpenseByNamePlaceholder => 'Search expenses by name...';
+
+  @override
+  String get createFirstExpenseHint =>
+      'Tap the button below to create the first expense for the group.';
+
+  @override
+  String get addNewExpenseAction => 'Add new expense';
+
+  @override
+  String get youHavePaidBadge => 'You have paid';
+
+  @override
+  String youOweAmountPrefix(String amount) {
+    return 'You owe: $amount';
+  }
 }

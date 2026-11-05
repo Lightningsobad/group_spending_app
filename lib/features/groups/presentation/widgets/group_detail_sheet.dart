@@ -165,7 +165,7 @@ class _GroupDetailSheetState extends State<GroupDetailSheet> {
                           children: [
                             GroupCategoryHelper.buildIcon(c, context: context, width: 20, height: 20),
                             const SizedBox(width: 8),
-                            Text(GroupCategoryHelper.getLabel(c)),
+                            Text(GroupCategoryHelper.getLabel(c, context)),
                           ],
                         ),
                       );
@@ -259,7 +259,7 @@ class _GroupDetailSheetState extends State<GroupDetailSheet> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        GroupCategoryHelper.getLabel(_group.category),
+                        GroupCategoryHelper.getLabel(_group.category, context),
                         style: AppTextStyle.medium(
                           fontSize: 13,
                           color: colors.textSecondary,

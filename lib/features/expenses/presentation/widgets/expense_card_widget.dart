@@ -5,6 +5,8 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/theme/app_theme_colors.dart';
 import '../../../../core/utils/currency_utils.dart';
+import '../../../../l10n/l10n.dart';
+import '../../data/models/expense_enums.dart';
 import '../../data/models/expense_models.dart';
 
 class ExpenseCardWidget extends StatelessWidget {
@@ -31,6 +33,7 @@ class ExpenseCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final tr = context.l10n;
     final colors = context.colors;
     final cat = expense.categoryType;
 
@@ -125,7 +128,7 @@ class ExpenseCardWidget extends StatelessWidget {
                               const SizedBox(width: 4),
                               Flexible(
                                 child: Text(
-                                  cat.labelVi,
+                                  cat.getLocalizedLabel(tr),
                                   style: AppTextStyle.medium(
                                     fontSize: 12,
                                     color: colors.expenseCategoryTag,
@@ -172,11 +175,11 @@ class ExpenseCardWidget extends StatelessWidget {
                     Expanded(
                       child: Text.rich(
                         TextSpan(
-                          text: 'Người trả: ',
+                          text: tr.paidByLabel,
                           style: AppTextStyle.regular(fontSize: 12, color: colors.textSecondary),
                           children: [
                             TextSpan(
-                              text: expense.isPaidByMe ? '${expense.paidBy} (Bạn)' : expense.paidBy,
+                              text: expense.isPaidByMe ? '${expense.paidBy}${tr.youPayerSuffix}' : expense.paidBy,
                               style: AppTextStyle.bold(fontSize: 12, color: colors.textPrimary),
                             ),
                           ],
@@ -203,7 +206,7 @@ class ExpenseCardWidget extends StatelessWidget {
                               const SizedBox(width: 4),
                               Flexible(
                                 child: Text(
-                                  'Bạn đã thanh toán',
+                                  tr.youHavePaidBadge,
                                   style: AppTextStyle.bold(
                                     fontSize: 12,
                                     color: colors.badgeSuccessText,
@@ -226,7 +229,7 @@ class ExpenseCardWidget extends StatelessWidget {
                             border: Border.all(color: colors.expenseBadgeOwedBorder),
                           ),
                           child: Text(
-                            'Bạn nợ: ${CurrencyUtils.formatVnd(expense.myAmountOwedVnd)}',
+                            tr.youOweAmountPrefix(CurrencyUtils.formatVnd(expense.myAmountOwedVnd)),
                             style: AppTextStyle.bold(
                               fontSize: 12,
                               color: colors.expenseBadgeOwedText,
