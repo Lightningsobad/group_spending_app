@@ -13,6 +13,7 @@ import '../../../groups/presentation/widgets/group_filter_chip.dart';
 import '../cubit/analytics_tab_cubit.dart';
 import '../cubit/analytics_tab_state.dart';
 import '../widgets/analytics_group_card.dart';
+import '../../../main_shell/presentation/widgets/main_tab_app_bar.dart';
 
 class AnalyticsTabScreen extends StatefulWidget {
   final VoidCallback? onNavigateToGlobalOverview;
@@ -85,96 +86,75 @@ class _AnalyticsTabScreenState extends State<AnalyticsTabScreen> {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: colors.background,
-          body: RefreshIndicator(
-            onRefresh: () => context.read<AnalyticsTabCubit>().loadOverview(isRefresh: true),
-            color: colors.analyticsAccent,
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(
-                parent: BouncingScrollPhysics(),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Header Title row
-                  _buildHeaderTitle(context),
-                  const SizedBox(height: 16),
+          body: SafeArea(
+            bottom: false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                MainTabAppBar(
+                  icon: LucideIcons.barChart3,
+                  title: context.l10n.tabAnalyticsTitle,
+                ),
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () => context.read<AnalyticsTabCubit>().loadOverview(isRefresh: true),
+                    color: colors.analyticsAccent,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(
+                        parent: BouncingScrollPhysics(),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Top 3 KPI Cards
+                          if (state.isLoading && !state.isRefreshing)
+                            _buildLoadingKpiCards()
+                          else
+                            _buildTopKpiCards(context, state),
+                          const SizedBox(height: 16),
 
-                  // Top 3 KPI Cards
-                  if (state.isLoading && !state.isRefreshing)
-                    _buildLoadingKpiCards()
-                  else
-                    _buildTopKpiCards(context, state),
-                  const SizedBox(height: 16),
+                          // Banner "Báo cáo tổng quan"
+                          _buildOverallReportBanner(context),
+                          const SizedBox(height: 16),
 
-                  // Banner "Báo cáo tổng quan"
-                  _buildOverallReportBanner(context),
-                  const SizedBox(height: 16),
+                          // Search bar
+                          _buildSearchBar(context),
+                          const SizedBox(height: 12),
 
-                  // Search bar
-                  _buildSearchBar(context),
-                  const SizedBox(height: 12),
+                          // Filter chips (Tất cả, Đang hoạt động, Đã lưu trữ)
+                          _buildFilterChips(context, state),
+                          const SizedBox(height: 18),
 
-                  // Filter chips (Tất cả, Đang hoạt động, Đã lưu trữ)
-                  _buildFilterChips(context, state),
-                  const SizedBox(height: 18),
+                          // Section Header: DANH SÁCH NHÓM CHI TIÊU
+                          _buildSectionHeader(context, state),
+                          const SizedBox(height: 12),
 
-                  // Section Header: DANH SÁCH NHÓM CHI TIÊU
-                  _buildSectionHeader(context, state),
-                  const SizedBox(height: 12),
-
-                  // Group List
-                  if (state.isLoading && !state.isRefreshing)
-                    _buildLoadingGroupList()
-                  else if (state.isFailure && state.groups.isEmpty)
-                    _buildErrorState(context, state)
-                  else if (state.filteredGroups.isEmpty)
-                    _buildEmptyGroupsState(context)
-                  else
-                    ...state.filteredGroups.map(
-                      (g) => AnalyticsGroupCard(
-                        group: g,
-                        onTap: () => _onGroupTap(g),
+                          // Group List
+                          if (state.isLoading && !state.isRefreshing)
+                            _buildLoadingGroupList()
+                          else if (state.isFailure && state.groups.isEmpty)
+                            _buildErrorState(context, state)
+                          else if (state.filteredGroups.isEmpty)
+                            _buildEmptyGroupsState(context)
+                          else
+                            ...state.filteredGroups.map(
+                              (g) => AnalyticsGroupCard(
+                                group: g,
+                                onTap: () => _onGroupTap(g),
+                              ),
+                            ),
+                          const SizedBox(height: 24),
+                        ],
                       ),
                     ),
-                  const SizedBox(height: 24),
-                ],
-              ),
+                  ),
+                ),
+              ],
             ),
           ),
         );
       },
-    );
-  }
-
-  Widget _buildHeaderTitle(BuildContext context) {
-    final tr = context.l10n;
-    final colors = context.colors;
-
-    return Row(
-      children: [
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: colors.analyticsIconBg,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Icon(
-            LucideIcons.barChart3,
-            size: 22,
-            color: colors.analyticsAccent,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Text(
-          tr.tabAnalyticsTitle,
-          style: AppTextStyle.extraBold(
-            color: colors.textPrimary,
-            fontSize: 20,
-          ),
-        ),
-      ],
     );
   }
 

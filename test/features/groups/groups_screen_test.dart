@@ -183,8 +183,8 @@ void main() {
       expect(find.text('Quét mã QR'), findsOneWidget);
       expect(find.text('Nhập mã mời'), findsOneWidget);
 
-      // Tap Quay lại to return
-      await tester.tap(find.text('Quay lại'));
+      // Tap back button to return
+      await tester.tap(find.byKey(const Key('join_group_back_button')));
       await tester.pumpAndSettle();
 
       // Groups list is visible again

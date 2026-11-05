@@ -45,7 +45,7 @@ void main() {
       await tester.pump();
 
       // Back button
-      expect(find.text('Quay lại'), findsOneWidget);
+      expect(find.byKey(const Key('join_group_back_button')), findsOneWidget);
 
       // Title & Subtitle
       expect(find.text('Gia nhập bằng mã / QR'), findsOneWidget);
@@ -65,7 +65,7 @@ void main() {
       await tester.pumpWidget(createWidgetUnderTest(onBack: () => backCalled = true));
       await tester.pump();
 
-      await tester.tap(find.text('Quay lại'));
+      await tester.tap(find.byKey(const Key('join_group_back_button')));
       await tester.pump();
 
       expect(backCalled, isTrue);
@@ -126,8 +126,8 @@ void main() {
       await tester.pump();
 
       // Back button hit area
-      final backInkWell = find.ancestor(of: find.text('Quay lại'), matching: find.byType(InkWell)).first;
-      final backSize = tester.getSize(backInkWell);
+      final backButton = find.byKey(const Key('join_group_back_button'));
+      final backSize = tester.getSize(backButton);
       expect(backSize.height, greaterThanOrEqualTo(48.0));
 
       // Tab items hit area

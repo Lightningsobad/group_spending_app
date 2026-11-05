@@ -20,17 +20,20 @@ import '../widgets/dashboard_quick_actions.dart';
 import '../widgets/financial_balance_card.dart';
 import '../widgets/financial_balance_card_skeleton.dart';
 import '../widgets/select_group_for_expense_view.dart';
+import '../../../main_shell/presentation/widgets/app_header.dart';
 
 class DashboardScreen extends StatefulWidget {
   final VoidCallback? onNavigateToGroups;
   final VoidCallback? onNavigateToJoinGroup;
   final void Function(GroupModel group)? onNavigateToGroupDetail;
+  final VoidCallback? onNavigateToSettings;
 
   const DashboardScreen({
     super.key,
     this.onNavigateToGroups,
     this.onNavigateToJoinGroup,
     this.onNavigateToGroupDetail,
+    this.onNavigateToSettings,
   });
 
   @override
@@ -140,96 +143,106 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
             final isLoadingInitial = isGroupsLoading;
 
-            return RefreshIndicator(
-              color: AppColors.emerald,
-              onRefresh: () async {
-                await context.read<DashboardCubit>().loadDashboard(isRefresh: true);
-                if (context.mounted) {
-                  try {
-                    await context.read<GroupsCubit>().loadGroups(silent: true);
-                  } catch (_) {}
-                }
-              },
-              child: CustomScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                slivers: [
-                  SliverPadding(
-                    padding: EdgeInsets.fromLTRB(16, 12, 16, groups.isEmpty ? 90 : 0),
-                    sliver: SliverToBoxAdapter(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          // 1. Financial balance card or skeleton
-                          if (isLoadingInitial)
-                            const FinancialBalanceCardSkeleton()
-                          else
-                            FinancialBalanceCard(
-                              totalOwedVnd: state.debtOverview.totalOwedVnd,
-                              totalReceivableVnd: state.debtOverview.totalReceivableVnd,
+            return SafeArea(
+              bottom: false,
+              child: Column(
+                children: [
+                  AppHeader(onProfileTap: widget.onNavigateToSettings),
+                  Expanded(
+                    child: RefreshIndicator(
+                      color: AppColors.emerald,
+                      onRefresh: () async {
+                        await context.read<DashboardCubit>().loadDashboard(isRefresh: true);
+                        if (context.mounted) {
+                          try {
+                            await context.read<GroupsCubit>().loadGroups(silent: true);
+                          } catch (_) {}
+                        }
+                      },
+                      child: CustomScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        slivers: [
+                          SliverPadding(
+                            padding: EdgeInsets.fromLTRB(16, 12, 16, groups.isEmpty ? 90 : 0),
+                            sliver: SliverToBoxAdapter(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  // 1. Financial balance card or skeleton
+                                  if (isLoadingInitial)
+                                    const FinancialBalanceCardSkeleton()
+                                  else
+                                    FinancialBalanceCard(
+                                      totalOwedVnd: state.debtOverview.totalOwedVnd,
+                                      totalReceivableVnd: state.debtOverview.totalReceivableVnd,
+                                    ),
+
+                                  const SizedBox(height: 16),
+
+                                  // 2. Quick action buttons
+                                  DashboardQuickActions(
+                                    onAddExpense: _onAddExpensePressed,
+                                    onCreateGroup: _openCreateGroup,
+                                    onJoinGroup: _openJoinGroup,
+                                  ),
+
+                                  const SizedBox(height: 20),
+
+                                  // 3. Section Header
+                                  DashboardGroupsHeader(
+                                    groupCount: groups.length,
+                                    isLoading: isLoadingInitial,
+                                    onSeeAll: widget.onNavigateToGroups,
+                                  ),
+
+                                  const SizedBox(height: 12),
+
+                                  // 4. Skeleton or empty state
+                                  if (isLoadingInitial) ...[
+                                    const GroupCardSkeleton(),
+                                    const GroupCardSkeleton(),
+                                  ] else if (groups.isEmpty)
+                                    DashboardEmptyGroupsView(
+                                      onCreateGroup: _openCreateGroup,
+                                    ),
+                                ],
+                              ),
                             ),
-
-                          const SizedBox(height: 16),
-
-                          // 2. Quick action buttons
-                          DashboardQuickActions(
-                            onAddExpense: _onAddExpensePressed,
-                            onCreateGroup: _openCreateGroup,
-                            onJoinGroup: _openJoinGroup,
                           ),
 
-                          const SizedBox(height: 20),
-
-                          // 3. Section Header
-                          DashboardGroupsHeader(
-                            groupCount: groups.length,
-                            isLoading: isLoadingInitial,
-                            onSeeAll: widget.onNavigateToGroups,
-                          ),
-
-                          const SizedBox(height: 12),
-
-                          // 4. Skeleton or empty state
-                          if (isLoadingInitial) ...[
-                            const GroupCardSkeleton(),
-                            const GroupCardSkeleton(),
-                          ] else if (groups.isEmpty)
-                            DashboardEmptyGroupsView(
-                              onCreateGroup: _openCreateGroup,
+                          // 5. Lazy list of groups
+                          if (!isLoadingInitial && groups.isNotEmpty)
+                            SliverPadding(
+                              padding: const EdgeInsets.fromLTRB(16, 0, 16, 90),
+                              sliver: SliverList.builder(
+                                itemCount: groups.length,
+                                itemBuilder: (context, index) {
+                                  final group = groups[index];
+                                  return GroupCardWidget(
+                                    key: ValueKey(group.id),
+                                    group: group,
+                                    onTap: () {
+                                      if (widget.onNavigateToGroupDetail != null) {
+                                        widget.onNavigateToGroupDetail!(group);
+                                      } else {
+                                        GroupDetailSheet.show(context, group);
+                                      }
+                                    },
+                                    onToggleMute: () {
+                                      AppSnackBar.showInfo(
+                                        context,
+                                        tr.notificationsToggledForGroup(group.name),
+                                        duration: const Duration(seconds: 1),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
                             ),
                         ],
                       ),
                     ),
                   ),
-
-                  // 5. Lazy list of groups
-                  if (!isLoadingInitial && groups.isNotEmpty)
-                    SliverPadding(
-                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 90),
-                      sliver: SliverList.builder(
-                        itemCount: groups.length,
-                        itemBuilder: (context, index) {
-                          final group = groups[index];
-                          return GroupCardWidget(
-                            key: ValueKey(group.id),
-                            group: group,
-                            onTap: () {
-                              if (widget.onNavigateToGroupDetail != null) {
-                                widget.onNavigateToGroupDetail!(group);
-                              } else {
-                                GroupDetailSheet.show(context, group);
-                              }
-                            },
-                            onToggleMute: () {
-                              AppSnackBar.showInfo(
-                                context,
-                                tr.notificationsToggledForGroup(group.name),
-                                duration: const Duration(seconds: 1),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ),
                 ],
               ),
             );

@@ -16,6 +16,7 @@ import '../widgets/groups_empty_view.dart';
 import '../widgets/groups_filter_bar.dart';
 import '../widgets/groups_search_bar.dart';
 import '../widgets/join_group_view.dart';
+import '../../../main_shell/presentation/widgets/main_tab_app_bar.dart';
 
 class GroupsScreen extends StatefulWidget {
   final bool initialShowJoin;
@@ -142,54 +143,37 @@ class GroupsScreenState extends State<GroupsScreen> {
 
         final filteredGroups = state.filteredGroups;
 
-        return RefreshIndicator(
-          color: colors.primaryButton,
-          onRefresh: () => context.read<GroupsCubit>().loadGroups(),
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 90),
+        return Scaffold(
+          backgroundColor: colors.background,
+          body: SafeArea(
+            bottom: false,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // 1. Title Header Pill
-                Row(
-                  children: [
-                    Container(
-                      width: 44,
-                      height: 44,
-                      decoration: BoxDecoration(
-                        color: colors.primaryContainer,
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: Icon(
-                        LucideIcons.users,
-                        size: 22,
-                        color: colors.onPrimaryContainer,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      tr.groupListHeaderTitle,
-                      style: AppTextStyle.bold(
-                        fontSize: 20,
-                        color: colors.textPrimary,
-                      ),
-                    ),
-                  ],
+                MainTabAppBar(
+                  icon: LucideIcons.users,
+                  title: tr.groupListHeaderTitle,
                 ),
-                const SizedBox(height: 16),
-
-                // 2. Search Text Field
-                GroupsSearchBar(
-                  controller: _searchController,
-                  onChanged: (val) {
-                    context.read<GroupsCubit>().setSearchQuery(val);
-                  },
-                  onClear: () {
-                    _searchController.clear();
-                    context.read<GroupsCubit>().setSearchQuery('');
-                  },
-                ),
+                Expanded(
+                  child: RefreshIndicator(
+                    color: colors.primaryButton,
+                    onRefresh: () => context.read<GroupsCubit>().loadGroups(),
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.fromLTRB(16, 4, 16, 90),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // Search Text Field
+                          GroupsSearchBar(
+                            controller: _searchController,
+                            onChanged: (val) {
+                              context.read<GroupsCubit>().setSearchQuery(val);
+                            },
+                            onClear: () {
+                              _searchController.clear();
+                              context.read<GroupsCubit>().setSearchQuery('');
+                            },
+                          ),
                 const SizedBox(height: 14),
 
                 // 3. Action Buttons
@@ -291,7 +275,12 @@ class GroupsScreenState extends State<GroupsScreen> {
               ],
             ),
           ),
-        );
+        ),
+      ),
+    ],
+  ),
+),
+);
       },
     );
   }
