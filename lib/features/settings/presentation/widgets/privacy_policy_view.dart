@@ -25,9 +25,14 @@ class PrivacyPolicyView extends StatelessWidget {
           onBack();
         }
       },
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        child: Column(
+      child: Scaffold(
+        backgroundColor: colors.background,
+        body: SafeArea(
+          top: true,
+          bottom: false,
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Sub-header navigation row
@@ -469,7 +474,9 @@ class PrivacyPolicyView extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 
   Widget _buildCheckItem({

@@ -74,6 +74,12 @@ void main() {
     }
 
     testWidgets('renders all sub-widgets properly according to design', (tester) async {
+      tester.view.physicalSize = const Size(800, 1400);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
       await tester.pumpWidget(createWidgetUnderTest());
 
       // Header title
@@ -94,15 +100,15 @@ void main() {
       expect(find.text('Đổi mật khẩu'), findsOneWidget);
 
       // PaymentAccountCard details
-      expect(find.text('TÀI KHOẢN NHẬN TIỀN NỢ (VIETQR)'), findsOneWidget);
+      expect(find.text('TÀI KHOẢN NGÂN HÀNG'), findsOneWidget);
       expect(find.text('Chưa có dữ liệu'), findsOneWidget);
       expect(find.text('Techcombank - 19034829104018'), findsNothing);
       expect(find.text('NGUYEN NHAT MINH'), findsNothing);
 
       // AppearanceLanguageCard details
       expect(find.text('GIAO DIỆN & NGÔN NGỮ'), findsOneWidget);
-      expect(find.text('Chế độ giao diện (Theme)'), findsOneWidget);
-      expect(find.text('Ngôn ngữ hiển thị'), findsOneWidget);
+      expect(find.text('Chế độ giao diện'), findsOneWidget);
+      expect(find.text('Ngôn ngữ'), findsOneWidget);
       expect(find.text('Light'), findsOneWidget);
       expect(find.text('Dark'), findsOneWidget);
       expect(find.text('VN VI'), findsOneWidget);

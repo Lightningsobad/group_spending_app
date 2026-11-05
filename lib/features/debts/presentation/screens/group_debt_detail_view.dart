@@ -59,7 +59,7 @@ class GroupDebtDetailView extends StatelessWidget {
             child: MediaQuery.withClampedTextScaling(
               maxScaleFactor: 1.35,
               child: SafeArea(
-                top: false,
+                top: true,
                 bottom: true,
                 child: GroupDebtDetailSkeleton(
                   onBack: () => cubit.selectGroup(null),
@@ -88,7 +88,7 @@ class GroupDebtDetailView extends StatelessWidget {
           child: MediaQuery.withClampedTextScaling(
             maxScaleFactor: 1.35,
             child: SafeArea(
-              top: false,
+              top: true,
               bottom: true,
               child: RefreshIndicator(
                 color: colors.brandEmerald,

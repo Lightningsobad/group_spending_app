@@ -9,6 +9,7 @@ import '../../../../core/theme/theme_cubit.dart';
 import '../../../../core/utils/name_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../auth/presentation/cubit/auth_cubit.dart';
+import '../../../auth/presentation/cubit/auth_state.dart';
 import '../../../notifications/presentation/cubit/notifications_cubit.dart';
 import 'notification_modal.dart';
 
@@ -24,18 +25,34 @@ class AppHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final tr = context.l10n;
     final colors = context.colors;
-    final themeCubit = context.watch<ThemeCubit>();
-    final localeCubit = context.watch<LocaleCubit>();
-    final authState = context.watch<AuthCubit>().state;
-    final prefs = context.read<AppPreferences>();
 
-    final isDark = themeCubit.isDarkMode;
-    final isEn = localeCubit.isEnglish;
+    ThemeCubit? themeCubit;
+    try {
+      themeCubit = context.watch<ThemeCubit>();
+    } catch (_) {}
 
-    final user = authState.currentUser;
+    LocaleCubit? localeCubit;
+    try {
+      localeCubit = context.watch<LocaleCubit>();
+    } catch (_) {}
+
+    AuthState? authState;
+    try {
+      authState = context.watch<AuthCubit>().state;
+    } catch (_) {}
+
+    AppPreferences? prefs;
+    try {
+      prefs = context.read<AppPreferences>();
+    } catch (_) {}
+
+    final isDark = themeCubit?.isDarkMode ?? false;
+    final isEn = localeCubit?.isEnglish ?? false;
+
+    final user = authState?.currentUser;
     final name = (user?.fullName.isNotEmpty == true)
         ? user!.fullName
-        : (prefs.getUserFullName() ?? '');
+        : (prefs?.getUserFullName() ?? '');
     final avatarUrl = user?.avatarUrl;
     final initials = NameUtils.getInitials(name);
 
@@ -169,7 +186,7 @@ class AppHeader extends StatelessWidget {
                 backgroundColor: colors.cardBackground,
                 borderColor: colors.cardBorder,
                 tooltip: tr.themeModeTitle,
-                onTap: () => themeCubit.toggleTheme(),
+                onTap: () => themeCubit?.toggleTheme(),
               ),
               const SizedBox(width: 8),
 
@@ -182,7 +199,7 @@ class AppHeader extends StatelessWidget {
                 tooltip: tr.displayLanguageTitle,
                 badgeText: isEn ? 'EN' : 'VI',
                 badgeColor: AppColors.emeraldForest,
-                onTap: () => localeCubit.toggleLocale(),
+                onTap: () => localeCubit?.toggleLocale(),
               ),
               const SizedBox(width: 8),
 

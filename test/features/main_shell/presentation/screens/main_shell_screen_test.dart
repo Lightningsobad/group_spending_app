@@ -173,7 +173,7 @@ void main() {
       expect(find.byType(NotificationModal), findsOneWidget);
     });
 
-    testWidgets('tapping user avatar/name cluster navigates to settings tab and closes subviews', (tester) async {
+    testWidgets('tapping user avatar/name cluster on overview navigates to settings tab', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
 
       // Initially on tab 0 (Overview)
@@ -192,6 +192,9 @@ void main() {
       // Now on Settings tab
       expect(find.text('Đăng xuất tài khoản'), findsOneWidget);
 
+      // Verify AppHeader is not shown on Settings tab
+      expect(find.byType(AppHeader, skipOffstage: true), findsNothing);
+
       // Open Privacy Policy inside Settings
       final privacyPolicyItem = find.text('Chính sách bảo mật & Quyền riêng tư');
       await tester.scrollUntilVisible(privacyPolicyItem, 100);
@@ -199,13 +202,10 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Đăng xuất tài khoản'), findsNothing);
 
-      // Tap on user full name in header while in Privacy Policy
-      final nameTarget = find.descendant(
-        of: find.byType(AppHeader),
-        matching: find.text('Test User'),
-      );
-      expect(nameTarget, findsOneWidget);
-      await tester.tap(nameTarget);
+      // Tap on back button in Privacy Policy
+      final backBtn = find.byIcon(LucideIcons.arrowLeft);
+      expect(backBtn, findsAtLeastNWidgets(1));
+      await tester.tap(backBtn.first);
       await tester.pumpAndSettle();
 
       // Should close Privacy Policy and show main Settings content again
@@ -227,10 +227,10 @@ void main() {
 
       // JoinGroupView is displayed
       expect(find.text('Gia nhập bằng mã / QR'), findsOneWidget);
-      expect(find.text('Quay lại'), findsOneWidget);
+      expect(find.byKey(const Key('join_group_back_button')), findsOneWidget);
 
-      // Tap "Quay lại" (Back) button
-      await tester.tap(find.text('Quay lại'));
+      // Tap back button
+      await tester.tap(find.byKey(const Key('join_group_back_button')));
       await tester.pumpAndSettle();
 
       // Must return to Dashboard (Overview), NOT stay on Groups screen list
@@ -271,8 +271,8 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Gia nhập bằng mã / QR'), findsOneWidget);
 
-      // Tap "Quay lại"
-      await tester.tap(find.text('Quay lại'));
+      // Tap back button
+      await tester.tap(find.byKey(const Key('join_group_back_button')));
       await tester.pumpAndSettle();
 
       // Should return to Groups list

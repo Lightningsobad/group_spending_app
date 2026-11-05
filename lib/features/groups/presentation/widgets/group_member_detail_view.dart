@@ -198,7 +198,7 @@ class _GroupMemberDetailViewState extends State<GroupMemberDetailView> {
             !detail.isAdmin;
 
         return SafeArea(
-          top: false,
+          top: true,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(),
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 90),

@@ -194,50 +194,47 @@ class _JoinGroupViewState extends State<JoinGroupView> {
           widget.onBack();
         }
       },
-      child: SafeArea(
-        top: false,
-        bottom: true,
-        child: MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaler: textScaler),
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 90),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // 1. Back button row with min 48x48px touch target
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(10),
-                      onTap: widget.onBack,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              LucideIcons.arrowLeft,
-                              size: 18,
-                              color: colors.textPrimary,
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              tr.backAction,
-                              style: AppTextStyle.bold(
-                                fontSize: AppFontSize.secondary,
-                                color: colors.textPrimary,
-                              ),
-                            ),
-                          ],
+      child: Scaffold(
+        backgroundColor: colors.background,
+        body: SafeArea(
+          top: true,
+          bottom: false,
+          child: MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaler: textScaler),
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 90),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // 1. Synchronized Back Button
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Material(
+                      color: colors.cardBackground,
+                      borderRadius: BorderRadius.circular(12),
+                      child: InkWell(
+                        key: const Key('join_group_back_button'),
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: widget.onBack,
+                        child: Container(
+                          width: 48,
+                          height: 48,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: colors.cardBorder),
+                          ),
+                          child: Icon(
+                            LucideIcons.arrowLeft,
+                            size: 20,
+                            color: colors.textPrimary,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 8),
+                  const SizedBox(height: 12),
 
                 // 2. Title Section
                 Row(
@@ -352,7 +349,8 @@ class _JoinGroupViewState extends State<JoinGroupView> {
           ),
         ),
       ),
-    );
+    ),
+  );
   }
 
   Widget _buildTabItem({

@@ -20,7 +20,6 @@ import '../../../groups/domain/repositories/groups_repository.dart';
 import '../../../groups/presentation/cubit/groups_cubit.dart';
 import '../../../groups/presentation/screens/groups_screen.dart';
 import '../../../settings/presentation/screens/settings_screen.dart';
-import '../widgets/app_header.dart';
 import '../widgets/main_bottom_nav_bar.dart';
 
 class MainShellScreen extends StatefulWidget {
@@ -47,7 +46,6 @@ class MainShellScreen extends StatefulWidget {
 
 class _MainShellScreenState extends State<MainShellScreen> {
   late int _currentIndex;
-  bool _isGroupsDeepView = false;
   final GlobalKey<GroupsScreenState> _groupsKey = GlobalKey<GroupsScreenState>();
   final GlobalKey<SettingsScreenState> _settingsKey = GlobalKey<SettingsScreenState>();
 
@@ -76,7 +74,6 @@ class _MainShellScreenState extends State<MainShellScreen> {
   @override
   Widget build(BuildContext context) {
     final bg = context.colors.background;
-    final hideHeader = _currentIndex == 1 && _isGroupsDeepView;
 
     final shellScaffold = BlocListener<AuthCubit, AuthState>(
       listenWhen: (previous, current) => previous.status != current.status,
@@ -87,81 +84,51 @@ class _MainShellScreenState extends State<MainShellScreen> {
       },
       child: Scaffold(
         backgroundColor: bg,
-        body: SafeArea(
-          bottom: false,
-          child: Column(
-            children: [
-              // Pinned App Header across tabs (tự động ẩn khi vào sâu chi tiết nhóm)
-              AnimatedSize(
-                duration: const Duration(milliseconds: 200),
-                curve: Curves.easeInOut,
-                child: hideHeader
-                    ? const SizedBox.shrink()
-                    : AppHeader(
-                        onProfileTap: () {
-                          if (_currentIndex == 4) {
-                            _settingsKey.currentState?.closePrivacyPolicy();
-                          } else {
-                            setState(() {
-                              _currentIndex = 4;
-                            });
-                          }
-                        },
-                      ),
-              ),
-              // Shell body with IndexedStack to preserve tab states
-              Expanded(
-                child: IndexedStack(
-                  index: _currentIndex,
-                  children: [
-                    DashboardScreen(
-                      onNavigateToGroups: () {
-                        setState(() {
-                          _currentIndex = 1;
-                        });
-                      },
-                      onNavigateToJoinGroup: () {
-                        setState(() {
-                          _currentIndex = 1;
-                        });
-                        _groupsKey.currentState?.openJoinGroup(() {
-                          if (mounted) {
-                            setState(() {
-                              _currentIndex = 0;
-                            });
-                          }
-                        });
-                      },
-                      onNavigateToGroupDetail: (group) {
-                        setState(() {
-                          _currentIndex = 1;
-                        });
-                        _groupsKey.currentState?.openGroupDetail(group);
-                      },
-                    ),
-                    GroupsScreen(
-                      key: _groupsKey,
-                      onDeepViewChanged: (isDeep) {
-                        if (mounted && _isGroupsDeepView != isDeep) {
-                          setState(() {
-                            _isGroupsDeepView = isDeep;
-                          });
-                        }
-                      },
-                      onNavigateToDebts: () {
-                        setState(() {
-                          _currentIndex = 2;
-                        });
-                      },
-                    ),
-                    const DebtsScreen(),
-                    const AnalyticsTabScreen(),
-                    SettingsScreen(key: _settingsKey),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        body: IndexedStack(
+          index: _currentIndex,
+          children: [
+            DashboardScreen(
+              onNavigateToGroups: () {
+                setState(() {
+                  _currentIndex = 1;
+                });
+              },
+              onNavigateToJoinGroup: () {
+                setState(() {
+                  _currentIndex = 1;
+                });
+                _groupsKey.currentState?.openJoinGroup(() {
+                  if (mounted) {
+                    setState(() {
+                      _currentIndex = 0;
+                    });
+                  }
+                });
+              },
+              onNavigateToGroupDetail: (group) {
+                setState(() {
+                  _currentIndex = 1;
+                });
+                _groupsKey.currentState?.openGroupDetail(group);
+              },
+              onNavigateToSettings: () {
+                setState(() {
+                  _currentIndex = 4;
+                });
+              },
+            ),
+            GroupsScreen(
+              key: _groupsKey,
+              onNavigateToDebts: () {
+                setState(() {
+                  _currentIndex = 2;
+                });
+              },
+            ),
+            const DebtsScreen(),
+            const AnalyticsTabScreen(),
+            SettingsScreen(key: _settingsKey),
+          ],
         ),
         bottomNavigationBar: MainBottomNavBar(
           currentIndex: _currentIndex,
