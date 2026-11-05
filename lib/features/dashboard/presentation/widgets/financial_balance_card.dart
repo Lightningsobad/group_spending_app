@@ -92,7 +92,7 @@ class _FinancialBalanceCardState extends State<FinancialBalanceCard> {
                   size: 18,
                   color: colors.financialCardEyeToggle,
                 ),
-                tooltip: _isBalanceHidden ? 'Hiện số dư' : 'Ẩn số dư',
+                tooltip: _isBalanceHidden ? tr.showBalanceTooltip : tr.hideBalanceTooltip,
                 onPressed: () {
                   setState(() {
                     _isBalanceHidden = !_isBalanceHidden;

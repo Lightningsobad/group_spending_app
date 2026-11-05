@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class GroupCategoryHelper {
   GroupCategoryHelper._();
@@ -81,7 +82,30 @@ class GroupCategoryHelper {
     );
   }
 
-  static String getLabel(String category) {
+  static String getLabel(String category, [BuildContext? context]) {
+    final tr = context != null ? AppLocalizations.of(context) : null;
+    return getLabelWithL10n(category, tr);
+  }
+
+  static String getLabelWithL10n(String category, [AppLocalizations? tr]) {
+    if (tr != null) {
+      switch (category) {
+        case 'Apartment':
+          return tr.groupCategoryApartment;
+        case 'Sport & Clubs':
+          return tr.groupCategorySport;
+        case 'Travel & Trip':
+          return tr.groupCategoryTravel;
+        case 'Friends & Dining':
+          return tr.groupCategoryDining;
+        case 'Works & Project':
+          return tr.groupCategoryWork;
+        case 'Other':
+        default:
+          return tr.groupCategoryOther;
+      }
+    }
+    // Fallback if no localization context is provided (e.g. non-UI tests)
     switch (category) {
       case 'Apartment':
         return 'Căn hộ & Phòng trọ';
@@ -99,7 +123,30 @@ class GroupCategoryHelper {
     }
   }
 
-  static String getShortLabel(String category) {
+  static String getShortLabel(String category, [BuildContext? context]) {
+    final tr = context != null ? AppLocalizations.of(context) : null;
+    return getShortLabelWithL10n(category, tr);
+  }
+
+  static String getShortLabelWithL10n(String category, [AppLocalizations? tr]) {
+    if (tr != null) {
+      switch (category) {
+        case 'Apartment':
+          return tr.groupCategoryApartmentShort;
+        case 'Sport & Clubs':
+          return tr.groupCategorySportShort;
+        case 'Travel & Trip':
+          return tr.groupCategoryTravelShort;
+        case 'Friends & Dining':
+          return tr.groupCategoryDiningShort;
+        case 'Works & Project':
+          return tr.groupCategoryWorkShort;
+        case 'Other':
+        default:
+          return tr.groupCategoryOtherShort;
+      }
+    }
+    // Fallback if no localization context is provided (e.g. non-UI tests)
     switch (category) {
       case 'Apartment':
         return 'Căn hộ chung';

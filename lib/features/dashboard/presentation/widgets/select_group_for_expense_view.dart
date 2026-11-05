@@ -451,7 +451,7 @@ class _SelectGroupForExpenseViewState extends State<SelectGroupForExpenseView> {
               for (final cat in availableCategories) ...[
                 const SizedBox(width: 8),
                 GroupFilterChip(
-                  label: GroupCategoryHelper.getShortLabel(cat),
+                  label: GroupCategoryHelper.getShortLabel(cat, context),
                   isSelected: _categoryFilter == cat,
                   onTap: () => setState(() => _categoryFilter = cat),
                 ),
