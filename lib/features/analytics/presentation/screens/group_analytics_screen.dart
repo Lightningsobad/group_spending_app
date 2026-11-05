@@ -210,7 +210,7 @@ class _GroupAnalyticsView extends StatelessWidget {
 
     final localizedCategory = (groupCategory != null && groupCategory.trim().isNotEmpty)
         ? (GroupCategoryHelper.categories.contains(groupCategory)
-            ? GroupCategoryHelper.getLabel(groupCategory)
+            ? GroupCategoryHelper.getLabel(groupCategory, context)
             : groupCategory)
         : null;
 

@@ -12,6 +12,7 @@ import 'package:group_spending_app/features/expenses/presentation/widgets/expens
 import 'package:group_spending_app/features/expenses/presentation/widgets/expense_card_widget.dart';
 import 'package:group_spending_app/features/expenses/presentation/widgets/group_expenses_tab_view.dart';
 import 'package:group_spending_app/features/groups/data/models/group_model.dart';
+import 'package:group_spending_app/l10n/app_localizations.dart';
 import 'package:group_spending_app/shared/widgets/app_shimmer.dart';
 import 'dart:io';
 
@@ -106,6 +107,9 @@ void main() {
   }) {
     return MaterialApp(
       theme: theme ?? AppTheme.lightTheme,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      locale: const Locale('vi'),
       home: Scaffold(
         body: BlocProvider.value(
           value: cubit,

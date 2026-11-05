@@ -324,7 +324,7 @@ class _GroupInviteQrSheetState extends State<GroupInviteQrSheet> {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    '${_group.name} • ${GroupCategoryHelper.getLabel(_group.category)} • ${_group.memberCount} ${tr.membersCountLabel.toLowerCase()}',
+                    '${_group.name} • ${GroupCategoryHelper.getLabel(_group.category, context)} • ${_group.memberCount} ${tr.membersCountLabel.toLowerCase()}',
                     style: AppTextStyle.medium(
                       fontSize: 13,
                       color: colors.textSecondary,

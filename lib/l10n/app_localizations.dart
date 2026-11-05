@@ -3617,6 +3617,174 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Xem toàn bộ ({lines} dòng)...'**
   String viewAllNotesHint(int lines);
+
+  /// No description provided for @groupCategoryApartment.
+  ///
+  /// In vi, this message translates to:
+  /// **'Căn hộ & Phòng trọ'**
+  String get groupCategoryApartment;
+
+  /// No description provided for @groupCategorySport.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thể thao & CLB'**
+  String get groupCategorySport;
+
+  /// No description provided for @groupCategoryTravel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Du lịch & Dã ngoại'**
+  String get groupCategoryTravel;
+
+  /// No description provided for @groupCategoryDining.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn bè & Ăn uống'**
+  String get groupCategoryDining;
+
+  /// No description provided for @groupCategoryWork.
+  ///
+  /// In vi, this message translates to:
+  /// **'Công việc & Dự án'**
+  String get groupCategoryWork;
+
+  /// No description provided for @groupCategoryOther.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khác'**
+  String get groupCategoryOther;
+
+  /// No description provided for @groupCategoryApartmentShort.
+  ///
+  /// In vi, this message translates to:
+  /// **'Căn hộ chung'**
+  String get groupCategoryApartmentShort;
+
+  /// No description provided for @groupCategorySportShort.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thể thao'**
+  String get groupCategorySportShort;
+
+  /// No description provided for @groupCategoryTravelShort.
+  ///
+  /// In vi, this message translates to:
+  /// **'Du lịch'**
+  String get groupCategoryTravelShort;
+
+  /// No description provided for @groupCategoryDiningShort.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ăn uống'**
+  String get groupCategoryDiningShort;
+
+  /// No description provided for @groupCategoryWorkShort.
+  ///
+  /// In vi, this message translates to:
+  /// **'Công việc'**
+  String get groupCategoryWorkShort;
+
+  /// No description provided for @groupCategoryOtherShort.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khác'**
+  String get groupCategoryOtherShort;
+
+  /// No description provided for @filterPaidByMe.
+  ///
+  /// In vi, this message translates to:
+  /// **'Của tôi'**
+  String get filterPaidByMe;
+
+  /// No description provided for @filterPendingSettlement.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ quyết toán'**
+  String get filterPendingSettlement;
+
+  /// No description provided for @filterAllTopicsCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tất cả chủ đề ({count})'**
+  String filterAllTopicsCount(int count);
+
+  /// No description provided for @groupStatusActive.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đang hoạt động'**
+  String get groupStatusActive;
+
+  /// No description provided for @groupStatusArchived.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã lưu trữ'**
+  String get groupStatusArchived;
+
+  /// No description provided for @unmuteNotifications.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bật thông báo'**
+  String get unmuteNotifications;
+
+  /// No description provided for @muteNotifications.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tắt thông báo'**
+  String get muteNotifications;
+
+  /// No description provided for @showBalanceTooltip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hiện số dư'**
+  String get showBalanceTooltip;
+
+  /// No description provided for @hideBalanceTooltip.
+  ///
+  /// In vi, this message translates to:
+  /// **'Ẩn số dư'**
+  String get hideBalanceTooltip;
+
+  /// No description provided for @totalGroupExpensesTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'TỔNG CHI TIÊU NHÓM'**
+  String get totalGroupExpensesTitle;
+
+  /// No description provided for @incurredInvoicesCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} hóa đơn phát sinh'**
+  String incurredInvoicesCount(int count);
+
+  /// No description provided for @searchExpenseByNamePlaceholder.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tìm khoản chi theo tên...'**
+  String get searchExpenseByNamePlaceholder;
+
+  /// No description provided for @createFirstExpenseHint.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bấm nút bên dưới để tạo khoản chi đầu tiên cho nhóm.'**
+  String get createFirstExpenseHint;
+
+  /// No description provided for @addNewExpenseAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Thêm khoản chi mới'**
+  String get addNewExpenseAction;
+
+  /// No description provided for @youHavePaidBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn đã thanh toán'**
+  String get youHavePaidBadge;
+
+  /// No description provided for @youOweAmountPrefix.
+  ///
+  /// In vi, this message translates to:
+  /// **'Bạn nợ: {amount}'**
+  String youOweAmountPrefix(String amount);
 }
 
 class _AppLocalizationsDelegate
