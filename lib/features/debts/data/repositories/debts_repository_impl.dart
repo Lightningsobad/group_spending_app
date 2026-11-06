@@ -121,10 +121,11 @@ class DebtsRepositoryImpl implements DebtsRepository {
     int groupId,
   ) async {
     int page = 0;
+    const maxPages = 50;
     final allSettlements = <DebtSettlementEntity>[];
     final seenIds = <int>{};
 
-    while (true) {
+    while (page < maxPages) {
       final pageResult = await remoteDataSource.getGroupDebtSettlements(
         groupId,
         status: 'WAITING_FOR_CONFIRMATION',

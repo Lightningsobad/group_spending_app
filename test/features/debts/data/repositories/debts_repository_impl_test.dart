@@ -8,6 +8,7 @@ import 'package:group_spending_app/features/debts/domain/entities/debt_enums.dar
 
 class _FakeRemoteDataSource implements DebtsRemoteDataSource {
   final Map<int, DebtSettlementPageModel> pagesByPageNumber = {};
+  DebtSettlementPageModel Function(int page)? pageGenerator;
   bool throwOnSecondPage = false;
   final List<int> requestedPages = [];
 
@@ -21,6 +22,9 @@ class _FakeRemoteDataSource implements DebtsRemoteDataSource {
     requestedPages.add(page);
     if (throwOnSecondPage && page == 1) {
       throw Exception('Network error on page 1');
+    }
+    if (pageGenerator != null) {
+      return pageGenerator!(page);
     }
     return pagesByPageNumber[page] ??
         DebtSettlementPageModel(
@@ -163,6 +167,30 @@ void main() {
         () => repository.getAllPendingDebtSettlements(10),
         throwsA(isA<Exception>()),
       );
+    });
+
+    test('stops after maxPages (50) to prevent infinite loop on malformed backend response', () async {
+      int generatedId = 1;
+      fakeRemote.pageGenerator = (page) => DebtSettlementPageModel(
+            content: [
+              DebtSettlementModel(
+                id: generatedId++,
+                groupId: 10,
+                debtorId: 1,
+                creditorId: 2,
+                amount: 100,
+                status: DebtStatus.waitingForConfirmation,
+              ),
+            ],
+            pageNumber: page,
+            totalPages: 9999,
+            totalElements: 9999,
+            last: false,
+          );
+
+      final result = await repository.getAllPendingDebtSettlements(10);
+      expect(fakeRemote.requestedPages.length, 50);
+      expect(result.length, 50);
     });
   });
 }

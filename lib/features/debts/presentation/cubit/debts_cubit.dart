@@ -392,6 +392,7 @@ class DebtsCubit extends Cubit<DebtsState> {
     int debtId, {
     required bool confirmed,
   }) async {
+    if (state.isActionSubmitting) return false;
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
     emit(state.copyWith(isActionSubmitting: true, clearMessages: true));
 
