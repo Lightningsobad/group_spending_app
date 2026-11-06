@@ -45,10 +45,12 @@ abstract class DebtsRepository {
 
   Future<DebtSettlementEntity> getDebtSettlementDetail(int settlementId);
 
-  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(
+  Future<DebtSettlementPageEntity> getGroupDebtSettlements(
     int groupId, {
     String? status,
     int page = 0,
     int size = 20,
   });
+
+  Future<List<DebtSettlementEntity>> getAllPendingDebtSettlements(int groupId);
 }
