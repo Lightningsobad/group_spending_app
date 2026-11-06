@@ -264,16 +264,13 @@ class DebtPaymentPreviewModel extends DebtPaymentPreviewEntity {
 }
 
 class DebtSettlementPageModel extends DebtSettlementPageEntity {
-  @override
-  final List<DebtSettlementModel> content;
-
   const DebtSettlementPageModel({
-    required this.content,
+    required super.content,
     required super.pageNumber,
     required super.totalPages,
     required super.totalElements,
     required super.last,
-  }) : super(content: content);
+  });
 
   factory DebtSettlementPageModel.fromJson(Map<String, dynamic> json) {
     final rawContent = json['content'] as List<dynamic>? ?? [];

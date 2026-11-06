@@ -1,6 +1,6 @@
 # Kế hoạch khắc phục luồng công nợ
 
-Ngày lập: 06/11/2026. Trạng thái: kế hoạch triển khai, chưa sửa mã nguồn.
+Ngày lập: 06/11/2026. Trạng thái: Đã triển khai và nghiệm thu thành công (61/61 tests pass).
 
 ## 1. Mục tiêu và phạm vi
 
@@ -150,3 +150,17 @@ Nghiệm thu tích hợp: con nợ báo đã trả → chủ nợ từ chối �
 5. Kiểm tra thủ công: chuyển nhóm nhanh khi mạng chậm; kéo refresh; xác nhận/từ chối từ hai tài khoản; quay lại tổng quan; đăng xuất khi request đang chạy.
 
 Điều kiện hoàn tất: các ca nghiệm thu trên đạt; bộ test công nợ không hồi quy; không phát sinh lỗi phân tích tĩnh từ thay đổi; kiểm chứng backend thực tế hoặc ghi rõ phần chưa thể kiểm chứng trong bàn giao. Cập nhật tài liệu này bằng kết quả và lệnh kiểm thử sau khi triển khai, không dùng kết quả 49/49 trước sửa làm bằng chứng nghiệm thu bản sửa.
+
+## 7. Báo cáo kết quả nghiệm thu (06/11/2026)
+
+Toàn bộ 3 hạng mục DEBT-01, DEBT-02, DEBT-03 đã được triển khai hoàn chỉnh theo kế hoạch:
+
+1. **DEBT-01**: Bổ sung bộ đếm `_activeGroupRequestId`, snapshot validation (requestId, groupId, filter, sessionEpoch) trong `DebtsCubit.loadGroupDebts`, xử lý hủy khi `selectGroup(null)` / `reset()`, và lớp lọc bảo vệ `groupId` tại `GroupDebtDetailView`.
+2. **DEBT-02**: Thêm `DebtSettlementPageModel`/`DebtSettlementPageEntity`, cập nhật `DebtsRemoteDataSource.getGroupDebtSettlements`, cài đặt `DebtsRepository.getAllPendingDebtSettlements` với vòng lặp tuần tự phân trang (`status=WAITING_FOR_CONFIRMATION`) và khử trùng theo `id`.
+3. **DEBT-03**: Thêm dialog lựa chọn `showActualDebtActionChoice` trong `SettleDebtDialogs`, xử lý 2 nhánh "Xác nhận nhận tiền" (`confirmed=true`) và "Từ chối" (`confirmed=false`) qua `onDebtorConfirm`, chống submit lặp (`isSubmitting`), và tái sử dụng `showConfirmSettled`.
+
+### Kết quả kiểm thử tự động
+- `flutter test test/features/debts`: **61/61 tests PASS** (tăng từ 49/49 ban đầu với 12 tests mới bao phủ toàn bộ ma trận nghiệm thu).
+- `flutter test test/features/dashboard`: **28/28 tests PASS**.
+- `flutter analyze lib/features/debts test/features/debts`: **0 issues found** (clean 100%).
+

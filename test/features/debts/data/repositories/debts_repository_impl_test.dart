@@ -1,10 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:group_spending_app/features/debts/data/datasources/debts_remote_data_source.dart';
-import 'package:group_spending_app/features/debts/data/models/actual_debt_model.dart';
 import 'package:group_spending_app/features/debts/data/models/debt_overview_model.dart';
 import 'package:group_spending_app/features/debts/data/models/debt_settlement_model.dart';
 import 'package:group_spending_app/features/debts/data/models/group_debts_models.dart';
-import 'package:group_spending_app/features/debts/data/models/simplified_debt_model.dart';
 import 'package:group_spending_app/features/debts/data/repositories/debts_repository_impl.dart';
 import 'package:group_spending_app/features/debts/domain/entities/debt_enums.dart';
 
