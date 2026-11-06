@@ -11,6 +11,12 @@ class GroupsCubit extends Cubit<GroupsState> {
   final SessionCoordinator? sessionCoordinator;
   final DataSyncCoordinator? dataSyncCoordinator;
 
+  int _loadRequestId = 0;
+  int _mutationEpoch = 0;
+  int _detailRequestId = 0;
+  final Set<int> _deletedGroupIds = {};
+  final Map<int, int> _detailRequestIds = {};
+
   GroupsCubit(
     this._repository, {
     this.sessionCoordinator,
@@ -18,10 +24,16 @@ class GroupsCubit extends Cubit<GroupsState> {
   }) : super(const GroupsState());
 
   void reset() {
+    _loadRequestId++;
+    _mutationEpoch++;
+    _deletedGroupIds.clear();
+    _detailRequestIds.clear();
     emit(const GroupsState());
   }
 
   Future<void> loadGroups({bool silent = false}) async {
+    final currentRequestId = ++_loadRequestId;
+    final startMutationEpoch = _mutationEpoch;
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
     if (!silent) {
       emit(state.copyWith(status: GroupsStatus.loading, clearMessages: true));
@@ -30,7 +42,14 @@ class GroupsCubit extends Cubit<GroupsState> {
       final groups = await _repository.getMyGroups();
       if (isClosed ||
           (sessionCoordinator != null &&
-              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+              sessionCoordinator!.sessionEpoch != requestEpoch) ||
+          currentRequestId != _loadRequestId) {
+        return;
+      }
+      if (startMutationEpoch != _mutationEpoch) {
+        if (state.status == GroupsStatus.loading) {
+          emit(state.copyWith(status: GroupsStatus.success));
+        }
         return;
       }
       emit(
@@ -43,7 +62,9 @@ class GroupsCubit extends Cubit<GroupsState> {
     } on AppException catch (e) {
       if (isClosed ||
           (sessionCoordinator != null &&
-              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+              sessionCoordinator!.sessionEpoch != requestEpoch) ||
+          currentRequestId != _loadRequestId ||
+          startMutationEpoch != _mutationEpoch) {
         return;
       }
       emit(
@@ -55,7 +76,9 @@ class GroupsCubit extends Cubit<GroupsState> {
     } catch (e) {
       if (isClosed ||
           (sessionCoordinator != null &&
-              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+              sessionCoordinator!.sessionEpoch != requestEpoch) ||
+          currentRequestId != _loadRequestId ||
+          startMutationEpoch != _mutationEpoch) {
         return;
       }
       emit(
@@ -81,19 +104,28 @@ class GroupsCubit extends Cubit<GroupsState> {
 
   Future<GroupModel?> loadGroupDetails(int groupId) async {
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
+    final detailReqId = ++_detailRequestId;
+    _detailRequestIds[groupId] = detailReqId;
+
     try {
       final detail = await _repository.getGroupDetails(groupId);
       if (isClosed ||
           (sessionCoordinator != null &&
-              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+              sessionCoordinator!.sessionEpoch != requestEpoch) ||
+          _detailRequestIds[groupId] != detailReqId ||
+          _deletedGroupIds.contains(groupId)) {
         return null;
       }
-      emit(state.copyWith(selectedGroup: detail));
+      if (state.selectedGroup == null || state.selectedGroup!.id == groupId) {
+        emit(state.copyWith(selectedGroup: detail));
+      }
       return detail;
     } on AppException catch (e) {
       if (isClosed ||
           (sessionCoordinator != null &&
-              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+              sessionCoordinator!.sessionEpoch != requestEpoch) ||
+          _detailRequestIds[groupId] != detailReqId ||
+          _deletedGroupIds.contains(groupId)) {
         return null;
       }
       emit(state.copyWith(errorMessage: e.message));
@@ -101,7 +133,9 @@ class GroupsCubit extends Cubit<GroupsState> {
     } catch (e) {
       if (isClosed ||
           (sessionCoordinator != null &&
-              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+              sessionCoordinator!.sessionEpoch != requestEpoch) ||
+          _detailRequestIds[groupId] != detailReqId ||
+          _deletedGroupIds.contains(groupId)) {
         return null;
       }
       emit(state.copyWith(errorMessage: e.toString()));
@@ -124,6 +158,7 @@ class GroupsCubit extends Cubit<GroupsState> {
         category: category,
         defaultCurrency: defaultCurrency,
       );
+      _mutationEpoch++;
       if (isClosed ||
           (sessionCoordinator != null &&
               sessionCoordinator!.sessionEpoch != requestEpoch)) {
@@ -172,6 +207,7 @@ class GroupsCubit extends Cubit<GroupsState> {
     int groupId, {
     required String name,
     String? description,
+    bool clearDescription = false,
     String? category,
     String? defaultCurrency,
   }) async {
@@ -182,9 +218,11 @@ class GroupsCubit extends Cubit<GroupsState> {
         groupId,
         name: name,
         description: description,
+        clearDescription: clearDescription,
         category: category,
         defaultCurrency: defaultCurrency,
       );
+      _mutationEpoch++;
       if (isClosed ||
           (sessionCoordinator != null &&
               sessionCoordinator!.sessionEpoch != requestEpoch)) {
@@ -194,11 +232,13 @@ class GroupsCubit extends Cubit<GroupsState> {
         return g.id == groupId ? updatedGroup : g;
       }).toList();
 
+      final shouldUpdateSelected = state.selectedGroup?.id == groupId;
+
       emit(
         state.copyWith(
           isActionLoading: false,
           groups: updatedList,
-          selectedGroup: updatedGroup,
+          selectedGroup: shouldUpdateSelected ? updatedGroup : state.selectedGroup,
           successMessage: 'Cập nhật nhóm thành công!',
         ),
       );
@@ -238,6 +278,7 @@ class GroupsCubit extends Cubit<GroupsState> {
     emit(state.copyWith(isActionLoading: true, clearMessages: true));
     try {
       await _repository.archiveGroup(groupId);
+      _mutationEpoch++;
       if (isClosed ||
           (sessionCoordinator != null &&
               sessionCoordinator!.sessionEpoch != requestEpoch)) {
@@ -247,10 +288,15 @@ class GroupsCubit extends Cubit<GroupsState> {
         return g.id == groupId ? g.copyWith(status: 'ARCHIVED') : g;
       }).toList();
 
+      final updatedSelectedGroup = state.selectedGroup?.id == groupId
+          ? state.selectedGroup!.copyWith(status: 'ARCHIVED')
+          : state.selectedGroup;
+
       emit(
         state.copyWith(
           isActionLoading: false,
           groups: updatedList,
+          selectedGroup: updatedSelectedGroup,
           successMessage: 'Nhóm đã được chuyển sang chế độ lưu trữ.',
         ),
       );
@@ -290,17 +336,20 @@ class GroupsCubit extends Cubit<GroupsState> {
     emit(state.copyWith(isActionLoading: true, clearMessages: true));
     try {
       await _repository.deleteGroup(groupId);
+      _mutationEpoch++;
+      _deletedGroupIds.add(groupId);
       if (isClosed ||
           (sessionCoordinator != null &&
               sessionCoordinator!.sessionEpoch != requestEpoch)) {
         return false;
       }
       final updatedList = state.groups.where((g) => g.id != groupId).toList();
+      final shouldClearSelected = state.selectedGroup?.id == groupId;
       emit(
         state.copyWith(
           isActionLoading: false,
           groups: updatedList,
-          clearSelectedGroup: true,
+          clearSelectedGroup: shouldClearSelected,
           successMessage: 'Xóa nhóm thành công.',
         ),
       );
@@ -340,6 +389,7 @@ class GroupsCubit extends Cubit<GroupsState> {
     emit(state.copyWith(isActionLoading: true, clearMessages: true));
     try {
       await _repository.joinGroup(inviteCode);
+      _mutationEpoch++;
       if (isClosed ||
           (sessionCoordinator != null &&
               sessionCoordinator!.sessionEpoch != requestEpoch)) {

@@ -102,5 +102,42 @@ void main() {
       expect(model.isAdmin, isTrue);
       expect(model.avatarUrl, 'https://example.com/avatar.png');
     });
+
+    test('copyWith clears description when clearDescription is true and preserves otherwise', () {
+      const group = GroupModel(
+        id: 1,
+        name: 'Nhóm Test',
+        description: 'Mô tả ban đầu',
+        ownerId: 1,
+      );
+
+      final updatedName = group.copyWith(name: 'Nhóm Mới');
+      expect(updatedName.name, 'Nhóm Mới');
+      expect(updatedName.description, 'Mô tả ban đầu');
+
+      final clearedDesc = group.copyWith(clearDescription: true);
+      expect(clearedDesc.description, isNull);
+
+      final newDesc = group.copyWith(description: 'Mô tả mới');
+      expect(newDesc.description, 'Mô tả mới');
+    });
+
+    test('fromJson normalizes empty or whitespace description to null', () {
+      final jsonEmpty = {
+        'id': 1,
+        'name': 'Nhóm Test',
+        'description': '',
+        'ownerId': 1,
+      };
+      final jsonWhitespace = {
+        'id': 2,
+        'name': 'Nhóm Test 2',
+        'description': '   ',
+        'ownerId': 1,
+      };
+
+      expect(GroupModel.fromJson(jsonEmpty).description, isNull);
+      expect(GroupModel.fromJson(jsonWhitespace).description, isNull);
+    });
   });
 }

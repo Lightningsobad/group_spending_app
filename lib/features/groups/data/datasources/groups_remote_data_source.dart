@@ -25,6 +25,7 @@ abstract class GroupsRemoteDataSource {
     int groupId, {
     required String name,
     String? description,
+    bool clearDescription = false,
     String? category,
     String? defaultCurrency,
   });
@@ -163,13 +164,16 @@ class GroupsRemoteDataSourceImpl implements GroupsRemoteDataSource {
     int groupId, {
     required String name,
     String? description,
+    bool clearDescription = false,
     String? category,
     String? defaultCurrency,
   }) async {
     final payload = <String, dynamic>{
       'name': name.trim(),
     };
-    if (description != null && description.trim().isNotEmpty) {
+    if (clearDescription) {
+      payload['description'] = '';
+    } else if (description != null && description.trim().isNotEmpty) {
       payload['description'] = description.trim();
     }
     if (category != null) {

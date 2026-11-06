@@ -119,7 +119,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
   Future<void> _fetchLatestDetail() async {
     setState(() => _isLoadingDetail = true);
     final detail = await context.read<GroupsCubit>().loadGroupDetails(_group.id);
-    if (mounted && detail != null) {
+    if (mounted && detail != null && detail.id == _group.id) {
       setState(() {
         _group = detail;
         _isLoadingDetail = false;
@@ -312,7 +312,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isCreatingFund) {
+    if (_isCreatingFund && !_group.isArchived) {
       return PopScope(
         canPop: false,
         onPopInvokedWithResult: (didPop, _) {
@@ -1326,7 +1326,9 @@ class _GroupDetailViewState extends State<GroupDetailView> {
   Widget _buildFundsTab(AppThemeColors colors, AppLocalizations tr) {
     return GroupFundsTabView(
       group: _group,
-      onCreateFund: () => setState(() => _isCreatingFund = true),
+      onCreateFund: _group.isArchived
+          ? null
+          : () => setState(() => _isCreatingFund = true),
     );
   }
 

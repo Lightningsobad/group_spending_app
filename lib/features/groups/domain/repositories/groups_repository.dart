@@ -24,6 +24,7 @@ abstract class GroupsRepository {
     int groupId, {
     required String name,
     String? description,
+    bool clearDescription = false,
     String? category,
     String? defaultCurrency,
   });

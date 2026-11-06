@@ -199,7 +199,7 @@ class FakeGroupsRepository implements GroupsRepository {
   Future<GroupModel> createGroup({required String name, String? description, String? category, String? defaultCurrency}) async => mockGroups.first;
 
   @override
-  Future<GroupModel> updateGroup(int groupId, {required String name, String? description, String? category, String? defaultCurrency}) async => mockGroups.first;
+  Future<GroupModel> updateGroup(int groupId, {required String name, String? description, bool clearDescription = false, String? category, String? defaultCurrency}) async => mockGroups.first;
 
   @override
   Future<void> archiveGroup(int groupId) async {}

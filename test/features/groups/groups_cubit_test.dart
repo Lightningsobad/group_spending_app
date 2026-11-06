@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:group_spending_app/core/errors/app_exception.dart';
@@ -43,6 +44,8 @@ class FakeGroupsRepo implements GroupsRepository {
   ];
   AppException? exception;
   Duration delay = Duration.zero;
+  Future<List<GroupModel>> Function()? customGetMyGroups;
+  Future<GroupModel> Function(int groupId)? customGetGroupDetails;
 
   @override
   Future<List<GroupSummaryModel>> getGroupSummaries({
@@ -78,6 +81,9 @@ class FakeGroupsRepo implements GroupsRepository {
     String? category,
     String? search,
   }) async {
+    if (customGetMyGroups != null) {
+      return customGetMyGroups!();
+    }
     if (delay > Duration.zero) await Future.delayed(delay);
     if (exception != null) throw exception!;
     return groups;
@@ -85,6 +91,9 @@ class FakeGroupsRepo implements GroupsRepository {
 
   @override
   Future<GroupModel> getGroupDetails(int groupId) async {
+    if (customGetGroupDetails != null) {
+      return customGetGroupDetails!(groupId);
+    }
     return groups.firstWhere((g) => g.id == groupId);
   }
 
@@ -113,12 +122,17 @@ class FakeGroupsRepo implements GroupsRepository {
     int groupId, {
     required String name,
     String? description,
+    bool clearDescription = false,
     String? category,
     String? defaultCurrency,
   }) async {
     if (exception != null) throw exception!;
     final index = groups.indexWhere((g) => g.id == groupId);
-    final updated = groups[index].copyWith(name: name, description: description);
+    final updated = groups[index].copyWith(
+      name: name,
+      description: description,
+      clearDescription: clearDescription,
+    );
     groups[index] = updated;
     return updated;
   }
@@ -424,6 +438,225 @@ void main() {
       expect(syncNotificationsCount, 4);
 
       await syncCubit.close();
+    });
+
+    group('Request sequencing and race condition prevention (GCRUD-01)', () {
+      test('R01: two overlapping loadGroups requests, newer completing first is preserved', () async {
+        final c1 = Completer<List<GroupModel>>();
+        final c2 = Completer<List<GroupModel>>();
+        int callCount = 0;
+
+        repo.customGetMyGroups = () {
+          callCount++;
+          if (callCount == 1) return c1.future;
+          return c2.future;
+        };
+
+        final f1 = cubit.loadGroups();
+        final f2 = cubit.loadGroups();
+
+        final newerList = [
+          const GroupModel(id: 100, name: 'Nhóm Mới Nhất', ownerId: 1),
+        ];
+        final olderList = [
+          const GroupModel(id: 50, name: 'Nhóm Cũ', ownerId: 1),
+        ];
+
+        // Newer completes first
+        c2.complete(newerList);
+        await f2;
+        expect(cubit.state.groups.first.name, 'Nhóm Mới Nhất');
+
+        // Older completes second -> ignored
+        c1.complete(olderList);
+        await f1;
+        expect(cubit.state.groups.first.name, 'Nhóm Mới Nhất');
+      });
+
+      test('R02: older load response arriving after createGroup does not revert state', () async {
+        final cLoad = Completer<List<GroupModel>>();
+        repo.customGetMyGroups = () => cLoad.future;
+
+        final fLoad = cubit.loadGroups();
+
+        // createGroup completes while loadGroups is still pending
+        await cubit.createGroup(name: 'Nhóm Mới Vừa Tạo');
+        expect(cubit.state.groups.any((g) => g.name == 'Nhóm Mới Vừa Tạo'), isTrue);
+
+        // Older load snapshot returns without the new group
+        cLoad.complete([
+          const GroupModel(id: 1, name: 'Chung cư Sunrise', ownerId: 1),
+        ]);
+        await fLoad;
+
+        // Newly created group must NOT be overwritten/lost
+        expect(cubit.state.groups.any((g) => g.name == 'Nhóm Mới Vừa Tạo'), isTrue);
+        expect(cubit.state.status, GroupsStatus.success);
+      });
+
+      test('R03: older load response arriving after updateGroup does not revert updated info', () async {
+        cubit.emit(GroupsState(status: GroupsStatus.success, groups: List.from(repo.groups)));
+        final cLoad = Completer<List<GroupModel>>();
+        repo.customGetMyGroups = () => cLoad.future;
+
+        final fLoad = cubit.loadGroups();
+
+        // updateGroup completes while loadGroups is pending
+        await cubit.updateGroup(1, name: 'Sunrise Sau Sửa');
+        expect(cubit.state.groups.firstWhere((g) => g.id == 1).name, 'Sunrise Sau Sửa');
+
+        // Older load returns old name
+        cLoad.complete([
+          const GroupModel(id: 1, name: 'Sunrise Tên Cũ', ownerId: 1),
+        ]);
+        await fLoad;
+
+        expect(cubit.state.groups.firstWhere((g) => g.id == 1).name, 'Sunrise Sau Sửa');
+      });
+
+      test('R04: older load response arriving after archiveGroup preserves archived status', () async {
+        cubit.emit(GroupsState(status: GroupsStatus.success, groups: List.from(repo.groups)));
+        final cLoad = Completer<List<GroupModel>>();
+        repo.customGetMyGroups = () => cLoad.future;
+
+        final fLoad = cubit.loadGroups();
+
+        await cubit.archiveGroup(1);
+        expect(cubit.state.groups.firstWhere((g) => g.id == 1).isArchived, isTrue);
+
+        // Older load returns ACTIVE status
+        cLoad.complete([
+          const GroupModel(id: 1, name: 'Sunrise', status: 'ACTIVE', ownerId: 1),
+        ]);
+        await fLoad;
+
+        expect(cubit.state.groups.firstWhere((g) => g.id == 1).isArchived, isTrue);
+      });
+
+      test('R05: older load response arriving after deleteGroup does not restore deleted group', () async {
+        cubit.emit(GroupsState(status: GroupsStatus.success, groups: List.from(repo.groups)));
+        final cLoad = Completer<List<GroupModel>>();
+        repo.customGetMyGroups = () => cLoad.future;
+
+        final fLoad = cubit.loadGroups();
+
+        await cubit.deleteGroup(1);
+        expect(cubit.state.groups.any((g) => g.id == 1), isFalse);
+
+        // Older load returns list containing group 1
+        cLoad.complete([
+          const GroupModel(id: 1, name: 'Sunrise', ownerId: 1),
+        ]);
+        await fLoad;
+
+        expect(cubit.state.groups.any((g) => g.id == 1), isFalse);
+      });
+
+      test('R06: older load error arriving after newer load success does not overwrite state', () async {
+        final c1 = Completer<List<GroupModel>>();
+        final c2 = Completer<List<GroupModel>>();
+        int callCount = 0;
+
+        repo.customGetMyGroups = () {
+          callCount++;
+          if (callCount == 1) return c1.future;
+          return c2.future;
+        };
+
+        final f1 = cubit.loadGroups();
+        final f2 = cubit.loadGroups();
+
+        // Newer succeeds first
+        c2.complete([const GroupModel(id: 10, name: 'Nhóm Thành Công', ownerId: 1)]);
+        await f2;
+        expect(cubit.state.status, GroupsStatus.success);
+
+        // Older fails second -> dropped
+        c1.completeError(const AppException(message: 'Lỗi tải cũ'));
+        await f1;
+        expect(cubit.state.status, GroupsStatus.success);
+        expect(cubit.state.errorMessage, isNull);
+      });
+
+      test('R07: load request started during in-flight mutation is dropped after mutation succeeds', () async {
+        final cLoad = Completer<List<GroupModel>>();
+        repo.customGetMyGroups = () => cLoad.future;
+
+        final fLoad = cubit.loadGroups();
+
+        // Mutation succeeds while load is pending
+        await cubit.createGroup(name: 'Nhóm Thêm Lúc Đang Tải');
+
+        // Snapshot arrived is dropped, status transitions out of loading
+        cLoad.complete([]);
+        await fLoad;
+
+        expect(cubit.state.groups.any((g) => g.name == 'Nhóm Thêm Lúc Đang Tải'), isTrue);
+        expect(cubit.state.status, GroupsStatus.success);
+      });
+
+      test('R08: mutation failure leaves state and loading properly ended', () async {
+        await cubit.loadGroups();
+        repo.exception = const AppException(message: 'Lỗi server');
+
+        final success = await cubit.updateGroup(1, name: 'Tên Thất Bại');
+        expect(success, isFalse);
+        expect(cubit.state.isActionLoading, isFalse);
+        expect(cubit.state.errorMessage, 'Lỗi server');
+      });
+
+      test('R09: reset invalidates in-flight loadGroups even without SessionCoordinator', () async {
+        final cLoad = Completer<List<GroupModel>>();
+        repo.customGetMyGroups = () => cLoad.future;
+
+        final fLoad = cubit.loadGroups();
+
+        cubit.reset();
+        expect(cubit.state.groups, isEmpty);
+
+        cLoad.complete([const GroupModel(id: 1, name: 'Nhóm Bị Reset', ownerId: 1)]);
+        await fLoad;
+
+        expect(cubit.state.groups, isEmpty);
+      });
+
+      test('R10: stale loadGroupDetails does not overwrite selectedGroup if group changed or deleted', () async {
+        final cDetail1 = Completer<GroupModel>();
+        final cDetail2 = Completer<GroupModel>();
+
+        repo.customGetGroupDetails = (id) {
+          if (id == 1) return cDetail1.future;
+          return cDetail2.future;
+        };
+
+        // User navigates to group 1 then quickly to group 2
+        final f1 = cubit.loadGroupDetails(1);
+        final f2 = cubit.loadGroupDetails(2);
+
+        // Group 2 finishes
+        cDetail2.complete(const GroupModel(id: 2, name: 'Nhóm 2 Mới', ownerId: 1));
+        await f2;
+        expect(cubit.state.selectedGroup?.id, 2);
+
+        // Group 1 finishes later -> must NOT overwrite selectedGroup
+        cDetail1.complete(const GroupModel(id: 1, name: 'Nhóm 1 Cũ', ownerId: 1));
+        await f1;
+        expect(cubit.state.selectedGroup?.id, 2);
+      });
+
+      test('R10b: deleteGroup clears selectedGroup only if matching deleted group', () async {
+        await cubit.loadGroups();
+        await cubit.loadGroupDetails(1);
+        expect(cubit.state.selectedGroup?.id, 1);
+
+        // Delete group 2 -> selectedGroup (group 1) should NOT be cleared
+        await cubit.deleteGroup(2);
+        expect(cubit.state.selectedGroup?.id, 1);
+
+        // Delete group 1 -> selectedGroup should be cleared
+        await cubit.deleteGroup(1);
+        expect(cubit.state.selectedGroup, isNull);
+      });
     });
   });
 }

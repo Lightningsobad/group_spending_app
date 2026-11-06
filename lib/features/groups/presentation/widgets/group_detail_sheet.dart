@@ -187,10 +187,13 @@ class _GroupDetailSheetState extends State<GroupDetailSheet> {
                 onPressed: () async {
                   if (nameCtrl.text.trim().isEmpty) return;
                   Navigator.of(ctx).pop();
+                  final trimmedDesc = descCtrl.text.trim();
+                  final isDescEmpty = trimmedDesc.isEmpty;
                   final success = await context.read<GroupsCubit>().updateGroup(
                         _group.id,
                         name: nameCtrl.text.trim(),
-                        description: descCtrl.text.trim().isEmpty ? null : descCtrl.text.trim(),
+                        description: isDescEmpty ? null : trimmedDesc,
+                        clearDescription: isDescEmpty,
                         category: category,
                       );
                   if (success && mounted) {
