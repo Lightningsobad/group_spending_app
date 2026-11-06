@@ -185,5 +185,74 @@ void main() {
       expect(cubit.state.groupId, 2);
       expect(cubit.state.groupName, 'Group 2');
     });
+
+    test('EXP-01: edit mode preserves original split participants when members load asynchronously', () {
+      final repo = MockExpensesRepository();
+      const expenseToEdit = ExpenseDetailModel(
+        id: 55,
+        groupId: 1,
+        title: 'Ăn tối',
+        totalAmount: 100,
+        totalAmountVnd: 100000,
+        paidByUserId: 101,
+        paidByUserName: 'Alice',
+        status: 'ACTIVE',
+        createdByUserId: 101,
+        categoryName: 'Food',
+        splits: [
+          ExpenseSplitModel(id: 1, userId: 101, fullName: 'Alice', amountOwed: 50, amountOwedVnd: 50000),
+          ExpenseSplitModel(id: 2, userId: 102, fullName: 'Bob', amountOwed: 50, amountOwedVnd: 50000),
+        ],
+      );
+
+      final cubit = ExpenseFormCubit(
+        repo,
+        groupId: 1,
+        members: const [],
+        currentUserId: 101,
+        expenseToEdit: expenseToEdit,
+      );
+
+      expect(cubit.state.isEditMode, true);
+      expect(cubit.state.selectedParticipantUserIds, {101, 102});
+      expect(cubit.state.splitOption, SplitOption.equalSelected);
+
+      cubit.updateMembers(members, currentUserId: 101);
+
+      expect(cubit.state.selectedParticipantUserIds, {101, 102});
+      expect(cubit.state.splitOption, SplitOption.equalSelected);
+    });
+
+    test('EXP-01: validation fails when participant is no longer in group', () async {
+      final repo = MockExpensesRepository();
+      const expenseToEdit = ExpenseDetailModel(
+        id: 55,
+        groupId: 1,
+        title: 'Ăn tối',
+        totalAmount: 100,
+        totalAmountVnd: 100000,
+        paidByUserId: 101,
+        paidByUserName: 'Alice',
+        status: 'ACTIVE',
+        createdByUserId: 101,
+        categoryName: 'Food',
+        splits: [
+          ExpenseSplitModel(id: 1, userId: 101, fullName: 'Alice', amountOwed: 50, amountOwedVnd: 50000),
+          ExpenseSplitModel(id: 2, userId: 999, fullName: 'Former Member', amountOwed: 50, amountOwedVnd: 50000),
+        ],
+      );
+
+      final cubit = ExpenseFormCubit(
+        repo,
+        groupId: 1,
+        members: members,
+        currentUserId: 101,
+        expenseToEdit: expenseToEdit,
+      );
+
+      final success = await cubit.submitExpense();
+      expect(success, false);
+      expect(cubit.state.errorMessage, contains('không còn trong nhóm'));
+    });
   });
 }

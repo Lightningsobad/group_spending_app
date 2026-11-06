@@ -18,6 +18,7 @@ class ExpenseFormState {
   final List<GroupMemberModel> members;
   final File? receiptFile;
   final String? receiptUrl;
+  final bool removeReceipt;
   final bool isScanningReceipt;
   final String? scanConfidence;
   final String? expenseDate;
@@ -40,6 +41,7 @@ class ExpenseFormState {
     this.members = const [],
     this.receiptFile,
     this.receiptUrl,
+    this.removeReceipt = false,
     this.isScanningReceipt = false,
     this.scanConfidence,
     this.expenseDate,
@@ -50,6 +52,8 @@ class ExpenseFormState {
   });
 
   bool get isSubmitting => status == ExpenseFormStatus.submitting;
+  bool get isBusy => isSubmitting || isScanningReceipt;
+  bool get canSubmit => !isBusy;
 
   num get totalAmountVnd {
     final parsed = num.tryParse(amountDigits);
@@ -102,6 +106,7 @@ class ExpenseFormState {
     File? receiptFile,
     String? receiptUrl,
     bool clearReceipt = false,
+    bool? removeReceipt,
     bool? isScanningReceipt,
     String? scanConfidence,
     String? expenseDate,
@@ -111,6 +116,18 @@ class ExpenseFormState {
     String? successMessage,
     bool clearMessages = false,
   }) {
+    final effectiveEditMode = isEditMode ?? this.isEditMode;
+    final bool effectiveRemoveReceipt;
+    if (removeReceipt != null) {
+      effectiveRemoveReceipt = removeReceipt;
+    } else if (clearReceipt) {
+      effectiveRemoveReceipt = effectiveEditMode;
+    } else if (receiptFile != null || receiptUrl != null) {
+      effectiveRemoveReceipt = false;
+    } else {
+      effectiveRemoveReceipt = this.removeReceipt;
+    }
+
     return ExpenseFormState(
       status: status ?? this.status,
       groupId: groupId ?? this.groupId,
@@ -125,10 +142,11 @@ class ExpenseFormState {
       members: members ?? this.members,
       receiptFile: clearReceipt ? null : (receiptFile ?? this.receiptFile),
       receiptUrl: clearReceipt ? null : (receiptUrl ?? this.receiptUrl),
+      removeReceipt: effectiveRemoveReceipt,
       isScanningReceipt: isScanningReceipt ?? this.isScanningReceipt,
       scanConfidence: clearReceipt ? null : (scanConfidence ?? this.scanConfidence),
       expenseDate: expenseDate ?? this.expenseDate,
-      isEditMode: isEditMode ?? this.isEditMode,
+      isEditMode: effectiveEditMode,
       expenseIdToEdit: expenseIdToEdit ?? this.expenseIdToEdit,
       errorMessage: clearMessages ? null : (errorMessage ?? this.errorMessage),
       successMessage: clearMessages ? null : (successMessage ?? this.successMessage),

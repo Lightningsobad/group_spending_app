@@ -43,6 +43,7 @@ class ExpensesState {
     String? errorMessage,
     String? successMessage,
     int? activeGroupId,
+    bool clearActiveGroupId = false,
     bool clearMessages = false,
   }) {
     return ExpensesState(
@@ -54,7 +55,7 @@ class ExpensesState {
       searchQuery: searchQuery ?? this.searchQuery,
       errorMessage: clearMessages ? null : (errorMessage ?? this.errorMessage),
       successMessage: clearMessages ? null : (successMessage ?? this.successMessage),
-      activeGroupId: activeGroupId ?? this.activeGroupId,
+      activeGroupId: clearActiveGroupId ? null : (activeGroupId ?? this.activeGroupId),
     );
   }
 }

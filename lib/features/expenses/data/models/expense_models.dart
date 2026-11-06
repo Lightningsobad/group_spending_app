@@ -341,6 +341,7 @@ class UpdateExpenseRequest {
   final String splitOption;
   final List<int>? participantUserIds;
   final String? receiptUrl;
+  final bool? removeReceipt;
 
   const UpdateExpenseRequest({
     required this.title,
@@ -352,6 +353,7 @@ class UpdateExpenseRequest {
     this.splitOption = 'EQUAL_ALL',
     this.participantUserIds,
     this.receiptUrl,
+    this.removeReceipt,
   });
 
   Map<String, dynamic> toJson() {
@@ -367,6 +369,7 @@ class UpdateExpenseRequest {
         'participantUserIds': participantUserIds,
       if (receiptUrl != null && receiptUrl!.trim().isNotEmpty)
         'receiptUrl': receiptUrl!.trim(),
+      if (removeReceipt == true) 'removeReceipt': true,
     };
   }
 }

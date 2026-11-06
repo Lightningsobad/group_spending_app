@@ -13,6 +13,8 @@ class MockExpensesRepository implements ExpensesRepository {
   Exception? scanErrorToThrow;
   CreateExpenseRequest? lastCreateRequest;
   File? lastCreateReceiptFile;
+  UpdateExpenseRequest? lastUpdateRequest;
+  File? lastUpdateReceiptFile;
 
   @override
   Future<ReceiptScanDataModel> scanReceipt(File file) async {
@@ -51,7 +53,22 @@ class MockExpensesRepository implements ExpensesRepository {
     UpdateExpenseRequest request, {
     File? receiptFile,
   }) async {
-    throw UnimplementedError();
+    lastUpdateRequest = request;
+    lastUpdateReceiptFile = receiptFile;
+    return ExpenseDetailModel(
+      id: expenseId,
+      groupId: 1,
+      title: request.title,
+      totalAmount: request.totalAmount,
+      totalAmountVnd: request.totalAmount * 1000,
+      paidByUserId: request.paidByUserId,
+      paidByUserName: 'Nguyễn Văn A',
+      status: 'ACTIVE',
+      createdByUserId: 1,
+      categoryName: request.category,
+      receiptUrl: request.receiptUrl,
+      splits: const [],
+    );
   }
 
   @override
@@ -227,6 +244,122 @@ void main() {
       cubit.removeReceipt();
       expect(cubit.state.receiptFile, isNull);
       expect(cubit.state.receiptUrl, isNull);
+    });
+
+    test('EXP-03: removeReceipt in edit mode sets removeReceipt=true and passes to UpdateExpenseRequest', () async {
+      final repo = MockExpensesRepository();
+      const expenseToEdit = ExpenseDetailModel(
+        id: 77,
+        groupId: 1,
+        title: 'Bữa trưa',
+        totalAmount: 120,
+        totalAmountVnd: 120000,
+        paidByUserId: 101,
+        paidByUserName: 'Alice',
+        status: 'ACTIVE',
+        createdByUserId: 101,
+        categoryName: 'Food',
+        receiptUrl: 'https://cloudinary.com/bill.jpg',
+        splits: [
+          ExpenseSplitModel(id: 1, userId: 101, fullName: 'Alice', amountOwed: 60, amountOwedVnd: 60000),
+          ExpenseSplitModel(id: 2, userId: 102, fullName: 'Bob', amountOwed: 60, amountOwedVnd: 60000),
+        ],
+      );
+
+      final cubit = ExpenseFormCubit(
+        repo,
+        groupId: 1,
+        members: members,
+        currentUserId: 101,
+        expenseToEdit: expenseToEdit,
+      );
+
+      expect(cubit.state.receiptUrl, 'https://cloudinary.com/bill.jpg');
+      expect(cubit.state.removeReceipt, false);
+
+      // User removes receipt
+      cubit.removeReceipt();
+      expect(cubit.state.receiptUrl, isNull);
+      expect(cubit.state.removeReceipt, true);
+
+      final success = await cubit.submitExpense();
+      expect(success, true);
+      expect(repo.lastUpdateRequest, isNotNull);
+      expect(repo.lastUpdateRequest!.removeReceipt, true);
+      expect(repo.lastUpdateRequest!.receiptUrl, isNull);
+      expect(repo.lastUpdateReceiptFile, isNull);
+    });
+
+    test('EXP-03: picking a new file after removeReceipt resets removeReceipt to false', () {
+      final repo = MockExpensesRepository();
+      const expenseToEdit = ExpenseDetailModel(
+        id: 77,
+        groupId: 1,
+        title: 'Bữa trưa',
+        totalAmount: 120,
+        totalAmountVnd: 120000,
+        paidByUserId: 101,
+        paidByUserName: 'Alice',
+        status: 'ACTIVE',
+        createdByUserId: 101,
+        categoryName: 'Food',
+        receiptUrl: 'https://cloudinary.com/bill.jpg',
+        splits: [],
+      );
+
+      final cubit = ExpenseFormCubit(
+        repo,
+        groupId: 1,
+        members: members,
+        currentUserId: 101,
+        expenseToEdit: expenseToEdit,
+      );
+
+      cubit.removeReceipt();
+      expect(cubit.state.removeReceipt, true);
+
+      cubit.setReceiptFile(File('new_receipt.jpg'));
+      expect(cubit.state.removeReceipt, false);
+      expect(cubit.state.receiptFile, isNotNull);
+    });
+
+    test('EXP-04: submitExpense is blocked when isScanningReceipt is true', () async {
+      final repo = MockExpensesRepository();
+      final cubit = ExpenseFormCubit(
+        repo,
+        groupId: 1,
+        members: members,
+        currentUserId: 101,
+      );
+      cubit.setTitle('Test Expense');
+      cubit.onDigitPressed('5');
+      cubit.onTripleZeroPressed();
+
+      // Simulate scanning in progress
+      cubit.emit(cubit.state.copyWith(isScanningReceipt: true));
+      expect(cubit.state.canSubmit, false);
+
+      final success = await cubit.submitExpense();
+      expect(success, false);
+      expect(repo.lastCreateRequest, isNull);
+    });
+
+    test('EXP-04: submitExpense is blocked when members is empty', () async {
+      final repo = MockExpensesRepository();
+      final cubit = ExpenseFormCubit(
+        repo,
+        groupId: 1,
+        members: const [],
+        currentUserId: 101,
+      );
+      cubit.setTitle('Test Expense');
+      cubit.onDigitPressed('5');
+      cubit.onTripleZeroPressed();
+
+      final success = await cubit.submitExpense();
+      expect(success, false);
+      expect(cubit.state.errorMessage, contains('Đang tải danh sách thành viên'));
+      expect(repo.lastCreateRequest, isNull);
     });
   });
 }
