@@ -138,6 +138,84 @@ class SettleDebtDialogs {
     );
   }
 
+  static Future<bool?> showActualDebtActionChoice(
+    BuildContext context, {
+    required String debtorName,
+    required String formattedAmount,
+  }) {
+    final tr = context.l10n;
+    final colors = context.colors;
+
+    return showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: colors.cardBackground,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Text(
+          tr.confirmReceiveDebtTitle,
+          style: AppTextStyle.bold(
+            fontSize: AppFontSize.body,
+            color: colors.textPrimary,
+          ),
+        ),
+        content: Text(
+          tr.confirmReceiveDebtMessage(debtorName, formattedAmount),
+          style: AppTextStyle.regular(
+            fontSize: AppFontSize.secondary,
+            color: colors.textSecondary,
+          ),
+        ),
+        actions: [
+          TextButton(
+            style: TextButton.styleFrom(
+              minimumSize: const Size(64, 44),
+            ),
+            onPressed: () => Navigator.of(ctx).pop(null),
+            child: Text(
+              tr.cancel,
+              style: AppTextStyle.bold(
+                fontSize: AppFontSize.secondary,
+                color: colors.textMuted,
+              ),
+            ),
+          ),
+          OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              foregroundColor: colors.debtOweText,
+              side: BorderSide(color: colors.debtOweText),
+              minimumSize: const Size(64, 44),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(
+              tr.rejectReceivedAction,
+              style: AppTextStyle.bold(fontSize: AppFontSize.secondary),
+            ),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: colors.debtActionConfirmBg,
+              foregroundColor: colors.onPrimaryButton,
+              minimumSize: const Size(64, 44),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(
+              tr.confirmReceivedAction,
+              style: AppTextStyle.bold(fontSize: AppFontSize.secondary),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   static Future<bool?> showConfirmSettled(
     BuildContext context, {
     required String debtorName,

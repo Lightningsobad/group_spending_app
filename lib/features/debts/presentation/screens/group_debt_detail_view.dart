@@ -45,12 +45,12 @@ class GroupDebtDetailView extends StatelessWidget {
         final isDetailLoading = state.isDetailLoading;
         final activeTab = state.activeDetailTab;
 
-        final hasFreshData = (state.simplifiedDebts != null &&
+        final isGroupMatched = (state.simplifiedDebts != null &&
                 state.simplifiedDebts!.userBalance.groupId == groupId) ||
             (state.actualDebts != null &&
                 state.actualDebts!.userBalance.groupId == groupId);
 
-        if (isDetailLoading && !hasFreshData) {
+        if (isDetailLoading && !isGroupMatched) {
           return PopScope(
             canPop: false,
             onPopInvokedWithResult: (didPop, _) {
@@ -69,16 +69,29 @@ class GroupDebtDetailView extends StatelessWidget {
           );
         }
 
-        final userBalance = state.simplifiedDebts?.userBalance ??
-            state.actualDebts?.userBalance ??
-            DebtUserBalanceEntity(
-              groupId: groupId,
-              groupName: groupName ?? 'Nhóm chi tiêu',
-            );
+        final userBalance = (state.simplifiedDebts != null &&
+                state.simplifiedDebts!.userBalance.groupId == groupId)
+            ? state.simplifiedDebts!.userBalance
+            : (state.actualDebts != null &&
+                    state.actualDebts!.userBalance.groupId == groupId)
+                ? state.actualDebts!.userBalance
+                : DebtUserBalanceEntity(
+                    groupId: groupId,
+                    groupName: groupName ?? 'Nhóm chi tiêu',
+                  );
 
-        final simplifiedList =
-            state.simplifiedDebts?.simplifiedDebts ?? const [];
-        final actualList = state.actualDebts?.actualDebts ?? const [];
+        final simplifiedList = (state.simplifiedDebts != null &&
+                state.simplifiedDebts!.userBalance.groupId == groupId)
+            ? state.simplifiedDebts!.simplifiedDebts
+            : const <SimplifiedDebtEntity>[];
+        final actualList = (state.actualDebts != null &&
+                state.actualDebts!.userBalance.groupId == groupId)
+            ? state.actualDebts!.actualDebts
+            : const <ActualDebtEntity>[];
+
+        final pendingSettlements = state.pendingSettlements
+            .where((s) => s.groupId == groupId)
+            .toList();
 
         return PopScope(
           canPop: false,
@@ -250,8 +263,8 @@ class GroupDebtDetailView extends StatelessWidget {
                           (index) => const GroupDebtCardSkeleton(),
                         )
                       else if (activeTab == 0) ...[
-                        if (state.pendingSettlements.isNotEmpty)
-                          ...state.pendingSettlements.map(
+                        if (pendingSettlements.isNotEmpty)
+                          ...pendingSettlements.map(
                             (settlement) => _buildSettlementCard(
                               context,
                               settlement: settlement,
@@ -261,12 +274,12 @@ class GroupDebtDetailView extends StatelessWidget {
                             ),
                           ),
                         if (simplifiedList.isEmpty &&
-                            state.pendingSettlements.isEmpty)
+                            pendingSettlements.isEmpty)
                           _buildEmptyDebtView(context, tr, colors)
                         else
                           ...simplifiedList.map(
                             (debt) {
-                              final matchingSettlement = state.pendingSettlements
+                              final matchingSettlement = pendingSettlements
                                   .where((s) =>
                                       s.debtorId == debt.debtorId &&
                                       s.creditorId == debt.creditorId)
@@ -351,16 +364,20 @@ class GroupDebtDetailView extends StatelessWidget {
                           ...actualList.map(
                             (debt) => ActualDebtCardWidget(
                               debt: debt,
+                              isSubmitting: state.isActionSubmitting,
                               onDebtorPay: (debtor) {
+                                if (state.isActionSubmitting) return;
                                 cubit.markDebtAsPaid(debtor.splitId);
                               },
                               onDebtorConfirm: (debtor, confirmed) {
+                                if (state.isActionSubmitting) return;
                                 cubit.confirmDebtSettled(
                                   debtor.splitId,
                                   confirmed: confirmed,
                                 );
                               },
                               onDebtorRemind: (debtor) {
+                                if (state.isActionSubmitting) return;
                                 cubit.sendDebtReminder(debtor.splitId);
                               },
                             ),
