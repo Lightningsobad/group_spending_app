@@ -341,5 +341,94 @@ void main() {
       expect(find.text('Quỹ Nhóm A Cũ'), findsNothing);
       expect(find.byType(AppShimmer), findsNothing);
     });
+
+    testWidgets('A01: Admin on active group displays create fund button and tapping triggers callback', (tester) async {
+      int tapCount = 0;
+      await tester.pumpWidget(
+        createWidgetUnderTest(
+          onCreateFund: () => tapCount++,
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final createBtn = find.widgetWithIcon(ElevatedButton, LucideIcons.plus);
+      expect(createBtn, findsOneWidget);
+
+      await tester.tap(createBtn);
+      expect(tapCount, 1);
+    });
+
+    testWidgets('A02: Admin on archived group hides create fund button and blocks callback', (tester) async {
+      int tapCount = 0;
+      const archivedGroup = GroupModel(
+        id: 1,
+        name: 'Nhóm Lưu Trữ',
+        category: 'friends',
+        ownerId: 1,
+        role: 'ADMIN',
+        status: 'ARCHIVED',
+      );
+
+      final repo = MockFundsRepository();
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('vi'),
+          theme: AppTheme.lightTheme,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: BlocProvider<FundsCubit>(
+              create: (_) => FundsCubit(repo),
+              child: SingleChildScrollView(
+                child: GroupFundsTabView(
+                  group: archivedGroup,
+                  onCreateFund: () => tapCount++,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final createBtn = find.widgetWithIcon(ElevatedButton, LucideIcons.plus);
+      expect(createBtn, findsNothing);
+      expect(tapCount, 0);
+    });
+
+    testWidgets('A03: Member on active or archived group hides admin create fund button', (tester) async {
+      const memberGroup = GroupModel(
+        id: 1,
+        name: 'Nhóm Member',
+        category: 'friends',
+        ownerId: 99,
+        role: 'MEMBER',
+        status: 'ACTIVE',
+      );
+
+      final repo = MockFundsRepository();
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('vi'),
+          theme: AppTheme.lightTheme,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: Scaffold(
+            body: BlocProvider<FundsCubit>(
+              create: (_) => FundsCubit(repo),
+              child: const SingleChildScrollView(
+                child: GroupFundsTabView(
+                  group: memberGroup,
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final createBtn = find.widgetWithIcon(ElevatedButton, LucideIcons.plus);
+      expect(createBtn, findsNothing);
+    });
   });
 }

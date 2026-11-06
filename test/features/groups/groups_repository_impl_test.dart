@@ -53,7 +53,14 @@ class FakeGroupsRemoteDataSource implements GroupsRemoteDataSource {
   Future<GroupModel> createGroup({required String name, String? description, String? category, String? defaultCurrency}) => throw UnimplementedError();
 
   @override
-  Future<GroupModel> updateGroup(int groupId, {required String name, String? description, String? category, String? defaultCurrency}) => throw UnimplementedError();
+  Future<GroupModel> updateGroup(
+    int groupId, {
+    required String name,
+    String? description,
+    bool clearDescription = false,
+    String? category,
+    String? defaultCurrency,
+  }) => throw UnimplementedError();
 
   @override
   Future<void> archiveGroup(int groupId) async {}
