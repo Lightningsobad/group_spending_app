@@ -241,9 +241,7 @@ class MockDebtsRepository implements DebtsRepository {
   Future<List<DebtSettlementEntity>> getAllPendingDebtSettlements(
     int groupId,
   ) async {
-    return settlementsResult
-        .where((s) => s.status == DebtStatus.waitingForConfirmation)
-        .toList();
+    return settlementsResult;
   }
 }
 
