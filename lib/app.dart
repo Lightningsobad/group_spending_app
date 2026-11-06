@@ -199,25 +199,35 @@ class _FairShareAppState extends State<FairShareApp> {
         );
     _notificationsCubit =
         widget.notificationsCubit ??
-        NotificationsCubit(_notificationsRepository);
+        NotificationsCubit(
+          _notificationsRepository,
+          sessionCoordinator: _sessionCoordinator,
+        );
 
     _stompService = StompNotificationService(
       dataSyncCoordinator: _dataSyncCoordinator,
       onNotificationReceived: (notification) {
-        _notificationsCubit.onNotificationReceived(notification);
-        InAppNotificationToast.show(notification);
+        if (_sessionCoordinator.isAuthenticated) {
+          _notificationsCubit.onNotificationReceived(notification);
+          InAppNotificationToast.show(notification);
+        }
       },
     );
 
     _fcmService = FcmService(
       authRepository: _authRepository,
       onNotificationReceived: (notification) {
-        _notificationsCubit.onNotificationReceived(notification);
-        InAppNotificationToast.show(notification);
+        if (_sessionCoordinator.isAuthenticated) {
+          _notificationsCubit.onNotificationReceived(notification);
+          InAppNotificationToast.show(notification);
+        }
       },
       onNotificationTapped: (notification) {
-        _notificationsCubit.markAsRead(notification.id);
-        NotificationNavigationHandler.handleTap(notification);
+        NotificationNavigationHandler.handleTap(
+          notification,
+          cubit: _notificationsCubit,
+          sessionCoordinator: _sessionCoordinator,
+        );
       },
     );
     _fcmService.init();
@@ -242,8 +252,11 @@ class _FairShareAppState extends State<FairShareApp> {
   }
 
   void _connectStomp() {
+    final currentEpoch = _sessionCoordinator.sessionEpoch;
     _authRepository.getCurrentUser().then((user) {
-      if (!_isDisposed && _sessionCoordinator.isAuthenticated) {
+      if (!_isDisposed &&
+          _sessionCoordinator.isAuthenticated &&
+          _sessionCoordinator.sessionEpoch == currentEpoch) {
         _stompService.connect(userId: user.id);
       }
     }).catchError((_) {});
@@ -254,9 +267,21 @@ class _FairShareAppState extends State<FairShareApp> {
       _notificationsCubit.loadUnreadCount();
       _connectStomp();
       _fcmService.syncToken();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!_isDisposed && mounted) {
+          final navCtx = AppRouter.navigatorKey.currentContext;
+          if (navCtx != null) {
+            NotificationNavigationHandler.consumePendingNotification(
+              navCtx,
+              cubit: _notificationsCubit,
+            );
+          }
+        }
+      });
     } else {
       _stompService.disconnect();
       _notificationsCubit.clear();
+      InAppNotificationToast.dismiss();
     }
   }
 
@@ -266,6 +291,7 @@ class _FairShareAppState extends State<FairShareApp> {
     _sessionCoordinator.removeListener(_onSessionChanged);
     _stompService.disconnect();
     _fcmService.dispose();
+    InAppNotificationToast.dismiss();
     _notificationsCubit.close();
     _fundsCubit.close();
     _authCubit.close();

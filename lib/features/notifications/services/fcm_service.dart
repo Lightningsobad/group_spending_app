@@ -131,7 +131,11 @@ class FcmService {
     final body = notification?.body ?? data['body']?.toString() ?? '';
     final typeStr = data['type']?.toString();
     final refTypeStr = data['referenceType']?.toString();
-    final refId = int.tryParse(data['referenceId']?.toString() ?? '');
+    final refId = int.tryParse(data['referenceId']?.toString() ?? '') ??
+        int.tryParse(data['expenseId']?.toString() ?? '') ??
+        int.tryParse(data['debtId']?.toString() ?? '') ??
+        int.tryParse(data['settlementId']?.toString() ?? '') ??
+        int.tryParse(data['fundId']?.toString() ?? '');
     final groupId = int.tryParse(data['groupId']?.toString() ?? '');
     final groupName = data['groupName']?.toString();
     final actorId = int.tryParse(data['actorId']?.toString() ?? '');

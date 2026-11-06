@@ -158,9 +158,11 @@ class _NotificationModalState extends State<NotificationModal> {
                           builder: (context, state) {
                             if (state.unreadCount == 0) return const SizedBox.shrink();
                             return TextButton.icon(
-                              onPressed: () {
-                                context.read<NotificationsCubit>().markAllAsRead();
-                              },
+                              onPressed: state.isBulkActionInProgress
+                                  ? null
+                                  : () {
+                                      context.read<NotificationsCubit>().markAllAsRead();
+                                    },
                               icon: const Icon(
                                 LucideIcons.checkCheck,
                                 size: 16,
@@ -170,7 +172,9 @@ class _NotificationModalState extends State<NotificationModal> {
                                 'Đã đọc tất cả',
                                 style: AppTextStyle.bold(
                                   fontSize: 12,
-                                  color: AppColors.emerald,
+                                  color: state.isBulkActionInProgress
+                                      ? colors.textSecondary
+                                      : AppColors.emerald,
                                 ),
                               ),
                               style: TextButton.styleFrom(
@@ -234,6 +238,55 @@ class _NotificationModalState extends State<NotificationModal> {
                     }
 
                     if (state.notifications.isEmpty) {
+                      if (state.hasInitialError) {
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 32),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 72,
+                                  height: 72,
+                                  decoration: BoxDecoration(
+                                    color: colors.surfaceMuted,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    LucideIcons.alertCircle,
+                                    size: 34,
+                                    color: AppColors.error,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  state.errorMessage ??
+                                      'Không thể tải danh sách thông báo.',
+                                  textAlign: TextAlign.center,
+                                  style: AppTextStyle.semiBold(
+                                    fontSize: 14,
+                                    color: colors.textSecondary,
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                ElevatedButton.icon(
+                                  onPressed: () => context
+                                      .read<NotificationsCubit>()
+                                      .loadNotifications(refresh: true),
+                                  icon: const Icon(LucideIcons.refreshCw,
+                                      size: 16),
+                                  label: Text(tr.retryAction),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: AppColors.emerald,
+                                    foregroundColor: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
+
                       return Center(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -278,10 +331,35 @@ class _NotificationModalState extends State<NotificationModal> {
                         physics: const AlwaysScrollableScrollPhysics(),
                         padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
                         itemCount: state.notifications.length +
-                            (state.isLoadingMore ? 1 : 0),
+                            (state.isLoadingMore || state.hasLoadMoreError ? 1 : 0),
                         separatorBuilder: (_, _) => const SizedBox(height: 10),
                         itemBuilder: (context, index) {
                           if (index == state.notifications.length) {
+                            if (state.hasLoadMoreError) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                child: Center(
+                                  child: TextButton.icon(
+                                    onPressed: () => context
+                                        .read<NotificationsCubit>()
+                                        .loadMore(),
+                                    icon: const Icon(
+                                      LucideIcons.refreshCw,
+                                      size: 14,
+                                      color: AppColors.emerald,
+                                    ),
+                                    label: Text(
+                                      'Tải thêm thất bại. Thử lại',
+                                      style: AppTextStyle.medium(
+                                        color: AppColors.emerald,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+
                             return const Padding(
                               padding: EdgeInsets.symmetric(vertical: 16),
                               child: Center(
@@ -324,9 +402,11 @@ class _NotificationModalState extends State<NotificationModal> {
                     ),
                     child: Center(
                       child: TextButton.icon(
-                        onPressed: () {
-                          context.read<NotificationsCubit>().deleteAllRead();
-                        },
+                        onPressed: state.isBulkActionInProgress
+                            ? null
+                            : () {
+                                context.read<NotificationsCubit>().deleteAllRead();
+                              },
                         icon: const Icon(
                           LucideIcons.trash2,
                           size: 14,
@@ -336,7 +416,9 @@ class _NotificationModalState extends State<NotificationModal> {
                           'Xóa các thông báo đã đọc',
                           style: AppTextStyle.medium(
                             fontSize: 12,
-                            color: AppColors.error,
+                            color: state.isBulkActionInProgress
+                                ? colors.textSecondary
+                                : AppColors.error,
                           ),
                         ),
                       ),
@@ -419,9 +501,12 @@ class _NotificationModalState extends State<NotificationModal> {
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
           onTap: () {
-            context.read<NotificationsCubit>().markAsRead(item.id);
+            final cubit = context.read<NotificationsCubit>();
             Navigator.of(context).pop();
-            NotificationNavigationHandler.handleTap(item, context: context);
+            NotificationNavigationHandler.handleTap(
+              item,
+              cubit: cubit,
+            );
           },
           child: Container(
             padding: const EdgeInsets.all(14),

@@ -12,6 +12,10 @@ class NotificationsState {
   final bool unreadOnlyFilter;
   final NotificationType? selectedTypeFilter;
   final String? errorMessage;
+  final bool hasInitialError;
+  final bool hasLoadMoreError;
+  final Set<int> pendingMutationIds;
+  final bool isBulkActionInProgress;
 
   const NotificationsState({
     this.unreadCount = 0,
@@ -23,6 +27,10 @@ class NotificationsState {
     this.unreadOnlyFilter = false,
     this.selectedTypeFilter,
     this.errorMessage,
+    this.hasInitialError = false,
+    this.hasLoadMoreError = false,
+    this.pendingMutationIds = const {},
+    this.isBulkActionInProgress = false,
   });
 
   NotificationsState copyWith({
@@ -37,6 +45,10 @@ class NotificationsState {
     bool clearTypeFilter = false,
     String? errorMessage,
     bool clearError = false,
+    bool? hasInitialError,
+    bool? hasLoadMoreError,
+    Set<int>? pendingMutationIds,
+    bool? isBulkActionInProgress,
   }) {
     return NotificationsState(
       unreadCount: unreadCount ?? this.unreadCount,
@@ -50,6 +62,11 @@ class NotificationsState {
           ? null
           : (selectedTypeFilter ?? this.selectedTypeFilter),
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
+      hasInitialError: hasInitialError ?? this.hasInitialError,
+      hasLoadMoreError: hasLoadMoreError ?? this.hasLoadMoreError,
+      pendingMutationIds: pendingMutationIds ?? this.pendingMutationIds,
+      isBulkActionInProgress:
+          isBulkActionInProgress ?? this.isBulkActionInProgress,
     );
   }
 
@@ -66,7 +83,11 @@ class NotificationsState {
           page == other.page &&
           unreadOnlyFilter == other.unreadOnlyFilter &&
           selectedTypeFilter == other.selectedTypeFilter &&
-          errorMessage == other.errorMessage;
+          errorMessage == other.errorMessage &&
+          hasInitialError == other.hasInitialError &&
+          hasLoadMoreError == other.hasLoadMoreError &&
+          setEquals(pendingMutationIds, other.pendingMutationIds) &&
+          isBulkActionInProgress == other.isBulkActionInProgress;
 
   @override
   int get hashCode => Object.hash(
@@ -79,5 +100,9 @@ class NotificationsState {
         unreadOnlyFilter,
         selectedTypeFilter,
         errorMessage,
+        hasInitialError,
+        hasLoadMoreError,
+        pendingMutationIds.length,
+        isBulkActionInProgress,
       );
 }
