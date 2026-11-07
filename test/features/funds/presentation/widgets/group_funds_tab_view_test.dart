@@ -19,10 +19,13 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 class MockFundsRepository implements FundsRepository {
   final GroupFundsOverviewEntity? overviewToReturn;
   final Duration delay;
+  final Object? errorToThrow;
+  int getGroupFundsOverviewCalls = 0;
 
   MockFundsRepository({
     this.overviewToReturn,
     this.delay = Duration.zero,
+    this.errorToThrow,
   });
 
   @override
@@ -32,8 +35,12 @@ class MockFundsRepository implements FundsRepository {
     FundTimeFilter? timeFilter,
     FundCollectionStatus? status,
   }) async {
+    getGroupFundsOverviewCalls++;
     if (delay > Duration.zero) {
       await Future.delayed(delay);
+    }
+    if (errorToThrow != null) {
+      throw errorToThrow!;
     }
     return overviewToReturn ??
         const GroupFundsOverviewEntity(
@@ -340,6 +347,20 @@ void main() {
 
       expect(find.text('Quỹ Nhóm A Cũ'), findsNothing);
       expect(find.byType(AppShimmer), findsNothing);
+    });
+
+    testWidgets('FUND-06: displays error state with retry button when initial load fails and tapping retry reloads', (tester) async {
+      final repo = MockFundsRepository(errorToThrow: Exception('Lỗi kết nối máy chủ'));
+      await tester.pumpWidget(createWidgetUnderTest(repo: repo));
+      await tester.pumpAndSettle();
+
+      expect(find.byIcon(LucideIcons.alertCircle), findsOneWidget);
+      expect(find.widgetWithText(ElevatedButton, 'Thử lại'), findsOneWidget);
+      expect(repo.getGroupFundsOverviewCalls, 1);
+
+      await tester.tap(find.widgetWithText(ElevatedButton, 'Thử lại'));
+      await tester.pump();
+      expect(repo.getGroupFundsOverviewCalls, 2);
     });
   });
 }

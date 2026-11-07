@@ -35,11 +35,15 @@ class FundsRepositoryImpl implements FundsRepository {
     String? dueDate,
     List<int>? memberUserIds,
   }) {
-    final targetAmountK = (targetAmountPerPersonVnd / 1000).round();
+    final amountInt = targetAmountPerPersonVnd.toInt();
+    if (amountInt < 1000 || amountInt % 1000 != 0) {
+      throw ArgumentError('Số tiền mỗi người phải tối thiểu 1.000đ và là bội số của 1.000đ');
+    }
+    final targetAmountK = amountInt ~/ 1000;
     final request = CreateFundCollectionRequest(
       name: name,
       description: description,
-      targetAmountPerPerson: targetAmountK < 1 ? 1 : targetAmountK,
+      targetAmountPerPerson: targetAmountK,
       dueDate: dueDate,
       memberUserIds: memberUserIds,
     );
@@ -55,11 +59,15 @@ class FundsRepositoryImpl implements FundsRepository {
     String? dueDate,
     List<int>? memberUserIds,
   }) {
-    final targetAmountK = (targetAmountPerPersonVnd / 1000).round();
+    final amountInt = targetAmountPerPersonVnd.toInt();
+    if (amountInt < 1000 || amountInt % 1000 != 0) {
+      throw ArgumentError('Số tiền mỗi người phải tối thiểu 1.000đ và là bội số của 1.000đ');
+    }
+    final targetAmountK = amountInt ~/ 1000;
     final request = UpdateFundCollectionRequest(
       name: name,
       description: description,
-      targetAmountPerPerson: targetAmountK < 1 ? 1 : targetAmountK,
+      targetAmountPerPerson: targetAmountK,
       dueDate: dueDate,
       memberUserIds: memberUserIds,
     );

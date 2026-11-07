@@ -6,6 +6,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../../shared/widgets/app_shimmer.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../groups/data/models/group_model.dart';
 import '../cubit/funds_cubit.dart';
 import '../cubit/funds_state.dart';
@@ -89,12 +90,24 @@ class _GroupFundsTabViewState extends State<GroupFundsTabView> {
     final colors = context.colors;
     final tr = context.l10n;
 
-    return BlocBuilder<FundsCubit, FundsState>(
+    return BlocConsumer<FundsCubit, FundsState>(
+      listenWhen: (prev, curr) =>
+          curr.status == FundsStatus.failure &&
+          curr.errorMessage != null &&
+          curr.overview != null &&
+          curr.errorMessage != prev.errorMessage,
+      listener: (context, state) {
+        if (state.errorMessage != null) {
+          AppSnackBar.showError(context, state.errorMessage!);
+        }
+      },
       builder: (context, state) {
         final isDifferentGroup = state.currentGroupId != widget.group.id;
+        final hasError = state.status == FundsStatus.failure;
         final overview = isDifferentGroup ? null : state.overview;
         final filteredFunds = isDifferentGroup ? const [] : state.filteredFunds;
-        final isLoading = state.isLoading || isDifferentGroup || (overview == null);
+        final isInitialError = hasError && overview == null && !isDifferentGroup;
+        final isLoading = (state.isLoading || isDifferentGroup || (overview == null)) && !isInitialError;
 
         return SafeArea(
           top: false,
@@ -114,14 +127,15 @@ class _GroupFundsTabViewState extends State<GroupFundsTabView> {
               // 2. Search Bar
               if (isLoading)
                 _buildSearchSkeleton(colors)
-              else
+              else if (!isInitialError) ...[
                 _buildSearchBar(colors, tr),
-              const SizedBox(height: 14),
+                const SizedBox(height: 14),
+              ],
 
               // 3. Filter Bar (Status & Time)
               if (isLoading)
                 _buildFilterSkeleton(colors)
-              else
+              else if (!isInitialError) ...[
                 FundFilterBar(
                   selectedStatus: state.selectedStatusFilter,
                   selectedTime: state.selectedTimeFilter,
@@ -134,10 +148,13 @@ class _GroupFundsTabViewState extends State<GroupFundsTabView> {
                   onTimeChanged: (time) =>
                       context.read<FundsCubit>().setTimeFilter(time),
                 ),
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
+              ],
 
               // 4. Fund Collection Items List
-              if (isLoading) ...[
+              if (isInitialError) ...[
+                _buildErrorState(colors, tr, state.errorMessage),
+              ] else if (isLoading) ...[
                 _buildShimmerList(colors),
               ] else if (filteredFunds.isEmpty) ...[
                 _buildEmptyState(colors, tr),
@@ -160,6 +177,56 @@ class _GroupFundsTabViewState extends State<GroupFundsTabView> {
           ),
         );
       },
+    );
+  }
+
+  Widget _buildErrorState(dynamic colors, dynamic tr, String? errorMessage) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 20),
+      decoration: BoxDecoration(
+        color: colors.cardBackground,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: colors.cardBorder),
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: colors.errorSurface,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              LucideIcons.alertCircle,
+              size: 36,
+              color: colors.errorAccent,
+            ),
+          ),
+          const SizedBox(height: 14),
+          Text(
+            errorMessage ?? 'Không thể tải danh sách quỹ nhóm',
+            style: AppTextStyle.bold(
+              fontSize: 16,
+              color: colors.textPrimary,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () => context.read<FundsCubit>().loadGroupFunds(widget.group.id),
+            icon: const Icon(LucideIcons.refreshCw, size: 16),
+            label: const Text('Thử lại'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: colors.primaryButton,
+              foregroundColor: colors.onPrimaryButton,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

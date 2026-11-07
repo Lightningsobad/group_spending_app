@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:group_spending_app/features/funds/domain/entities/fund_entities.dart';
 import 'package:group_spending_app/features/funds/domain/entities/fund_enums.dart';
@@ -44,6 +45,13 @@ class MockFundsRepository implements FundsRepository {
     ],
   );
 
+  Future<GroupFundsOverviewEntity> Function(
+    int groupId,
+    String? search,
+    FundTimeFilter? timeFilter,
+    FundCollectionStatus? status,
+  )? customOverviewHandler;
+
   @override
   Future<GroupFundsOverviewEntity> getGroupFundsOverview(
     int groupId, {
@@ -55,6 +63,9 @@ class MockFundsRepository implements FundsRepository {
     lastSearch = search;
     lastStatus = status;
     lastTimeFilter = timeFilter;
+    if (customOverviewHandler != null) {
+      return customOverviewHandler!(groupId, search, timeFilter, status);
+    }
     return overviewResult;
   }
 
@@ -191,6 +202,121 @@ void main() {
       cubit.clearMessages();
       expect(cubit.state.errorMessage, isNull);
       expect(cubit.state.successMessage, isNull);
+    });
+
+    test('FUND-03: slow response from Group A does not overwrite newer Group B data', () async {
+      final completerA = Completer<GroupFundsOverviewEntity>();
+      const overviewB = GroupFundsOverviewEntity(
+        groupId: 20,
+        totalCollectedAmount: 200,
+        totalCollectedAmountVnd: 200000,
+        totalTargetAmount: 200,
+        totalTargetAmountVnd: 200000,
+        completionPercentage: 100.0,
+        funds: [
+          FundCollectionItemEntity(
+            id: 201,
+            name: 'Quỹ Group B',
+            status: FundCollectionStatus.completed,
+            statusText: 'Hoàn thành',
+          ),
+        ],
+      );
+
+      mockRepo.customOverviewHandler = (groupId, search, timeFilter, status) {
+        if (groupId == 10) {
+          return completerA.future;
+        } else {
+          return Future.value(overviewB);
+        }
+      };
+
+      // 1. Trigger load for Group 10 (slow)
+      final futureA = cubit.loadGroupFunds(10);
+      expect(cubit.state.currentGroupId, 10);
+      expect(cubit.state.status, FundsStatus.loading);
+
+      // 2. User quickly switches to Group 20 (fast)
+      await cubit.loadGroupFunds(20);
+      expect(cubit.state.currentGroupId, 20);
+      expect(cubit.state.status, FundsStatus.success);
+      expect(cubit.state.filteredFunds.first.name, 'Quỹ Group B');
+
+      // 3. Group 10 finally completes
+      completerA.complete(mockRepo.overviewResult);
+      await futureA;
+
+      // State MUST remain Group 20 data, not overwritten by Group 10!
+      expect(cubit.state.currentGroupId, 20);
+      expect(cubit.state.filteredFunds.first.name, 'Quỹ Group B');
+      expect(cubit.state.overview?.groupId, 20);
+    });
+
+    test('FUND-03: old in-flight filter response completing after newer filter does not overwrite state', () async {
+      final completerCollecting = Completer<GroupFundsOverviewEntity>();
+      const completedOverview = GroupFundsOverviewEntity(
+        groupId: 10,
+        totalCollectedAmount: 100,
+        totalCollectedAmountVnd: 100000,
+        totalTargetAmount: 100,
+        totalTargetAmountVnd: 100000,
+        completionPercentage: 100.0,
+        funds: [
+          FundCollectionItemEntity(
+            id: 2,
+            name: 'Quỹ Hoàn thành',
+            status: FundCollectionStatus.completed,
+            statusText: 'Hoàn thành',
+          ),
+        ],
+      );
+
+      mockRepo.customOverviewHandler = (groupId, search, timeFilter, status) {
+        if (status == FundCollectionStatus.collecting) {
+          return completerCollecting.future;
+        } else {
+          return Future.value(completedOverview);
+        }
+      };
+
+      await cubit.loadGroupFunds(10);
+
+      // Trigger slow collecting filter
+      cubit.setStatusFilter(FundCollectionStatus.collecting);
+
+      // Quickly change to completed filter (fast)
+      cubit.setStatusFilter(FundCollectionStatus.completed);
+      await Future.delayed(Duration.zero);
+
+      expect(cubit.state.selectedStatusFilter, FundCollectionStatus.completed);
+      expect(cubit.state.filteredFunds.first.name, 'Quỹ Hoàn thành');
+
+      // Now slow collecting filter arrives
+      completerCollecting.complete(mockRepo.overviewResult);
+      await Future.delayed(Duration.zero);
+
+      // State must not be overwritten
+      expect(cubit.state.selectedStatusFilter, FundCollectionStatus.completed);
+      expect(cubit.state.filteredFunds.first.name, 'Quỹ Hoàn thành');
+    });
+
+    test('FUND-03: in-flight response completing after reset() is discarded', () async {
+      final completer = Completer<GroupFundsOverviewEntity>();
+      mockRepo.customOverviewHandler = (groupId, search, timeFilter, status) => completer.future;
+
+      final future = cubit.loadGroupFunds(10);
+      expect(cubit.state.status, FundsStatus.loading);
+
+      cubit.reset();
+      expect(cubit.state.status, FundsStatus.initial);
+      expect(cubit.state.overview, isNull);
+
+      completer.complete(mockRepo.overviewResult);
+      await future;
+
+      // State remains initial, not overwritten by delayed response
+      expect(cubit.state.status, FundsStatus.initial);
+      expect(cubit.state.overview, isNull);
     });
   });
 }

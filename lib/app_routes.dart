@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'features/analytics/presentation/cubit/analytics_tab_cubit.dart';
 import 'features/analytics/presentation/cubit/global_analytics_cubit.dart';
@@ -100,7 +101,12 @@ List<RouteBase> buildAppRoutes({
     GoRoute(
       path: '/groups/:groupId/funds/create',
       builder: (context, state) {
-        final groupId = int.tryParse(state.pathParameters['groupId'] ?? '') ?? 0;
+        final groupId = int.tryParse(state.pathParameters['groupId'] ?? '');
+        if (groupId == null || groupId <= 0) {
+          return const Scaffold(
+            body: Center(child: Text('Thông tin nhóm không hợp lệ')),
+          );
+        }
         final group = state.extra as GroupModel?;
         return FundFormScreen(
           groupId: groupId,
@@ -111,7 +117,13 @@ List<RouteBase> buildAppRoutes({
     GoRoute(
       path: '/groups/:groupId/funds/:fundId',
       builder: (context, state) {
-        final fundId = int.tryParse(state.pathParameters['fundId'] ?? '') ?? 0;
+        final groupId = int.tryParse(state.pathParameters['groupId'] ?? '');
+        final fundId = int.tryParse(state.pathParameters['fundId'] ?? '');
+        if (groupId == null || groupId <= 0 || fundId == null || fundId <= 0) {
+          return const Scaffold(
+            body: Center(child: Text('Thông tin đợt quỹ không hợp lệ')),
+          );
+        }
         final group = state.extra as GroupModel?;
         return FundDetailScreen(
           fundId: fundId,
@@ -122,10 +134,17 @@ List<RouteBase> buildAppRoutes({
     GoRoute(
       path: '/groups/:groupId/funds/:fundId/edit',
       builder: (context, state) {
-        final groupId = int.tryParse(state.pathParameters['groupId'] ?? '') ?? 0;
+        final groupId = int.tryParse(state.pathParameters['groupId'] ?? '');
+        final fundId = int.tryParse(state.pathParameters['fundId'] ?? '');
+        if (groupId == null || groupId <= 0 || fundId == null || fundId <= 0) {
+          return const Scaffold(
+            body: Center(child: Text('Thông tin đợt quỹ không hợp lệ')),
+          );
+        }
         final group = state.extra as GroupModel?;
         return FundFormScreen(
           groupId: groupId,
+          fundId: fundId,
           group: group,
           isEdit: true,
         );

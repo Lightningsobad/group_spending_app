@@ -142,6 +142,7 @@ class _FundDetailViewState extends State<_FundDetailView> {
       MaterialPageRoute(
         builder: (_) => FundFormScreen(
           groupId: fund.groupId,
+          fundId: fund.id,
           group: widget.group,
           initialFund: fund,
           isEdit: true,
