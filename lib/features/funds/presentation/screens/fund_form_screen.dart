@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../../../../core/errors/app_exception.dart';
 import '../../../../core/sync/data_sync_coordinator.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/theme/app_theme_colors.dart';
@@ -22,6 +23,7 @@ enum FundAmountMode { perPerson, totalFund }
 
 class FundFormScreen extends StatefulWidget {
   final int groupId;
+  final int? fundId;
   final GroupModel? group;
   final FundCollectionEntity? initialFund;
   final bool isEdit;
@@ -31,6 +33,7 @@ class FundFormScreen extends StatefulWidget {
   const FundFormScreen({
     super.key,
     required this.groupId,
+    this.fundId,
     this.group,
     this.initialFund,
     this.isEdit = false,
@@ -53,7 +56,15 @@ class _FundFormScreenState extends State<FundFormScreen> {
   final Set<int> _paidUserIds = {};
   List<GroupMemberModel> _members = [];
   bool _isLoadingMembers = false;
+  String? _membersError;
   String? _groupName;
+
+  bool _isLoadingFund = false;
+  String? _fundLoadError;
+  FundCollectionEntity? _loadedFund;
+  bool _isGroupMismatch = false;
+
+  FundCollectionEntity? get _effectiveFund => widget.initialFund ?? _loadedFund;
 
   final List<num> _quickAmountPresets = [
     50000,
@@ -71,45 +82,11 @@ class _FundFormScreenState extends State<FundFormScreen> {
     if (widget.group?.members != null && widget.group!.members!.isNotEmpty) {
       _members = List.from(widget.group!.members!);
     }
-    _initData();
-    if (_members.isEmpty) {
-      _isLoadingMembers = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _loadMembers();
-      });
-    }
-  }
 
-  void _initData() {
-    final initialFund = widget.initialFund;
-    if (widget.isEdit && initialFund != null) {
-      _nameController.text = initialFund.name;
-      _descController.text = initialFund.description ?? '';
-      _amountController.text = initialFund.targetAmountPerPersonVnd.round().toString();
-
-      if (initialFund.dueDate != null && initialFund.dueDate!.isNotEmpty) {
-        try {
-          _selectedDueDate = DateTime.parse(initialFund.dueDate!);
-        } catch (_) {}
-      }
-
-      for (final m in initialFund.members) {
-        _selectedUserIds.add(m.userId);
-        if (m.isPaid) {
-          _paidUserIds.add(m.userId);
-        }
-      }
-      if (_members.isEmpty && initialFund.members.isNotEmpty) {
-        _members = initialFund.members
-            .map((m) => GroupMemberModel(
-                  id: m.userId,
-                  userId: m.userId,
-                  fullName: m.fullName,
-                  avatarUrl: m.avatarUrl,
-                  role: 'MEMBER',
-                ))
-            .toList();
-      }
+    if (widget.initialFund != null) {
+      _populateFundData(widget.initialFund!);
+    } else if (widget.isEdit && (widget.fundId != null || widget.groupId > 0)) {
+      _isLoadingFund = true;
     } else {
       _amountController.text = '200000';
       if (_members.isNotEmpty) {
@@ -118,11 +95,100 @@ class _FundFormScreenState extends State<FundFormScreen> {
         }
       }
     }
+
+    _isLoadingMembers = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.isEdit && widget.initialFund == null && widget.fundId != null) {
+        _loadFundDetails(widget.fundId!);
+      }
+      _loadMembers();
+    });
+  }
+
+  Future<void> _loadFundDetails(int fundId) async {
+    if (!mounted) return;
+    setState(() {
+      _isLoadingFund = true;
+      _fundLoadError = null;
+      _isGroupMismatch = false;
+    });
+
+    try {
+      final repo = context.read<FundsRepository>();
+      final fund = await repo.getFundCollectionDetails(fundId);
+      if (!mounted) return;
+
+      if (fund.groupId != widget.groupId) {
+        setState(() {
+          _isLoadingFund = false;
+          _isGroupMismatch = true;
+          _fundLoadError = 'Đợt thu quỹ không thuộc nhóm này';
+        });
+        return;
+      }
+
+      setState(() {
+        _loadedFund = fund;
+        _isLoadingFund = false;
+        _populateFundData(fund);
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _isLoadingFund = false;
+        _fundLoadError = e is AppException ? e.message : 'Không thể tải thông tin đợt quỹ';
+      });
+    }
+  }
+
+  void _populateFundData(FundCollectionEntity fund) {
+    if (_nameController.text.isEmpty) {
+      _nameController.text = fund.name;
+    }
+    if (_descController.text.isEmpty && fund.description != null) {
+      _descController.text = fund.description!;
+    }
+    _amountController.text = fund.targetAmountPerPersonVnd.round().toString();
+
+    if (fund.dueDate != null && fund.dueDate!.isNotEmpty) {
+      try {
+        _selectedDueDate = DateTime.parse(fund.dueDate!);
+      } catch (_) {}
+    }
+
+    _selectedUserIds.clear();
+    _paidUserIds.clear();
+    for (final m in fund.members) {
+      _selectedUserIds.add(m.userId);
+      if (m.isPaid) {
+        _paidUserIds.add(m.userId);
+      }
+    }
+    _mergeMembers(fund.members);
+  }
+
+  void _mergeMembers(List<FundMemberEntity> fundMembers) {
+    final existingIds = _members.map((m) => m.userId).toSet();
+    for (final fm in fundMembers) {
+      if (!existingIds.contains(fm.userId)) {
+        _members.add(GroupMemberModel(
+          id: fm.userId,
+          userId: fm.userId,
+          fullName: fm.fullName,
+          avatarUrl: fm.avatarUrl,
+          role: 'MEMBER',
+        ));
+        existingIds.add(fm.userId);
+      }
+    }
   }
 
   Future<void> _loadMembers() async {
     if (!mounted) return;
-    setState(() => _isLoadingMembers = true);
+    setState(() {
+      _isLoadingMembers = true;
+      _membersError = null;
+    });
     List<GroupMemberModel> fetched = [];
     String? fetchedGroupName;
     try {
@@ -151,27 +217,17 @@ class _FundFormScreenState extends State<FundFormScreen> {
           _groupName = fetchedGroupName;
         }
         if (fetched.isNotEmpty) {
-          if (widget.isEdit && widget.initialFund != null) {
-            final existingIds = fetched.map((m) => m.userId).toSet();
-            for (final fm in widget.initialFund!.members) {
-              if (!existingIds.contains(fm.userId)) {
-                fetched.add(GroupMemberModel(
-                  id: fm.userId,
-                  userId: fm.userId,
-                  fullName: fm.fullName,
-                  avatarUrl: fm.avatarUrl,
-                  role: 'MEMBER',
-                ));
-              }
-            }
-          }
           _members = fetched;
-
-          if (!widget.isEdit && _selectedUserIds.isEmpty) {
+          final fund = _effectiveFund;
+          if (fund != null) {
+            _mergeMembers(fund.members);
+          } else if (!widget.isEdit && _selectedUserIds.isEmpty) {
             for (final m in _members) {
               _selectedUserIds.add(m.userId);
             }
           }
+        } else if (_members.isEmpty) {
+          _membersError = 'Không thể tải danh sách thành viên nhóm';
         }
         _isLoadingMembers = false;
       });
@@ -197,25 +253,38 @@ class _FundFormScreenState extends State<FundFormScreen> {
     } else {
       final count = _selectedUserIds.length;
       if (count <= 0) return 0;
-      return (_enteredAmount / count).round();
+      final totalK = (_enteredAmount + 999) ~/ 1000;
+      final perPersonK = ((totalK + count - 1) ~/ count).clamp(1, 1000000000);
+      return perPersonK * 1000;
     }
   }
 
   num get _calculatedTotalTargetVnd {
-    if (_amountMode == FundAmountMode.totalFund) {
-      return _enteredAmount;
-    } else {
-      return _enteredAmount * _selectedUserIds.length;
-    }
+    return _calculatedPerPersonVnd * _selectedUserIds.length;
   }
 
   Future<void> _pickDueDate() async {
     final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final initial = _selectedDueDate != null
+        ? DateTime(_selectedDueDate!.year, _selectedDueDate!.month, _selectedDueDate!.day)
+        : today.add(const Duration(days: 7));
+
+    final defaultFirstDate = today.subtract(const Duration(days: 30));
+    final defaultLastDate = today.add(const Duration(days: 365 * 2));
+
+    final firstDate = initial.isBefore(defaultFirstDate)
+        ? initial.subtract(const Duration(days: 365))
+        : defaultFirstDate;
+    final lastDate = initial.isAfter(defaultLastDate)
+        ? initial.add(const Duration(days: 365))
+        : defaultLastDate;
+
     final picked = await showDatePicker(
       context: context,
-      initialDate: _selectedDueDate ?? now.add(const Duration(days: 7)),
-      firstDate: now.subtract(const Duration(days: 30)),
-      lastDate: now.add(const Duration(days: 365 * 2)),
+      initialDate: initial,
+      firstDate: firstDate,
+      lastDate: lastDate,
     );
     if (picked != null) {
       setState(() => _selectedDueDate = picked);
@@ -258,20 +327,57 @@ class _FundFormScreenState extends State<FundFormScreen> {
       return;
     }
 
-    final perPersonVnd = _calculatedPerPersonVnd;
-    if (perPersonVnd < 1000) {
-      AppSnackBar.show(
-        context,
-        message: tr.minFundAmountError,
-        type: AppSnackBarType.error,
-      );
-      return;
+    if (_amountMode == FundAmountMode.perPerson) {
+      final enteredInt = _enteredAmount.toInt();
+      if (enteredInt < 1000) {
+        AppSnackBar.show(
+          context,
+          message: tr.minFundAmountError,
+          type: AppSnackBarType.error,
+        );
+        return;
+      }
+      if (enteredInt % 1000 != 0) {
+        AppSnackBar.show(
+          context,
+          message: 'Số tiền mỗi người phải là bội số của 1.000 đ',
+          type: AppSnackBarType.error,
+        );
+        return;
+      }
+    } else {
+      if (_enteredAmount < 1000) {
+        AppSnackBar.show(
+          context,
+          message: 'Tổng số tiền tối thiểu là 1.000 đ',
+          type: AppSnackBarType.error,
+        );
+        return;
+      }
     }
 
     if (_selectedUserIds.isEmpty) {
       AppSnackBar.show(
         context,
         message: tr.mustSelectAtLeastOneMember,
+        type: AppSnackBarType.error,
+      );
+      return;
+    }
+
+    if (_isGroupMismatch) {
+      AppSnackBar.show(
+        context,
+        message: 'Đợt thu quỹ không thuộc nhóm này',
+        type: AppSnackBarType.error,
+      );
+      return;
+    }
+
+    if (widget.isEdit && _isLoadingFund) {
+      AppSnackBar.show(
+        context,
+        message: 'Đang tải thông tin quỹ, vui lòng đợi',
         type: AppSnackBarType.error,
       );
       return;
@@ -284,12 +390,21 @@ class _FundFormScreenState extends State<FundFormScreen> {
     final cubit = cubitContext.read<FundDetailCubit>();
     bool success = false;
 
-    if (widget.isEdit && widget.initialFund != null) {
+    if (widget.isEdit) {
+      final effectiveFundId = widget.initialFund?.id ?? widget.fundId ?? _loadedFund?.id;
+      if (effectiveFundId == null || effectiveFundId <= 0) {
+        AppSnackBar.show(
+          context,
+          message: 'Không tìm thấy thông tin đợt quỹ để cập nhật',
+          type: AppSnackBarType.error,
+        );
+        return;
+      }
       success = await cubit.updateFund(
-        widget.initialFund!.id,
+        effectiveFundId,
         name: name,
         description: _descController.text.trim().isEmpty ? null : _descController.text.trim(),
-        targetAmountPerPersonVnd: perPersonVnd,
+        targetAmountPerPersonVnd: _calculatedPerPersonVnd,
         dueDate: dueDateStr,
         memberUserIds: _selectedUserIds.toList(),
       );
@@ -298,7 +413,7 @@ class _FundFormScreenState extends State<FundFormScreen> {
         widget.groupId,
         name: name,
         description: _descController.text.trim().isEmpty ? null : _descController.text.trim(),
-        targetAmountPerPersonVnd: perPersonVnd,
+        targetAmountPerPersonVnd: _calculatedPerPersonVnd,
         dueDate: dueDateStr,
         memberUserIds: _selectedUserIds.toList(),
       );
@@ -452,13 +567,18 @@ class _FundFormScreenState extends State<FundFormScreen> {
                             ),
                           ),
 
-                        // Form Body
-                        Expanded(
-                          child: SingleChildScrollView(
-                            padding: const EdgeInsets.fromLTRB(16, 6, 16, 24),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
+                        if (_isLoadingFund)
+                          Expanded(child: _buildFundLoadingState(colors))
+                        else if (_fundLoadError != null)
+                          Expanded(child: _buildFundErrorState(colors))
+                        else
+                          // Form Body
+                          Expanded(
+                            child: SingleChildScrollView(
+                              padding: const EdgeInsets.fromLTRB(16, 6, 16, 24),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
                                 // 1. TÊN ĐỢT THU QUỸ
                                 _buildCard(
                                   colors: colors,
@@ -697,61 +817,97 @@ class _FundFormScreenState extends State<FundFormScreen> {
                                           borderRadius: BorderRadius.circular(14),
                                           border: Border.all(color: colors.cardBorder.withValues(alpha: 0.5)),
                                         ),
-                                        child: Row(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.stretch,
                                           children: [
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    tr.expectedTotalSummary(_selectedUserIds.length),
-                                                    style: AppTextStyle.regular(
-                                                      fontSize: AppFontSize.caption,
-                                                      color: colors.textSecondary,
-                                                    ),
-                                                    maxLines: 1,
-                                                    overflow: TextOverflow.ellipsis,
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        tr.expectedTotalSummary(_selectedUserIds.length),
+                                                        style: AppTextStyle.regular(
+                                                          fontSize: AppFontSize.caption,
+                                                          color: colors.textSecondary,
+                                                        ),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                      const SizedBox(height: 3),
+                                                      Text(
+                                                        CurrencyUtils.formatVnd(_calculatedTotalTargetVnd),
+                                                        style: AppTextStyle.bold(
+                                                          fontSize: AppFontSize.body,
+                                                          color: colors.fundAmountText,
+                                                        ),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ],
                                                   ),
-                                                  const SizedBox(height: 3),
-                                                  Text(
-                                                    CurrencyUtils.formatVnd(_calculatedTotalTargetVnd),
-                                                    style: AppTextStyle.bold(
-                                                      fontSize: AppFontSize.body,
-                                                      color: colors.fundAmountText,
-                                                    ),
-                                                    maxLines: 1,
-                                                    overflow: TextOverflow.ellipsis,
+                                                ),
+                                                const SizedBox(width: 8),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                        _amountMode == FundAmountMode.totalFund
+                                                            ? tr.targetTotalSummary
+                                                            : tr.perPersonMode,
+                                                        style: AppTextStyle.regular(
+                                                          fontSize: AppFontSize.caption,
+                                                          color: colors.textSecondary,
+                                                        ),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                      const SizedBox(height: 3),
+                                                      Text(
+                                                        CurrencyUtils.formatVnd(
+                                                          _amountMode == FundAmountMode.totalFund
+                                                              ? _enteredAmount
+                                                              : _calculatedPerPersonVnd,
+                                                        ),
+                                                        style: AppTextStyle.bold(
+                                                          fontSize: AppFontSize.body,
+                                                          color: colors.textPrimary,
+                                                        ),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ],
                                                   ),
-                                                ],
-                                              ),
+                                                ),
+                                              ],
                                             ),
-                                            const SizedBox(width: 8),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    tr.targetTotalSummary,
-                                                    style: AppTextStyle.regular(
-                                                      fontSize: AppFontSize.caption,
-                                                      color: colors.textSecondary,
+                                            if (_amountMode == FundAmountMode.totalFund && _selectedUserIds.isNotEmpty) ...[
+                                              const SizedBox(height: 8),
+                                              Container(
+                                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                                                decoration: BoxDecoration(
+                                                  color: colors.brandEmeraldMuted.withValues(alpha: 0.3),
+                                                  borderRadius: BorderRadius.circular(8),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Icon(LucideIcons.info, size: 13, color: colors.brandEmerald),
+                                                    const SizedBox(width: 6),
+                                                    Expanded(
+                                                      child: Text(
+                                                        'Mức mỗi người: ${CurrencyUtils.formatVnd(_calculatedPerPersonVnd)}/người (làm tròn lên theo nghìn đồng)',
+                                                        style: AppTextStyle.medium(
+                                                          fontSize: AppFontSize.caption,
+                                                          color: colors.brandEmerald,
+                                                        ),
+                                                      ),
                                                     ),
-                                                    maxLines: 1,
-                                                    overflow: TextOverflow.ellipsis,
-                                                  ),
-                                                  const SizedBox(height: 3),
-                                                  Text(
-                                                    CurrencyUtils.formatVnd(_calculatedTotalTargetVnd),
-                                                    style: AppTextStyle.bold(
-                                                      fontSize: AppFontSize.body,
-                                                      color: colors.textPrimary,
-                                                    ),
-                                                    maxLines: 1,
-                                                    overflow: TextOverflow.ellipsis,
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
-                                            ),
+                                            ],
                                           ],
                                         ),
                                       ),
@@ -946,6 +1102,28 @@ class _FundFormScreenState extends State<FundFormScreen> {
 
                                       if (_isLoadingMembers && members.isEmpty)
                                         _buildMembersSkeleton(colors)
+                                      else if (_membersError != null && members.isEmpty)
+                                        Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 20.0),
+                                            child: Column(
+                                              children: [
+                                                Icon(LucideIcons.alertCircle, size: 36, color: colors.errorAccent),
+                                                const SizedBox(height: 8),
+                                                Text(
+                                                  _membersError!,
+                                                  style: AppTextStyle.medium(fontSize: AppFontSize.secondary, color: colors.textSecondary),
+                                                ),
+                                                const SizedBox(height: 8),
+                                                TextButton.icon(
+                                                  onPressed: _loadMembers,
+                                                  icon: const Icon(LucideIcons.refreshCw, size: 14),
+                                                  label: const Text('Thử lại'),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )
                                       else if (members.isEmpty)
                                         Center(
                                           child: Padding(
@@ -1291,6 +1469,78 @@ class _FundFormScreenState extends State<FundFormScreen> {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFundLoadingState(AppThemeColors colors) {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          CircularProgressIndicator(color: colors.brandEmerald),
+          const SizedBox(height: 16),
+          Text(
+            'Đang tải thông tin đợt quỹ...',
+            style: AppTextStyle.medium(
+              fontSize: AppFontSize.secondary,
+              color: colors.textSecondary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFundErrorState(AppThemeColors colors) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: colors.errorSurface,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                LucideIcons.alertCircle,
+                size: 40,
+                color: colors.errorAccent,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              _fundLoadError ?? 'Không thể tải thông tin đợt quỹ',
+              style: AppTextStyle.bold(
+                fontSize: AppFontSize.body,
+                color: colors.textPrimary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            if (!_isGroupMismatch && widget.fundId != null)
+              ElevatedButton.icon(
+                onPressed: () => _loadFundDetails(widget.fundId!),
+                icon: const Icon(LucideIcons.refreshCw, size: 16),
+                label: const Text('Thử lại'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: colors.primaryButton,
+                  foregroundColor: colors.onPrimaryButton,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              )
+            else
+              OutlinedButton(
+                onPressed: _handleBack,
+                child: const Text('Quay lại'),
+              ),
+          ],
         ),
       ),
     );

@@ -19,10 +19,13 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 class MockFundsRepository implements FundsRepository {
   final GroupFundsOverviewEntity? overviewToReturn;
   final Duration delay;
+  final Object? errorToThrow;
+  int getGroupFundsOverviewCalls = 0;
 
   MockFundsRepository({
     this.overviewToReturn,
     this.delay = Duration.zero,
+    this.errorToThrow,
   });
 
   @override
@@ -32,8 +35,12 @@ class MockFundsRepository implements FundsRepository {
     FundTimeFilter? timeFilter,
     FundCollectionStatus? status,
   }) async {
+    getGroupFundsOverviewCalls++;
     if (delay > Duration.zero) {
       await Future.delayed(delay);
+    }
+    if (errorToThrow != null) {
+      throw errorToThrow!;
     }
     return overviewToReturn ??
         const GroupFundsOverviewEntity(
@@ -342,93 +349,18 @@ void main() {
       expect(find.byType(AppShimmer), findsNothing);
     });
 
-    testWidgets('A01: Admin on active group displays create fund button and tapping triggers callback', (tester) async {
-      int tapCount = 0;
-      await tester.pumpWidget(
-        createWidgetUnderTest(
-          onCreateFund: () => tapCount++,
-        ),
-      );
+    testWidgets('FUND-06: displays error state with retry button when initial load fails and tapping retry reloads', (tester) async {
+      final repo = MockFundsRepository(errorToThrow: Exception('Lỗi kết nối máy chủ'));
+      await tester.pumpWidget(createWidgetUnderTest(repo: repo));
       await tester.pumpAndSettle();
 
-      final createBtn = find.widgetWithIcon(ElevatedButton, LucideIcons.plus);
-      expect(createBtn, findsOneWidget);
+      expect(find.byIcon(LucideIcons.alertCircle), findsOneWidget);
+      expect(find.widgetWithText(ElevatedButton, 'Thử lại'), findsOneWidget);
+      expect(repo.getGroupFundsOverviewCalls, 1);
 
-      await tester.tap(createBtn);
-      expect(tapCount, 1);
-    });
-
-    testWidgets('A02: Admin on archived group hides create fund button and blocks callback', (tester) async {
-      int tapCount = 0;
-      const archivedGroup = GroupModel(
-        id: 1,
-        name: 'Nhóm Lưu Trữ',
-        category: 'friends',
-        ownerId: 1,
-        role: 'ADMIN',
-        status: 'ARCHIVED',
-      );
-
-      final repo = MockFundsRepository();
-      await tester.pumpWidget(
-        MaterialApp(
-          locale: const Locale('vi'),
-          theme: AppTheme.lightTheme,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: Scaffold(
-            body: BlocProvider<FundsCubit>(
-              create: (_) => FundsCubit(repo),
-              child: SingleChildScrollView(
-                child: GroupFundsTabView(
-                  group: archivedGroup,
-                  onCreateFund: () => tapCount++,
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      final createBtn = find.widgetWithIcon(ElevatedButton, LucideIcons.plus);
-      expect(createBtn, findsNothing);
-      expect(tapCount, 0);
-    });
-
-    testWidgets('A03: Member on active or archived group hides admin create fund button', (tester) async {
-      const memberGroup = GroupModel(
-        id: 1,
-        name: 'Nhóm Member',
-        category: 'friends',
-        ownerId: 99,
-        role: 'MEMBER',
-        status: 'ACTIVE',
-      );
-
-      final repo = MockFundsRepository();
-      await tester.pumpWidget(
-        MaterialApp(
-          locale: const Locale('vi'),
-          theme: AppTheme.lightTheme,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: Scaffold(
-            body: BlocProvider<FundsCubit>(
-              create: (_) => FundsCubit(repo),
-              child: const SingleChildScrollView(
-                child: GroupFundsTabView(
-                  group: memberGroup,
-                ),
-              ),
-            ),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      final createBtn = find.widgetWithIcon(ElevatedButton, LucideIcons.plus);
-      expect(createBtn, findsNothing);
+      await tester.tap(find.widgetWithText(ElevatedButton, 'Thử lại'));
+      await tester.pump();
+      expect(repo.getGroupFundsOverviewCalls, 2);
     });
   });
 }

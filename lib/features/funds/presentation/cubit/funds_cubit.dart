@@ -13,6 +13,7 @@ class FundsCubit extends Cubit<FundsState> {
   final DataSyncCoordinator? dataSyncCoordinator;
 
   Timer? _searchDebounceTimer;
+  int _requestId = 0;
 
   FundsCubit(
     this._repository, {
@@ -35,12 +36,14 @@ class FundsCubit extends Cubit<FundsState> {
 
   @override
   Future<void> close() {
+    _requestId++;
     _searchDebounceTimer?.cancel();
     dataSyncCoordinator?.removeListener(_onDataSync);
     return super.close();
   }
 
   void reset() {
+    _requestId++;
     _searchDebounceTimer?.cancel();
     emit(const FundsState());
   }
@@ -53,8 +56,14 @@ class FundsCubit extends Cubit<FundsState> {
     int groupId, {
     bool silent = false,
   }) async {
+    final currentReqId = ++_requestId;
     final isDifferentGroup = state.currentGroupId != groupId;
+    if (isDifferentGroup) {
+      _searchDebounceTimer?.cancel();
+    }
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
+    final capturedGroupId = groupId;
+
     if (!silent) {
       emit(
         state.copyWith(
@@ -68,7 +77,19 @@ class FundsCubit extends Cubit<FundsState> {
         ),
       );
     } else {
-      emit(state.copyWith(currentGroupId: groupId));
+      if (isDifferentGroup) {
+        emit(
+          state.copyWith(
+            currentGroupId: groupId,
+            clearOverview: true,
+            searchQuery: '',
+            clearStatusFilter: true,
+            selectedTimeFilter: FundTimeFilter.all,
+          ),
+        );
+      } else {
+        emit(state.copyWith(currentGroupId: groupId));
+      }
     }
 
     try {
@@ -84,6 +105,8 @@ class FundsCubit extends Cubit<FundsState> {
       );
 
       if (isClosed ||
+          currentReqId != _requestId ||
+          state.currentGroupId != capturedGroupId ||
           (sessionCoordinator != null &&
               sessionCoordinator!.sessionEpoch != requestEpoch)) {
         return;
@@ -98,6 +121,8 @@ class FundsCubit extends Cubit<FundsState> {
       );
     } on AppException catch (e) {
       if (isClosed ||
+          currentReqId != _requestId ||
+          state.currentGroupId != capturedGroupId ||
           (sessionCoordinator != null &&
               sessionCoordinator!.sessionEpoch != requestEpoch)) {
         return;
@@ -110,6 +135,8 @@ class FundsCubit extends Cubit<FundsState> {
       );
     } catch (e) {
       if (isClosed ||
+          currentReqId != _requestId ||
+          state.currentGroupId != capturedGroupId ||
           (sessionCoordinator != null &&
               sessionCoordinator!.sessionEpoch != requestEpoch)) {
         return;

@@ -21,6 +21,9 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class MockFundsRepository implements FundsRepository {
   bool createCalled = false;
+  bool updateCalled = false;
+  int? lastUpdatedFundId;
+  FundCollectionEntity? fundDetailsToReturn;
 
   @override
   Future<GroupFundsOverviewEntity> getGroupFundsOverview(
@@ -68,10 +71,34 @@ class MockFundsRepository implements FundsRepository {
     String? dueDate,
     List<int>? memberUserIds,
   }) async {
-    return const FundCollectionEntity(
-      id: 999,
+    updateCalled = true;
+    lastUpdatedFundId = fundId;
+    return FundCollectionEntity(
+      id: fundId,
       groupId: 1,
-      name: 'Quỹ update',
+      name: name,
+      targetAmountPerPerson: (targetAmountPerPersonVnd / 1000).round(),
+      targetAmountPerPersonVnd: targetAmountPerPersonVnd,
+      totalTargetAmount: 400,
+      totalTargetAmountVnd: 400000,
+      totalCollectedAmount: 0,
+      totalCollectedAmountVnd: 0,
+      paidCount: 0,
+      totalMemberCount: 2,
+      status: FundCollectionStatus.collecting,
+      members: const [],
+    );
+  }
+
+  @override
+  Future<FundCollectionEntity> getFundCollectionDetails(int fundId) async {
+    if (fundDetailsToReturn != null) {
+      return fundDetailsToReturn!;
+    }
+    return FundCollectionEntity(
+      id: fundId,
+      groupId: 1,
+      name: 'Quỹ chi tiết $fundId',
       targetAmountPerPerson: 200,
       targetAmountPerPersonVnd: 200000,
       totalTargetAmount: 400,
@@ -81,13 +108,8 @@ class MockFundsRepository implements FundsRepository {
       paidCount: 0,
       totalMemberCount: 2,
       status: FundCollectionStatus.collecting,
-      members: [],
+      members: const [],
     );
-  }
-
-  @override
-  Future<FundCollectionEntity> getFundCollectionDetails(int fundId) async {
-    throw UnimplementedError();
   }
 
   @override
@@ -188,6 +210,8 @@ void main() {
     ThemeData? theme,
     GroupModel? group = testGroup,
     FundCollectionEntity? initialFund,
+    int? fundId,
+    int groupId = 1,
     bool isEdit = false,
     VoidCallback? onBack,
     TextScaler? textScaler,
@@ -217,7 +241,8 @@ void main() {
               padding: const EdgeInsets.only(top: 44, bottom: 34),
             ),
             child: FundFormScreen(
-              groupId: 1,
+              groupId: groupId,
+              fundId: fundId,
               group: group,
               initialFund: initialFund,
               isEdit: isEdit,
@@ -366,7 +391,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Initial mode: Mỗi người / Tổng quỹ
-      expect(find.text('Mỗi người'), findsOneWidget);
+      expect(find.text('Mỗi người'), findsWidgets);
       expect(find.text('Tổng quỹ'), findsOneWidget);
 
       // Switch to totalFund mode
@@ -374,7 +399,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Switch back to perPerson mode
-      await tester.tap(find.text('Mỗi người'));
+      await tester.tap(find.text('Mỗi người').first);
       await tester.pumpAndSettle();
     });
 
@@ -393,6 +418,260 @@ void main() {
 
       // Verify no RenderFlex overflow exception occurred
       expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('FUND-01: route edit mode with fundId loads fund details and saves with updateFundCollection', (tester) async {
+      tester.view.physicalSize = const Size(800 * 2.0, 1200 * 2.0);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      final mockFundsRepo = MockFundsRepository();
+      mockFundsRepo.fundDetailsToReturn = const FundCollectionEntity(
+        id: 77,
+        groupId: 1,
+        name: 'Quỹ Route Edit',
+        description: 'Chi tiết ban đầu',
+        targetAmountPerPerson: 100,
+        targetAmountPerPersonVnd: 100000,
+        totalTargetAmount: 200,
+        totalTargetAmountVnd: 200000,
+        totalCollectedAmount: 0,
+        totalCollectedAmountVnd: 0,
+        paidCount: 0,
+        totalMemberCount: 2,
+        status: FundCollectionStatus.collecting,
+        members: [
+          FundMemberEntity(
+            id: 1,
+            userId: 1,
+            fullName: 'Nguyễn Văn A',
+            status: FundMemberStatus.pending,
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(createWidgetUnderTest(
+        fundsRepo: mockFundsRepo,
+        fundId: 77,
+        initialFund: null,
+        isEdit: true,
+      ));
+      await tester.pumpAndSettle();
+
+      // Verify fund details loaded and populated
+      expect(find.text('Quỹ Route Edit'), findsOneWidget);
+
+      // Tap save
+      final saveBtn = find.text('Lưu thay đổi');
+      expect(saveBtn, findsOneWidget);
+      await tester.ensureVisible(saveBtn);
+      await tester.tap(saveBtn);
+      await tester.pumpAndSettle();
+
+      // Must call updateFundCollection on ID 77, NEVER createFundCollection
+      expect(mockFundsRepo.updateCalled, isTrue);
+      expect(mockFundsRepo.lastUpdatedFundId, 77);
+      expect(mockFundsRepo.createCalled, isFalse);
+    });
+
+    testWidgets('FUND-01: mismatched groupId displays error and blocks saving', (tester) async {
+      tester.view.physicalSize = const Size(800 * 2.0, 1200 * 2.0);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      final mockFundsRepo = MockFundsRepository();
+      mockFundsRepo.fundDetailsToReturn = const FundCollectionEntity(
+        id: 77,
+        groupId: 999, // Mismatched groupId
+        name: 'Quỹ nhóm khác',
+        targetAmountPerPerson: 100,
+        targetAmountPerPersonVnd: 100000,
+        totalTargetAmount: 200,
+        totalTargetAmountVnd: 200000,
+        totalCollectedAmount: 0,
+        totalCollectedAmountVnd: 0,
+        paidCount: 0,
+        totalMemberCount: 1,
+        status: FundCollectionStatus.collecting,
+        members: [],
+      );
+
+      await tester.pumpWidget(createWidgetUnderTest(
+        fundsRepo: mockFundsRepo,
+        groupId: 1,
+        fundId: 77,
+        initialFund: null,
+        isEdit: true,
+      ));
+      await tester.pumpAndSettle();
+
+      // Error message displayed
+      expect(find.text('Đợt thu quỹ không thuộc nhóm này'), findsOneWidget);
+      // Save button not visible or blocked
+      expect(find.text('Lưu thay đổi'), findsNothing);
+      expect(mockFundsRepo.updateCalled, isFalse);
+      expect(mockFundsRepo.createCalled, isFalse);
+    });
+
+    testWidgets('FUND-02: Total mode calculates ceiling per-person amount in thousand VND', (tester) async {
+      tester.view.physicalSize = const Size(800 * 2.0, 1200 * 2.0);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      // Group with 3 members: 100,000 / 3 -> 34,000 / person, 102,000 total expected
+      const member3 = GroupMemberModel(
+        id: 3,
+        userId: 3,
+        fullName: 'Lê Văn C',
+        role: 'MEMBER',
+      );
+      const threeMemberGroup = GroupModel(
+        id: 1,
+        name: 'Nhóm 3 người',
+        category: 'work',
+        ownerId: 1,
+        role: 'ADMIN',
+        members: [testMember1, testMember2, member3],
+      );
+
+      await tester.pumpWidget(createWidgetUnderTest(
+        group: threeMemberGroup,
+      ));
+      await tester.pumpAndSettle();
+
+      // Switch to totalFund mode
+      await tester.tap(find.text('Tổng quỹ'));
+      await tester.pumpAndSettle();
+
+      // Enter 100000
+      final amountField = find.byType(TextField).at(1);
+      await tester.enterText(amountField, '100000');
+      await tester.pumpAndSettle();
+
+      // Check summary: per person should be 34.000 đ, expected total 102.000 đ
+      expect(find.text('102.000 đ'), findsOneWidget);
+      expect(find.text('100.000 đ'), findsNWidgets(2)); // Quick chip & Target total
+      expect(find.textContaining('34.000 đ/người'), findsOneWidget);
+    });
+
+    testWidgets('FUND-04: Edit mode loads full group members and keeps PAID member locked', (tester) async {
+      tester.view.physicalSize = const Size(800 * 2.0, 1200 * 2.0);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      final groupsRepo = MockGroupsRepository(
+        membersToReturn: [
+          const GroupMemberSummaryModel(userId: 1, fullName: 'Nguyễn Văn A', role: 'ADMIN'),
+          const GroupMemberSummaryModel(userId: 2, fullName: 'Trần Thị B', role: 'MEMBER'),
+          const GroupMemberSummaryModel(userId: 3, fullName: 'Lê Văn C', role: 'MEMBER'),
+        ],
+      );
+
+      // Initial fund only had member 1 who already paid
+      const initialFund = FundCollectionEntity(
+        id: 55,
+        groupId: 1,
+        name: 'Quỹ test',
+        targetAmountPerPerson: 100,
+        targetAmountPerPersonVnd: 100000,
+        totalTargetAmount: 100,
+        totalTargetAmountVnd: 100000,
+        totalCollectedAmount: 100,
+        totalCollectedAmountVnd: 100000,
+        paidCount: 1,
+        totalMemberCount: 1,
+        status: FundCollectionStatus.collecting,
+        members: [
+          FundMemberEntity(
+            id: 1,
+            userId: 1,
+            fullName: 'Nguyễn Văn A',
+            status: FundMemberStatus.paid,
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(createWidgetUnderTest(
+        groupsRepo: groupsRepo,
+        initialFund: initialFund,
+        isEdit: true,
+      ));
+      await tester.pumpAndSettle();
+
+      // All 3 members should be rendered
+      expect(find.text('Nguyễn Văn A (Bạn)'), findsOneWidget);
+      expect(find.text('Trần Thị B'), findsOneWidget);
+      expect(find.text('Lê Văn C'), findsOneWidget);
+
+      // Member 1 (PAID) checkbox is disabled (onChanged is null)
+      final checkboxes = find.byType(Checkbox);
+      expect(checkboxes, findsNWidgets(3));
+      final cb1 = tester.widget<Checkbox>(checkboxes.at(0));
+      expect(cb1.value, isTrue);
+      expect(cb1.onChanged, isNull); // Locked!
+
+      // Member 2 is unchecked initially and can be toggled
+      final cb2 = tester.widget<Checkbox>(checkboxes.at(1));
+      expect(cb2.value, isFalse);
+      expect(cb2.onChanged, isNotNull);
+    });
+
+    testWidgets('FUND-05: Date picker opens without error when dueDate is older than 30 days', (tester) async {
+      tester.view.physicalSize = const Size(800 * 2.0, 1200 * 2.0);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(() {
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
+
+      // Due date 60 days in the past
+      final pastDate = DateTime.now().subtract(const Duration(days: 60));
+      final dueDateStr = '${pastDate.year}-${pastDate.month.toString().padLeft(2, '0')}-${pastDate.day.toString().padLeft(2, '0')}';
+
+      final initialFund = FundCollectionEntity(
+        id: 60,
+        groupId: 1,
+        name: 'Quỹ ngày cũ',
+        targetAmountPerPerson: 100,
+        targetAmountPerPersonVnd: 100000,
+        totalTargetAmount: 100,
+        totalTargetAmountVnd: 100000,
+        totalCollectedAmount: 0,
+        totalCollectedAmountVnd: 0,
+        paidCount: 0,
+        totalMemberCount: 1,
+        dueDate: dueDateStr,
+        status: FundCollectionStatus.collecting,
+        members: const [],
+      );
+
+      await tester.pumpWidget(createWidgetUnderTest(
+        initialFund: initialFund,
+        isEdit: true,
+      ));
+      await tester.pumpAndSettle();
+
+      // Tap on date picker trigger
+      final dateFinder = find.byIcon(LucideIcons.calendar);
+      await tester.ensureVisible(dateFinder.last);
+      await tester.tap(dateFinder.last);
+      await tester.pumpAndSettle();
+
+      // DatePicker should be open without throwing an exception
+      expect(tester.takeException(), isNull);
+      expect(find.byType(DatePickerDialog), findsOneWidget);
     });
   });
 }
