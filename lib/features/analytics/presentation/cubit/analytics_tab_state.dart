@@ -11,6 +11,8 @@ class AnalyticsTabState {
   final String filter; // 'ALL', 'ACTIVE', 'ARCHIVED'
   final String searchQuery;
   final int? totalAllCount;
+  final int? totalActiveCount;
+  final int? totalArchivedCount;
   final String? errorMessage;
 
   const AnalyticsTabState({
@@ -21,6 +23,8 @@ class AnalyticsTabState {
     this.filter = 'ALL',
     this.searchQuery = '',
     this.totalAllCount,
+    this.totalActiveCount,
+    this.totalArchivedCount,
     this.errorMessage,
   });
 
@@ -29,22 +33,18 @@ class AnalyticsTabState {
   bool get isFailure => status == AnalyticsTabStatus.failure;
 
   List<GroupSummaryModel> get filteredGroups {
+    if (searchQuery.trim().isEmpty) return groups;
+    final query = searchQuery.trim().toLowerCase();
     return groups.where((g) {
-      if (filter == 'ACTIVE' && g.status?.toUpperCase() == 'ARCHIVED') return false;
-      if (filter == 'ARCHIVED' && g.status?.toUpperCase() == 'ACTIVE') return false;
-      if (searchQuery.trim().isNotEmpty) {
-        final query = searchQuery.trim().toLowerCase();
-        final nameMatches = g.name.toLowerCase().contains(query);
-        final catMatches = g.category?.toLowerCase().contains(query) ?? false;
-        return nameMatches || catMatches;
-      }
-      return true;
+      final nameMatches = g.name.toLowerCase().contains(query);
+      final catMatches = g.category?.toLowerCase().contains(query) ?? false;
+      return nameMatches || catMatches;
     }).toList();
   }
 
   int get allCount => totalAllCount ?? (filter == 'ALL' ? groups.length : groups.length);
-  int get activeCount => groups.where((g) => g.status?.toUpperCase() != 'ARCHIVED').length;
-  int get archivedCount => groups.where((g) => g.status?.toUpperCase() == 'ARCHIVED').length;
+  int get activeCount => totalActiveCount ?? (filter == 'ACTIVE' ? groups.length : groups.where((g) => g.status?.toUpperCase() != 'ARCHIVED').length);
+  int get archivedCount => totalArchivedCount ?? (filter == 'ARCHIVED' ? groups.length : groups.where((g) => g.status?.toUpperCase() == 'ARCHIVED').length);
 
   AnalyticsTabState copyWith({
     AnalyticsTabStatus? status,
@@ -54,6 +54,8 @@ class AnalyticsTabState {
     String? filter,
     String? searchQuery,
     int? totalAllCount,
+    int? totalActiveCount,
+    int? totalArchivedCount,
     String? errorMessage,
     bool clearError = false,
   }) {
@@ -65,6 +67,8 @@ class AnalyticsTabState {
       filter: filter ?? this.filter,
       searchQuery: searchQuery ?? this.searchQuery,
       totalAllCount: totalAllCount ?? this.totalAllCount,
+      totalActiveCount: totalActiveCount ?? this.totalActiveCount,
+      totalArchivedCount: totalArchivedCount ?? this.totalArchivedCount,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
     );
   }
