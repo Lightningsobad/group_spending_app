@@ -77,6 +77,7 @@ class GroupsRepositoryImpl implements GroupsRepository {
     int groupId, {
     required String name,
     String? description,
+    bool clearDescription = false,
     String? category,
     String? defaultCurrency,
   }) {
@@ -84,6 +85,7 @@ class GroupsRepositoryImpl implements GroupsRepository {
       groupId,
       name: name,
       description: description,
+      clearDescription: clearDescription,
       category: category,
       defaultCurrency: defaultCurrency,
     );

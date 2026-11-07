@@ -62,6 +62,7 @@ class _GroupFundsTabViewState extends State<GroupFundsTabView> {
   }
 
   Future<void> _openCreateFund() async {
+    if (widget.group.isArchived) return;
     if (widget.onCreateFund != null) {
       widget.onCreateFund!();
     } else {
@@ -118,7 +119,7 @@ class _GroupFundsTabViewState extends State<GroupFundsTabView> {
               // 1. Overview Card ("TỔNG TIỀN QUỸ CHUNG")
               FundOverviewCard(
                 overview: overview,
-                isAdmin: widget.group.isAdmin,
+                isAdmin: widget.group.isAdmin && !widget.group.isArchived,
                 onNewFundTap: _openCreateFund,
                 isLoading: isLoading,
               ),

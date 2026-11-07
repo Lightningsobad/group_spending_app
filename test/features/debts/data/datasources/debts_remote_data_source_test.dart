@@ -272,9 +272,13 @@ void main() {
       expect(capturedOptions?.method, 'GET');
       expect(capturedOptions?.path, '/groups/10/debt-settlements');
       expect(capturedOptions?.queryParameters['status'], 'WAITING_FOR_CONFIRMATION');
-      expect(result.length, 1);
-      expect(result.first.id, 501);
-      expect(result.first.isWaitingForConfirmation, isTrue);
+      expect(result.content.length, 1);
+      expect(result.content.first.id, 501);
+      expect(result.content.first.isWaitingForConfirmation, isTrue);
+      expect(result.pageNumber, 0);
+      expect(result.totalPages, 1);
+      expect(result.totalElements, 1);
+      expect(result.last, isTrue);
     });
   });
 }

@@ -84,9 +84,9 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
     });
 
     final name = _nameController.text.trim();
-    final description = _descController.text.trim().isEmpty
-        ? null
-        : _descController.text.trim();
+    final trimmedDesc = _descController.text.trim();
+    final isDescEmpty = trimmedDesc.isEmpty;
+    final description = isDescEmpty ? null : trimmedDesc;
     final category = _selectedCategory;
 
     if (_isEdit) {
@@ -94,6 +94,7 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
             widget.groupToEdit!.id,
             name: name,
             description: description,
+            clearDescription: isDescEmpty,
             category: category,
           );
 
@@ -108,6 +109,7 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
             widget.groupToEdit!.copyWith(
               name: name,
               description: description,
+              clearDescription: isDescEmpty,
               category: category,
             );
         widget.onSuccessWithGroup?.call(updatedGroup);

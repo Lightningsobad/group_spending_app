@@ -102,7 +102,7 @@ class DebtsRepositoryImpl implements DebtsRepository {
   }
 
   @override
-  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(
+  Future<DebtSettlementPageEntity> getGroupDebtSettlements(
     int groupId, {
     String? status,
     int page = 0,
@@ -114,5 +114,40 @@ class DebtsRepositoryImpl implements DebtsRepository {
       page: page,
       size: size,
     );
+  }
+
+  @override
+  Future<List<DebtSettlementEntity>> getAllPendingDebtSettlements(
+    int groupId,
+  ) async {
+    int page = 0;
+    const maxPages = 50;
+    final allSettlements = <DebtSettlementEntity>[];
+    final seenIds = <int>{};
+
+    while (page < maxPages) {
+      final pageResult = await remoteDataSource.getGroupDebtSettlements(
+        groupId,
+        status: 'WAITING_FOR_CONFIRMATION',
+        page: page,
+        size: 20,
+      );
+
+      for (final item in pageResult.content) {
+        if (seenIds.add(item.id)) {
+          allSettlements.add(item);
+        }
+      }
+
+      if (pageResult.last ||
+          pageResult.content.isEmpty ||
+          pageResult.pageNumber >= pageResult.totalPages - 1) {
+        break;
+      }
+
+      page++;
+    }
+
+    return allSettlements;
   }
 }

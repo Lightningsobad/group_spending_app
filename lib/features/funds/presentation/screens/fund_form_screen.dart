@@ -309,6 +309,14 @@ class _FundFormScreenState extends State<FundFormScreen> {
 
   Future<void> _submit(BuildContext cubitContext) async {
     final tr = context.l10n;
+    if (widget.group?.isArchived == true) {
+      AppSnackBar.show(
+        context,
+        message: tr.archiveGroupConfirmMessage,
+        type: AppSnackBarType.error,
+      );
+      return;
+    }
     final name = _nameController.text.trim();
     if (name.isEmpty) {
       AppSnackBar.show(

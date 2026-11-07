@@ -17,6 +17,7 @@ class ActualDebtCardWidget extends StatelessWidget {
       onDebtorConfirm;
   final void Function(ActualDebtorEntity debtor)? onDebtorRemind;
   final void Function(ActualDebtorEntity debtor)? onDebtorTap;
+  final bool isSubmitting;
 
   const ActualDebtCardWidget({
     super.key,
@@ -25,6 +26,7 @@ class ActualDebtCardWidget extends StatelessWidget {
     this.onDebtorConfirm,
     this.onDebtorRemind,
     this.onDebtorTap,
+    this.isSubmitting = false,
   });
 
   String _formatExpenseDateTime(String? expenseDate, String? createdAt) {
@@ -68,6 +70,8 @@ class ActualDebtCardWidget extends StatelessWidget {
   }
 
   void _handleDebtorTap(BuildContext context, ActualDebtorEntity debtor) async {
+    if (isSubmitting) return;
+
     if (onDebtorTap != null) {
       onDebtorTap!(debtor);
       return;
@@ -82,20 +86,27 @@ class ActualDebtCardWidget extends StatelessWidget {
           creditorName: debt.paidByUserName,
           formattedAmount: formattedAmount,
         );
-        if (ok == true) {
+        if (ok == true && context.mounted) {
           onDebtorPay?.call(debtor);
         }
         break;
 
       case DebtAction.confirm:
+        final choice = await SettleDebtDialogs.showActualDebtActionChoice(
+          context,
+          debtorName: debtor.name,
+          formattedAmount: formattedAmount,
+        );
+        if (choice == null || !context.mounted) return;
+
         final confirmed = await SettleDebtDialogs.showConfirmSettled(
           context,
           debtorName: debtor.name,
           formattedAmount: formattedAmount,
-          confirmed: true,
+          confirmed: choice,
         );
-        if (confirmed == true) {
-          onDebtorConfirm?.call(debtor, true);
+        if (confirmed == true && context.mounted) {
+          onDebtorConfirm?.call(debtor, choice);
         }
         break;
 
@@ -105,7 +116,7 @@ class ActualDebtCardWidget extends StatelessWidget {
           debtorName: debtor.name,
           formattedAmount: formattedAmount,
         );
-        if (ok == true) {
+        if (ok == true && context.mounted) {
           onDebtorRemind?.call(debtor);
         }
         break;

@@ -222,12 +222,25 @@ class MockDebtsRepository implements DebtsRepository {
   }
 
   @override
-  Future<List<DebtSettlementEntity>> getGroupDebtSettlements(
+  Future<DebtSettlementPageEntity> getGroupDebtSettlements(
     int groupId, {
     String? status,
     int page = 0,
     int size = 20,
   }) async {
+    return DebtSettlementPageEntity(
+      content: settlementsResult,
+      pageNumber: page,
+      totalPages: 1,
+      totalElements: settlementsResult.length,
+      last: true,
+    );
+  }
+
+  @override
+  Future<List<DebtSettlementEntity>> getAllPendingDebtSettlements(
+    int groupId,
+  ) async {
     return settlementsResult;
   }
 }

@@ -160,6 +160,8 @@ class _FundDetailViewState extends State<_FundDetailView> {
     final colors = context.colors;
     final tr = context.l10n;
     final isAdmin = widget.group?.isAdmin ?? false;
+    final isGroupArchived = widget.group?.isArchived ?? false;
+    final canManageFund = isAdmin && !isGroupArchived;
     final groupName = widget.group?.name ?? '';
 
     // Non-linear TextScaler with safe boundary clamping
@@ -254,7 +256,7 @@ class _FundDetailViewState extends State<_FundDetailView> {
                         ),
 
                         // Header Actions (Admin only: Quick Edit & Quick Delete)
-                        if (isAdmin && fund != null) ...[
+                        if (canManageFund && fund != null) ...[
                           ConstrainedBox(
                             constraints: const BoxConstraints(
                               minWidth: 48,
@@ -356,7 +358,7 @@ class _FundDetailViewState extends State<_FundDetailView> {
                                         state,
                                         colors,
                                         tr,
-                                        isAdmin,
+                                        canManageFund,
                                       ),
                                     ],
                                   ),

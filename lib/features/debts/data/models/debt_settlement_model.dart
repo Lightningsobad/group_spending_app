@@ -262,3 +262,38 @@ class DebtPaymentPreviewModel extends DebtPaymentPreviewEntity {
     };
   }
 }
+
+class DebtSettlementPageModel extends DebtSettlementPageEntity {
+  const DebtSettlementPageModel({
+    required super.content,
+    required super.pageNumber,
+    required super.totalPages,
+    required super.totalElements,
+    required super.last,
+  });
+
+  factory DebtSettlementPageModel.fromJson(Map<String, dynamic> json) {
+    final rawContent = json['content'] as List<dynamic>? ?? [];
+    final items = rawContent
+        .whereType<Map<String, dynamic>>()
+        .map((item) => DebtSettlementModel.fromJson(item))
+        .toList();
+    final pageable = json['pageable'] as Map<String, dynamic>?;
+    final pageNumber = (pageable?['pageNumber'] as num?)?.toInt() ??
+        (json['pageNumber'] as num?)?.toInt() ??
+        0;
+    final totalPages = (json['totalPages'] as num?)?.toInt() ?? 1;
+    final totalElements =
+        (json['totalElements'] as num?)?.toInt() ?? items.length;
+    final last = (json['last'] as bool?) ?? (pageNumber >= totalPages - 1);
+
+    return DebtSettlementPageModel(
+      content: items,
+      pageNumber: pageNumber,
+      totalPages: totalPages,
+      totalElements: totalElements,
+      last: last,
+    );
+  }
+}
+

@@ -329,5 +329,49 @@ void main() {
       expect(serializedSettlement['rejectionReason'], 'Chưa thấy tiền trong tài khoản');
       expect(serializedSettlement['status'], 'REJECTED');
     });
+
+    test('DebtSettlementPageModel parses paginated settlement list correctly', () {
+      final json = {
+        'content': [
+          {
+            'id': 501,
+            'groupId': 10,
+            'debtorId': 1,
+            'debtorName': 'Minh',
+            'creditorId': 2,
+            'creditorName': 'Hương',
+            'amount': 150,
+            'amountVnd': 150000,
+            'status': 'WAITING_FOR_CONFIRMATION',
+          },
+          {
+            'id': 502,
+            'groupId': 10,
+            'debtorId': 3,
+            'debtorName': 'Lan',
+            'creditorId': 2,
+            'creditorName': 'Hương',
+            'amount': 200,
+            'amountVnd': 200000,
+            'status': 'WAITING_FOR_CONFIRMATION',
+          },
+        ],
+        'pageable': {
+          'pageNumber': 0,
+          'pageSize': 20,
+        },
+        'totalElements': 25,
+        'totalPages': 2,
+        'last': false,
+      };
+
+      final pageModel = DebtSettlementPageModel.fromJson(json);
+      expect(pageModel.content.length, 2);
+      expect(pageModel.content.first.id, 501);
+      expect(pageModel.pageNumber, 0);
+      expect(pageModel.totalPages, 2);
+      expect(pageModel.totalElements, 25);
+      expect(pageModel.last, isFalse);
+    });
   });
 }

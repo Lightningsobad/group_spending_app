@@ -121,7 +121,9 @@ class GroupModel {
     return GroupModel(
       id: (json['id'] as num?)?.toInt() ?? 0,
       name: (json['name'] as String?) ?? '',
-      description: json['description'] as String?,
+      description: (json['description'] as String?)?.trim().isEmpty == true
+          ? null
+          : (json['description'] as String?),
       defaultCurrency: (json['defaultCurrency'] as String?) ?? 'VND',
       category: (json['category'] as String?) ?? 'Other',
       inviteCode: json['inviteCode'] as String?,
@@ -172,6 +174,7 @@ class GroupModel {
     int? id,
     String? name,
     String? description,
+    bool clearDescription = false,
     String? defaultCurrency,
     String? category,
     String? inviteCode,
@@ -193,7 +196,7 @@ class GroupModel {
     return GroupModel(
       id: id ?? this.id,
       name: name ?? this.name,
-      description: description ?? this.description,
+      description: clearDescription ? null : (description ?? this.description),
       defaultCurrency: defaultCurrency ?? this.defaultCurrency,
       category: category ?? this.category,
       inviteCode: inviteCode ?? this.inviteCode,
