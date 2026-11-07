@@ -47,7 +47,7 @@ abstract class DebtsRemoteDataSource {
 
   Future<DebtSettlementModel> getDebtSettlementDetail(int settlementId);
 
-  Future<List<DebtSettlementModel>> getGroupDebtSettlements(
+  Future<DebtSettlementPageModel> getGroupDebtSettlements(
     int groupId, {
     String? status,
     int page = 0,
@@ -242,7 +242,7 @@ class DebtsRemoteDataSourceImpl implements DebtsRemoteDataSource {
   }
 
   @override
-  Future<List<DebtSettlementModel>> getGroupDebtSettlements(
+  Future<DebtSettlementPageModel> getGroupDebtSettlements(
     int groupId, {
     String? status,
     int page = 0,
@@ -257,19 +257,17 @@ class DebtsRemoteDataSourceImpl implements DebtsRemoteDataSource {
       },
     );
     final data = response.data;
-    if (data != null) {
-      final rawData = data['data'];
-      final List? items = rawData is Map<String, dynamic>
-          ? (rawData['content'] as List?)
-          : (rawData is List ? rawData : null);
-
-      if (items != null) {
-        return items
-            .whereType<Map<String, dynamic>>()
-            .map((item) => DebtSettlementModel.fromJson(item))
-            .toList();
-      }
+    if (data != null && data['data'] is Map<String, dynamic>) {
+      return DebtSettlementPageModel.fromJson(
+        data['data'] as Map<String, dynamic>,
+      );
     }
-    return const [];
+    return const DebtSettlementPageModel(
+      content: [],
+      pageNumber: 0,
+      totalPages: 1,
+      totalElements: 0,
+      last: true,
+    );
   }
 }

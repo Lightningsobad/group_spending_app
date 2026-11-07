@@ -116,3 +116,20 @@ class DebtPaymentPreviewEntity {
     this.allocatedSplits = const [],
   });
 }
+
+class DebtSettlementPageEntity {
+  final List<DebtSettlementEntity> content;
+  final int pageNumber;
+  final int totalPages;
+  final int totalElements;
+  final bool last;
+
+  const DebtSettlementPageEntity({
+    required this.content,
+    required this.pageNumber,
+    required this.totalPages,
+    required this.totalElements,
+    required this.last,
+  });
+}
+

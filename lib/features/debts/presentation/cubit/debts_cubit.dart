@@ -16,6 +16,7 @@ class DebtsCubit extends Cubit<DebtsState> {
   final GroupsRepository? groupsRepository;
   final SessionCoordinator? sessionCoordinator;
   final DataSyncCoordinator? dataSyncCoordinator;
+  int _activeGroupRequestId = 0;
 
   DebtsCubit(
     this._repository, {
@@ -43,6 +44,7 @@ class DebtsCubit extends Cubit<DebtsState> {
   }
 
   void reset() {
+    _activeGroupRequestId++;
     emit(const DebtsState());
   }
 
@@ -175,8 +177,13 @@ class DebtsCubit extends Cubit<DebtsState> {
   }
 
   void selectGroup(int? groupId, {String? groupName}) {
+    _activeGroupRequestId++;
     if (groupId == null) {
-      emit(state.copyWith(clearSelectedGroup: true, clearGroupDetails: true));
+      emit(state.copyWith(
+        clearSelectedGroup: true,
+        clearGroupDetails: true,
+        isDetailLoading: false,
+      ));
       return;
     }
 
@@ -194,7 +201,18 @@ class DebtsCubit extends Cubit<DebtsState> {
   }
 
   Future<void> loadGroupDebts(int groupId, {bool silent = false}) async {
+    if (state.selectedGroupId != null && state.selectedGroupId != groupId) {
+      return;
+    }
+    if (state.selectedGroupId == null) {
+      emit(state.copyWith(selectedGroupId: groupId));
+    }
+
+    final currentRequestId = ++_activeGroupRequestId;
+    final capturedGroupId = groupId;
+    final capturedFilter = state.actualDebtStatusFilter;
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
+
     if (!silent) {
       emit(state.copyWith(isDetailLoading: true, clearMessages: true));
     }
@@ -204,10 +222,21 @@ class DebtsCubit extends Cubit<DebtsState> {
         _repository.getGroupSimplifiedDebts(groupId),
         _repository.getGroupActualDebts(
           groupId,
-          status: state.actualDebtStatusFilter,
+          status: capturedFilter,
         ),
-        _repository.getGroupDebtSettlements(groupId),
+        _repository.getAllPendingDebtSettlements(groupId),
       ]);
+
+      final isValid = !isClosed &&
+          (sessionCoordinator == null ||
+              sessionCoordinator!.sessionEpoch == requestEpoch) &&
+          currentRequestId == _activeGroupRequestId &&
+          state.selectedGroupId == capturedGroupId &&
+          state.actualDebtStatusFilter == capturedFilter;
+
+      if (!isValid) {
+        return;
+      }
 
       var simplified = results[0] as GroupSimplifiedDebtsEntity;
       var actual = results[1] as GroupActualDebtsEntity;
@@ -240,12 +269,6 @@ class DebtsCubit extends Cubit<DebtsState> {
         );
       }
 
-      if (isClosed ||
-          (sessionCoordinator != null &&
-              sessionCoordinator!.sessionEpoch != requestEpoch)) {
-        return;
-      }
-
       emit(
         state.copyWith(
           isDetailLoading: false,
@@ -256,9 +279,14 @@ class DebtsCubit extends Cubit<DebtsState> {
         ),
       );
     } on AppException catch (e) {
-      if (isClosed ||
-          (sessionCoordinator != null &&
-              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+      final isValid = !isClosed &&
+          (sessionCoordinator == null ||
+              sessionCoordinator!.sessionEpoch == requestEpoch) &&
+          currentRequestId == _activeGroupRequestId &&
+          state.selectedGroupId == capturedGroupId &&
+          state.actualDebtStatusFilter == capturedFilter;
+
+      if (!isValid) {
         return;
       }
       emit(
@@ -268,9 +296,14 @@ class DebtsCubit extends Cubit<DebtsState> {
         ),
       );
     } catch (e) {
-      if (isClosed ||
-          (sessionCoordinator != null &&
-              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+      final isValid = !isClosed &&
+          (sessionCoordinator == null ||
+              sessionCoordinator!.sessionEpoch == requestEpoch) &&
+          currentRequestId == _activeGroupRequestId &&
+          state.selectedGroupId == capturedGroupId &&
+          state.actualDebtStatusFilter == capturedFilter;
+
+      if (!isValid) {
         return;
       }
       emit(
@@ -359,6 +392,7 @@ class DebtsCubit extends Cubit<DebtsState> {
     int debtId, {
     required bool confirmed,
   }) async {
+    if (state.isActionSubmitting) return false;
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
     emit(state.copyWith(isActionSubmitting: true, clearMessages: true));
 
