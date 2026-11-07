@@ -94,11 +94,11 @@ class _GlobalAnalyticsView extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (state.isLoading && !state.isRefreshing)
+                          if (state.isLoading && !state.isRefreshing && !state.hasValidData)
                             _buildLoadingShimmer()
-                          else if (state.isFailure && state.details.totalSpendingVnd == 0)
+                          else if (state.isFailure && !state.hasValidData)
                             _buildErrorView(context, state)
-                          else ...[
+                          else if (state.hasValidData) ...[
                             // Section: CHỈ SỐ TÀI CHÍNH NHÓM
                             _buildFinancialMetricsSection(context, state),
                             const SizedBox(height: 24),
@@ -131,7 +131,8 @@ class _GlobalAnalyticsView extends StatelessWidget {
                               },
                             ),
                             const SizedBox(height: 32),
-                          ],
+                          ] else
+                            _buildLoadingShimmer(),
                         ],
                       ),
                     ),

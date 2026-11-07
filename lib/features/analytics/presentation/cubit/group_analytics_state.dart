@@ -10,6 +10,7 @@ class GroupAnalyticsState {
   final GroupAnalyticsStatus status;
   final bool isRefreshing;
   final StatisticsPeriod period;
+  final StatisticsPeriod? loadedPeriod;
   final int? year;
   final ExpenseStatisticsEntity groupStatistics;
   final List<LeaderboardMemberEntity> leaderboard;
@@ -24,6 +25,7 @@ class GroupAnalyticsState {
     this.status = GroupAnalyticsStatus.initial,
     this.isRefreshing = false,
     this.period = StatisticsPeriod.thisMonth,
+    this.loadedPeriod,
     this.year,
     this.groupStatistics = const ExpenseStatisticsEntity.empty(),
     this.leaderboard = const [],
@@ -37,12 +39,14 @@ class GroupAnalyticsState {
   bool get isLoading => status == GroupAnalyticsStatus.loading;
   bool get isSuccess => status == GroupAnalyticsStatus.success;
   bool get isFailure => status == GroupAnalyticsStatus.failure;
+  bool get hasValidData => loadedPeriod != null && loadedPeriod == period;
 
   GroupAnalyticsState copyWith({
     int? groupId,
     GroupAnalyticsStatus? status,
     bool? isRefreshing,
     StatisticsPeriod? period,
+    StatisticsPeriod? loadedPeriod,
     int? year,
     ExpenseStatisticsEntity? groupStatistics,
     List<LeaderboardMemberEntity>? leaderboard,
@@ -58,6 +62,7 @@ class GroupAnalyticsState {
       status: status ?? this.status,
       isRefreshing: isRefreshing ?? this.isRefreshing,
       period: period ?? this.period,
+      loadedPeriod: loadedPeriod ?? this.loadedPeriod,
       year: year ?? this.year,
       groupStatistics: groupStatistics ?? this.groupStatistics,
       leaderboard: leaderboard ?? this.leaderboard,

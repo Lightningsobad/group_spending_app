@@ -72,6 +72,7 @@ class GlobalAnalyticsCubit extends Cubit<GlobalAnalyticsState> {
           details: details as dynamic,
           leaderboard: leaderboard as dynamic,
           recentExpenses: recentExpenses as dynamic,
+          loadedPeriod: period,
           isRefreshing: false,
           clearError: true,
         ),

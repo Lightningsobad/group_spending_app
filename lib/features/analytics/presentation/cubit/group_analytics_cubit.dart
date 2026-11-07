@@ -150,6 +150,7 @@ class GroupAnalyticsCubit extends Cubit<GroupAnalyticsState> {
           groupName: resolvedGroupName,
           groupCategory: resolvedCategory,
           memberCount: resolvedMemberCount,
+          loadedPeriod: period,
           isRefreshing: false,
           clearError: true,
         ),

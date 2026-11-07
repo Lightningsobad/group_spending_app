@@ -13,6 +13,8 @@ class AnalyticsTabCubit extends Cubit<AnalyticsTabState> {
   final SessionCoordinator? sessionCoordinator;
   final DataSyncCoordinator? dataSyncCoordinator;
 
+  int _requestId = 0;
+
   AnalyticsTabCubit({
     required this.analyticsRepository,
     required this.groupsRepository,
@@ -29,32 +31,67 @@ class AnalyticsTabCubit extends Cubit<AnalyticsTabState> {
   }
 
   void reset() {
+    _requestId++;
     emit(const AnalyticsTabState());
   }
 
   Future<void> setFilter(String filter) async {
     if (state.filter == filter) return;
-    emit(state.copyWith(filter: filter));
-
+    final currentRequestId = ++_requestId;
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
+
+    emit(state.copyWith(filter: filter, clearError: true));
+
     try {
       final statusParam = filter == 'ALL' ? null : filter;
       final groups = await groupsRepository.getGroupSummaries(status: statusParam);
 
       if (isClosed ||
+          currentRequestId != _requestId ||
           (sessionCoordinator != null &&
               sessionCoordinator!.sessionEpoch != requestEpoch)) {
         return;
       }
 
+      int? newTotalAll = state.totalAllCount;
+      int? newTotalActive = state.totalActiveCount;
+      int? newTotalArchived = state.totalArchivedCount;
+
+      if (filter == 'ALL') {
+        newTotalAll = groups.length;
+        newTotalActive = groups.where((g) => g.status?.toUpperCase() != 'ARCHIVED').length;
+        newTotalArchived = groups.where((g) => g.status?.toUpperCase() == 'ARCHIVED').length;
+      } else if (filter == 'ACTIVE') {
+        newTotalActive = groups.length;
+      } else if (filter == 'ARCHIVED') {
+        newTotalArchived = groups.length;
+      }
+
       emit(
         state.copyWith(
           groups: groups,
-          totalAllCount: filter == 'ALL' ? groups.length : state.totalAllCount,
+          totalAllCount: newTotalAll,
+          totalActiveCount: newTotalActive,
+          totalArchivedCount: newTotalArchived,
+          clearError: true,
         ),
       );
-    } catch (_) {
-      // Keep existing groups if network filter fails
+    } on AppException catch (e) {
+      if (isClosed ||
+          currentRequestId != _requestId ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+        return;
+      }
+      emit(state.copyWith(errorMessage: e.message));
+    } catch (e) {
+      if (isClosed ||
+          currentRequestId != _requestId ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+        return;
+      }
+      emit(state.copyWith(errorMessage: e.toString()));
     }
   }
 
@@ -63,6 +100,7 @@ class AnalyticsTabCubit extends Cubit<AnalyticsTabState> {
   }
 
   Future<void> loadOverview({bool isRefresh = false}) async {
+    final currentRequestId = ++_requestId;
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
 
     if (isRefresh) {
@@ -73,12 +111,19 @@ class AnalyticsTabCubit extends Cubit<AnalyticsTabState> {
 
     try {
       final statusParam = state.filter == 'ALL' ? null : state.filter;
+      final currentGroupsFuture = groupsRepository.getGroupSummaries(status: statusParam);
+      final allGroupsFuture = state.filter == 'ALL'
+          ? currentGroupsFuture
+          : groupsRepository.getGroupSummaries(status: null);
+
       final results = await Future.wait([
         analyticsRepository.getPersonalOverview(),
-        groupsRepository.getGroupSummaries(status: statusParam),
+        currentGroupsFuture,
+        allGroupsFuture,
       ]);
 
       if (isClosed ||
+          currentRequestId != _requestId ||
           (sessionCoordinator != null &&
               sessionCoordinator!.sessionEpoch != requestEpoch)) {
         return;
@@ -86,19 +131,27 @@ class AnalyticsTabCubit extends Cubit<AnalyticsTabState> {
 
       final overview = results[0];
       final groups = results[1] as List<GroupSummaryModel>;
+      final allGroups = results[2] as List<GroupSummaryModel>;
+
+      final totalAll = allGroups.length;
+      final totalActive = allGroups.where((g) => g.status?.toUpperCase() != 'ARCHIVED').length;
+      final totalArchived = allGroups.where((g) => g.status?.toUpperCase() == 'ARCHIVED').length;
 
       emit(
         state.copyWith(
           status: AnalyticsTabStatus.success,
           overview: overview as dynamic,
           groups: groups,
-          totalAllCount: state.filter == 'ALL' ? groups.length : state.totalAllCount,
+          totalAllCount: totalAll,
+          totalActiveCount: totalActive,
+          totalArchivedCount: totalArchived,
           isRefreshing: false,
           clearError: true,
         ),
       );
     } on AppException catch (e) {
       if (isClosed ||
+          currentRequestId != _requestId ||
           (sessionCoordinator != null &&
               sessionCoordinator!.sessionEpoch != requestEpoch)) {
         return;
@@ -112,6 +165,7 @@ class AnalyticsTabCubit extends Cubit<AnalyticsTabState> {
       );
     } catch (e) {
       if (isClosed ||
+          currentRequestId != _requestId ||
           (sessionCoordinator != null &&
               sessionCoordinator!.sessionEpoch != requestEpoch)) {
         return;

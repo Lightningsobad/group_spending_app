@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:group_spending_app/core/errors/app_exception.dart';
 import 'package:group_spending_app/features/analytics/domain/entities/analytics_enums.dart';
@@ -126,6 +127,9 @@ class FakeAnalyticsRepository implements AnalyticsRepository {
 }
 
 class FakeGroupsRepository implements GroupsRepository {
+  Completer<void>? getSummariesCompleter;
+  Future<List<GroupSummaryModel>> Function(String? status)? customGetSummaries;
+
   List<GroupSummaryModel> mockSummaries = [
     const GroupSummaryModel(
       id: 1,
@@ -151,6 +155,12 @@ class FakeGroupsRepository implements GroupsRepository {
     String? status,
     String? category,
   }) async {
+    if (customGetSummaries != null) {
+      return customGetSummaries!(status);
+    }
+    if (getSummariesCompleter != null) {
+      await getSummariesCompleter!.future;
+    }
     var list = mockSummaries;
     if (status != null && status != 'ALL') {
       list = list.where((g) => g.status?.toUpperCase() == status.toUpperCase()).toList();
@@ -318,6 +328,89 @@ void main() {
         expect(cubit.state.status, AnalyticsTabStatus.failure);
         expect(cubit.state.errorMessage, 'Lỗi kết nối');
       });
+
+      test('ANA-02: older setFilter response does not overwrite newer filter (requestId protection)', () async {
+        final cubit = AnalyticsTabCubit(
+          analyticsRepository: analyticsRepo,
+          groupsRepository: groupsRepo,
+        );
+        await cubit.loadOverview();
+
+        final activeCompleter = Completer<List<GroupSummaryModel>>();
+        groupsRepo.customGetSummaries = (status) {
+          if (status == 'ACTIVE') {
+            return activeCompleter.future;
+          }
+          return Future.value(groupsRepo.mockSummaries);
+        };
+
+        // 1. User taps ACTIVE (slow request)
+        final activeFuture = cubit.setFilter('ACTIVE');
+        // 2. User immediately taps ALL (fast request)
+        final allFuture = cubit.setFilter('ALL');
+
+        await allFuture;
+        expect(cubit.state.filter, 'ALL');
+        expect(cubit.state.groups.length, 2);
+
+        // 3. Stale ACTIVE response finally arrives
+        activeCompleter.complete([groupsRepo.mockSummaries.first]);
+        await activeFuture;
+
+        // Verify state is NOT overwritten by the stale ACTIVE response
+        expect(cubit.state.filter, 'ALL');
+        expect(cubit.state.groups.length, 2);
+      });
+
+      test('ANA-02: reset cancels pending loadOverview', () async {
+        final completer = Completer<void>();
+        groupsRepo.getSummariesCompleter = completer;
+
+        final cubit = AnalyticsTabCubit(
+          analyticsRepository: analyticsRepo,
+          groupsRepository: groupsRepo,
+        );
+
+        final loadFuture = cubit.loadOverview();
+        cubit.reset();
+
+        completer.complete();
+        await loadFuture;
+
+        expect(cubit.state.status, AnalyticsTabStatus.initial);
+        expect(cubit.state.groups.isEmpty, isTrue);
+      });
+
+      test('ANA-03: chip counts stay consistent and not zeroed out when filtering via API', () async {
+        final cubit = AnalyticsTabCubit(
+          analyticsRepository: analyticsRepo,
+          groupsRepository: groupsRepo,
+        );
+        await cubit.loadOverview();
+
+        expect(cubit.state.allCount, 2);
+        expect(cubit.state.activeCount, 1);
+        expect(cubit.state.archivedCount, 1);
+
+        // Switch to ARCHIVED via API
+        await cubit.setFilter('ARCHIVED');
+        expect(cubit.state.filter, 'ARCHIVED');
+        expect(cubit.state.filteredGroups.length, 1);
+        expect(cubit.state.filteredGroups.first.name, 'Đội Cầu Lông Ba Đình');
+        // Active count does NOT become 0!
+        expect(cubit.state.allCount, 2);
+        expect(cubit.state.activeCount, 1);
+        expect(cubit.state.archivedCount, 1);
+
+        // Switch to ACTIVE via API
+        await cubit.setFilter('ACTIVE');
+        expect(cubit.state.filter, 'ACTIVE');
+        expect(cubit.state.filteredGroups.length, 1);
+        expect(cubit.state.filteredGroups.first.name, 'Chung cư Sunrise Room');
+        expect(cubit.state.allCount, 2);
+        expect(cubit.state.activeCount, 1);
+        expect(cubit.state.archivedCount, 1);
+      });
     });
 
     group('GlobalAnalyticsCubit', () {
@@ -327,10 +420,13 @@ void main() {
         );
 
         expect(cubit.state.status, GlobalAnalyticsStatus.initial);
+        expect(cubit.state.hasValidData, isFalse);
 
         await cubit.loadAnalytics();
 
         expect(cubit.state.status, GlobalAnalyticsStatus.success);
+        expect(cubit.state.hasValidData, isTrue);
+        expect(cubit.state.loadedPeriod, StatisticsPeriod.thisMonth);
         expect(cubit.state.details.totalSpendingVnd, 20490000);
         expect(cubit.state.leaderboard.length, 1);
         expect(cubit.state.recentExpenses.length, 1);
@@ -344,6 +440,50 @@ void main() {
         cubit.setPeriod(StatisticsPeriod.lastMonth);
         expect(cubit.state.period, StatisticsPeriod.lastMonth);
         await cubit.loadAnalytics();
+        expect(cubit.state.status, GlobalAnalyticsStatus.success);
+        expect(cubit.state.loadedPeriod, StatisticsPeriod.lastMonth);
+        expect(cubit.state.hasValidData, isTrue);
+      });
+
+      test('ANA-01: changing period error does not keep previous period data as valid', () async {
+        final cubit = GlobalAnalyticsCubit(
+          analyticsRepository: analyticsRepo,
+        );
+        await cubit.loadAnalytics();
+        expect(cubit.state.hasValidData, isTrue);
+
+        analyticsRepo.shouldThrow = true;
+        cubit.setPeriod(StatisticsPeriod.lastMonth);
+        await cubit.loadAnalytics();
+
+        expect(cubit.state.status, GlobalAnalyticsStatus.failure);
+        expect(cubit.state.period, StatisticsPeriod.lastMonth);
+        // Previous data is NOT valid under the new period!
+        expect(cubit.state.hasValidData, isFalse);
+      });
+
+      test('ANA-01: refresh error on same period keeps hasValidData true and preserves data', () async {
+        final cubit = GlobalAnalyticsCubit(
+          analyticsRepository: analyticsRepo,
+        );
+        await cubit.loadAnalytics();
+        expect(cubit.state.hasValidData, isTrue);
+
+        analyticsRepo.shouldThrow = true;
+        await cubit.loadAnalytics(isRefresh: true);
+
+        expect(cubit.state.status, GlobalAnalyticsStatus.failure);
+        expect(cubit.state.hasValidData, isTrue);
+        expect(cubit.state.details.totalSpendingVnd, 20490000);
+      });
+
+      test('ANA-04: byYear period maps to ExpenseTimeFilter.thisYear', () async {
+        final cubit = GlobalAnalyticsCubit(
+          analyticsRepository: analyticsRepo,
+        );
+        cubit.setPeriod(StatisticsPeriod.byYear);
+        await cubit.loadAnalytics();
+        expect(cubit.state.period, StatisticsPeriod.byYear);
         expect(cubit.state.status, GlobalAnalyticsStatus.success);
       });
     });
@@ -363,10 +503,13 @@ void main() {
         );
 
         expect(cubit.state.status, GroupAnalyticsStatus.initial);
+        expect(cubit.state.hasValidData, isFalse);
 
         await cubit.loadGroupAnalytics();
 
         expect(cubit.state.status, GroupAnalyticsStatus.success);
+        expect(cubit.state.hasValidData, isTrue);
+        expect(cubit.state.loadedPeriod, StatisticsPeriod.thisMonth);
         expect(cubit.state.groupStatistics.totalSpendingVnd, 20490000);
         expect(cubit.state.leaderboard.length, 1);
         expect(cubit.state.recentExpenses.length, 1);
@@ -386,7 +529,54 @@ void main() {
         await cubit.loadGroupAnalytics();
 
         expect(cubit.state.status, GroupAnalyticsStatus.success);
+        expect(cubit.state.loadedPeriod, StatisticsPeriod.lastMonth);
         expect(expensesRepo.lastTimeFilter, exp_enums.ExpenseTimeFilter.lastMonth);
+      });
+
+      test('ANA-01: changing period error does not keep previous period data as valid', () async {
+        final cubit = GroupAnalyticsCubit(
+          groupId: 10,
+          analyticsRepository: analyticsRepo,
+          expensesRepository: expensesRepo,
+        );
+        await cubit.loadGroupAnalytics();
+        expect(cubit.state.hasValidData, isTrue);
+
+        analyticsRepo.shouldThrow = true;
+        cubit.setPeriod(StatisticsPeriod.lastMonth);
+        await cubit.loadGroupAnalytics();
+
+        expect(cubit.state.status, GroupAnalyticsStatus.failure);
+        expect(cubit.state.period, StatisticsPeriod.lastMonth);
+        expect(cubit.state.hasValidData, isFalse);
+      });
+
+      test('ANA-01: refresh error on same period keeps hasValidData true and preserves data', () async {
+        final cubit = GroupAnalyticsCubit(
+          groupId: 10,
+          analyticsRepository: analyticsRepo,
+          expensesRepository: expensesRepo,
+        );
+        await cubit.loadGroupAnalytics();
+        expect(cubit.state.hasValidData, isTrue);
+
+        analyticsRepo.shouldThrow = true;
+        await cubit.loadGroupAnalytics(isRefresh: true);
+
+        expect(cubit.state.status, GroupAnalyticsStatus.failure);
+        expect(cubit.state.hasValidData, isTrue);
+        expect(cubit.state.groupStatistics.totalSpendingVnd, 20490000);
+      });
+
+      test('ANA-04: byYear period maps to ExpenseTimeFilter.thisYear', () async {
+        final cubit = GroupAnalyticsCubit(
+          groupId: 10,
+          analyticsRepository: analyticsRepo,
+          expensesRepository: expensesRepo,
+        );
+        cubit.setPeriod(StatisticsPeriod.byYear);
+        await cubit.loadGroupAnalytics();
+        expect(expensesRepo.lastTimeFilter, exp_enums.ExpenseTimeFilter.thisYear);
       });
     });
   });
