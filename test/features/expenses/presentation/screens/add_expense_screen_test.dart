@@ -416,5 +416,22 @@ void main() {
       expect(find.text('Cancel'), findsOneWidget);
       expect(tester.takeException(), isNull);
     });
+
+    testWidgets('EXP-04: nút Lưu bị vô hiệu hóa khi danh sách thành viên nhóm đang tải', (tester) async {
+      groupsRepo.delayDetailsCompleter = Completer<GroupModel>();
+
+      await tester.pumpWidget(buildTestScreen(group: const GroupModel(id: 1, name: 'Nhóm Chưa Load', ownerId: 1)));
+      await tester.pump();
+
+      final saveBtn = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+      expect(saveBtn.onPressed, isNull);
+      expect(find.text('Đang tải...'), findsOneWidget);
+
+      groupsRepo.delayDetailsCompleter!.complete(groupsRepo.defaultGroup);
+      await tester.pumpAndSettle();
+
+      final activeSaveBtn = tester.widget<ElevatedButton>(find.byType(ElevatedButton));
+      expect(activeSaveBtn.onPressed, isNotNull);
+    });
   });
 }

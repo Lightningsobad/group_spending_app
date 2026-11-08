@@ -449,8 +449,8 @@ Cho phép người tạo khoản chi hoặc Admin nhóm chỉnh sửa thông tin
   - `expenseId` (Long, bắt buộc): ID khoản chi cần chỉnh sửa.
 
 - **Multipart Parts / Tham số:**
-  - `data` (JSON String, bắt buộc): Dữ liệu cập nhật (`UpdateExpenseRequest`).
-  - `receipt` (File Binary, tùy chọn): Ảnh hóa đơn mới. Nếu không upload ảnh mới, hệ thống sẽ giữ nguyên hóa đơn hiện tại.
+  - `data` (JSON String, bắt buộc): Dữ liệu cập nhật (`UpdateExpenseRequest`). Có thể truyền thêm trường boolean `removeReceipt: true` khi người dùng muốn xóa ảnh hóa đơn cũ.
+  - `receipt` (File Binary, tùy chọn): Ảnh hóa đơn mới. Nếu không upload ảnh mới và không truyền `removeReceipt: true`, hệ thống sẽ giữ nguyên hóa đơn hiện tại.
   - Các params tùy chọn: `category`, `splitOption`, `participantUserIds`.
 
 #### Cấu trúc JSON bên trong Part `data`:
@@ -462,7 +462,8 @@ Cho phép người tạo khoản chi hoặc Admin nhóm chỉnh sửa thông tin
   "expenseDate": "2026-09-30",
   "notes": "Gọi thêm 3 cốc trà đá",
   "category": "Food",
-  "splitOption": "EQUAL_ALL"
+  "splitOption": "EQUAL_ALL",
+  "removeReceipt": false
 }
 ```
 

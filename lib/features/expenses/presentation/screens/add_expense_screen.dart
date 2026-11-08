@@ -219,6 +219,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
   }
 
   Future<void> _pickReceipt(ImageSource source) async {
+    if (_expenseFormCubit?.state.isBusy == true) return;
     final l10n = context.l10n;
     try {
       final picker = ImagePicker();
@@ -484,9 +485,9 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                           receiptFile: state.receiptFile,
                           receiptUrl: state.receiptUrl,
                           scanConfidence: state.scanConfidence,
-                          onCapturePressed: () => _pickReceipt(ImageSource.camera),
-                          onPickGalleryPressed: () => _pickReceipt(ImageSource.gallery),
-                          onRemoveReceipt: cubit.removeReceipt,
+                          onCapturePressed: state.isBusy ? () {} : () => _pickReceipt(ImageSource.camera),
+                          onPickGalleryPressed: state.isBusy ? () {} : () => _pickReceipt(ImageSource.gallery),
+                          onRemoveReceipt: state.isBusy ? () {} : cubit.removeReceipt,
                           onViewReceipt: _viewReceipt,
                         ),
                         const SizedBox(height: 14),
@@ -716,12 +717,23 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                 Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 16),
                                   child: Center(
-                                    child: Text(
-                                      l10n.noMembersToSplit,
-                                      style: AppTextStyle.regular(
-                                        fontSize: AppFontSize.caption,
-                                        color: colors.textMuted,
-                                      ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          l10n.noMembersToSplit,
+                                          style: AppTextStyle.regular(
+                                            fontSize: AppFontSize.caption,
+                                            color: colors.textMuted,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        TextButton.icon(
+                                          onPressed: _isLoadingMembers ? null : _fetchGroupDetail,
+                                          icon: const Icon(LucideIcons.refreshCw, size: 14),
+                                          label: const Text('Thử lại tải thành viên'),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 )
@@ -793,7 +805,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                               ),
-                              onPressed: state.isSubmitting ? null : cubit.submitExpense,
+                              onPressed: (state.isBusy || _isLoadingMembers) ? null : cubit.submitExpense,
                               child: state.isSubmitting
                                   ? SizedBox(
                                       width: 20,
@@ -803,13 +815,43 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                         color: colors.onPrimaryButton,
                                       ),
                                     )
-                                  : Text(
-                                      isEdit ? l10n.saveChanges : l10n.saveNewExpenseAction,
-                                      style: AppTextStyle.bold(
-                                        fontSize: 15,
-                                        color: colors.onPrimaryButton,
-                                      ),
-                                    ),
+                                  : state.isScanningReceipt
+                                      ? Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              width: 16,
+                                              height: 16,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                color: colors.onPrimaryButton,
+                                              ),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Text(
+                                              'Đang quét...',
+                                              style: AppTextStyle.bold(
+                                                fontSize: 15,
+                                                color: colors.onPrimaryButton,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      : _isLoadingMembers
+                                          ? Text(
+                                              'Đang tải...',
+                                              style: AppTextStyle.bold(
+                                                fontSize: 15,
+                                                color: colors.onPrimaryButton,
+                                              ),
+                                            )
+                                          : Text(
+                                              isEdit ? l10n.saveChanges : l10n.saveNewExpenseAction,
+                                              style: AppTextStyle.bold(
+                                                fontSize: 15,
+                                                color: colors.onPrimaryButton,
+                                              ),
+                                            ),
                             ),
                           ),
                         ],

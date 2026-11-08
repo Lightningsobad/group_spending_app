@@ -12,6 +12,7 @@ class ExpensesCubit extends Cubit<ExpensesState> {
   final SessionCoordinator? sessionCoordinator;
   final DataSyncCoordinator? dataSyncCoordinator;
   Timer? _searchDebounce;
+  int _nextRequestId = 0;
 
   ExpensesCubit(
     this._repository, {
@@ -42,6 +43,11 @@ class ExpensesCubit extends Cubit<ExpensesState> {
     bool silent = false,
   }) async {
     final isDifferentGroup = state.activeGroupId != groupId;
+    if (isDifferentGroup) {
+      _searchDebounce?.cancel();
+    }
+    final int currentRequestId = ++_nextRequestId;
+    final int targetGroupId = groupId;
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
 
     final effectiveTimeFilter = isDifferentGroup ? ExpenseTimeFilter.all : state.timeFilter;
@@ -67,6 +73,14 @@ class ExpensesCubit extends Cubit<ExpensesState> {
       ));
     }
 
+    bool isStale() {
+      return isClosed ||
+          currentRequestId != _nextRequestId ||
+          state.activeGroupId != targetGroupId ||
+          (sessionCoordinator != null &&
+              sessionCoordinator!.sessionEpoch != requestEpoch);
+    }
+
     try {
       final data = await _repository.getGroupExpenses(
         groupId,
@@ -76,9 +90,7 @@ class ExpensesCubit extends Cubit<ExpensesState> {
         search: effectiveSearch.isNotEmpty ? effectiveSearch : null,
       );
 
-      if (isClosed ||
-          (sessionCoordinator != null &&
-              sessionCoordinator!.sessionEpoch != requestEpoch)) {
+      if (isStale()) {
         return;
       }
 
@@ -88,13 +100,13 @@ class ExpensesCubit extends Cubit<ExpensesState> {
         clearMessages: !silent,
       ));
     } on AppException catch (e) {
-      if (isClosed) return;
+      if (isStale()) return;
       emit(state.copyWith(
         status: ExpensesStatus.failure,
         errorMessage: e.message,
       ));
     } catch (e) {
-      if (isClosed) return;
+      if (isStale()) return;
       emit(state.copyWith(
         status: ExpensesStatus.failure,
         errorMessage: 'Không thể tải danh sách chi tiêu: $e',
@@ -159,9 +171,11 @@ class ExpensesCubit extends Cubit<ExpensesState> {
   }
 
   void clearActiveGroup() {
+    _searchDebounce?.cancel();
+    _nextRequestId++;
     emit(state.copyWith(
       clearExpensesData: true,
-      activeGroupId: null,
+      clearActiveGroupId: true,
       status: ExpensesStatus.initial,
     ));
   }

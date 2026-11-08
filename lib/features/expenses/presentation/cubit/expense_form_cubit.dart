@@ -42,10 +42,12 @@ class ExpenseFormCubit extends Cubit<ExpenseFormState> {
             category: expenseToEdit != null
                 ? expenseToEdit.categoryType
                 : ExpenseCategoryType.food,
-            splitOption: (expenseToEdit != null &&
-                    expenseToEdit.splits.length < members.length &&
-                    expenseToEdit.splits.isNotEmpty)
-                ? SplitOption.equalSelected
+            splitOption: expenseToEdit != null
+                ? (members.isNotEmpty &&
+                        expenseToEdit.splits.length == members.length &&
+                        expenseToEdit.splits.every((s) => members.any((m) => m.userId == s.userId))
+                    ? SplitOption.equalAll
+                    : SplitOption.equalSelected)
                 : SplitOption.equalAll,
             selectedParticipantUserIds: expenseToEdit != null
                 ? expenseToEdit.splits.map((s) => s.userId).toSet()
@@ -143,13 +145,28 @@ class ExpenseFormCubit extends Cubit<ExpenseFormState> {
     }
 
     final Set<int> newSelected;
-    if (state.splitOption == SplitOption.equalAll || state.selectedParticipantUserIds.isEmpty) {
-      newSelected = members.map((m) => m.userId).toSet();
+    final SplitOption newSplitOption;
+
+    if (state.isEditMode) {
+      newSelected = state.selectedParticipantUserIds.isNotEmpty
+          ? state.selectedParticipantUserIds
+          : members.map((m) => m.userId).toSet();
+      newSplitOption = (members.isNotEmpty &&
+              newSelected.length == members.length &&
+              newSelected.every((id) => members.any((m) => m.userId == id)))
+          ? state.splitOption
+          : SplitOption.equalSelected;
     } else {
-      final availableIds = members.map((m) => m.userId).toSet();
-      newSelected = state.selectedParticipantUserIds.intersection(availableIds);
-      if (newSelected.isEmpty && members.isNotEmpty) {
-        newSelected.addAll(availableIds);
+      if (state.splitOption == SplitOption.equalAll || state.selectedParticipantUserIds.isEmpty) {
+        newSelected = members.map((m) => m.userId).toSet();
+        newSplitOption = SplitOption.equalAll;
+      } else {
+        final availableIds = members.map((m) => m.userId).toSet();
+        newSelected = state.selectedParticipantUserIds.intersection(availableIds);
+        if (newSelected.isEmpty && members.isNotEmpty) {
+          newSelected.addAll(availableIds);
+        }
+        newSplitOption = state.splitOption;
       }
     }
 
@@ -157,6 +174,7 @@ class ExpenseFormCubit extends Cubit<ExpenseFormState> {
       members: members,
       paidByUserId: newPaidByUserId,
       selectedParticipantUserIds: newSelected,
+      splitOption: newSplitOption,
       clearMessages: true,
     ));
   }
@@ -294,7 +312,16 @@ class ExpenseFormCubit extends Cubit<ExpenseFormState> {
   }
 
   Future<bool> submitExpense() async {
+    // 0. Guard against concurrent / in-flight states
+    if (state.isSubmitting || state.isScanningReceipt) {
+      return false;
+    }
+
     // 1. Validation
+    if (state.members.isEmpty) {
+      emit(state.copyWith(errorMessage: 'Đang tải danh sách thành viên nhóm, vui lòng thử lại'));
+      return false;
+    }
     if (state.title.trim().isEmpty) {
       emit(state.copyWith(errorMessage: 'Vui lòng nhập tên khoản chi'));
       return false;
@@ -311,10 +338,24 @@ class ExpenseFormCubit extends Cubit<ExpenseFormState> {
       emit(state.copyWith(errorMessage: 'Vui lòng chọn người thanh toán'));
       return false;
     }
-    if (state.splitOption == SplitOption.equalSelected &&
-        state.selectedParticipantUserIds.isEmpty) {
-      emit(state.copyWith(errorMessage: 'Vui lòng chọn ít nhất một thành viên để chia tiền'));
+    if (!state.members.any((m) => m.userId == state.paidByUserId)) {
+      emit(state.copyWith(errorMessage: 'Người thanh toán không thuộc nhóm này'));
       return false;
+    }
+    if (state.splitOption == SplitOption.equalSelected) {
+      if (state.selectedParticipantUserIds.isEmpty) {
+        emit(state.copyWith(errorMessage: 'Vui lòng chọn ít nhất một thành viên để chia tiền'));
+        return false;
+      }
+      final invalidParticipants = state.selectedParticipantUserIds.where(
+        (id) => !state.members.any((m) => m.userId == id),
+      );
+      if (invalidParticipants.isNotEmpty) {
+        emit(state.copyWith(
+          errorMessage: 'Một số thành viên chia tiền không còn trong nhóm. Vui lòng chọn lại.',
+        ));
+        return false;
+      }
     }
 
     emit(state.copyWith(status: ExpenseFormStatus.submitting, clearMessages: true));
@@ -335,13 +376,14 @@ class ExpenseFormCubit extends Cubit<ExpenseFormState> {
           participantUserIds: state.splitOption == SplitOption.equalSelected
               ? state.selectedParticipantUserIds.toList()
               : null,
-          receiptUrl: state.receiptUrl,
+          receiptUrl: state.removeReceipt ? null : state.receiptUrl,
+          removeReceipt: state.removeReceipt,
         );
 
         await _repository.updateExpense(
           state.expenseIdToEdit!,
           updateReq,
-          receiptFile: state.receiptUrl != null ? null : state.receiptFile,
+          receiptFile: (state.receiptUrl != null || state.removeReceipt) ? null : state.receiptFile,
         );
       } else {
         final createReq = CreateExpenseRequest(
