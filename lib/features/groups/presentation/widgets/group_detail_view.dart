@@ -33,12 +33,14 @@ class GroupDetailView extends StatefulWidget {
   final GroupModel initialGroup;
   final VoidCallback onBack;
   final VoidCallback? onNavigateToDebts;
+  final int initialTabIndex;
 
   const GroupDetailView({
     super.key,
     required this.initialGroup,
     required this.onBack,
     this.onNavigateToDebts,
+    this.initialTabIndex = 0,
   });
 
   @override
@@ -47,7 +49,7 @@ class GroupDetailView extends StatefulWidget {
 
 class _GroupDetailViewState extends State<GroupDetailView> {
   late GroupModel _group;
-  int _selectedTabIndex = 0; // 0: Tổng quan, 1: Chi tiêu, 2: Quỹ, 3: Thành viên
+  late int _selectedTabIndex; // 0: Tổng quan, 1: Chi tiêu, 2: Quỹ, 3: Thành viên
   bool _isLoadingDetail = false;
   bool _isCreatingFund = false;
   int? _viewingMemberId;
@@ -57,6 +59,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
   void initState() {
     super.initState();
     _group = widget.initialGroup;
+    _selectedTabIndex = widget.initialTabIndex;
     _isLoadingDetail = true;
     _fetchLatestDetail();
   }

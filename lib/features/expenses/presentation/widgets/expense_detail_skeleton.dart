@@ -69,7 +69,7 @@ class ExpenseDetailSkeleton extends StatelessWidget {
                   Wrap(
                     spacing: 8,
                     runSpacing: 4,
-                    children: const [
+                    children: [
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [

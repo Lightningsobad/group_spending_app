@@ -12,6 +12,11 @@ class InAppNotificationToast {
 
   static OverlayEntry? _currentEntry;
 
+  static void dismiss() {
+    _currentEntry?.remove();
+    _currentEntry = null;
+  }
+
   static void show(NotificationEntity notification) {
     final overlayState = AppRouter.navigatorKey.currentState?.overlay;
     if (overlayState == null) return;

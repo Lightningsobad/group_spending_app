@@ -5,6 +5,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../shared/widgets/app_snack_bar.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../l10n/l10n.dart';
+import '../../domain/repositories/groups_repository.dart';
 import '../cubit/groups_cubit.dart';
 import '../cubit/groups_state.dart';
 import '../../data/models/group_model.dart';
@@ -22,12 +23,16 @@ class GroupsScreen extends StatefulWidget {
   final bool initialShowJoin;
   final VoidCallback? onNavigateToDebts;
   final ValueChanged<bool>? onDeepViewChanged;
+  final int? initialGroupId;
+  final int? initialGroupTab;
 
   const GroupsScreen({
     super.key,
     this.initialShowJoin = false,
     this.onNavigateToDebts,
     this.onDeepViewChanged,
+    this.initialGroupId,
+    this.initialGroupTab,
   });
 
   @override
@@ -38,6 +43,7 @@ class GroupsScreenState extends State<GroupsScreen> {
   final _searchController = TextEditingController();
   late bool _isJoiningGroup;
   GroupModel? _selectedGroup;
+  int _selectedGroupTab = 0;
   VoidCallback? _onBackFromJoin;
 
   bool get isDeepView => _selectedGroup != null || _isJoiningGroup;
@@ -53,15 +59,61 @@ class GroupsScreenState extends State<GroupsScreen> {
     if (_isJoiningGroup) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _notifyDeepView());
     }
+    if (widget.initialGroupId != null && widget.initialGroupId! > 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _openGroupById(widget.initialGroupId!, widget.initialGroupTab ?? 0);
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant GroupsScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialGroupId != null &&
+        (oldWidget.initialGroupId != widget.initialGroupId ||
+            oldWidget.initialGroupTab != widget.initialGroupTab)) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _openGroupById(widget.initialGroupId!, widget.initialGroupTab ?? 0);
+      });
+    }
+  }
+
+  void _openGroupById(int groupId, [int tabIndex = 0]) async {
+    final cubit = context.read<GroupsCubit>();
+    GroupModel? foundGroup;
+    try {
+      foundGroup = cubit.state.groups.firstWhere((g) => g.id == groupId);
+    } catch (_) {}
+
+    if (foundGroup != null) {
+      openGroupDetail(foundGroup, tabIndex);
+      return;
+    }
+
+    try {
+      final repo = context.read<GroupsRepository>();
+      final group = await repo.getGroupDetails(groupId);
+      if (mounted) {
+        openGroupDetail(group, tabIndex);
+      }
+    } catch (_) {
+      if (mounted) {
+        AppSnackBar.showError(
+          context,
+          'Không thể mở nhóm hoặc bạn không có quyền truy cập.',
+        );
+      }
+    }
   }
 
   void _notifyDeepView() {
     widget.onDeepViewChanged?.call(isDeepView);
   }
 
-  void openGroupDetail(GroupModel group) {
+  void openGroupDetail(GroupModel group, [int tabIndex = 0]) {
     setState(() {
       _selectedGroup = group;
+      _selectedGroupTab = tabIndex;
       _isJoiningGroup = false;
     });
     _notifyDeepView();
@@ -70,6 +122,7 @@ class GroupsScreenState extends State<GroupsScreen> {
   void closeGroupDetail() {
     setState(() {
       _selectedGroup = null;
+      _selectedGroupTab = 0;
     });
     _notifyDeepView();
   }
@@ -124,6 +177,7 @@ class GroupsScreenState extends State<GroupsScreen> {
             initialGroup: _selectedGroup!,
             onBack: closeGroupDetail,
             onNavigateToDebts: widget.onNavigateToDebts,
+            initialTabIndex: _selectedGroupTab,
           );
         }
 

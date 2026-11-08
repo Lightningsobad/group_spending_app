@@ -42,10 +42,8 @@ class GroupCategoryHelper {
     BoxFit fit = BoxFit.contain,
   }) {
     final size = width ?? height ?? 24.0;
-    final resolvedColor = color ??
-        (context != null
-            ? context.colors.topicColors(category).iconColor
-            : null);
+    final resolvedColor =
+        color ?? context?.colors.topicColors(category).iconColor;
     return Icon(
       getIcon(category),
       size: size,

@@ -11,6 +11,7 @@ import 'features/auth/presentation/screens/forgot_password_screen.dart';
 import 'features/auth/presentation/screens/verify_otp_screen.dart';
 import 'features/dashboard/presentation/cubit/dashboard_cubit.dart';
 import 'features/debts/presentation/cubit/debts_cubit.dart';
+import 'features/expenses/presentation/screens/expense_detail_host_screen.dart';
 import 'features/funds/presentation/screens/fund_detail_screen.dart';
 import 'features/funds/presentation/screens/fund_form_screen.dart';
 import 'features/groups/data/models/group_model.dart';
@@ -57,13 +58,45 @@ List<RouteBase> buildAppRoutes({
       path: '/dashboard',
       builder: (context, state) {
         final tab = int.tryParse(state.uri.queryParameters['tab'] ?? '') ?? 0;
+        final debtGroupId = int.tryParse(
+          state.uri.queryParameters['debtGroupId'] ??
+              (tab == 2 ? state.uri.queryParameters['groupId'] : null) ??
+              '',
+        );
+        final debtDetailTab = int.tryParse(
+          state.uri.queryParameters['debtDetailTab'] ??
+              state.uri.queryParameters['detailTab'] ??
+              '',
+        );
+        final groupId = int.tryParse(
+          (tab == 1 ? state.uri.queryParameters['groupId'] : null) ?? '',
+        );
+        final groupTab = int.tryParse(state.uri.queryParameters['groupTab'] ?? '');
+
         return MainShellScreen(
           initialTabIndex: tab,
+          initialDebtGroupId: debtGroupId,
+          initialDebtDetailTab: debtDetailTab,
+          initialGroupId: groupId,
+          initialGroupTab: groupTab,
           dashboardCubit: dashboardCubit,
           groupsCubit: groupsCubit,
           analyticsTabCubit: analyticsTabCubit,
           debtsCubit: debtsCubit,
           expensesCubit: expensesCubit,
+        );
+      },
+    ),
+    GoRoute(
+      path: '/groups/:groupId/expenses/:expenseId',
+      builder: (context, state) {
+        final groupId = int.tryParse(state.pathParameters['groupId'] ?? '') ?? 0;
+        final expenseId = int.tryParse(state.pathParameters['expenseId'] ?? '') ?? 0;
+        final group = state.extra as GroupModel?;
+        return ExpenseDetailHostScreen(
+          groupId: groupId,
+          expenseId: expenseId,
+          group: group,
         );
       },
     ),

@@ -63,14 +63,23 @@ class NotificationModel {
       parsedCreatedAt = DateTime.now();
     }
 
+    final effectiveGroupId = (json['groupId'] as num?)?.toInt() ??
+        int.tryParse(parsedData?['groupId']?.toString() ?? '');
+    final effectiveReferenceId = (json['referenceId'] as num?)?.toInt() ??
+        int.tryParse(parsedData?['referenceId']?.toString() ?? '') ??
+        int.tryParse(parsedData?['expenseId']?.toString() ?? '') ??
+        int.tryParse(parsedData?['debtId']?.toString() ?? '') ??
+        int.tryParse(parsedData?['settlementId']?.toString() ?? '') ??
+        int.tryParse(parsedData?['fundId']?.toString() ?? '');
+
     return NotificationModel(
       id: (json['id'] as num?)?.toInt() ?? 0,
       title: json['title']?.toString() ?? '',
       body: json['body']?.toString() ?? '',
       type: json['type']?.toString() ?? '',
       referenceType: json['referenceType']?.toString(),
-      referenceId: (json['referenceId'] as num?)?.toInt(),
-      groupId: (json['groupId'] as num?)?.toInt(),
+      referenceId: effectiveReferenceId,
+      groupId: effectiveGroupId,
       groupName: json['groupName']?.toString(),
       actorId: (json['actorId'] as num?)?.toInt(),
       actorName: json['actorName']?.toString(),

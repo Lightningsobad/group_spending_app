@@ -16,7 +16,14 @@ import '../widgets/group_debt_card_widget.dart';
 import 'group_debt_detail_view.dart';
 
 class DebtsScreen extends StatefulWidget {
-  const DebtsScreen({super.key});
+  final int? initialGroupId;
+  final int? initialDetailTab;
+
+  const DebtsScreen({
+    super.key,
+    this.initialGroupId,
+    this.initialDetailTab,
+  });
 
   @override
   State<DebtsScreen> createState() => _DebtsScreenState();
@@ -29,8 +36,32 @@ class _DebtsScreenState extends State<DebtsScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<DebtsCubit>().loadOverview();
+      final cubit = context.read<DebtsCubit>();
+      cubit.loadOverview();
+      _applyInitialIntent(cubit);
     });
+  }
+
+  @override
+  void didUpdateWidget(covariant DebtsScreen oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialGroupId != null &&
+        (oldWidget.initialGroupId != widget.initialGroupId ||
+            oldWidget.initialDetailTab != widget.initialDetailTab)) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        _applyInitialIntent(context.read<DebtsCubit>());
+      });
+    }
+  }
+
+  void _applyInitialIntent(DebtsCubit cubit) {
+    if (widget.initialGroupId != null && widget.initialGroupId! > 0) {
+      cubit.selectGroup(widget.initialGroupId);
+      if (widget.initialDetailTab != null) {
+        cubit.setDetailTab(widget.initialDetailTab!);
+      }
+    }
   }
 
   @override

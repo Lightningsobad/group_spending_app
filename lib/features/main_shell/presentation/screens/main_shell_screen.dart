@@ -24,6 +24,10 @@ import '../widgets/main_bottom_nav_bar.dart';
 
 class MainShellScreen extends StatefulWidget {
   final int initialTabIndex;
+  final int? initialDebtGroupId;
+  final int? initialDebtDetailTab;
+  final int? initialGroupId;
+  final int? initialGroupTab;
   final DashboardCubit? dashboardCubit;
   final GroupsCubit? groupsCubit;
   final AnalyticsTabCubit? analyticsTabCubit;
@@ -33,6 +37,10 @@ class MainShellScreen extends StatefulWidget {
   const MainShellScreen({
     super.key,
     this.initialTabIndex = 0,
+    this.initialDebtGroupId,
+    this.initialDebtDetailTab,
+    this.initialGroupId,
+    this.initialGroupTab,
     this.dashboardCubit,
     this.groupsCubit,
     this.analyticsTabCubit,
@@ -119,13 +127,18 @@ class _MainShellScreenState extends State<MainShellScreen> {
             ),
             GroupsScreen(
               key: _groupsKey,
+              initialGroupId: widget.initialGroupId,
+              initialGroupTab: widget.initialGroupTab,
               onNavigateToDebts: () {
                 setState(() {
                   _currentIndex = 2;
                 });
               },
             ),
-            const DebtsScreen(),
+            DebtsScreen(
+              initialGroupId: widget.initialDebtGroupId,
+              initialDetailTab: widget.initialDebtDetailTab,
+            ),
             const AnalyticsTabScreen(),
             SettingsScreen(key: _settingsKey),
           ],
