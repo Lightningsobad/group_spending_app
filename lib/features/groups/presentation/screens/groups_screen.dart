@@ -116,6 +116,7 @@ class GroupsScreenState extends State<GroupsScreen> {
       _selectedGroupTab = tabIndex;
       _isJoiningGroup = false;
     });
+    context.read<GroupsCubit>().selectGroup(group);
     _notifyDeepView();
   }
 
@@ -124,6 +125,7 @@ class GroupsScreenState extends State<GroupsScreen> {
       _selectedGroup = null;
       _selectedGroupTab = 0;
     });
+    context.read<GroupsCubit>().clearSelectedGroup();
     _notifyDeepView();
   }
 
@@ -172,9 +174,14 @@ class GroupsScreenState extends State<GroupsScreen> {
       },
       builder: (context, state) {
         if (_selectedGroup != null) {
+          final latestSelected = state.groups.cast<GroupModel?>().firstWhere(
+                (g) => g?.id == _selectedGroup!.id,
+                orElse: () => null,
+              ) ??
+              _selectedGroup!;
           return GroupDetailView(
-            key: ValueKey(_selectedGroup!.id),
-            initialGroup: _selectedGroup!,
+            key: ValueKey(latestSelected.id),
+            initialGroup: latestSelected,
             onBack: closeGroupDetail,
             onNavigateToDebts: widget.onNavigateToDebts,
             initialTabIndex: _selectedGroupTab,

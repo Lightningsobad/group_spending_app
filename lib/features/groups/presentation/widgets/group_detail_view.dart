@@ -121,8 +121,9 @@ class _GroupDetailViewState extends State<GroupDetailView> {
 
   Future<void> _fetchLatestDetail() async {
     setState(() => _isLoadingDetail = true);
-    final detail = await context.read<GroupsCubit>().loadGroupDetails(_group.id);
-    if (mounted && detail != null && detail.id == _group.id) {
+    final currentId = _group.id;
+    final detail = await context.read<GroupsCubit>().loadGroupDetails(currentId);
+    if (mounted && detail != null && detail.id == currentId && _group.id == currentId) {
       setState(() {
         _group = detail;
         _isLoadingDetail = false;
@@ -151,8 +152,10 @@ class _GroupDetailViewState extends State<GroupDetailView> {
       context,
       groupToEdit: _group,
       onSuccessWithGroup: (updated) {
-        setState(() => _group = updated);
-        _fetchLatestDetail();
+        if (updated.id == _group.id) {
+          setState(() => _group = updated);
+          _fetchLatestDetail();
+        }
       },
     );
   }
