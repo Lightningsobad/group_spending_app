@@ -657,6 +657,37 @@ void main() {
         await cubit.deleteGroup(1);
         expect(cubit.state.selectedGroup, isNull);
       });
+
+      test('R11: sequential loadGroupDetails updates selectedGroup to newly loaded group', () async {
+        await cubit.loadGroups();
+        await cubit.loadGroupDetails(1);
+        expect(cubit.state.selectedGroup?.id, 1);
+
+        // Later sequentially loads group 2 -> selectedGroup must be updated to group 2
+        await cubit.loadGroupDetails(2);
+        expect(cubit.state.selectedGroup?.id, 2);
+      });
+
+      test('R12: selectGroup and clearSelectedGroup manage selectedGroup directly', () {
+        const group = GroupModel(id: 3, name: 'Nhóm 3', ownerId: 1);
+        cubit.selectGroup(group);
+        expect(cubit.state.selectedGroup?.id, 3);
+
+        cubit.clearSelectedGroup();
+        expect(cubit.state.selectedGroup, isNull);
+      });
+
+      test('R13: updateGroup on group 2 when group 2 is selected updates selectedGroup', () async {
+        await cubit.loadGroups();
+        await cubit.loadGroupDetails(2);
+        expect(cubit.state.selectedGroup?.id, 2);
+
+        final ok = await cubit.updateGroup(2, name: 'Nhóm 2 Tên Mới');
+        expect(ok, isTrue);
+        expect(cubit.state.selectedGroup?.id, 2);
+        expect(cubit.state.selectedGroup?.name, 'Nhóm 2 Tên Mới');
+        expect(cubit.state.groups.firstWhere((g) => g.id == 2).name, 'Nhóm 2 Tên Mới');
+      });
     });
   });
 }

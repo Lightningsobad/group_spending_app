@@ -105,7 +105,14 @@ class _CreateGroupSheetState extends State<CreateGroupSheet> {
       });
 
       if (success) {
-        final updatedGroup = context.read<GroupsCubit>().state.selectedGroup ??
+        final cubitState = context.read<GroupsCubit>().state;
+        final updatedGroup = (cubitState.selectedGroup?.id == widget.groupToEdit!.id
+                ? cubitState.selectedGroup
+                : null) ??
+            cubitState.groups.cast<GroupModel?>().firstWhere(
+                  (g) => g?.id == widget.groupToEdit!.id,
+                  orElse: () => null,
+                ) ??
             widget.groupToEdit!.copyWith(
               name: name,
               description: description,

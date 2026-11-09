@@ -49,8 +49,9 @@ class _GroupDetailSheetState extends State<GroupDetailSheet> {
 
   Future<void> _fetchLatestDetail() async {
     setState(() => _isLoadingDetail = true);
-    final detail = await context.read<GroupsCubit>().loadGroupDetails(_group.id);
-    if (mounted && detail != null) {
+    final currentId = _group.id;
+    final detail = await context.read<GroupsCubit>().loadGroupDetails(currentId);
+    if (mounted && detail != null && detail.id == currentId && _group.id == currentId) {
       setState(() {
         _group = detail;
         _isLoadingDetail = false;

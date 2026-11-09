@@ -102,6 +102,17 @@ class GroupsCubit extends Cubit<GroupsState> {
     emit(state.copyWith(searchQuery: query));
   }
 
+  void selectGroup(GroupModel? group) {
+    emit(state.copyWith(
+      selectedGroup: group,
+      clearSelectedGroup: group == null,
+    ));
+  }
+
+  void clearSelectedGroup() {
+    emit(state.copyWith(clearSelectedGroup: true));
+  }
+
   Future<GroupModel?> loadGroupDetails(int groupId) async {
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
     final detailReqId = ++_detailRequestId;
@@ -116,7 +127,9 @@ class GroupsCubit extends Cubit<GroupsState> {
           _deletedGroupIds.contains(groupId)) {
         return null;
       }
-      if (state.selectedGroup == null || state.selectedGroup!.id == groupId) {
+      final isLatestDetail = detailReqId == _detailRequestId;
+      final matchesSelected = state.selectedGroup?.id == groupId;
+      if (isLatestDetail || matchesSelected) {
         emit(state.copyWith(selectedGroup: detail));
       }
       return detail;
