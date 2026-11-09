@@ -748,6 +748,7 @@ Lấy danh sách tóm tắt rút gọn các nhóm chi tiêu của người dùng
     {
       "id": 10,
       "name": "Nhóm bóng đá thứ 6",
+      "category": "Sport & Clubs",
       "totalSpending": 1500,
       "totalSpendingVnd": 1500000,
       "memberCount": 6
@@ -755,6 +756,7 @@ Lấy danh sách tóm tắt rút gọn các nhóm chi tiêu của người dùng
     {
       "id": 11,
       "name": "Tiền phòng 301",
+      "category": "Apartment",
       "totalSpending": 2400,
       "totalSpendingVnd": 2400000,
       "memberCount": 3
@@ -767,6 +769,7 @@ Lấy danh sách tóm tắt rút gọn các nhóm chi tiêu của người dùng
 - **Mô tả các trường dữ liệu (`GroupSummaryResponse`):**
   - `id` (Number): Mã định danh của nhóm.
   - `name` (String): Tên nhóm.
+  - `category` (String): Chủ đề/Thể loại nhóm (`Apartment`, `Travel & Trip`, `Sport & Clubs`, `Friends & Dining`, `Works & Project`, `Other`).
   - `totalSpending` (Number): Tổng số tiền đã chi tiêu của cả nhóm (đơn vị: Nghìn VNĐ - k).
   - `totalSpendingVnd` (Number): Tổng số tiền đã chi tiêu của cả nhóm (đơn vị: VNĐ đầy đủ).
   - `memberCount` (Number): Số lượng thành viên của nhóm.

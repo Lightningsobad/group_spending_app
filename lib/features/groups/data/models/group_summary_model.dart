@@ -19,6 +19,9 @@ class GroupSummaryModel {
 
   num get spendingVnd => totalSpendingVnd ?? ((totalSpending ?? 0) * 1000);
 
+  String get effectiveCategory =>
+      (category != null && category!.trim().isNotEmpty) ? category!.trim() : 'Other';
+
   factory GroupSummaryModel.fromJson(Map<String, dynamic> json) {
     return GroupSummaryModel(
       id: (json['id'] as num?)?.toInt() ?? 0,
@@ -27,7 +30,7 @@ class GroupSummaryModel {
       totalSpendingVnd: json['totalSpendingVnd'] as num?,
       memberCount: (json['memberCount'] as num?)?.toInt() ?? 0,
       status: json['status'] as String?,
-      category: json['category'] as String?,
+      category: (json['category'] as String?)?.trim(),
     );
   }
 

@@ -5,6 +5,7 @@ import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/utils/currency_utils.dart';
 import '../../../../l10n/l10n.dart';
 import '../../../groups/data/models/group_summary_model.dart';
+import '../../../groups/presentation/widgets/group_category_helper.dart';
 
 class AnalyticsGroupCard extends StatelessWidget {
   final GroupSummaryModel group;
@@ -41,10 +42,17 @@ class AnalyticsGroupCard extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
-                // Top row: Group Name, Member count, Chevron button
-                // (Group icon skipped per requirement, will add later)
+                // Top row: Topic Icon Badge, Group Name, Member count, Chevron button
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    GroupCategoryHelper.buildCategoryBadge(
+                      context,
+                      group.effectiveCategory,
+                      size: 44,
+                      borderRadius: 14,
+                    ),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
