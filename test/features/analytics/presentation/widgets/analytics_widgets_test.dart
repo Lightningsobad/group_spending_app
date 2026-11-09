@@ -8,6 +8,7 @@ import 'package:group_spending_app/features/analytics/presentation/widgets/analy
 import 'package:group_spending_app/features/analytics/presentation/widgets/leaderboard_section.dart';
 import 'package:group_spending_app/features/groups/data/models/group_summary_model.dart';
 import 'package:group_spending_app/l10n/app_localizations.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 void main() {
   group('Analytics Widgets & UX Enhancements Tests', () {
@@ -135,11 +136,12 @@ void main() {
         expect(find.text('2.000.000 đ'), findsOneWidget);
       }
     });
-    testWidgets('AnalyticsGroupCard renders group summary info and handles tap without group icon', (tester) async {
+    testWidgets('AnalyticsGroupCard renders group summary info and topic icon badge', (tester) async {
       bool tapped = false;
       const summary = GroupSummaryModel(
         id: 10,
         name: 'Nhóm bóng đá thứ 6',
+        category: 'Sport & Clubs',
         totalSpendingVnd: 1500000,
         memberCount: 6,
       );
@@ -160,10 +162,33 @@ void main() {
       expect(find.text('6 thành viên'), findsOneWidget);
       expect(find.text('Tổng chi tiêu'), findsOneWidget);
       expect(find.text('1.500.000 đ'), findsOneWidget);
+      expect(find.byIcon(LucideIcons.trophy), findsOneWidget);
 
       await tester.tap(find.text('Nhóm bóng đá thứ 6'));
       await tester.pumpAndSettle();
       expect(tapped, isTrue);
+    });
+
+    testWidgets('AnalyticsGroupCard falls back to default layoutGrid icon when category is missing', (tester) async {
+      const summary = GroupSummaryModel(
+        id: 11,
+        name: 'Nhóm chưa có chủ đề',
+        totalSpendingVnd: 500000,
+        memberCount: 2,
+      );
+
+      await tester.pumpWidget(
+        buildTestHarness(
+          AnalyticsGroupCard(
+            group: summary,
+            onTap: () {},
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Nhóm chưa có chủ đề'), findsOneWidget);
+      expect(find.byIcon(LucideIcons.layoutGrid), findsOneWidget);
     });
   });
 }
