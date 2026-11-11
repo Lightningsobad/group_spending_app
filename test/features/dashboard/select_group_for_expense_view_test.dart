@@ -282,5 +282,31 @@ void main() {
       expect(find.text('-450.000 đ'), findsOneWidget);
       expect(find.text('Tạo nhóm'), findsOneWidget);
     });
+
+    testWidgets('wraps view in SafeArea with top enabled to prevent system status bar overlap', (tester) async {
+      await tester.pumpWidget(
+        MediaQuery(
+          data: const MediaQueryData(
+            padding: EdgeInsets.only(top: 44.0),
+          ),
+          child: buildTestWidget(),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final safeAreaFinder = find.descendant(
+        of: find.byType(SelectGroupForExpenseView),
+        matching: find.byType(SafeArea),
+      );
+      expect(safeAreaFinder, findsOneWidget);
+
+      final safeArea = tester.widget<SafeArea>(safeAreaFinder);
+      expect(safeArea.top, isTrue);
+      expect(safeArea.bottom, isFalse);
+
+      // Back button must start below the 44px top padding
+      final backButtonTopLeft = tester.getTopLeft(find.byIcon(LucideIcons.arrowLeft));
+      expect(backButtonTopLeft.dy, greaterThanOrEqualTo(44.0));
+    });
   });
 }

@@ -119,8 +119,7 @@ class _SelectGroupForExpenseViewState extends State<SelectGroupForExpenseView> {
         }
       },
       child: SafeArea(
-        top: false,
-        bottom: true,
+        bottom: false,
         child: MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaler: textScaler),
           child: widget.isLoading
