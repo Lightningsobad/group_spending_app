@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Màn hình Onboarding 3: Quản lý quỹ chung - FairShare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      color: #f8fafc;
+      overflow-x: hidden;
+    }
+
+    /* Top Control Toolbar */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      color: #34d399;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #334155;
+      color: #ffffff;
+    }
+
+    /* Steps Quick Selector Tab */
+    .steps-tabs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      max-width: 420px;
+      margin-bottom: 14px;
+    }
+
+    .step-tab {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 6px 4px;
+      border-radius: 10px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .step-tab:hover {
+      background: #334155;
+      color: #ffffff;
+    }
+
+    .step-tab.active {
+      background: #186333;
+      border-color: #34d399;
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(52, 211, 153, 0.3);
+    }
+
+    /* iPhone Frame Chassis */
+    .phone-chassis {
+      width: 393px;
+      height: 852px;
+      max-width: 100%;
+      max-height: calc(100vh - 120px);
+      background: #000000;
+      border-radius: 52px;
+      padding: 12px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.15);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    /* Screen Glass Inside */
+    .screen-glass {
+      width: 100%;
+      height: 100%;
+      border-radius: 42px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: #F2F9F3;
+      user-select: none;
+    }
+
+    /* Status Bar */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 26px 4px 26px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #1e293b;
+      z-index: 40;
+      flex-shrink: 0;
+    }
+
+    .dynamic-island {
+      width: 110px;
+      height: 24px;
+      background: #000000;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      border: 1px solid #1e293b;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .island-lens {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #0f172a;
+      border: 1px solid #334155;
+    }
+
+    .island-sensor {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #186333;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-icons svg {
+      width: 14px;
+      height: 14px;
+      stroke: #1e293b;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    /* UPPER SECTION */
+    .upper-section {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 8px 20px 0 20px;
+      z-index: 10;
+    }
+
+    .top-action-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .back-btn {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      color: #186333;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.2s;
+    }
+
+    .back-btn:hover {
+      background: rgba(24, 99, 51, 0.08);
+    }
+
+    .skip-btn {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      color: #186333;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      transition: opacity 0.2s;
+      cursor: pointer;
+    }
+
+    .skip-btn:hover {
+      opacity: 0.75;
+      background: rgba(24, 99, 51, 0.08);
+    }
+
+    .illustration-wrapper {
+      position: relative;
+      width: 270px;
+      height: 270px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ambient-glow {
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      background: rgba(254, 230, 133, 0.45);
+      filter: blur(28px);
+      pointer-events: none;
+    }
+
+    .illustration-svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      position: relative;
+      z-index: 10;
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.08));
+      transition: transform 0.3s ease;
+    }
+
+    .illustration-wrapper:hover .illustration-svg {
+      transform: scale(1.02);
+    }
+
+    /* Keyframe Animations */
+    @keyframes gearSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes floatBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes coinPulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .animated-gear-doc {
+      animation: gearSpin 18s linear infinite;
+      transform-origin: 398px 304px;
+    }
+
+    .animated-dollar {
+      animation: floatBounce 2.5s ease-in-out infinite;
+    }
+
+    .animated-coin {
+      animation: coinPulse 2s ease-in-out infinite;
+      transform-origin: 256px 310px;
+    }
+
+    /* ORGANIC WAVY DIVIDER */
+    .wavy-divider {
+      position: relative;
+      width: 100%;
+      flex-shrink: 0;
+      margin-bottom: -1px;
+      z-index: 20;
+      line-height: 0;
+    }
+
+    .wavy-divider svg {
+      width: 100%;
+      height: 56px;
+      display: block;
+    }
+
+    /* LOWER SECTION */
+    .lower-section {
+      position: relative;
+      background: #186333;
+      padding: 10px 24px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      z-index: 20;
+      flex-shrink: 0;
+    }
+
+    .feature-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #D1FAE5;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .slide-title {
+      font-size: 21px;
+      font-weight: 900;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.25;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .slide-desc {
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(209, 250, 229, 0.92);
+      line-height: 1.55;
+      max-width: 290px;
+      margin: 8px auto 0 auto;
+    }
+
+    /* Pagination Dots */
+    .dots-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      margin-bottom: 18px;
+    }
+
+    .dot-link {
+      display: block;
+      height: 8px;
+      border-radius: 9999px;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .dot-link.active {
+      width: 24px;
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .dot-link.inactive {
+      width: 8px;
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .dot-link.inactive:hover {
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Circular White Next Button */
+    .next-circle-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #ffffff;
+      color: #186333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.95);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .next-circle-btn:hover {
+      background: #effaf2;
+      transform: scale(1.06);
+      box-shadow: 0 14px 28px -4px rgba(0, 0, 0, 0.35);
+    }
+
+    .next-circle-btn:active {
+      transform: scale(0.96);
+    }
+
+    .next-circle-btn svg {
+      width: 24px;
+      height: 24px;
+      stroke: #186333;
+      stroke-width: 2.8;
+      fill: none;
+    }
+
+    .home-indicator {
+      width: 134px;
+      height: 5px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.4);
+      margin: 10px auto 2px auto;
+    }
+
+    .footer-nav {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .footer-nav a {
+      color: #34d399;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .footer-nav a:hover {
+      text-decoration: underline;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .toolbar, .steps-tabs, .footer-nav {
+        display: none !important;
+      }
+      .phone-chassis {
+        box-shadow: none;
+        max-height: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Controls & Links -->
+  <div class="toolbar">
+    <div class="badge">✨ Onboarding (3/4) • Quản lý quỹ chung</div>
+    <div class="toolbar-actions">
+      <button class="action-btn" onclick="window.print()">In / Lưu PDF</button>
+      <a href="register_screen.html" class="action-btn">Bỏ qua →</a>
+    </div>
+  </div>
+
+  <!-- Step Tabs Switcher -->
+  <div class="steps-tabs">
+    <a href="onboarding_1_screen.html" class="step-tab">1. Quản lý nhóm</a>
+    <a href="onboarding_2_screen.html" class="step-tab">2. Chi tiêu</a>
+    <a href="onboarding_3_screen.html" class="step-tab active">3. Quỹ chung</a>
+    <a href="onboarding_4_screen.html" class="step-tab">4. Nhắc nợ & QR</a>
+  </div>
+
+  <!-- iPhone Frame Chassis -->
+  <div class="phone-chassis">
+    <div class="screen-glass">
+      
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <span>9:41</span>
+        <div class="dynamic-island">
+          <span class="island-lens"></span>
+          <span class="island-sensor"></span>
+        </div>
+        <div class="status-icons">
+          <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+          <svg viewBox="0 0 24 24"><rect width="16" height="10" x="2" y="7" rx="2" ry="2"/><line x1="22" x2="22" y1="11" y2="13"/><rect x="4" y="9" width="10" height="6" fill="#1e293b"/></svg>
+        </div>
+      </div>
+
+      <!-- ================= UPPER SECTION ================= -->
+      <div class="upper-section">
+        <div class="top-action-row">
+          <a href="onboarding_2_screen.html" class="back-btn">← Trước</a>
+          <a href="register_screen.html" class="skip-btn">Bỏ qua</a>
+        </div>
+
+        <!-- 3D Vector Illustration for Group Fund Management -->
+        <div class="illustration-wrapper">
+          <div class="ambient-glow"></div>
+
+          <svg class="illustration-svg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Yellow Sun Disk -->
+            <ellipse cx="250" cy="245" rx="175" ry="190" fill="#F7B228" />
+
+            <!-- Foliage / Green Leaves -->
+            <g id="left-leaves">
+              <path d="M110 452 C85 380 40 340 58 260 C75 320 100 390 110 452 Z" fill="#008955" />
+              <path d="M70 452 C45 380 30 310 40 270 C55 330 80 400 90 452 Z" fill="#00A86B" />
+            </g>
+            <g id="right-leaves">
+              <path d="M365 452 C385 380 415 340 440 310 C430 360 405 410 395 452 Z" fill="#008955" />
+              <path d="M405 452 C430 380 445 320 442 270 C425 330 420 390 415 452 Z" fill="#00A86B" />
+              <path d="M425 452 C440 370 435 300 420 260 C410 320 420 400 422 452 Z" fill="#10B981" />
+            </g>
+
+            <!-- Ground Line -->
+            <rect x="48" y="452" width="404" height="6" rx="3" fill="#FFFFFF" />
+            <rect x="42" y="456" width="416" height="6" rx="2" fill="#0A1128" />
+
+            <!-- Fund Podium -->
+            <rect x="110" y="237" width="128" height="215" rx="6" fill="#2563EB" />
+            <rect x="100" y="237" width="148" height="15" rx="4" fill="#1D4ED8" />
+
+            <!-- Podium Front Color Wheel -->
+            <g transform="translate(174, 350)">
+              <path d="M0 0 L0 -48 A48 48 0 0 1 48 0 Z" fill="#E53935" />
+              <path d="M0 0 L48 0 A48 48 0 0 1 0 48 Z" fill="#1E293B" />
+              <path d="M0 0 L0 48 A48 48 0 0 1 -48 0 Z" fill="#F59E0B" />
+              <path d="M0 0 L-48 0 A48 48 0 0 1 0 -48 Z" fill="#204CB2" />
+              <circle cx="0" cy="0" r="15" fill="#FFFFFF" />
+            </g>
+
+            <!-- Plant Pot on Podium -->
+            <g transform="translate(147, 186)">
+              <rect x="4" y="0" width="46" height="48" rx="3" fill="#FFFFFF" />
+              <ellipse cx="27" cy="2" rx="23" ry="5" fill="#3E2723" />
+            </g>
+
+            <!-- Growing Wealth Sprout -->
+            <g transform="translate(174, 102)">
+              <path d="M0 86 L0 25" stroke="#00A86B" stroke-width="6" stroke-linecap="round" />
+              <path d="M0 55 C-35 50 -35 15 0 25 C-5 35 -15 50 0 55 Z" fill="#00A86B" />
+              <path d="M0 55 C35 50 35 15 0 25 C5 35 15 50 0 55 Z" fill="#10B981" />
+            </g>
+
+            <!-- Floating Blue Dollar Symbol ($) with Gentle Bounce -->
+            <g class="animated-dollar">
+              <text x="174" y="96" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="34" font-weight="900" fill="#2563EB">$</text>
+            </g>
+
+            <!-- Floating Golden Coin (₫) -->
+            <g transform="translate(256, 310)" class="animated-coin">
+              <circle cx="0" cy="0" r="11" fill="#F59E0B" fill-opacity="0.85" stroke="#FFFFFF" stroke-width="1.5" />
+              <text x="0" y="4" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" font-weight="bold" fill="#78350F">₫</text>
+            </g>
+
+            <!-- Fund Manager Character -->
+            <g id="char-fund-manager">
+              <path d="M342 178 C342 157 378 157 378 178 C378 187 342 192 342 178 Z" fill="#1E293B" />
+              <ellipse cx="360" cy="195" rx="15" ry="17" fill="#F5C29C" />
+              <rect x="354" y="209" width="12" height="15" fill="#F5C29C" />
+              <path d="M344 212 L376 212 L360 230 Z" fill="#FFFFFF" />
+              <polygon points="357,227 363,227 366,280 360,287 354,280" fill="#E53935" />
+              <path d="M322 230 L398 230 L388 327 L332 327 Z" fill="#204CB2" />
+              <path d="M330 232 L260 254 L263 268 L335 248 Z" fill="#204CB2" />
+
+              <!-- Mini Pot in hand -->
+              <g transform="translate(251, 216)">
+                <rect x="0" y="10" width="30" height="28" rx="2" fill="#FFFFFF" />
+                <path d="M15 10 L15 0" stroke="#00A86B" stroke-width="3" stroke-linecap="round" />
+                <path d="M15 4 C10 2 10 -4 15 0 Z" fill="#10B981" />
+                <path d="M15 4 C20 2 20 -4 15 0 Z" fill="#00A86B" />
+                <text x="15" y="-5" text-anchor="middle" font-size="10" font-weight="bold" fill="#F59E0B">$</text>
+              </g>
+
+              <path d="M394 233 L406 280 L395 285 L384 246 Z" fill="#204CB2" />
+
+              <!-- Document in left hand -->
+              <g transform="translate(357, 293)">
+                <rect x="0" y="0" width="28" height="35" rx="3" fill="#FFFFFF" />
+                <line x1="5" y1="8" x2="23" y2="8" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="5" y1="15" x2="23" y2="15" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round" />
+                <line x1="5" y1="22" x2="16" y2="22" stroke="#CBD5E1" stroke-width="2.5" stroke-linecap="round" />
+              </g>
+
+              <!-- Gear icon beside document -->
+              <g transform="translate(385, 290)" class="animated-gear-doc">
+                <path d="M18 4l2 4 4.5-.5 1.5 4.3 4.5 1 .3 4.5 4 2.2-1.2 4.4 3 3.3-2.5 3.8 1.5 4.3-3.6 2.8.2 4.5-4.3 1.8-.8 4.5-4.5.1-2.5 3.8-4.2-1.7-3.6 2.8-3.8-2.5-4.3 1.5-2.8-3.6-4.5.2-1.8-4.3-4.5-.8-.1-4.5-3.8-2.5 1.7-4.2-2.8-3.6 2.5-3.8-1.5-4.3 3.6-2.8-.2-4.5 4.3-1.8.8-4.5 4.5-.1 2.5-3.8 4.2 1.7 3.6-2.8 3.8 2.5 4.3-1.5 2.8 3.6z" fill="#FFFFFF" transform="scale(0.85)" />
+                <circle cx="15" cy="17" r="5" fill="#10B981" />
+              </g>
+
+              <rect x="332" y="327" width="56" height="7" fill="#1E293B" />
+              <rect x="331" y="334" width="16" height="118" rx="2" fill="#1E293B" />
+              <rect x="371" y="334" width="16" height="118" rx="2" fill="#1E293B" />
+              <path d="M320 452 L348 452 C348 445 340 442 330 442 L320 447 Z" fill="#0F172A" />
+              <path d="M380 452 L406 452 C406 445 398 442 388 442 L380 447 Z" fill="#0F172A" />
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- ================= SIGNATURE ORGANIC WAVY DIVIDER ================= -->
+      <div class="wavy-divider">
+        <svg viewBox="0 0 393 72" fill="none" preserveAspectRatio="none">
+          <path d="M0,32 C95,68 185,12 285,38 C335,48 368,32 393,20 L393,72 L0,72 Z" fill="#186333"></path>
+        </svg>
+      </div>
+
+      <!-- ================= LOWER SECTION ================= -->
+      <div class="lower-section">
+        <!-- Feature Pill -->
+        <div class="feature-pill">
+          <span>Quản lý quỹ chung</span>
+        </div>
+
+        <!-- Title -->
+        <h2 class="slide-title">QUẢN LÝ QUỸ CHUNG MINH BẠCH</h2>
+
+        <!-- Description -->
+        <p class="slide-desc">
+          Thu quỹ nhóm tiện lợi, theo dõi tiến độ đóng góp theo thời gian thực và quản lý ngân sách an toàn, minh bạch 100%.
+        </p>
+
+        <!-- Indicator Dots -->
+        <div class="dots-container">
+          <a href="onboarding_1_screen.html" class="dot-link inactive" title="Bước 1: Quản lý nhóm"></a>
+          <a href="onboarding_2_screen.html" class="dot-link inactive" title="Bước 2: Quản lý chi tiêu"></a>
+          <a href="onboarding_3_screen.html" class="dot-link active" title="Bước 3: Quản lý quỹ chung"></a>
+          <a href="onboarding_4_screen.html" class="dot-link inactive" title="Bước 4: Nhắc nợ & Thanh toán"></a>
+        </div>
+
+        <!-- Circular White Next Button -->
+        <a href="onboarding_4_screen.html" class="next-circle-btn" aria-label="Tiếp tục sang bước 4">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+
+        <!-- iOS Home Indicator -->
+        <div class="home-indicator"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom Navigation Helper -->
+  <div class="footer-nav">
+    <a href="onboarding_2_screen.html">← Màn 2: Chi tiêu</a>
+    <span>•</span>
+    <a href="onboarding_4_screen.html">Màn tiếp theo: Nhắc nợ & QR →</a>
+    <span>•</span>
+    <a href="register_screen.html">Màn Đăng ký</a>
+  </div>
+
+  <script>
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'Enter') {
+        window.location.href = 'onboarding_4_screen.html';
+      } else if (e.key === 'ArrowLeft') {
+        window.location.href = 'onboarding_2_screen.html';
+      }
+    });
+
+    let touchstartX = 0;
+    let touchendX = 0;
+    document.addEventListener('touchstart', e => {
+      touchstartX = e.changedTouches[0].screenX;
+    });
+    document.addEventListener('touchend', e => {
+      touchendX = e.changedTouches[0].screenX;
+      if (touchstartX - touchendX > 60) {
+        window.location.href = 'onboarding_4_screen.html';
+      } else if (touchendX - touchstartX > 60) {
+        window.location.href = 'onboarding_2_screen.html';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Màn hình Onboarding 2: Quản lý chi tiêu - FairShare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      color: #f8fafc;
+      overflow-x: hidden;
+    }
+
+    /* Top Control Toolbar */
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      color: #34d399;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #334155;
+      color: #ffffff;
+    }
+
+    /* Steps Quick Selector Tab */
+    .steps-tabs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      max-width: 420px;
+      margin-bottom: 14px;
+    }
+
+    .step-tab {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 6px 4px;
+      border-radius: 10px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .step-tab:hover {
+      background: #334155;
+      color: #ffffff;
+    }
+
+    .step-tab.active {
+      background: #186333;
+      border-color: #34d399;
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(52, 211, 153, 0.3);
+    }
+
+    /* iPhone Frame Chassis */
+    .phone-chassis {
+      width: 393px;
+      height: 852px;
+      max-width: 100%;
+      max-height: calc(100vh - 120px);
+      background: #000000;
+      border-radius: 52px;
+      padding: 12px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.15);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    /* Screen Glass Inside */
+    .screen-glass {
+      width: 100%;
+      height: 100%;
+      border-radius: 42px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: #F2F9F3;
+      user-select: none;
+    }
+
+    /* Status Bar */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 26px 4px 26px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #1e293b;
+      z-index: 40;
+      flex-shrink: 0;
+    }
+
+    .dynamic-island {
+      width: 110px;
+      height: 24px;
+      background: #000000;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      border: 1px solid #1e293b;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8);
+    }
+
+    .island-lens {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #0f172a;
+      border: 1px solid #334155;
+    }
+
+    .island-sensor {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #186333;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-icons svg {
+      width: 14px;
+      height: 14px;
+      stroke: #1e293b;
+      stroke-width: 2;
+      fill: none;
+    }
+
+    /* UPPER SECTION */
+    .upper-section {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 8px 20px 0 20px;
+      z-index: 10;
+    }
+
+    .top-action-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .back-btn {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      color: #186333;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.2s;
+    }
+
+    .back-btn:hover {
+      background: rgba(24, 99, 51, 0.08);
+    }
+
+    .skip-btn {
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 800;
+      color: #186333;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      transition: opacity 0.2s;
+      cursor: pointer;
+    }
+
+    .skip-btn:hover {
+      opacity: 0.75;
+      background: rgba(24, 99, 51, 0.08);
+    }
+
+    .illustration-wrapper {
+      position: relative;
+      width: 270px;
+      height: 270px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ambient-glow {
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      background: rgba(254, 230, 133, 0.45);
+      filter: blur(28px);
+      pointer-events: none;
+    }
+
+    .illustration-svg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      position: relative;
+      z-index: 10;
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.08));
+      transition: transform 0.3s ease;
+    }
+
+    .illustration-wrapper:hover .illustration-svg {
+      transform: scale(1.02);
+    }
+
+    /* Keyframe Animations */
+    @keyframes gearSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulseSoft {
+      0%, 100% { opacity: 0.9; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.92); }
+    }
+
+    .animated-gear-leaf {
+      animation: gearSpin 20s linear infinite;
+      transform-origin: 102px 313px;
+    }
+
+    .animated-sparkle {
+      animation: pulseSoft 2s ease-in-out infinite;
+    }
+
+    /* ORGANIC WAVY DIVIDER */
+    .wavy-divider {
+      position: relative;
+      width: 100%;
+      flex-shrink: 0;
+      margin-bottom: -1px;
+      z-index: 20;
+      line-height: 0;
+    }
+
+    .wavy-divider svg {
+      width: 100%;
+      height: 56px;
+      display: block;
+    }
+
+    /* LOWER SECTION */
+    .lower-section {
+      position: relative;
+      background: #186333;
+      padding: 10px 24px 28px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      z-index: 20;
+      flex-shrink: 0;
+    }
+
+    .feature-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #D1FAE5;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .slide-title {
+      font-size: 21px;
+      font-weight: 900;
+      color: #ffffff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      line-height: 1.25;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .slide-desc {
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(209, 250, 229, 0.92);
+      line-height: 1.55;
+      max-width: 290px;
+      margin: 8px auto 0 auto;
+    }
+
+    /* Pagination Dots */
+    .dots-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+      margin-bottom: 18px;
+    }
+
+    .dot-link {
+      display: block;
+      height: 8px;
+      border-radius: 9999px;
+      transition: all 0.25s ease;
+      text-decoration: none;
+    }
+
+    .dot-link.active {
+      width: 24px;
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .dot-link.inactive {
+      width: 8px;
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .dot-link.inactive:hover {
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Circular White Next Button */
+    .next-circle-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #ffffff;
+      color: #186333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.95);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .next-circle-btn:hover {
+      background: #effaf2;
+      transform: scale(1.06);
+      box-shadow: 0 14px 28px -4px rgba(0, 0, 0, 0.35);
+    }
+
+    .next-circle-btn:active {
+      transform: scale(0.96);
+    }
+
+    .next-circle-btn svg {
+      width: 24px;
+      height: 24px;
+      stroke: #186333;
+      stroke-width: 2.8;
+      fill: none;
+    }
+
+    .home-indicator {
+      width: 134px;
+      height: 5px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.4);
+      margin: 10px auto 2px auto;
+    }
+
+    .footer-nav {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .footer-nav a {
+      color: #34d399;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .footer-nav a:hover {
+      text-decoration: underline;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .toolbar, .steps-tabs, .footer-nav {
+        display: none !important;
+      }
+      .phone-chassis {
+        box-shadow: none;
+        max-height: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Controls & Links -->
+  <div class="toolbar">
+    <div class="badge">✨ Onboarding (2/4) • Quản lý chi tiêu</div>
+    <div class="toolbar-actions">
+      <button class="action-btn" onclick="window.print()">In / Lưu PDF</button>
+      <a href="register_screen.html" class="action-btn">Bỏ qua →</a>
+    </div>
+  </div>
+
+  <!-- Step Tabs Switcher -->
+  <div class="steps-tabs">
+    <a href="onboarding_1_screen.html" class="step-tab">1. Quản lý nhóm</a>
+    <a href="onboarding_2_screen.html" class="step-tab active">2. Chi tiêu</a>
+    <a href="onboarding_3_screen.html" class="step-tab">3. Quỹ chung</a>
+    <a href="onboarding_4_screen.html" class="step-tab">4. Nhắc nợ & QR</a>
+  </div>
+
+  <!-- iPhone Frame Chassis -->
+  <div class="phone-chassis">
+    <div class="screen-glass">
+      
+      <!-- Status Bar -->
+      <div class="status-bar">
+        <span>9:41</span>
+        <div class="dynamic-island">
+          <span class="island-lens"></span>
+          <span class="island-sensor"></span>
+        </div>
+        <div class="status-icons">
+          <svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+          <svg viewBox="0 0 24 24"><rect width="16" height="10" x="2" y="7" rx="2" ry="2"/><line x1="22" x2="22" y1="11" y2="13"/><rect x="4" y="9" width="10" height="6" fill="#1e293b"/></svg>
+        </div>
+      </div>
+
+      <!-- ================= UPPER SECTION ================= -->
+      <div class="upper-section">
+        <div class="top-action-row">
+          <a href="onboarding_1_screen.html" class="back-btn">← Trước</a>
+          <a href="register_screen.html" class="skip-btn">Bỏ qua</a>
+        </div>
+
+        <!-- 3D Vector Illustration for Expense Management -->
+        <div class="illustration-wrapper">
+          <div class="ambient-glow"></div>
+
+          <svg class="illustration-svg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Yellow Sun Disk -->
+            <ellipse cx="250" cy="245" rx="175" ry="190" fill="#F7B228" />
+
+            <!-- Top Rising Trend Bar Chart -->
+            <g transform="translate(231, 55)">
+              <rect x="0" y="30" width="9" height="25" rx="2" fill="#E53935" />
+              <rect x="13" y="20" width="9" height="35" rx="2" fill="#E53935" />
+              <rect x="26" y="11" width="9" height="44" rx="2" fill="#E53935" />
+              <rect x="39" y="0" width="9" height="55" rx="2" fill="#E53935" />
+              <path d="M-2 30 L45 -2" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" />
+              <path d="M37 -2 L45 -2 L45 6" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+
+            <!-- Sparkles -->
+            <g class="animated-sparkle">
+              <path d="M156 102v12m-6-6h12" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" />
+              <path d="M420 128v12m-6-6h12" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" />
+            </g>
+
+            <!-- Foliage / Emerald Leaves -->
+            <g id="left-leaves">
+              <path d="M165 452 C140 380 95 340 70 270 C85 330 115 400 135 452 Z" fill="#008955" />
+              <path d="M125 452 C95 380 50 310 58 260 C75 320 110 390 120 452 Z" fill="#00A86B" />
+              <path d="M175 452 C150 360 110 290 120 260 C135 320 160 400 168 452 Z" fill="#10B981" />
+            </g>
+            <g id="right-leaves">
+              <path d="M365 452 C385 380 415 340 440 310 C430 360 405 410 395 452 Z" fill="#008955" />
+              <path d="M405 452 C430 380 445 320 442 270 C425 330 420 390 415 452 Z" fill="#00A86B" />
+              <path d="M425 452 C440 370 435 300 420 260 C410 320 420 400 422 452 Z" fill="#10B981" />
+            </g>
+
+            <!-- Cogwheel on Left Leaves -->
+            <g transform="translate(87, 296)" class="animated-gear-leaf">
+              <path d="M18 4l2 4 4.5-.5 1.5 4.3 4.5 1 .3 4.5 4 2.2-1.2 4.4 3 3.3-2.5 3.8 1.5 4.3-3.6 2.8.2 4.5-4.3 1.8-.8 4.5-4.5.1-2.5 3.8-4.2-1.7-3.6 2.8-3.8-2.5-4.3 1.5-2.8-3.6-4.5.2-1.8-4.3-4.5-.8-.1-4.5-3.8-2.5 1.7-4.2-2.8-3.6 2.5-3.8-1.5-4.3 3.6-2.8-.2-4.5 4.3-1.8.8-4.5 4.5-.1 2.5-3.8 4.2 1.7 3.6-2.8 3.8 2.5 4.3-1.5 2.8 3.6z" fill="#FFFFFF" transform="scale(0.85)" />
+              <circle cx="15" cy="17" r="5" fill="#00A86B" />
+            </g>
+
+            <!-- Ground -->
+            <rect x="48" y="452" width="404" height="6" rx="3" fill="#FFFFFF" />
+            <rect x="42" y="456" width="416" height="6" rx="2" fill="#0A1128" />
+
+            <!-- Easel Presentation Stand -->
+            <line x1="288" y1="305" x2="265" y2="452" stroke="#94A3B8" stroke-width="5.5" stroke-linecap="round" />
+            <line x1="378" y1="305" x2="397" y2="452" stroke="#94A3B8" stroke-width="5.5" stroke-linecap="round" />
+            <line x1="333" y1="305" x2="333" y2="452" stroke="#64748B" stroke-width="5" stroke-linecap="round" />
+            <line x1="277" y1="385" x2="388" y2="385" stroke="#94A3B8" stroke-width="4.5" stroke-linecap="round" />
+
+            <!-- Board Base Tray -->
+            <rect x="250" y="303" width="168" height="9" rx="4.5" fill="#1E293B" />
+
+            <!-- Main Whiteboard Chart -->
+            <rect x="256" y="118" width="156" height="184" rx="14" fill="#FFFFFF" stroke="#2563EB" stroke-width="7" />
+
+            <!-- Board Header / Content Bars -->
+            <rect x="278" y="140" width="68" height="6" rx="3" fill="#2563EB" />
+            <rect x="278" y="152" width="92" height="3.5" rx="1.5" fill="#CBD5E1" />
+            <rect x="278" y="160" width="74" height="3" rx="1.5" fill="#E2E8F0" />
+
+            <!-- 4-Slice Financial Pie Chart with % in Center -->
+            <g transform="translate(334, 222)">
+              <path d="M0 0 L0 -42 A42 42 0 0 1 42 0 Z" fill="#E53935" />
+              <path d="M0 0 L42 0 A42 42 0 0 1 0 42 Z" fill="#2563EB" />
+              <path d="M0 0 L0 42 A42 42 0 0 1 -42 0 Z" fill="#F59E0B" />
+              <path d="M0 0 L-42 0 A42 42 0 0 1 0 -42 Z" fill="#38BDF8" />
+              <circle cx="0" cy="0" r="17" fill="#FFFFFF" />
+              <text x="0" y="4" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="900" fill="#1E293B">%</text>
+            </g>
+
+            <!-- Verified Checkmark Badge -->
+            <g transform="translate(410, 225)">
+              <circle cx="0" cy="0" r="16" fill="#10B981" />
+              <path d="M-6 0 L-2 4 L7 -5" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+
+            <!-- Presenter Character Pointing with Stick -->
+            <g id="char-presenter">
+              <path d="M192 175 C192 154 228 154 228 175 C228 184 192 188 192 175 Z" fill="#1E293B" />
+              <ellipse cx="210" cy="192" rx="14" ry="17" fill="#F5C29C" />
+              <rect x="204" y="206" width="12" height="15" fill="#F5C29C" />
+              <path d="M172 230 L234 230 L230 331 L180 331 Z" fill="#204CB2" />
+              <path d="M228 231 L300 153 L308 162 L234 246 Z" fill="#204CB2" />
+              <circle cx="303" cy="155" r="6.5" fill="#F5C29C" />
+              <path d="M175 233 L152 272 L163 277 L182 250 Z" fill="#204CB2" />
+              <circle cx="182" cy="293" r="6" fill="#F5C29C" />
+              <rect x="180" y="331" width="50" height="7" fill="#1E293B" />
+              <rect x="173" y="338" width="16" height="114" rx="2" fill="#1E293B" />
+              <rect x="215" y="338" width="16" height="114" rx="2" fill="#1E293B" />
+              <path d="M162 452 L190 452 C190 445 182 442 172 442 L162 447 Z" fill="#0F172A" />
+              <path d="M224 452 L250 452 C250 445 242 442 232 442 L224 447 Z" fill="#0F172A" />
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- ================= SIGNATURE ORGANIC WAVY DIVIDER ================= -->
+      <div class="wavy-divider">
+        <svg viewBox="0 0 393 72" fill="none" preserveAspectRatio="none">
+          <path d="M0,32 C95,68 185,12 285,38 C335,48 368,32 393,20 L393,72 L0,72 Z" fill="#186333"></path>
+        </svg>
+      </div>
+
+      <!-- ================= LOWER SECTION ================= -->
+      <div class="lower-section">
+        <!-- Feature Pill -->
+        <div class="feature-pill">
+          <span>Quản lý chi tiêu</span>
+        </div>
+
+        <!-- Title -->
+        <h2 class="slide-title">QUẢN LÝ CHI TIÊU THÔNG MINH</h2>
+
+        <!-- Description -->
+        <p class="slide-desc">
+          Ghi nhận chi tiêu nhanh chóng, phân tích biểu đồ trực quan, chia đều hóa đơn và tự động rút gọn công nợ tối ưu.
+        </p>
+
+        <!-- Indicator Dots -->
+        <div class="dots-container">
+          <a href="onboarding_1_screen.html" class="dot-link inactive" title="Bước 1: Quản lý nhóm"></a>
+          <a href="onboarding_2_screen.html" class="dot-link active" title="Bước 2: Quản lý chi tiêu"></a>
+          <a href="onboarding_3_screen.html" class="dot-link inactive" title="Bước 3: Quản lý quỹ chung"></a>
+          <a href="onboarding_4_screen.html" class="dot-link inactive" title="Bước 4: Nhắc nợ & Thanh toán"></a>
+        </div>
+
+        <!-- Circular White Next Button -->
+        <a href="onboarding_3_screen.html" class="next-circle-btn" aria-label="Tiếp tục sang bước 3">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+
+        <!-- iOS Home Indicator -->
+        <div class="home-indicator"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Bottom Navigation Helper -->
+  <div class="footer-nav">
+    <a href="onboarding_1_screen.html">← Màn 1: Quản lý nhóm</a>
+    <span>•</span>
+    <a href="onboarding_3_screen.html">Màn tiếp theo: Quỹ chung →</a>
+    <span>•</span>
+    <a href="register_screen.html">Màn Đăng ký</a>
+  </div>
+
+  <script>
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowRight' || e.key === 'Enter') {
+        window.location.href = 'onboarding_3_screen.html';
+      } else if (e.key === 'ArrowLeft') {
+        window.location.href = 'onboarding_1_screen.html';
+      }
+    });
+
+    let touchstartX = 0;
+    let touchendX = 0;
+    document.addEventListener('touchstart', e => {
+      touchstartX = e.changedTouches[0].screenX;
+    });
+    document.addEventListener('touchend', e => {
+      touchendX = e.changedTouches[0].screenX;
+      if (touchstartX - touchendX > 60) {
+        window.location.href = 'onboarding_3_screen.html';
+      } else if (touchendX - touchstartX > 60) {
+        window.location.href = 'onboarding_1_screen.html';
+      }
+    });
+  </script>
+</body>
+</html>

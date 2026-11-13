@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="vi" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>FairShare Mobile - Giao diện Thiết kế Ứng dụng Di động</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    /* Reset & Clean Viewport */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: #080D18;
+      color: #F8FAFC;
+      overflow-x: hidden;
+    }
+    #root {
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Rock-Solid Phone Frame Styles */
+    .phone-app-wrapper {
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 12px;
+      box-sizing: border-box;
+    }
+
+    .phone-device-chassis {
+      width: 393px !important;
+      max-width: 100% !important;
+      height: 852px !important;
+      max-height: calc(100vh - 24px) !important;
+      border-radius: 52px !important;
+      padding: 10px !important;
+      background-color: #000000 !important;
+      box-shadow: 0 0 0 3px #334155, 0 0 0 8px #020617, 0 0 0 11px #1E293B, 0 30px 80px -10px rgba(0, 0, 0, 0.95) !important;
+      box-sizing: border-box !important;
+      position: relative !important;
+      display: flex !important;
+      flex-direction: column !important;
+      flex-shrink: 0 !important;
+      transform: translateZ(0) !important;
+    }
+
+    .phone-screen-glass {
+      width: 100% !important;
+      height: 100% !important;
+      border-radius: 42px !important;
+      overflow: hidden !important;
+      display: flex !important;
+      flex-direction: column !important;
+      position: relative !important;
+      box-sizing: border-box !important;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased">
+  <!-- PURE MOBILE APPLICATION MOUNT POINT -->
+  <div id="root"></div>
+
+  <!-- OFFLINE COMPATIBLE REAL REACT APPLICATION SCRIPT -->
+  <script src="assets/mobile-bundle.js"></script>
+</body>
+</html>

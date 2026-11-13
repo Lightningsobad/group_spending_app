@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "6121430227",
+    "project_id": "groupspending-457a1",
+    "storage_bucket": "groupspending-457a1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:6121430227:android:e289e5a5dc725907a48826",
+        "android_client_info": {
+          "package_name": "com.lightning.fairshare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmcKYkMkM5ARh-iFL-aFEzpOmFYhuDYxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

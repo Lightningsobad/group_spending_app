@@ -1,0 +1,1017 @@
+{
+  "@@locale": "vi",
+  "appTitle": "FairShare",
+  "cancel": "Hủy",
+  "confirm": "Xác nhận",
+  "underDevelopment": "Tính năng đang được phát triển.",
+  "edit": "Chỉnh sửa",
+  "close": "Đóng",
+  "splashSlogan": "Chia tiền minh bạch & nhắc nợ thông minh",
+  "authHeaderTitle": "FairShare",
+  "authHeaderSubtitle": "Quản lý chi tiêu nhóm & nhắc nhở",
+  "loginTab": "Đăng nhập",
+  "registerTab": "Đăng ký",
+  "orLoginWithEmail": "HOẶC ĐĂNG NHẬP BẰNG EMAIL",
+  "emailLabel": "Địa chỉ Email",
+  "emailHint": "Email của bạn",
+  "passwordLabel": "Mật khẩu",
+  "passwordHint": "Nhập mật khẩu",
+  "forgotPassword": "Quên mật khẩu?",
+  "loginButton": "Đăng nhập vào ứng dụng",
+  "noAccountPrompt": "Chưa có tài khoản? ",
+  "registerNow": "Đăng ký ngay",
+  "orRegisterWithEmail": "HOẶC ĐĂNG KÝ BẰNG EMAIL",
+  "fullNameLabel": "Họ và tên",
+  "fullNameHint": "Tên của bạn",
+  "phoneLabel": "Số điện thoại",
+  "phoneOptionalTag": "(Không bắt buộc / Tùy chọn)",
+  "phoneHint": "Số điện thoại",
+  "registerButton": "Tạo tài khoản mới",
+  "hasAccountPrompt": "Đã có tài khoản? ",
+  "loginNow": "Đăng nhập",
+  "continueWithGoogle": "Tiếp tục với Google",
+  "googleAuthNotice": "Tính năng đăng nhập Google đang được phát triển.",
+  "forgotPasswordNotice": "Chức năng Quên mật khẩu đang được hỗ trợ.",
+  "enterEmailPrompt": "Vui lòng nhập địa chỉ email.",
+  "enterPasswordPrompt": "Vui lòng nhập mật khẩu.",
+  "enterFullNamePrompt": "Vui lòng nhập họ và tên.",
+  "passwordMinLengthPrompt": "Mật khẩu phải có ít nhất 6 ký tự.",
+  "otpTitle": "Xác thực địa chỉ Email",
+  "otpSubtitle": "Mã OTP 6 số bảo mật đã được gửi đến hòm thư của bạn",
+  "otpInputLabel": "Mã xác thực OTP",
+  "otpDigitsHint": "6 chữ số bảo mật",
+  "verifyAndActivate": "Xác thực & Kích hoạt",
+  "enterFullOtpPrompt": "Vui lòng nhập đủ 6 chữ số mã xác thực OTP.",
+  "resendOtpPrompt": "Chưa nhận được mã? ",
+  "resendOtpNow": "Gửi lại mã",
+  "resendIn": "Gửi lại mã sau ({seconds}s)",
+  "@resendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingStep": "Bước {step}/{total}",
+  "@onboardingStep": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "skip": "Bỏ qua",
+  "onboardingSlide1Pill": "Quản lý nhóm",
+  "onboardingSlide1Title": "KẾT NỐI & QUẢN LÝ NHÓM",
+  "onboardingSlide1Desc": "Quản lý nhóm bạn bè, chuyến du lịch và chia sẻ mọi chi phí sinh hoạt chung một cách dễ dàng, trực quan và công bằng.",
+  "onboardingSlide2Pill": "Quản lý chi tiêu",
+  "onboardingSlide2Title": "QUẢN LÝ CHI TIÊU THÔNG MINH",
+  "onboardingSlide2Desc": "Ghi nhận chi tiêu nhanh chóng, phân tích biểu đồ trực quan, chia đều hóa đơn và tự động rút gọn công nợ tối ưu.",
+  "onboardingSlide3Pill": "Quản lý quỹ chung",
+  "onboardingSlide3Title": "QUẢN LÝ QUỸ CHUNG MINH BẠCH",
+  "onboardingSlide3Desc": "Thu quỹ nhóm tiện lợi, theo dõi tiến độ đóng góp theo thời gian thực và quản lý ngân sách an toàn, minh bạch 100%.",
+  "onboardingSlide4Pill": "Nhắc nợ & Thanh toán",
+  "onboardingSlide4Title": "NHẮC NỢ & THANH TOÁN TỐC ĐỘ",
+  "onboardingSlide4Desc": "Gửi thông báo nhắc nợ tinh tế, quét mã VietQR tự động điền tài khoản và hoàn tất quyết toán chỉ trong tích tắc.",
+  "greeting": "Xin chào,",
+  "tabOverview": "Tổng quan",
+  "tabGroups": "Nhóm",
+  "tabDebts": "Công nợ",
+  "tabAnalytics": "Thống kê",
+  "tabSettings": "Cài đặt",
+  "notificationsTitle": "Thông báo",
+  "noNotifications": "Hiện bạn chưa có thông báo mới nào.",
+  "settingsTitle": "Cài đặt",
+  "roleAdmin": "Trưởng nhóm (Admin)",
+  "roleMember": "Thành viên",
+  "editProfile": "Sửa thông tin",
+  "changePassword": "Đổi mật khẩu",
+  "vietqrTitle": "TÀI KHOẢN NGÂN HÀNG",
+  "noBankData": "Chưa có dữ liệu",
+  "appearanceLanguageSection": "GIAO DIỆN & NGÔN NGỮ",
+  "themeModeTitle": "Chế độ giao diện",
+  "lightThemeLabel": "Light",
+  "darkThemeLabel": "Dark",
+  "displayLanguageTitle": "Ngôn ngữ",
+  "infoSupportSection": "THÔNG TIN & HỖ TRỢ",
+  "aboutAppTitle": "Giới thiệu về FairShare",
+  "privacyPolicyTitle": "Chính sách bảo mật & Quyền riêng tư",
+  "privacyPolicyCommitmentSubtitle": "Cam kết bảo vệ dữ liệu cá nhân & an toàn tài chính",
+  "privacyStandardBadge": "BẢO MẬT TIÊU CHUẨN",
+  "privacyUpdatedDate": "Cập nhật: Tháng 09/2026",
+  "privacyHeroTitle": "Minh bạch thu chi • Bảo mật dữ liệu người dùng",
+  "privacyHeroDescription": "FairShare tôn trọng quyền riêng tư của bạn. Mọi khoản chi, thông tin hóa đơn và số tài khoản ngân hàng chỉ phục vụ mục đích phân chia công nợ và đóng quỹ nhóm của các thành viên.",
+  "privacyDataCollectedTitle": "1. DỮ LIỆU ỨNG DỤNG THU THẬP",
+  "privacyDataCollectedDesc": "Chúng tôi chỉ thu thập các trường thông tin tối thiểu cần thiết để vận hành các tính năng chia tiền nhóm:",
+  "privacyIdentityTitle": "Thông tin định danh: ",
+  "privacyIdentityDesc": "Họ và tên hiển thị, ảnh đại diện và địa chỉ Email để xác thực tài khoản và gửi mã OTP.",
+  "privacyBankTitle": "Tài khoản nhận tiền (VietQR): ",
+  "privacyBankDesc": "Tên ngân hàng, số tài khoản và tên chủ sở hữu nhằm tạo mã VietQR chuẩn 1-chạm giúp thành viên khác chuyển khoản trả nợ.",
+  "privacyTransactionTitle": "Dữ liệu giao dịch nhóm: ",
+  "privacyTransactionDesc": "Danh sách hóa đơn, số tiền chi, người trả hộ, tỷ lệ phân bổ và các chiến dịch đóng quỹ chung.",
+  "privacySecurityTitle": "2. AN TOÀN MẬT KHẨU & MÃ HÓA ĐẦU CUỐI",
+  "privacySecurityDesc": "Mật khẩu tài khoản của người dùng được băm một chiều (one-way hashing) kèm salt an toàn, hoàn toàn không thể dịch ngược hay đọc dưới dạng văn bản thô.",
+  "privacyChangePasswordTip": "Bạn có thể tự chủ động thay đổi mật khẩu bất kỳ lúc nào tại màn hình Cài đặt bằng tính năng \"Đổi mật khẩu\".",
+  "privacyNoShareTitle": "3. CAM KẾT KHÔNG CHIA SẺ DỮ LIỆU",
+  "privacyNoShareDesc": "FairShare cam kết không bán, chia sẻ hoặc thương mại hóa bất kỳ thông tin cá nhân, lịch sử chuyển nợ hay số tiền đóng quỹ của bạn cho bất kỳ đối tác quảng cáo nào.",
+  "privacyUserRightsTitle": "4. QUYỀN LÀM CHỦ DỮ LIỆU CỦA BẠN",
+  "privacyRightEditProfile": "Xem và chỉnh sửa họ tên, thông tin tài khoản ngân hàng bất kỳ lúc nào.",
+  "privacyRightTransferAdmin": "Chuyển quyền Quản trị viên (Admin) cho thành viên khác trong nhóm.",
+  "privacyRightArchiveGroup": "Yêu cầu xóa nhóm hoặc đóng băng lịch sử chi tiêu bằng cách đưa vào Lưu trữ.",
+  "privacyRightLogoutSafe": "Đăng xuất an toàn khỏi thiết bị bất cứ khi nào bạn muốn.",
+  "privacyBackToSettings": "Quay lại Cài đặt",
+  "logoutButton": "Đăng xuất tài khoản",
+  "logoutTooltip": "Đăng xuất",
+  "logoutConfirmTitle": "Bạn có chắc chắn muốn đăng xuất?",
+  "financialOverviewTitle": "TỔNG QUAN SỐ DƯ TÀI CHÍNH",
+  "youOwe": "Bạn đang nợ",
+  "paySoonSubtitle": "Cần thanh toán sớm",
+  "youAreOwed": "Bạn nhận",
+  "friendsOweYouSubtitle": "Bạn bè đang nợ bạn",
+  "addExpense": "Thêm chi tiêu",
+  "addExpenseFeatureNotice": "Tính năng Thêm chi tiêu đang được tích hợp.",
+  "chooseGroupToAddExpenseTitle": "Chọn nhóm muốn thêm khoản chi",
+  "searchGroupByNameHint": "Tìm theo tên nhóm...",
+  "filterActiveOnly": "Đang hoạt động",
+  "filterAllGroupsOnly": "Tất cả nhóm",
+  "filterAdminOnly": "Tôi làm Admin",
+  "filterAllTopicsOnly": "Tất cả chủ đề",
+  "balanceLabel": "Số dư",
+  "noSuitableGroupQuestion": "Chưa có nhóm phù hợp?",
+  "cannotAddExpenseToArchivedGroup": "Nhóm này đã được lưu trữ, không thể thêm khoản chi.",
+  "createGroupAction": "Tạo nhóm",
+  "codeOrQrAction": "Gia nhập nhóm",
+  "yourGroupsSection": "CÁC NHÓM CỦA BẠN",
+  "seeAllGroupsCount": "Xem tất cả ({count})",
+  "@seeAllGroupsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noGroupsJoinedTitle": "Bạn chưa tham gia nhóm nào",
+  "noGroupsJoinedSubtitle": "Hãy tạo nhóm mới hoặc gia nhập nhóm qua mã mời để bắt đầu chia tiền cùng bạn bè!",
+  "createGroupNow": "Tạo nhóm ngay",
+  "notificationsToggledForGroup": "Đã thay đổi thông báo cho \"{name}\".",
+  "@notificationsToggledForGroup": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupListHeaderTitle": "Danh sách nhóm của bạn",
+  "searchGroupPlaceholder": "Tìm kiếm theo tên nhóm, thể loại...",
+  "filterAllCount": "Tất cả ({count})",
+  "@filterAllCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterActiveCount": "Đang hoạt động ({count})",
+  "@filterActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterArchivedCount": "Đã lưu trữ ({count})",
+  "@filterArchivedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterAdminCount": "Tôi quản lý ({count})",
+  "@filterAdminCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noMatchingGroupsTitle": "Không tìm thấy nhóm phù hợp",
+  "noMatchingGroupsSubtitle": "Thử tìm kiếm với từ khóa khác hoặc đổi bộ lọc.",
+  "noGroupsInTabTitle": "Chưa có nhóm trong mục này",
+  "noGroupsInTabSubtitle": "Nhấn \"+ Tạo nhóm mới\" để tạo nhóm đầu tiên của bạn!",
+  "createGroupTitle": "Tạo nhóm chi tiêu mới",
+  "createGroupSubtitle": "Đặt tên nhóm và chọn danh mục để bắt đầu quản lý chi tiêu chung.",
+  "groupNameLabel": "Tên nhóm chi tiêu *",
+  "groupNameHint": "Nhập tên nhóm của bạn",
+  "groupDescLabel": "Mô tả nhóm (Tùy chọn)",
+  "groupDescHint": "Nhập mô tả ngắn",
+  "groupCategoryLabel": "Danh mục nhóm",
+  "defaultCurrencyLabel": "Tiền tệ mặc định",
+  "groupNameRequired": "Vui lòng nhập tên nhóm.",
+  "joinGroupTitle": "Gia nhập nhóm bằng mã mời",
+  "joinGroupSubtitle": "Nhập mã mời để tham gia nhóm chi tiêu cùng bạn bè",
+  "inviteCodeLabel": "Mã mời nhóm *",
+  "inviteCodeHint": "Mã nhóm của bạn",
+  "inviteCodeRequired": "Vui lòng nhập mã mời.",
+  "joinGroupButton": "Tham gia nhóm",
+  "groupDetailTitle": "Chi tiết nhóm",
+  "groupInviteCodePrefix": "Mã mời nhóm:",
+  "codeCopiedToClipboard": "Đã sao chép mã mời vào khay nhớ tạm",
+  "copyCodeTooltip": "Sao chép mã",
+  "archiveGroupAction": "Lưu trữ nhóm",
+  "archiveGroupConfirmTitle": "Xác nhận lưu trữ nhóm?",
+  "archiveGroupConfirmMessage": "Nhóm sẽ được chuyển vào mục lưu trữ và chỉ cho phép xem thông tin.",
+  "archiveConfirmButton": "Lưu trữ",
+  "deleteGroupAction": "Xóa nhóm",
+  "deleteGroupConfirmTitle": "Xác nhận xóa vĩnh viễn nhóm?",
+  "deleteGroupConfirmMessage": "Hành động này sẽ xóa toàn bộ chi tiêu, công nợ, quỹ chung và danh sách thành viên của nhóm. Không thể khôi phục!",
+  "deleteConfirmButton": "Xóa nhóm",
+  "editGroupTitle": "Sửa thông tin nhóm",
+  "saveChanges": "Lưu thay đổi",
+  "groupMembersTitle": "Thành viên nhóm",
+  "loadDashboardFailed": "Không thể tải dữ liệu tổng quan",
+  "loadGroupsFailed": "Không thể tải danh sách nhóm",
+  "createGroupSuccess": "Tạo nhóm thành công!",
+  "updateGroupSuccess": "Cập nhật nhóm thành công!",
+  "archiveGroupSuccess": "Nhóm đã được chuyển sang chế độ lưu trữ.",
+  "deleteGroupSuccess": "Xóa nhóm thành công.",
+  "joinGroupSuccess": "Tham gia nhóm thành công!",
+  "editGroupAction": "Sửa nhóm",
+  "inviteCodeCardTitle": "MÃ MỜI THAM GIA NHÓM",
+  "groupFinancialOverviewTitle": "TỔNG QUAN TÀI CHÍNH NHÓM",
+  "yourBalanceLabel": "Số dư của bạn:",
+  "totalGroupSpendingLabel": "Tổng chi tiêu nhóm:",
+  "totalFundCollectedLabel": "Tổng quỹ đã thu:",
+  "groupMembersCountTitle": "THÀNH VIÊN ({count})",
+  "@groupMembersCountTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupMemberCountSimple": "Nhóm có {count} thành viên",
+  "@groupMemberCountSimple": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteGroupPermanently": "Xóa nhóm vĩnh viễn",
+  "backAction": "Quay lại",
+  "joinGroupQrTitle": "Gia nhập bằng mã / QR",
+  "joinGroupQrSubtitle": "Tham gia nhóm chi tiêu nhanh chóng bằng cách quét mã QR hoặc nhập mã mời",
+  "scanQrTab": "Quét mã QR",
+  "enterCodeTab": "Nhập mã mời",
+  "scanQrInstruction": "Hướng camera vào mã QR của nhóm để gửi yêu cầu gia nhập",
+  "uploadQrImageAction": "Tải ảnh mã QR",
+  "invalidQrCodeError": "Không tìm thấy mã mời hợp lệ trong mã QR.",
+  "noQrFoundInImage": "Không tìm thấy mã QR trong ảnh đã chọn.",
+  "cameraPermissionRequired": "Vui lòng cấp quyền truy cập Camera để quét mã QR.",
+  "tabAnalyticsTitle": "Báo cáo & Thống kê",
+  "totalSpendingAllGroups": "Tổng chi tất cả nhóm",
+  "activeGroupsJoinedCount": "Số nhóm tham gia",
+  "groupsUnit": "nhóm",
+  "totalInvoicesRecorded": "Số hóa đơn đã ghi",
+  "invoicesUnit": "hóa đơn",
+  "overallReportBannerTitle": "Báo cáo tổng quan",
+  "viewOverallReportAction": "Xem toàn cảnh",
+  "searchGroupByHint": "Tìm kiếm nhóm theo tên, danh mục...",
+  "filterAllTab": "Tất cả ({count})",
+  "@filterAllTab": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterActiveTab": "Đang hoạt động",
+  "filterArchivedTab": "Đã lưu trữ",
+  "groupSpendingListTitle": "DANH SÁCH NHÓM CHI TIÊU",
+  "totalSpendingLabel": "Tổng chi tiêu",
+  "overallReportTitle": "Báo cáo tổng quan",
+  "overallReportSubtitle": "Tổng hợp tất cả nhóm đang tham gia",
+  "financialMetricsTitle": "CHỈ SỐ TÀI CHÍNH NHÓM",
+  "totalSpendingMetric": "Tổng tiền chi tiêu",
+  "averagePerPersonMetric": "Bình quân đầu người",
+  "friendsCountBadge": "÷ {count} bạn",
+  "@friendsCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "expenseCountMetric": "Số khoản chi",
+  "invoicesBadge": "Hóa đơn",
+  "expensesUnit": "khoản chi",
+  "settlementRateMetric": "Tỷ lệ tất toán",
+  "paidRateSuffix": "đã trả",
+  "groupDebtLabel": "Công nợ nhóm",
+  "remainingDebtRate": "Còn {percent}% tồn",
+  "@remainingDebtRate": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryDistributionTitle": "PHÂN BỐ THEO DANH MỤC CHI TIÊU",
+  "memberContributionTitle": "ĐÓNG GÓP & CHI TIÊU THÀNH VIÊN",
+  "contributionPercent": "Đóng góp {percent}% tổng chi",
+  "@contributionPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "recentExpensesTitle": "HÓA ĐƠN CHI TIÊU GẦN ĐÂY",
+  "expensesCountBadge": "{count} khoản",
+  "@expensesCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paidByPrefix": "Người trả: {name}",
+  "@paidByPrefix": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "viewExpenseDetailAction": "Chi tiết →",
+  "periodThisMonth": "Tháng này",
+  "periodLastMonth": "Tháng trước",
+  "periodCurrentQuarter": "Quý này",
+  "periodByYear": "Cả năm",
+  "membersCountSubtitle": "{memberCount} thành viên",
+  "@membersCountSubtitle": {
+    "placeholders": {
+      "memberCount": {
+        "type": "int"
+      }
+    }
+  },
+  "noExpensesRecorded": "Chưa có khoản chi tiêu nào.",
+  "noCategoriesRecorded": "Chưa có dữ liệu danh mục.",
+  "noLeaderboardData": "Chưa có dữ liệu đóng góp.",
+  "loadAnalyticsFailed": "Không thể tải dữ liệu thống kê",
+  "retryAction": "Thử lại",
+  "youLabel": "(Tôi)",
+  "debtsGroupTitle": "Công nợ theo nhóm",
+  "debtsYouOwe": "Bạn đang nợ",
+  "debtsYouOweSubtitle": "Cần thanh toán ngay",
+  "debtsYouReceive": "Bạn nhận",
+  "debtsYouReceiveSubtitle": "Bạn bè đang nợ bạn",
+  "searchDebtGroupPlaceholder": "Tìm kiếm nhóm theo tên, danh mục...",
+  "filterDebtAllCount": "Tất cả nhóm ({count})",
+  "@filterDebtAllCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterDebtHasDebtCount": "Có công nợ ({count})",
+  "@filterDebtHasDebtCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterDebtSettledCount": "Đã tất toán ({count})",
+  "@filterDebtSettledCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "debtsPendingCount": "{count} khoản nợ",
+  "@debtsPendingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "debtsSettledAll": "Đã tất toán",
+  "debtsBalanced": "Cân bằng (0 đ)",
+  "badgeYouReceive": "Bạn nhận",
+  "badgeYouMustPay": "Bạn nợ",
+  "badgeBalanced": "Đã cân bằng",
+  "simplifiedDebtsTab": "Nợ tối giản",
+  "actualDebtsTab": "Nợ thực tế",
+  "simplifiedDebtsBanner": "Tối ưu hóa số lượng giao dịch gộp thông minh để thanh toán nhanh gọn nhất.",
+  "actualDebtsBanner": "Chi tiết các khoản nợ phát sinh theo từng hóa đơn và mục chi tiêu.",
+  "debtsToHandleCount": "{count} KHOẢN NỢ",
+  "@debtsToHandleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "simplifiedDebtAlgorithm": "Thuật toán gộp nợ tối giản",
+  "payNowAction": "Thanh toán ngay (100%)",
+  "confirmReceivedAction": "Xác nhận nhận tiền",
+  "rejectReceivedAction": "Từ chối",
+  "remindDebtAction": "Nhắc nợ",
+  "debtStatusPending": "Chưa thanh toán",
+  "debtStatusWaiting": "Chờ xác nhận",
+  "debtStatusSettled": "Đã tất toán",
+  "totalExpenseCaps": "TỔNG CHI",
+  "paidByLabel": "Người trả: ",
+  "allocationByMember": "PHÂN BỐ THEO THÀNH VIÊN:",
+  "debtorCountLabel": "{count} người nợ",
+  "@debtorCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "debtSplitDetailTitle": "Chi tiết phần nợ",
+  "debtorLabel": "Người nợ",
+  "creditorLabel": "Chủ nợ",
+  "youTag": "Bạn",
+  "yourBalanceInGroup": "Số dư của bạn trong nhóm:",
+  "noDebtGroupsTitle": "Không có nhóm công nợ nào",
+  "noDebtGroupsSubtitle": "Hiện tại bạn không có khoản công nợ nào cần xử lý.",
+  "noMatchingDebtGroupsTitle": "Không tìm thấy nhóm phù hợp",
+  "noMatchingDebtGroupsSubtitle": "Thử tìm kiếm với từ khóa khác hoặc đổi bộ lọc.",
+  "confirmPayDebtTitle": "Xác nhận đã thanh toán",
+  "confirmPayDebtMessage": "Bạn đã chuyển khoản hoặc trả tiền mặt cho {creditor} số tiền {amount}?",
+  "@confirmPayDebtMessage": {
+    "placeholders": {
+      "creditor": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmReceiveDebtTitle": "Xác nhận nhận tiền",
+  "confirmReceiveDebtMessage": "Bạn đã nhận được số tiền {amount} từ {debtor}?",
+  "@confirmReceiveDebtMessage": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "rejectReceiveDebtTitle": "Từ chối nhận tiền",
+  "rejectReceiveDebtMessage": "Bạn chưa nhận được số tiền này và muốn yêu cầu {debtor} kiểm tra lại?",
+  "@rejectReceiveDebtMessage": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      }
+    }
+  },
+  "rejectReceiveReasonLabel": "Lý do từ chối",
+  "rejectReceiveReasonHint": "Nhập lý do chưa nhận được tiền...",
+  "defaultRejectReceiveReason": "Chưa nhận được tiền vào tài khoản ngân hàng",
+  "confirmRemindDebtTitle": "Gửi thông báo nhắc nợ",
+  "confirmRemindDebtMessage": "Gửi thông báo nhắc nhở thanh toán khoản nợ {amount} đến {debtor}?",
+  "@confirmRemindDebtMessage": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "noDebtsInGroupTitle": "Nhóm chưa có khoản nợ nào",
+  "noDebtsInGroupSubtitle": "Mọi khoản chi tiêu trong nhóm đã được cân bằng hoặc chưa phát sinh nợ.",
+  "changePasswordTitle": "Đổi mật khẩu tài khoản",
+  "changePasswordSubtitle": "Cập nhật mật khẩu để bảo vệ an toàn cho tài khoản",
+  "currentPasswordLabel": "Mật khẩu hiện tại",
+  "currentPasswordHint": "Nhập mật khẩu đang dùng",
+  "newPasswordLabel": "Mật khẩu mới",
+  "newPasswordHint": "Tối thiểu 6 ký tự",
+  "confirmNewPasswordLabel": "Xác nhận mật khẩu mới",
+  "confirmNewPasswordHint": "Nhập lại mật khẩu mới",
+  "passwordSafetyTip": "Gợi ý: Sử dụng mật khẩu kết hợp chữ hoa, chữ thường và chữ số để tăng độ an toàn.",
+  "changePasswordSubmitButton": "Đổi mật khẩu",
+  "changePasswordSuccess": "Đổi mật khẩu thành công!",
+  "enterCurrentPasswordPrompt": "Vui lòng nhập mật khẩu hiện tại.",
+  "enterNewPasswordPrompt": "Vui lòng nhập mật khẩu mới.",
+  "confirmPasswordMismatchPrompt": "Mật khẩu xác nhận không khớp.",
+  "newPasswordSameAsCurrentPrompt": "Mật khẩu mới không được trùng với mật khẩu hiện tại.",
+  "groupInfoSectionTitle": "THÔNG TIN NHÓM",
+  "tabExpenses": "Chi tiêu",
+  "tabFunds": "Quỹ",
+  "tabMembers": "Thành viên",
+  "categoryLabel": "THỂ LOẠI",
+  "createdDateLabel": "NGÀY TẠO",
+  "membersCountLabel": "THÀNH VIÊN",
+  "copyInviteCodeAction": "Sao chép mã mời",
+  "viewQrCodeTooltip": "Xem mã QR",
+  "inviteMembersTitle": "Mời thành viên vào nhóm",
+  "tabQrCode": "Mã QR Code",
+  "tabCopyCode": "Sao chép mã mời",
+  "copyCodeInstruction": "Thành viên nhập mã này để gửi yêu cầu gia nhập nhóm",
+  "shareCodeAction": "Chia sẻ mã mời",
+  "scanToJoinInstruction": "Thành viên quét mã này bằng điện thoại để gửi yêu cầu gia nhập",
+  "downloadQrAction": "Tải ảnh mã QR",
+  "downloadQrSuccess": "Đã lưu ảnh mã QR thành công!",
+  "downloadQrFailed": "Không thể lưu ảnh mã QR",
+  "shareViaOtherAppsAction": "Chia sẻ qua ứng dụng khác",
+  "closeButton": "Đóng",
+  "yourBalanceInGroupLabel": "Số dư của bạn trong nhóm",
+  "youReceiveBadge": "Bạn nhận",
+  "youOweBadge": "Bạn nợ",
+  "settledBadge": "Cân bằng",
+  "totalSpendingCard": "Tổng chi tiêu",
+  "viewReportAction": "Xem báo cáo",
+  "fundCollectedCard": "Quỹ đã thu",
+  "fundGeneralSubtitle": "Quỹ chung",
+  "quickActionsTitle": "LỐI TẮT & THAO TÁC NHANH",
+  "viewDebtsAction": "Xem công nợ",
+  "settleDebtsSubtitle": "Tất toán nợ",
+  "generalFundAction": "Quỹ chung",
+  "collectFundSubtitle": "Thu quỹ chung",
+  "addExpenseAction": "Thêm khoản chi",
+  "splitBillSubtitle": "Chia hóa đơn",
+  "groupSettingsAction": "Cài đặt",
+  "accountAndInterfaceSubtitle": "Tài khoản & thiết lập",
+  "groupAdminSectionTitle": "QUẢN TRỊ NHÓM",
+  "editGroupInfo": "Sửa thông tin",
+  "totalGeneralFundLabel": "TỔNG TIỀN QUỸ CHUNG",
+  "collectNewFundAction": "Thu quỹ mới",
+  "fundProgressLabel": "Tiến độ thu quỹ",
+  "searchFundPlaceholder": "Tìm kiếm đợt thu quỹ theo tên...",
+  "filterAll": "Tất cả",
+  "filterCollecting": "Đang thu",
+  "filterCompleted": "Hoàn thành",
+  "filterThisMonth": "Tháng này",
+  "filterLastMonth": "Tháng trước",
+  "filterThisQuarter": "Quý này",
+  "fundEmptyList": "Chưa có đợt đóng quỹ nào",
+  "fundEmptySubtitle": "Nhấn 'Thu quỹ mới' để phát động chiến dịch thu quỹ cho nhóm.",
+  "createFundTitle": "Thêm đợt thu quỹ",
+  "editFundTitle": "Chỉnh sửa đợt đóng quỹ",
+  "fundNameLabel": "TÊN ĐỢT THU QUỸ *",
+  "fundNameHint": "VD: Tiền phòng Tháng 11, Quỹ liên hoan...",
+  "quickSuggestionsLabel": "Gợi ý nhanh:",
+  "suggestionRoomAndService": "+ Tiền phòng & Dịch vụ",
+  "suggestionYearEndParty": "+ Quỹ tiệc tất niên",
+  "suggestionBirthday": "+ Quỹ sinh nhật",
+  "suggestionInternetAndWater": "+ Tiền mạng & Nước",
+  "fundAmountLabel": "SỐ TIỀN THU QUỸ *",
+  "perPersonMode": "Mỗi người",
+  "totalFundMode": "Tổng quỹ",
+  "expectedTotalSummary": "Tổng thu dự kiến ({count} người):",
+  "@expectedTotalSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "targetTotalSummary": "Tổng mục tiêu:",
+  "dueDateLabel": "HẠN NỘP (HẠN CHÓT)",
+  "fundDescriptionLabel": "GHI CHÚ / MỤC ĐÍCH THU QUỸ",
+  "fundDescriptionHint": "VD: Tiền phòng chuyển chủ nhà trước ngày 10, phạt nếu nộp trễ...",
+  "participatingMembersLabel": "THÀNH VIÊN THAM GIA ({selected}/{total})",
+  "@participatingMembersLabel": {
+    "placeholders": {
+      "selected": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "selectAll": "Chọn tất cả",
+  "deselectAll": "Bỏ chọn",
+  "createFundButton": "Tạo đợt thu quỹ",
+  "saveFundButton": "Lưu thay đổi",
+  "fundDetailTitle": "Chi tiết đợt đóng quỹ",
+  "statusCollectingBadge": "ĐANG THU QUỸ",
+  "statusCompletedBadge": "HOÀN THÀNH",
+  "closeFundAction": "Đóng quỹ",
+  "dueDatePrefix": "Hạn chót đóng quỹ: ",
+  "collectedAmountLabel": "ĐÃ THU ĐƯỢC",
+  "targetAmountLabel": "MỤC TIÊU",
+  "membersPaidRatio": "{paid}/{total} thành viên đã nộp",
+  "@membersPaidRatio": {
+    "placeholders": {
+      "paid": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "memberPaymentStatusTitle": "TRẠNG THÁI NỘP QUỸ CỦA THÀNH VIÊN",
+  "tapToChangeStatusHint": "Bấm để đổi trạng thái",
+  "statusPaid": "Đã nộp",
+  "statusUnpaid": "Chưa nộp",
+  "remindAction": "Nhắc nộp",
+  "remindCooldownToast": "Vui lòng đợi {seconds}s trước khi gửi nhắc nhở tiếp theo",
+  "@remindCooldownToast": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "confirmMarkPaidTitle": "Xác nhận nộp quỹ",
+  "confirmMarkPaidMessage": "Xác nhận thành viên {name} đã đóng {amount} cho đợt quỹ này?",
+  "@confirmMarkPaidMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmDeleteFundTitle": "Xóa đợt đóng quỹ",
+  "confirmDeleteFundMessage": "Bạn có chắc chắn muốn xóa đợt đóng quỹ này? Mọi dữ liệu về trạng thái nộp tiền của các thành viên sẽ bị xóa vĩnh viễn.",
+  "editFundCampaignAction": "Chỉnh sửa đợt đóng quỹ",
+  "exportFundCsvAction": "Xuất báo cáo CSV đợt thu quỹ",
+  "deleteFundCampaignAction": "Xóa đợt đóng quỹ này",
+  "mustSelectAtLeastOneMember": "Vui lòng chọn ít nhất một thành viên tham gia.",
+  "minFundAmountError": "Số tiền mỗi người tối thiểu là 1.000 đ.",
+  "paidMemberCannotBeRemoved": "Không thể bỏ chọn thành viên đã đóng quỹ ({name}).",
+  "@paidMemberCannotBeRemoved": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "memberListSectionHeader": "DANH SÁCH THÀNH VIÊN",
+  "inviteMoreAction": "Mời thêm",
+  "searchMemberPlaceholder": "Tìm kiếm thành viên...",
+  "pendingMembersSectionTitle": "THÀNH VIÊN CHỜ DUYỆT",
+  "pendingRequestsCountBadge": "{count} yêu cầu",
+  "@pendingRequestsCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingRequestsSubtitle": "Yêu cầu gia nhập nhóm đang chờ phê duyệt",
+  "joinRequestLabel": "Yêu cầu tham gia nhóm",
+  "rejectAction": "Từ chối",
+  "approveAction": "Duyệt vào nhóm",
+  "approveJoinTitle": "Chấp thuận cho {name} tham gia nhóm?",
+  "@approveJoinTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "includePastFundsCheckbox": "Yêu cầu đóng các đợt quỹ trước đây của nhóm",
+  "includePastFundsHint": "Nếu chọn, thành viên mới sẽ được thêm vào danh sách phải đóng của tất cả các đợt quỹ đang mở trước đây.",
+  "confirmApproveButton": "Xác nhận duyệt",
+  "touchMemberForFinancialHint": "Chạm vào thành viên để xem chi tiết tài chính & công nợ",
+  "membersCountHeader": "{count} thành viên",
+  "@membersCountHeader": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "youPill": "Bạn",
+  "roleLeaderBadge": "TRƯỞNG NHÓM",
+  "roleMemberBadge": "THÀNH VIÊN",
+  "roleLeaderFull": "TRƯỞNG NHÓM (ADMIN)",
+  "roleMemberFull": "THÀNH VIÊN (MEMBER)",
+  "backToGroup": "Quay lại nhóm",
+  "onTimeDebtRateLabel": "TRẢ ĐÚNG H...",
+  "goodRateLabel": "Tốt",
+  "onTimeFundRateLabel": "ĐÓNG QUỸ Đ...",
+  "personalAndAccountInfoSection": "THÔNG TIN CÁ NHÂN & TÀI KHOẢN",
+  "bankAccountTitle": "Tài khoản ngân hàng",
+  "vietQrCodeButton": "Mã VietQR",
+  "copyAction": "Sao chép",
+  "copiedAccountNumber": "Đã sao chép số tài khoản",
+  "copiedEmail": "Đã sao chép email",
+  "copiedPhone": "Đã sao chép số điện thoại",
+  "groupDebtStatusSection": "TRẠNG THÁI CÔNG NỢ TRONG NHÓM",
+  "totalRefundedByGroup": "Tổng số tiền được nhóm hoàn lại:",
+  "totalToPayGroup": "Tổng số tiền cần chi trả cho nhóm:",
+  "netResultLabel": "Kết quả ròng:",
+  "participatedExpensesSection": "CÁC KHOẢN CHI ĐÃ THAM GIA ({count})",
+  "@participatedExpensesSection": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paidFullBadge": "Chi trả toàn bộ",
+  "paidByMemberPrefix": "Bởi {name}",
+  "@paidByMemberPrefix": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "memberSharePrefix": "Phần chia: {amount}",
+  "@memberSharePrefix": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "kickMemberDangerTitle": "XÓA THÀNH VIÊN KHỎI NHÓM",
+  "kickMemberDangerSubtitle": "Xóa vĩnh viễn thành viên này khỏi nhóm chi tiêu. Thành viên sẽ không còn quyền truy cập vào các khoản chi và công nợ nhóm.",
+  "kickMemberButton": "Kích khỏi nhóm",
+  "debtWarningTitle": "Cảnh báo khoản nợ chưa tất toán",
+  "debtWarningMessage": "Thành viên này hiện còn khoản nợ chưa tất toán ({amount}). Nếu xóa khỏi nhóm, khoản nợ này có thể khó thu hồi. Bạn có chắc chắn muốn xóa thành viên khỏi nhóm?",
+  "@debtWarningMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "receivableWarningTitle": "Cảnh báo tiền chưa nhận lại",
+  "receivableWarningMessage": "Thành viên này hiện đang có khoản tiền chưa được nhận lại ({amount}). Bạn có chắc chắn muốn tiếp tục xóa khỏi nhóm?",
+  "@receivableWarningMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmKickMemberTitle": "Xác nhận xóa thành viên?",
+  "confirmKickMemberMessage": "Bạn có chắc chắn muốn xóa {fullName} khỏi nhóm \"{groupName}\"?",
+  "@confirmKickMemberMessage": {
+    "placeholders": {
+      "fullName": {
+        "type": "String"
+      },
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "stillKickButton": "Vẫn xóa",
+  "continueKickButton": "Tiếp tục xóa",
+  "confirmKickButton": "Xác nhận xóa",
+  "noBankInfoYet": "Chưa cập nhật tài khoản ngân hàng",
+  "noExpensesYet": "Chưa tham gia khoản chi nào.",
+  "leaveGroupSectionTitle": "RỜI KHỎI NHÓM",
+  "leaveGroupSectionSubtitle": "Rời khỏi nhóm chi tiêu này. Bạn sẽ không thể xem lại các giao dịch và công nợ của nhóm trừ khi được mời lại.",
+  "leaveGroupButton": "Rời nhóm",
+  "leaveGroupConfirmTitle": "Xác nhận rời khỏi nhóm?",
+  "leaveGroupConfirmMessage": "Bạn có chắc chắn muốn rời khỏi nhóm \"{groupName}\"?",
+  "@leaveGroupConfirmMessage": {
+    "placeholders": {
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteGroupSectionTitle": "XÓA NHÓM",
+  "deleteGroupSectionSubtitle": "Xóa vĩnh viễn nhóm này cùng toàn bộ chi tiêu, nợ và quỹ liên quan khỏi ứng dụng.",
+  "editProfileTitle": "Cập nhật thông tin cá nhân",
+  "editProfileSubtitle": "Chỉnh sửa hồ sơ và tài khoản nhận tiền VietQR",
+  "fullNameLabel": "Họ và tên",
+  "fullNameHint": "Tên của bạn",
+  "fullNameRequired": "Họ và tên không được để trống",
+  "phoneLabel": "Số điện thoại",
+  "phoneHint": "Số điện thoại",
+  "bankNameLabel": "Ngân hàng nhận tiền (VietQR)",
+  "bankNameHint": "Chọn ngân hàng từ danh sách",
+  "selectBankPrompt": "Chọn ngân hàng",
+  "searchBankHint": "Tìm theo tên, viết tắt hoặc mã BIN...",
+  "bankAccountNumberLabel": "Số tài khoản ngân hàng",
+  "bankAccountNumberHint": "Nhập số tài khoản ngân hàng",
+  "bankAccountNameLabel": "Tên chủ tài khoản",
+  "bankAccountNameHint": "NGUYEN VAN A (in hoa không dấu)",
+  "changeAvatarPrompt": "Đổi ảnh đại diện",
+  "chooseFromGallery": "Chọn từ thư viện",
+  "takePhoto": "Chụp ảnh mới",
+  "saveChanges": "Lưu thay đổi",
+  "updateProfileSuccess": "Cập nhật thông tin cá nhân thành công!",
+  "imageTooLargeError": "Kích thước ảnh đại diện vượt quá 10MB. Vui lòng chọn ảnh khác.",
+  "loadBanksFailed": "Không thể tải danh sách ngân hàng. Vui lòng kiểm tra kết nối mạng.",
+  "retryAction": "Thử lại",
+  "noBanksFound": "Không tìm thấy ngân hàng phù hợp",
+  "forgotPasswordTitle": "Quên mật khẩu",
+  "forgotPasswordSubtitle": "Nhập địa chỉ email của bạn để nhận mã xác thực đặt lại mật khẩu.",
+  "sendResetCodeButton": "Gửi mã xác thực",
+  "backToLogin": "Quay lại đăng nhập",
+  "verifyResetPasswordTitle": "Xác thực đặt lại mật khẩu",
+  "verifyResetPasswordSubtitle": "Vui lòng nhập mã bảo mật 8 ký tự đã được gửi đến hộp thư:",
+  "resetOtpInputLabel": "Mã xác thực 8 ký tự",
+  "resetOtpInputHint": "8 ký tự chữ và số (VD: 47285BAF)",
+  "verifyAndProceedButton": "Xác nhận mã & Đặt lại mật khẩu",
+  "resendCodeIn": "Gửi lại mã sau ",
+  "resendCodeNow": "Gửi lại mã",
+  "setNewPasswordTitle": "Đặt lại mật khẩu mới",
+  "setNewPasswordSubtitle": "Thiết lập mật khẩu mới cho tài khoản email:",
+  "savePasswordButton": "Lưu mật khẩu mới & Đăng nhập",
+  "passwordMinLengthError": "Mật khẩu phải có tối thiểu 6 ký tự.",
+  "resetPasswordSuccessMessage": "Đặt lại mật khẩu thành công! Vui lòng đăng nhập bằng mật khẩu mới.",
+  "otpInvalidError": "Mã xác thực không hợp lệ hoặc đã hết hạn.",
+  "otpCodeLockedError": "Mã xác thực đã bị khóa do nhập sai quá 5 lần. Vui lòng yêu cầu mã mới.",
+  "resetTokenExpiredError": "Phiên đặt lại mật khẩu đã hết hạn (5 phút). Vui lòng thực hiện lại từ đầu.",
+  "resendRateLimitError": "Vui lòng chờ hết thời gian đếm ngược trước khi yêu cầu gửi lại mã.",
+  "noCreditorBankInfoTitle": "Chưa có thông tin thanh toán",
+  "noCreditorBankInfoMessage": "Chủ nợ {creditor} chưa cập nhật thông tin số tài khoản và ngân hàng. Vui lòng liên hệ chủ nợ để nhận thông tin thanh toán.",
+  "@noCreditorBankInfoMessage": {
+    "placeholders": {
+      "creditor": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentAmountLabel": "Số tiền thanh toán",
+  "transferContentLabel": "Nội dung chuyển khoản",
+  "copiedTransferContent": "Đã sao chép nội dung chuyển khoản",
+  "iHavePaidAction": "Tôi đã chuyển khoản",
+  "groupAnalyticsFallbackTitle": "Thống kê nhóm #{id}",
+  "@groupAnalyticsFallbackTitle": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "groupAnalyticsDetailsTitle": "Thống kê chi tiết nhóm",
+  "groupAnalyticsDefaultSubtitle": "Báo cáo chi tiêu chi tiết",
+  "expenseDetailModalTitle": "Chi tiết hóa đơn",
+  "viewGroupAnalyticsAction": "Xem thống kê nhóm",
+  "clearSearchAction": "Xóa tìm kiếm",
+  "expenseCategoryLabel": "Danh mục",
+  "expenseDateLabel": "Thời gian",
+  "expenseGroupLabel": "Nhóm chi tiêu",
+  "loadingBanksMessage": "Đang tải danh sách ngân hàng...",
+  "clearBankPrompt": "Xóa liên kết ngân hàng",
+  "imagePickerGenericError": "Không thể chọn ảnh. Vui lòng thử lại.",
+  "updateProfileGenericError": "Cập nhật thông tin thất bại. Vui lòng thử lại sau.",
+  "otpResentSuccessMessage": "Mã xác thực mới đã được gửi đến email của bạn.",
+  "editExpenseTitle": "Sửa thông tin khoản chi",
+  "expenseReceivingGroupCaps": "NHÓM NHẬN CHI TIÊU",
+  "changeGroupAction": "Đổi nhóm",
+  "selectReceivingGroupTitle": "Chọn nhóm nhận chi tiêu",
+  "noGroupsAvailable": "Không có nhóm nào khả dụng.",
+  "maxImageSize10Mb": "Kích thước ảnh tối đa là 10MB",
+  "receiptLowConfidenceWarning": "Ảnh mờ hoặc không nhận dạng được chữ. Ảnh đã được lưu, vui lòng tự nhập số tiền và tiêu đề.",
+  "receiptScanSuccess": "Quét hóa đơn thành công! Đã tự động điền thông tin.",
+  "pickImageError": "Lỗi khi chọn ảnh: {error}",
+  "@pickImageError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "expenseReceiptDefaultTitle": "Hóa đơn chi tiêu",
+  "expenseAmountVndCaps": "SỐ TIỀN CHI TIÊU (VNĐ)",
+  "expenseTitleCaps": "TÊN KHOẢN CHI",
+  "expenseTitleHint": "Nhập tên khoản chi",
+  "expenseNotesCaps": "GHI CHÚ",
+  "optionalLabel": "Tùy chọn",
+  "expenseNotesHint": "Nhập ghi chú thêm cho khoản chi (tùy chọn)...",
+  "expenseCategorySectionCaps": "DANH MỤC CHI TIÊU",
+  "expensePayerSectionCaps": "NGƯỜI ĐÃ TRẢ TIỀN (DUY NHẤT 1 NGƯỜI)",
+  "youPayerSuffix": " (Bạn)",
+  "noMembersInGroup": "Không có thành viên trong nhóm.",
+  "expenseSplitSectionCaps": "KHUNG PHÂN CHIA CHI PHÍ",
+  "noMembersToSplit": "Không có thành viên trong nhóm để chia chi phí.",
+  "cancelAction": "Hủy bỏ",
+  "saveNewExpenseAction": "Lưu khoản chi mới",
+  "aiReceiptScannerCaps": "QUÉT HÓA ĐƠN AI",
+  "aiScanningReceipt": "AI đang phân tích hóa đơn...",
+  "aiScanningReceiptDesc": "Đang phân tích tổng tiền chi tiêu, ghi chú, chủ đề....",
+  "capturePhotoAction": "Chụp ảnh",
+  "uploadPhotoAction": "Tải ảnh lên",
+  "uploadReceiptHelper": "Tải hoặc chụp ảnh hóa đơn để ghi lại thông tin nhanh gọn",
+  "receiptScannedAndAttached": "Đã quét & đính kèm hóa đơn",
+  "blurryReceiptWarning": "Ảnh mờ - Vui lòng kiểm tra lại thông tin",
+  "receiptAutofilledNotice": "Thông tin đã được tự động điền vào form",
+  "removeReceiptTooltip": "Xóa hóa đơn",
+  "viewPhotoAction": "Xem ảnh",
+  "retakePhotoAction": "Chụp lại",
+  "changePhotoAction": "Đổi ảnh",
+  "splitEquallyAllMembers": "Chia đều cho tất cả thành viên ({count} người)",
+  "@splitEquallyAllMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "splitEquallyAllSubtitle": "Mọi người trong nhóm sẽ chia đều số tiền",
+  "splitCustomSelectedSubtitle": "Đang tùy chỉnh chọn thành viên chia chi phí",
+  "chooseSplitParticipantsTitle": "Chọn người cùng chia tiền:",
+  "selectedParticipantsCount": "Đã chọn {selectedCount}/{totalCount} người • {amount} / người",
+  "@selectedParticipantsCount": {
+    "placeholders": {
+      "selectedCount": {
+        "type": "int"
+      },
+      "totalCount": {
+        "type": "int"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "selectAllAction": "Tất cả",
+  "payerBadge": "Người trả",
+  "cannotLoadReceiptImage": "Không thể tải ảnh hóa đơn",
+  "categoryFood": "Ăn uống",
+  "categoryTransport": "Di chuyển",
+  "categoryShopping": "Mua sắm",
+  "categoryHousing": "Nhà ở & Điện nước",
+  "categoryEntertainment": "Giải trí",
+  "categoryGroceries": "Siêu thị",
+  "categoryHealthcare": "Y tế & Sức khỏe",
+  "categoryOthers": "Khác",
+  "expandNoteAction": "Mở rộng",
+  "expenseNoteEditorTitle": "Ghi chú chi tiêu",
+  "clearNoteAction": "Xóa nội dung",
+  "doneAction": "Xong",
+  "viewAllNotesHint": "Xem toàn bộ ({lines} dòng)...",
+  "@viewAllNotesHint": {
+    "placeholders": {
+      "lines": {
+        "type": "int"
+      }
+    }
+  },
+  "groupCategoryApartment": "Căn hộ & Phòng trọ",
+  "groupCategorySport": "Thể thao & CLB",
+  "groupCategoryTravel": "Du lịch & Dã ngoại",
+  "groupCategoryDining": "Bạn bè & Ăn uống",
+  "groupCategoryWork": "Công việc & Dự án",
+  "groupCategoryOther": "Khác",
+  "groupCategoryApartmentShort": "Căn hộ chung",
+  "groupCategorySportShort": "Thể thao",
+  "groupCategoryTravelShort": "Du lịch",
+  "groupCategoryDiningShort": "Ăn uống",
+  "groupCategoryWorkShort": "Công việc",
+  "groupCategoryOtherShort": "Khác",
+  "filterPaidByMe": "Của tôi",
+  "filterPendingSettlement": "Chờ quyết toán",
+  "filterAllTopicsCount": "Tất cả chủ đề ({count})",
+  "@filterAllTopicsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupStatusActive": "Đang hoạt động",
+  "groupStatusArchived": "Đã lưu trữ",
+  "unmuteNotifications": "Bật thông báo",
+  "muteNotifications": "Tắt thông báo",
+  "showBalanceTooltip": "Hiện số dư",
+  "hideBalanceTooltip": "Ẩn số dư",
+  "totalGroupExpensesTitle": "TỔNG CHI TIÊU NHÓM",
+  "incurredInvoicesCount": "{count} hóa đơn phát sinh",
+  "@incurredInvoicesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchExpenseByNamePlaceholder": "Tìm khoản chi theo tên...",
+  "createFirstExpenseHint": "Bấm nút bên dưới để tạo khoản chi đầu tiên cho nhóm.",
+  "addNewExpenseAction": "Thêm khoản chi mới",
+  "youHavePaidBadge": "Bạn đã thanh toán",
+  "youOweAmountPrefix": "Bạn nợ: {amount}",
+  "@youOweAmountPrefix": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
+}

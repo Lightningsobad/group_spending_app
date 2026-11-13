@@ -1,0 +1,1017 @@
+{
+  "@@locale": "en",
+  "appTitle": "FairShare",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "underDevelopment": "This feature is under development.",
+  "edit": "Edit",
+  "close": "Close",
+  "splashSlogan": "Transparent expense sharing & smart debt reminders",
+  "authHeaderTitle": "FairShare",
+  "authHeaderSubtitle": "Group expense management & reminders",
+  "loginTab": "Log In",
+  "registerTab": "Sign Up",
+  "orLoginWithEmail": "OR LOG IN WITH EMAIL",
+  "emailLabel": "Email Address",
+  "emailHint": "Your email",
+  "passwordLabel": "Password",
+  "passwordHint": "Enter password",
+  "forgotPassword": "Forgot password?",
+  "loginButton": "Log In to App",
+  "noAccountPrompt": "Don't have an account? ",
+  "registerNow": "Sign up now",
+  "orRegisterWithEmail": "OR SIGN UP WITH EMAIL",
+  "fullNameLabel": "Full name",
+  "fullNameHint": "Your name",
+  "phoneLabel": "Phone number",
+  "phoneOptionalTag": "(Optional)",
+  "phoneHint": "Phone number",
+  "registerButton": "Create New Account",
+  "hasAccountPrompt": "Already have an account? ",
+  "loginNow": "Log In",
+  "continueWithGoogle": "Continue with Google",
+  "googleAuthNotice": "Google login feature is under development.",
+  "forgotPasswordNotice": "Forgot password support feature is coming soon.",
+  "enterEmailPrompt": "Please enter your email address.",
+  "enterPasswordPrompt": "Please enter your password.",
+  "enterFullNamePrompt": "Please enter your full name.",
+  "passwordMinLengthPrompt": "Password must be at least 6 characters.",
+  "otpTitle": "Verify Email Address",
+  "otpSubtitle": "A 6-digit secure OTP code has been sent to your inbox",
+  "otpInputLabel": "OTP verification code",
+  "otpDigitsHint": "6 secure digits",
+  "verifyAndActivate": "Verify & Activate",
+  "enterFullOtpPrompt": "Please enter all 6 digits of the OTP verification code.",
+  "resendOtpPrompt": "Didn't receive the code? ",
+  "resendOtpNow": "Resend code",
+  "resendIn": "Resend in ({seconds}s)",
+  "@resendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "onboardingStep": "Step {step}/{total}",
+  "@onboardingStep": {
+    "placeholders": {
+      "step": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "skip": "Skip",
+  "onboardingSlide1Pill": "Group Management",
+  "onboardingSlide1Title": "CONNECT & MANAGE GROUPS",
+  "onboardingSlide1Desc": "Easily manage friends, trip expenses and daily living costs transparently and fairly.",
+  "onboardingSlide2Pill": "Expense Management",
+  "onboardingSlide2Title": "SMART EXPENSE TRACKING",
+  "onboardingSlide2Desc": "Record expenses swiftly, visualize charts, split bills evenly, and optimize net debts automatically.",
+  "onboardingSlide3Pill": "Fund Management",
+  "onboardingSlide3Title": "TRANSPARENT GROUP FUNDS",
+  "onboardingSlide3Desc": "Collect group funds conveniently, track contributions in real time, and manage budget with 100% clarity.",
+  "onboardingSlide4Pill": "Reminders & Payment",
+  "onboardingSlide4Title": "SPEEDY REMINDERS & PAYMENTS",
+  "onboardingSlide4Desc": "Send delicate debt reminder nudges, scan VietQR with auto-filled accounts, and settle balances in seconds.",
+  "greeting": "Hello,",
+  "tabOverview": "Overview",
+  "tabGroups": "Groups",
+  "tabDebts": "Debts",
+  "tabAnalytics": "Analytics",
+  "tabSettings": "Settings",
+  "notificationsTitle": "Notifications",
+  "noNotifications": "You have no new notifications.",
+  "settingsTitle": "Settings",
+  "roleAdmin": "Group Leader (Admin)",
+  "roleMember": "Member",
+  "editProfile": "Edit Profile",
+  "changePassword": "Change Password",
+  "vietqrTitle": "BANK ACCOUNT",
+  "noBankData": "No data",
+  "appearanceLanguageSection": "APPEARANCE & LANGUAGE",
+  "themeModeTitle": "Theme Mode",
+  "lightThemeLabel": "Light",
+  "darkThemeLabel": "Dark",
+  "displayLanguageTitle": "Display Language",
+  "infoSupportSection": "INFO & SUPPORT",
+  "aboutAppTitle": "About FairShare",
+  "privacyPolicyTitle": "Privacy Policy & Data Safety",
+  "privacyPolicyCommitmentSubtitle": "Commitment to personal data protection & financial safety",
+  "privacyStandardBadge": "STANDARD SECURITY",
+  "privacyUpdatedDate": "Updated: September 2026",
+  "privacyHeroTitle": "Expense Transparency • User Data Protection",
+  "privacyHeroDescription": "FairShare respects your privacy. All expenses, invoice information, and bank account details only serve group debt splitting and fund collection among members.",
+  "privacyDataCollectedTitle": "1. DATA COLLECTED BY APP",
+  "privacyDataCollectedDesc": "We only collect minimal information necessary to operate group expense splitting features:",
+  "privacyIdentityTitle": "Identity Information: ",
+  "privacyIdentityDesc": "Display name, avatar, and email address to authenticate account and deliver OTP codes.",
+  "privacyBankTitle": "Payout Account (VietQR): ",
+  "privacyBankDesc": "Bank name, account number, and holder name to generate 1-tap standard VietQR code for members to settle debts.",
+  "privacyTransactionTitle": "Group Transaction Data: ",
+  "privacyTransactionDesc": "List of bills, amounts spent, payer, split ratios, and joint funding campaigns.",
+  "privacySecurityTitle": "2. PASSWORD SAFETY & END-TO-END ENCRYPTION",
+  "privacySecurityDesc": "User account passwords are one-way hashed with secure salt, never decipherable or readable as raw plain text.",
+  "privacyChangePasswordTip": "You can proactively change your password anytime in Settings using the \"Change password\" feature.",
+  "privacyNoShareTitle": "3. NO DATA SHARING COMMITMENT",
+  "privacyNoShareDesc": "FairShare commits to never selling, sharing, or commercializing any personal information, debt history, or fund amount to any advertising partners.",
+  "privacyUserRightsTitle": "4. YOUR DATA OWNERSHIP RIGHTS",
+  "privacyRightEditProfile": "View and update your display name and bank account details anytime.",
+  "privacyRightTransferAdmin": "Transfer Administrator (Admin) role to another member in the group.",
+  "privacyRightArchiveGroup": "Request group deletion or freeze expense history by archiving it.",
+  "privacyRightLogoutSafe": "Safely sign out from devices whenever you wish.",
+  "privacyBackToSettings": "Back to Settings",
+  "logoutButton": "Log out account",
+  "logoutTooltip": "Log out",
+  "logoutConfirmTitle": "Are you sure you want to log out?",
+  "financialOverviewTitle": "FINANCIAL BALANCE OVERVIEW",
+  "youOwe": "You owe",
+  "paySoonSubtitle": "Due soon",
+  "youAreOwed": "You receive",
+  "friendsOweYouSubtitle": "Friends owe you",
+  "addExpense": "Add expense",
+  "addExpenseFeatureNotice": "Add expense feature is being integrated.",
+  "chooseGroupToAddExpenseTitle": "Select group to add expense",
+  "searchGroupByNameHint": "Search by group name...",
+  "filterActiveOnly": "Active",
+  "filterAllGroupsOnly": "All groups",
+  "filterAdminOnly": "I'm Admin",
+  "filterAllTopicsOnly": "All categories",
+  "balanceLabel": "Balance",
+  "noSuitableGroupQuestion": "No suitable group?",
+  "cannotAddExpenseToArchivedGroup": "This group is archived, cannot add expense.",
+  "createGroupAction": "Create group",
+  "codeOrQrAction": "Join now",
+  "yourGroupsSection": "YOUR GROUPS",
+  "seeAllGroupsCount": "See all ({count})",
+  "@seeAllGroupsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noGroupsJoinedTitle": "You haven't joined any groups yet",
+  "noGroupsJoinedSubtitle": "Create a new group or join with an invite code to start splitting expenses with friends!",
+  "createGroupNow": "Create a group now",
+  "notificationsToggledForGroup": "Notifications updated for \"{name}\".",
+  "@notificationsToggledForGroup": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "groupListHeaderTitle": "Your group list",
+  "searchGroupPlaceholder": "Search by group name, category...",
+  "filterAllCount": "All ({count})",
+  "@filterAllCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterActiveCount": "Active ({count})",
+  "@filterActiveCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterArchivedCount": "Archived ({count})",
+  "@filterArchivedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterAdminCount": "Managed by me ({count})",
+  "@filterAdminCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "noMatchingGroupsTitle": "No matching groups found",
+  "noMatchingGroupsSubtitle": "Try searching with a different keyword or change filter.",
+  "noGroupsInTabTitle": "No groups in this section",
+  "noGroupsInTabSubtitle": "Tap \"+ Create new group\" to start your first group!",
+  "createGroupTitle": "Create new expense group",
+  "createGroupSubtitle": "Enter group name and category to manage shared expenses.",
+  "groupNameLabel": "Expense group name *",
+  "groupNameHint": "Enter group name",
+  "groupDescLabel": "Group description (Optional)",
+  "groupDescHint": "Enter a brief note about this group's expenses...",
+  "groupCategoryLabel": "Group category",
+  "defaultCurrencyLabel": "Default currency",
+  "groupNameRequired": "Please enter a group name.",
+  "joinGroupTitle": "Join group via invite code",
+  "joinGroupSubtitle": "Enter a 6-12 character code to join your friends' group.",
+  "inviteCodeLabel": "Group invite code *",
+  "inviteCodeHint": "Enter code",
+  "inviteCodeRequired": "Please enter an invite code.",
+  "joinGroupButton": "Join group",
+  "groupDetailTitle": "Group details",
+  "groupInviteCodePrefix": "Group code:",
+  "codeCopiedToClipboard": "Invite code copied to clipboard",
+  "copyCodeTooltip": "Copy code",
+  "archiveGroupAction": "Archive group",
+  "archiveGroupConfirmTitle": "Confirm archiving group?",
+  "archiveGroupConfirmMessage": "Group will be moved to archives and become read-only.",
+  "archiveConfirmButton": "Archive",
+  "deleteGroupAction": "Delete group",
+  "deleteGroupConfirmTitle": "Confirm permanent deletion?",
+  "deleteGroupConfirmMessage": "This action will permanently remove all expenses, debts, funds, and member records. Cannot be undone!",
+  "deleteConfirmButton": "Delete group",
+  "editGroupTitle": "Edit group information",
+  "saveChanges": "Save changes",
+  "groupMembersTitle": "Group members",
+  "loadDashboardFailed": "Failed to load dashboard overview",
+  "loadGroupsFailed": "Failed to load group list",
+  "createGroupSuccess": "Group created successfully!",
+  "updateGroupSuccess": "Group updated successfully!",
+  "archiveGroupSuccess": "Group has been moved to archives.",
+  "deleteGroupSuccess": "Group deleted successfully.",
+  "joinGroupSuccess": "Joined group successfully!",
+  "editGroupAction": "Edit group",
+  "inviteCodeCardTitle": "GROUP INVITE CODE",
+  "groupFinancialOverviewTitle": "GROUP FINANCIAL OVERVIEW",
+  "yourBalanceLabel": "Your balance:",
+  "totalGroupSpendingLabel": "Total group spending:",
+  "totalFundCollectedLabel": "Total fund collected:",
+  "groupMembersCountTitle": "MEMBERS ({count})",
+  "@groupMembersCountTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupMemberCountSimple": "Group has {count} members",
+  "@groupMemberCountSimple": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "deleteGroupPermanently": "Delete group permanently",
+  "backAction": "Back",
+  "joinGroupQrTitle": "Join via Code / QR",
+  "joinGroupQrSubtitle": "Quickly join a group by scanning a QR code or entering an invite code",
+  "scanQrTab": "Scan QR Code",
+  "enterCodeTab": "Enter Invite Code",
+  "scanQrInstruction": "Point your camera at the group's QR code to send a join request",
+  "uploadQrImageAction": "Upload QR Image",
+  "invalidQrCodeError": "No valid invite code found in this QR code.",
+  "noQrFoundInImage": "No QR code found in the selected image.",
+  "cameraPermissionRequired": "Please grant camera permission to scan QR codes.",
+  "tabAnalyticsTitle": "Reports & Statistics",
+  "totalSpendingAllGroups": "Total spending all groups",
+  "activeGroupsJoinedCount": "Active groups joined",
+  "groupsUnit": "groups",
+  "totalInvoicesRecorded": "Recorded expenses",
+  "invoicesUnit": "invoices",
+  "overallReportBannerTitle": "Overall Report",
+  "viewOverallReportAction": "View Overview",
+  "searchGroupByHint": "Search group by name, category...",
+  "filterAllTab": "All ({count})",
+  "@filterAllTab": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterActiveTab": "Active",
+  "filterArchivedTab": "Archived",
+  "groupSpendingListTitle": "GROUP SPENDING LIST",
+  "totalSpendingLabel": "Total spending",
+  "overallReportTitle": "Overall Report",
+  "overallReportSubtitle": "Summary of all active groups",
+  "financialMetricsTitle": "GROUP FINANCIAL METRICS",
+  "totalSpendingMetric": "Total spending amount",
+  "averagePerPersonMetric": "Average per person",
+  "friendsCountBadge": "÷ {count} friends",
+  "@friendsCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "expenseCountMetric": "Expense count",
+  "invoicesBadge": "Invoices",
+  "expensesUnit": "expenses",
+  "settlementRateMetric": "Settlement rate",
+  "paidRateSuffix": "paid",
+  "groupDebtLabel": "Group debt",
+  "remainingDebtRate": "{percent}% remaining",
+  "@remainingDebtRate": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "categoryDistributionTitle": "CATEGORY DISTRIBUTION",
+  "memberContributionTitle": "MEMBER CONTRIBUTIONS",
+  "contributionPercent": "{percent}% of total spending",
+  "@contributionPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "recentExpensesTitle": "RECENT EXPENSES",
+  "expensesCountBadge": "{count} items",
+  "@expensesCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paidByPrefix": "Paid by: {name}",
+  "@paidByPrefix": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "viewExpenseDetailAction": "Details →",
+  "periodThisMonth": "This month",
+  "periodLastMonth": "Last month",
+  "periodCurrentQuarter": "This quarter",
+  "periodByYear": "Full year",
+  "membersCountSubtitle": "{memberCount} members",
+  "@membersCountSubtitle": {
+    "placeholders": {
+      "memberCount": {
+        "type": "int"
+      }
+    }
+  },
+  "noExpensesRecorded": "No expenses recorded yet.",
+  "noCategoriesRecorded": "No category data available.",
+  "noLeaderboardData": "No contribution data available.",
+  "loadAnalyticsFailed": "Failed to load analytics data",
+  "retryAction": "Retry",
+  "youLabel": "(Me)",
+  "debtsGroupTitle": "Debts by Group",
+  "debtsYouOwe": "You owe",
+  "debtsYouOweSubtitle": "You need to pay",
+  "debtsYouReceive": "You receive",
+  "debtsYouReceiveSubtitle": "Friends owe you",
+  "searchDebtGroupPlaceholder": "Search group by name, category...",
+  "filterDebtAllCount": "All groups ({count})",
+  "@filterDebtAllCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterDebtHasDebtCount": "Has debt ({count})",
+  "@filterDebtHasDebtCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "filterDebtSettledCount": "Settled ({count})",
+  "@filterDebtSettledCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "debtsPendingCount": "{count} debts",
+  "@debtsPendingCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "debtsSettledAll": "All settled",
+  "debtsBalanced": "Balanced (0 đ)",
+  "badgeYouReceive": "You receive",
+  "badgeYouMustPay": "You need to pay",
+  "badgeBalanced": "Balanced",
+  "simplifiedDebtsTab": "Simplified Debts",
+  "actualDebtsTab": "Actual Debts",
+  "simplifiedDebtsBanner": "Optimize cash flow transactions for fastest settlement.",
+  "actualDebtsBanner": "Detailed debts arising from each bill and spending item.",
+  "debtsToHandleCount": "{count} DEBTS",
+  "@debtsToHandleCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "simplifiedDebtAlgorithm": "Simplified debt algorithm",
+  "payNowAction": "Pay now (100%)",
+  "confirmReceivedAction": "Confirm received",
+  "rejectReceivedAction": "Decline",
+  "remindDebtAction": "Remind",
+  "debtStatusPending": "Unpaid",
+  "debtStatusWaiting": "Awaiting confirmation",
+  "debtStatusSettled": "Settled",
+  "totalExpenseCaps": "TOTAL EXPENSE",
+  "paidByLabel": "Paid by: ",
+  "allocationByMember": "ALLOCATION BY MEMBER:",
+  "debtorCountLabel": "{count} debtors",
+  "@debtorCountLabel": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "debtSplitDetailTitle": "Debt Split Details",
+  "debtorLabel": "Debtor",
+  "creditorLabel": "Creditor",
+  "youTag": "You",
+  "yourBalanceInGroup": "Your balance in group:",
+  "noDebtGroupsTitle": "No debt groups",
+  "noDebtGroupsSubtitle": "You currently have no pending debts to handle.",
+  "noMatchingDebtGroupsTitle": "No matching groups found",
+  "noMatchingDebtGroupsSubtitle": "Try searching with other keywords or change filter.",
+  "confirmPayDebtTitle": "Confirm payment sent",
+  "confirmPayDebtMessage": "Have you transferred or paid in cash to {creditor} the amount of {amount}?",
+  "@confirmPayDebtMessage": {
+    "placeholders": {
+      "creditor": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmReceiveDebtTitle": "Confirm money received",
+  "confirmReceiveDebtMessage": "Have you received {amount} from {debtor}?",
+  "@confirmReceiveDebtMessage": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "rejectReceiveDebtTitle": "Decline payment confirmation",
+  "rejectReceiveDebtMessage": "You have not received this payment and want to ask {debtor} to check again?",
+  "@rejectReceiveDebtMessage": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      }
+    }
+  },
+  "rejectReceiveReasonLabel": "Rejection reason",
+  "rejectReceiveReasonHint": "Enter reason for not receiving money...",
+  "defaultRejectReceiveReason": "Have not received money in bank account",
+  "confirmRemindDebtTitle": "Send debt reminder",
+  "confirmRemindDebtMessage": "Send a reminder notification for debt of {amount} to {debtor}?",
+  "@confirmRemindDebtMessage": {
+    "placeholders": {
+      "debtor": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "noDebtsInGroupTitle": "No debts in this group",
+  "noDebtsInGroupSubtitle": "All expenses in this group are balanced or no debts have incurred.",
+  "changePasswordTitle": "Change Account Password",
+  "changePasswordSubtitle": "Update password to keep your account secure",
+  "currentPasswordLabel": "Current password",
+  "currentPasswordHint": "Enter current password",
+  "newPasswordLabel": "New password",
+  "newPasswordHint": "At least 6 characters",
+  "confirmNewPasswordLabel": "Confirm new password",
+  "confirmNewPasswordHint": "Re-enter new password",
+  "passwordSafetyTip": "Tip: Use a mix of uppercase, lowercase letters and numbers for better security.",
+  "changePasswordSubmitButton": "Change password",
+  "changePasswordSuccess": "Password changed successfully!",
+  "enterCurrentPasswordPrompt": "Please enter your current password.",
+  "enterNewPasswordPrompt": "Please enter a new password.",
+  "confirmPasswordMismatchPrompt": "Confirm password does not match.",
+  "newPasswordSameAsCurrentPrompt": "New password must be different from current password.",
+  "groupInfoSectionTitle": "GROUP INFORMATION",
+  "tabExpenses": "Expenses",
+  "tabFunds": "Funds",
+  "tabMembers": "Members",
+  "categoryLabel": "CATEGORY",
+  "createdDateLabel": "CREATED DATE",
+  "membersCountLabel": "MEMBERS",
+  "copyInviteCodeAction": "Copy invite code",
+  "viewQrCodeTooltip": "View QR Code",
+  "inviteMembersTitle": "Invite members to group",
+  "tabQrCode": "QR Code",
+  "tabCopyCode": "Invite code",
+  "copyCodeInstruction": "Enter this code to join the group",
+  "shareCodeAction": "Share invite code",
+  "scanToJoinInstruction": "Scan this code to join the group",
+  "downloadQrAction": "Download QR",
+  "downloadQrSuccess": "QR code image saved successfully!",
+  "downloadQrFailed": "Failed to save QR code image",
+  "shareViaOtherAppsAction": "Share",
+  "closeButton": "Close",
+  "yourBalanceInGroupLabel": "Your balance in group",
+  "youReceiveBadge": "You receive",
+  "youOweBadge": "You owe",
+  "settledBadge": "Settled",
+  "totalSpendingCard": "Total spending",
+  "viewReportAction": "View report",
+  "fundCollectedCard": "Fund collected",
+  "fundGeneralSubtitle": "General fund",
+  "quickActionsTitle": "SHORTCUTS & QUICK ACTIONS",
+  "viewDebtsAction": "View debts",
+  "settleDebtsSubtitle": "Settle debts",
+  "generalFundAction": "General fund",
+  "collectFundSubtitle": "Collect fund",
+  "addExpenseAction": "Add expense",
+  "splitBillSubtitle": "Split bill",
+  "groupSettingsAction": "Settings",
+  "accountAndInterfaceSubtitle": "Account & settings",
+  "groupAdminSectionTitle": "GROUP MANAGEMENT",
+  "editGroupInfo": "Edit info",
+  "totalGeneralFundLabel": "TOTAL GENERAL FUND",
+  "collectNewFundAction": "New fund",
+  "fundProgressLabel": "Fund progress",
+  "searchFundPlaceholder": "Search fund collection by name...",
+  "filterAll": "All",
+  "filterCollecting": "Collecting",
+  "filterCompleted": "Completed",
+  "filterThisMonth": "This month",
+  "filterLastMonth": "Last month",
+  "filterThisQuarter": "This quarter",
+  "fundEmptyList": "No fund collections yet",
+  "fundEmptySubtitle": "Tap 'New fund' to start a fund collection for your group.",
+  "createFundTitle": "Add Fund Collection",
+  "editFundTitle": "Edit Fund Collection",
+  "fundNameLabel": "FUND COLLECTION NAME *",
+  "fundNameHint": "E.g.: Room rent for Nov, Party fund...",
+  "quickSuggestionsLabel": "Quick suggestions:",
+  "suggestionRoomAndService": "+ Room & Service",
+  "suggestionYearEndParty": "+ Year-end Party",
+  "suggestionBirthday": "+ Birthday",
+  "suggestionInternetAndWater": "+ Internet & Water",
+  "fundAmountLabel": "FUND AMOUNT *",
+  "perPersonMode": "Per person",
+  "totalFundMode": "Total fund",
+  "expectedTotalSummary": "Estimated total ({count} members):",
+  "@expectedTotalSummary": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "targetTotalSummary": "Total target:",
+  "dueDateLabel": "DUE DATE",
+  "fundDescriptionLabel": "NOTE / PURPOSE",
+  "fundDescriptionHint": "E.g.: Pay rent before the 10th, late penalty applies...",
+  "participatingMembersLabel": "PARTICIPATING MEMBERS ({selected}/{total})",
+  "@participatingMembersLabel": {
+    "placeholders": {
+      "selected": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "selectAll": "Select all",
+  "deselectAll": "Deselect all",
+  "createFundButton": "Create Fund Collection",
+  "saveFundButton": "Save changes",
+  "fundDetailTitle": "Fund Collection Details",
+  "statusCollectingBadge": "COLLECTING",
+  "statusCompletedBadge": "COMPLETED",
+  "closeFundAction": "Close fund",
+  "dueDatePrefix": "Due date: ",
+  "collectedAmountLabel": "COLLECTED",
+  "targetAmountLabel": "TARGET",
+  "membersPaidRatio": "{paid}/{total} members have paid",
+  "@membersPaidRatio": {
+    "placeholders": {
+      "paid": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "memberPaymentStatusTitle": "MEMBER PAYMENT STATUS",
+  "tapToChangeStatusHint": "Tap to change status",
+  "statusPaid": "Paid",
+  "statusUnpaid": "Unpaid",
+  "remindAction": "Remind",
+  "remindCooldownToast": "Please wait {seconds}s before sending another reminder",
+  "@remindCooldownToast": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "confirmMarkPaidTitle": "Confirm payment",
+  "confirmMarkPaidMessage": "Confirm that member {name} has paid {amount} for this fund?",
+  "@confirmMarkPaidMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmDeleteFundTitle": "Delete fund collection",
+  "confirmDeleteFundMessage": "Are you sure you want to delete this fund collection? All member payment data will be permanently removed.",
+  "editFundCampaignAction": "Edit fund collection",
+  "exportFundCsvAction": "Export fund collection CSV",
+  "deleteFundCampaignAction": "Delete this fund collection",
+  "mustSelectAtLeastOneMember": "Please select at least one participating member.",
+  "minFundAmountError": "Minimum amount per person is 1,000 đ.",
+  "paidMemberCannotBeRemoved": "Cannot remove member who has already paid ({name}).",
+  "@paidMemberCannotBeRemoved": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "memberListSectionHeader": "MEMBER LIST",
+  "inviteMoreAction": "Invite more",
+  "searchMemberPlaceholder": "Search members...",
+  "pendingMembersSectionTitle": "PENDING MEMBERS",
+  "pendingRequestsCountBadge": "{count} requests",
+  "@pendingRequestsCountBadge": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pendingRequestsSubtitle": "Join requests waiting for approval",
+  "joinRequestLabel": "Request to join group",
+  "rejectAction": "Reject",
+  "approveAction": "Approve",
+  "approveJoinTitle": "Approve {name} to join group?",
+  "@approveJoinTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "includePastFundsCheckbox": "Require contributing to past group fund collections",
+  "includePastFundsHint": "If selected, new member will be added to the required list of all previous open fund collections.",
+  "confirmApproveButton": "Confirm approval",
+  "touchMemberForFinancialHint": "Tap member to view financial & debt details",
+  "membersCountHeader": "{count} members",
+  "@membersCountHeader": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "youPill": "You",
+  "roleLeaderBadge": "LEADER",
+  "roleMemberBadge": "MEMBER",
+  "roleLeaderFull": "LEADER (ADMIN)",
+  "roleMemberFull": "MEMBER",
+  "backToGroup": "Back to group",
+  "onTimeDebtRateLabel": "PAID ON TIME",
+  "goodRateLabel": "Good",
+  "onTimeFundRateLabel": "FUND ON TIME",
+  "personalAndAccountInfoSection": "PERSONAL & ACCOUNT INFO",
+  "bankAccountTitle": "Bank account",
+  "vietQrCodeButton": "VietQR Code",
+  "copyAction": "Copy",
+  "copiedAccountNumber": "Bank account number copied",
+  "copiedEmail": "Email copied",
+  "copiedPhone": "Phone number copied",
+  "groupDebtStatusSection": "DEBT STATUS IN GROUP",
+  "totalRefundedByGroup": "Total refunded by group:",
+  "totalToPayGroup": "Total to pay to group:",
+  "netResultLabel": "Net result:",
+  "participatedExpensesSection": "PARTICIPATED EXPENSES ({count})",
+  "@participatedExpensesSection": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "paidFullBadge": "Paid fully",
+  "paidByMemberPrefix": "By {name}",
+  "@paidByMemberPrefix": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "memberSharePrefix": "Share: {amount}",
+  "@memberSharePrefix": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "kickMemberDangerTitle": "REMOVE MEMBER FROM GROUP",
+  "kickMemberDangerSubtitle": "Permanently remove this member from the spending group. The member will no longer have access to group expenses and debts.",
+  "kickMemberButton": "Kick from group",
+  "debtWarningTitle": "Warning: Unsettled debt",
+  "debtWarningMessage": "This member still has an unsettled debt of {amount}. Removing them may make it difficult to reconcile. Are you sure you want to remove this member?",
+  "@debtWarningMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "receivableWarningTitle": "Warning: Uncollected money",
+  "receivableWarningMessage": "This member currently has uncollected money of {amount}. Are you sure you want to proceed with removal?",
+  "@receivableWarningMessage": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmKickMemberTitle": "Confirm remove member?",
+  "confirmKickMemberMessage": "Are you sure you want to remove {fullName} from group \"{groupName}\"?",
+  "@confirmKickMemberMessage": {
+    "placeholders": {
+      "fullName": {
+        "type": "String"
+      },
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "stillKickButton": "Still remove",
+  "continueKickButton": "Continue remove",
+  "confirmKickButton": "Confirm remove",
+  "noBankInfoYet": "No bank account info updated yet",
+  "noExpensesYet": "No expenses participated yet.",
+  "leaveGroupSectionTitle": "LEAVE GROUP",
+  "leaveGroupSectionSubtitle": "Leave this spending group. You will not be able to review transactions and debts unless invited again.",
+  "leaveGroupButton": "Leave group",
+  "leaveGroupConfirmTitle": "Confirm leaving group?",
+  "leaveGroupConfirmMessage": "Are you sure you want to leave group \"{groupName}\"?",
+  "@leaveGroupConfirmMessage": {
+    "placeholders": {
+      "groupName": {
+        "type": "String"
+      }
+    }
+  },
+  "deleteGroupSectionTitle": "DELETE GROUP",
+  "deleteGroupSectionSubtitle": "Permanently delete this group along with all expenses, debts and funds from application.",
+  "editProfileTitle": "Update Profile",
+  "editProfileSubtitle": "Edit your profile and VietQR payout account",
+  "fullNameLabel": "Full name",
+  "fullNameHint": "Your name",
+  "fullNameRequired": "Full name cannot be blank",
+  "phoneLabel": "Phone number",
+  "phoneHint": "Phone number",
+  "bankNameLabel": "Payout Bank (VietQR)",
+  "bankNameHint": "Select bank from list",
+  "selectBankPrompt": "Select bank",
+  "searchBankHint": "Search by name, short name or BIN...",
+  "bankAccountNumberLabel": "Bank account number",
+  "bankAccountNumberHint": "Enter bank account number",
+  "bankAccountNameLabel": "Account holder name",
+  "bankAccountNameHint": "NGUYEN VAN A (uppercase without accents)",
+  "changeAvatarPrompt": "Change avatar",
+  "chooseFromGallery": "Choose from gallery",
+  "takePhoto": "Take new photo",
+  "saveChanges": "Save changes",
+  "updateProfileSuccess": "Profile updated successfully!",
+  "imageTooLargeError": "Avatar image exceeds 10MB limit. Please choose another image.",
+  "loadBanksFailed": "Failed to load banks. Please check your internet connection.",
+  "retryAction": "Retry",
+  "noBanksFound": "No matching banks found",
+  "forgotPasswordTitle": "Forgot Password",
+  "forgotPasswordSubtitle": "Enter your email address to receive a password reset verification code.",
+  "sendResetCodeButton": "Send Verification Code",
+  "backToLogin": "Back to Login",
+  "verifyResetPasswordTitle": "Verify Password Reset",
+  "verifyResetPasswordSubtitle": "Please enter the 8-character security code sent to your inbox:",
+  "resetOtpInputLabel": "8-character verification code",
+  "resetOtpInputHint": "8 alphanumeric characters (e.g. 47285BAF)",
+  "verifyAndProceedButton": "Verify Code & Reset Password",
+  "resendCodeIn": "Resend code in ",
+  "resendCodeNow": "Resend code",
+  "setNewPasswordTitle": "Set New Password",
+  "setNewPasswordSubtitle": "Set up a new password for email account:",
+  "savePasswordButton": "Save New Password & Login",
+  "passwordMinLengthError": "Password must be at least 6 characters.",
+  "resetPasswordSuccessMessage": "Password reset successful! Please log in with your new password.",
+  "otpInvalidError": "Verification code is invalid or has expired.",
+  "otpCodeLockedError": "Verification code locked due to exceeding 5 attempts. Please request a new code.",
+  "resetTokenExpiredError": "Password reset session has expired (5 minutes). Please start over.",
+  "resendRateLimitError": "Please wait for the cooldown timer before requesting a new code.",
+  "noCreditorBankInfoTitle": "No Payment Information",
+  "noCreditorBankInfoMessage": "Creditor {creditor} has not updated bank account information. Please contact the creditor for payment details.",
+  "@noCreditorBankInfoMessage": {
+    "placeholders": {
+      "creditor": {
+        "type": "String"
+      }
+    }
+  },
+  "paymentAmountLabel": "Payment Amount",
+  "transferContentLabel": "Transfer Memo",
+  "copiedTransferContent": "Copied transfer memo",
+  "iHavePaidAction": "I Have Transferred",
+  "groupAnalyticsFallbackTitle": "Group #{id} Analytics",
+  "@groupAnalyticsFallbackTitle": {
+    "placeholders": {
+      "id": {
+        "type": "int"
+      }
+    }
+  },
+  "groupAnalyticsDetailsTitle": "Group Analytics",
+  "groupAnalyticsDefaultSubtitle": "Detailed spending report",
+  "expenseDetailModalTitle": "Expense Details",
+  "viewGroupAnalyticsAction": "View Group Analytics",
+  "clearSearchAction": "Clear Search",
+  "expenseCategoryLabel": "Category",
+  "expenseDateLabel": "Date & Time",
+  "expenseGroupLabel": "Group",
+  "loadingBanksMessage": "Loading bank list...",
+  "clearBankPrompt": "Clear bank selection",
+  "imagePickerGenericError": "Could not select image. Please try again.",
+  "updateProfileGenericError": "Failed to update profile. Please try again later.",
+  "otpResentSuccessMessage": "A new verification code has been sent to your email.",
+  "editExpenseTitle": "Edit Expense",
+  "expenseReceivingGroupCaps": "EXPENSE RECEIVING GROUP",
+  "changeGroupAction": "Change Group",
+  "selectReceivingGroupTitle": "Select Receiving Group",
+  "noGroupsAvailable": "No groups available.",
+  "maxImageSize10Mb": "Maximum image size is 10MB",
+  "receiptLowConfidenceWarning": "Image is blurry or unreadable. Image saved; please manually enter amount and title.",
+  "receiptScanSuccess": "Receipt scanned successfully! Information pre-filled.",
+  "pickImageError": "Error selecting image: {error}",
+  "@pickImageError": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "expenseReceiptDefaultTitle": "Expense Receipt",
+  "expenseAmountVndCaps": "EXPENSE AMOUNT (VND)",
+  "expenseTitleCaps": "EXPENSE TITLE",
+  "expenseTitleHint": "Enter expense title",
+  "expenseNotesCaps": "NOTES",
+  "optionalLabel": "Optional",
+  "expenseNotesHint": "Enter additional notes (optional)...",
+  "expenseCategorySectionCaps": "EXPENSE CATEGORY",
+  "expensePayerSectionCaps": "PAID BY (SINGLE PAYER)",
+  "youPayerSuffix": " (You)",
+  "noMembersInGroup": "No members in this group.",
+  "expenseSplitSectionCaps": "EXPENSE SPLIT BREAKDOWN",
+  "noMembersToSplit": "No group members to split expenses.",
+  "cancelAction": "Cancel",
+  "saveNewExpenseAction": "Save New Expense",
+  "aiReceiptScannerCaps": "AI RECEIPT SCANNER",
+  "aiScanningReceipt": "AI is analyzing receipt...",
+  "aiScanningReceiptDesc": "Analyzing total amount, notes, category...",
+  "capturePhotoAction": "Take Photo",
+  "uploadPhotoAction": "Upload Photo",
+  "uploadReceiptHelper": "Upload or take a receipt photo to quickly log details",
+  "receiptScannedAndAttached": "Receipt scanned & attached",
+  "blurryReceiptWarning": "Blurry image - Please verify information",
+  "receiptAutofilledNotice": "Information was automatically filled into form",
+  "removeReceiptTooltip": "Remove receipt",
+  "viewPhotoAction": "View Photo",
+  "retakePhotoAction": "Retake",
+  "changePhotoAction": "Change Photo",
+  "splitEquallyAllMembers": "Split equally among all members ({count} people)",
+  "@splitEquallyAllMembers": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "splitEquallyAllSubtitle": "All group members will split the amount equally",
+  "splitCustomSelectedSubtitle": "Customizing members to split the cost",
+  "chooseSplitParticipantsTitle": "Select participants to split:",
+  "selectedParticipantsCount": "Selected {selectedCount}/{totalCount} people • {amount} / person",
+  "@selectedParticipantsCount": {
+    "placeholders": {
+      "selectedCount": {
+        "type": "int"
+      },
+      "totalCount": {
+        "type": "int"
+      },
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "selectAllAction": "All",
+  "payerBadge": "Payer",
+  "cannotLoadReceiptImage": "Unable to load receipt image",
+  "categoryFood": "Food & Dining",
+  "categoryTransport": "Transportation",
+  "categoryShopping": "Shopping",
+  "categoryHousing": "Housing & Utilities",
+  "categoryEntertainment": "Entertainment",
+  "categoryGroceries": "Groceries",
+  "categoryHealthcare": "Healthcare",
+  "categoryOthers": "Others",
+  "expandNoteAction": "Expand",
+  "expenseNoteEditorTitle": "Expense Note Details",
+  "clearNoteAction": "Clear notes",
+  "doneAction": "Done",
+  "viewAllNotesHint": "View all ({lines} lines)...",
+  "@viewAllNotesHint": {
+    "placeholders": {
+      "lines": {
+        "type": "int"
+      }
+    }
+  },
+  "groupCategoryApartment": "Apartment & Housing",
+  "groupCategorySport": "Sports & Clubs",
+  "groupCategoryTravel": "Travel & Trips",
+  "groupCategoryDining": "Friends & Dining",
+  "groupCategoryWork": "Work & Projects",
+  "groupCategoryOther": "Other",
+  "groupCategoryApartmentShort": "Apartment",
+  "groupCategorySportShort": "Sports",
+  "groupCategoryTravelShort": "Travel",
+  "groupCategoryDiningShort": "Dining",
+  "groupCategoryWorkShort": "Work",
+  "groupCategoryOtherShort": "Other",
+  "filterPaidByMe": "Paid by me",
+  "filterPendingSettlement": "Pending settlement",
+  "filterAllTopicsCount": "All categories ({count})",
+  "@filterAllTopicsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "groupStatusActive": "Active",
+  "groupStatusArchived": "Archived",
+  "unmuteNotifications": "Turn on notifications",
+  "muteNotifications": "Turn off notifications",
+  "showBalanceTooltip": "Show balance",
+  "hideBalanceTooltip": "Hide balance",
+  "totalGroupExpensesTitle": "TOTAL GROUP EXPENSES",
+  "incurredInvoicesCount": "{count} invoices recorded",
+  "@incurredInvoicesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "searchExpenseByNamePlaceholder": "Search expenses by name...",
+  "createFirstExpenseHint": "Tap the button below to create the first expense for the group.",
+  "addNewExpenseAction": "Add new expense",
+  "youHavePaidBadge": "You have paid",
+  "youOweAmountPrefix": "You owe: {amount}",
+  "@youOweAmountPrefix": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  }
+}

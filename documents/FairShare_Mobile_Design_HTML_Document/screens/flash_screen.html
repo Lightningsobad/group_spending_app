@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Màn hình Flash Screen - FairShare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: #f8fafc;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      color: #34d399;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .download-btn:hover {
+      background: #334155;
+      color: #fff;
+    }
+
+    /* iPhone Frame Chassis */
+    .phone-chassis {
+      width: 393px;
+      height: 852px;
+      max-width: 100%;
+      max-height: calc(100vh - 80px);
+      background: #000000;
+      border-radius: 52px;
+      padding: 12px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.15);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    /* Dynamic Island */
+    .dynamic-island {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 124px;
+      height: 32px;
+      background: #000000;
+      border-radius: 20px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 12px;
+      pointer-events: none;
+    }
+
+    .camera-lens {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #1c1c1e;
+      border: 1px solid #2c2c2e;
+    }
+
+    /* Screen Glass Inside */
+    .screen-glass {
+      width: 100%;
+      height: 100%;
+      border-radius: 42px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      /* Signature Luxury Emerald Background */
+      background: linear-gradient(180deg, #064E3B 0%, #043F30 50%, #022C22 100%);
+      color: #ffffff;
+      user-select: none;
+    }
+
+    /* Ambient Center Radial Glow */
+    .glow {
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(52, 211, 153, 0.35) 0%, rgba(6, 78, 59, 0) 70%);
+      pointer-events: none;
+      filter: blur(28px);
+      z-index: 0;
+    }
+
+    /* Center Content Container */
+    .content {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 32px;
+      margin: auto 0;
+    }
+
+    /* Wallet Logo - Matching Auth Screen */
+    .logo-container {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .logo-squircle {
+      width: 96px;
+      height: 96px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, #059669 0%, #10b981 50%, #14b8a6 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 20px 35px rgba(2, 44, 34, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+      outline: 8px solid rgba(52, 211, 153, 0.22);
+      transition: transform 0.3s ease;
+    }
+
+    .logo-squircle:hover {
+      transform: scale(1.04);
+    }
+
+    .logo-icon {
+      width: 48px;
+      height: 48px;
+      stroke: #ffffff;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+    }
+
+    /* App Name */
+    .app-title {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: #ffffff;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Keep ONLY this line as requested */
+    .app-subtext {
+      font-size: 13px;
+      font-weight: 500;
+      color: #d1fae5;
+      max-width: 260px;
+      line-height: 1.5;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Minimal Bottom Loading Bar */
+    .bottom-loader {
+      position: relative;
+      z-index: 10;
+      width: 140px;
+      height: 4px;
+      border-radius: 9999px;
+      background: rgba(6, 78, 59, 0.85);
+      border: 1px solid rgba(52, 211, 153, 0.2);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 9999px;
+      background: linear-gradient(90deg, #34d399 0%, #5eead4 100%);
+      animation: loadProgress 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes loadProgress {
+      0% { width: 0%; }
+      40% { width: 55%; }
+      75% { width: 85%; }
+      100% { width: 100%; }
+    }
+
+    /* iOS Home Indicator */
+    .home-indicator {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 134px;
+      height: 5px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.4);
+      z-index: 50;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <div class="badge">⚡ Flash Screen (Màn hình Khởi động)</div>
+    <button class="download-btn" onclick="window.print()">In / Lưu PDF</button>
+  </div>
+
+  <div class="phone-chassis">
+    <!-- Dynamic Island -->
+    <div class="dynamic-island">
+      <div class="camera-lens"></div>
+    </div>
+
+    <!-- Screen Glass -->
+    <div class="screen-glass">
+      <!-- Glow effect -->
+      <div class="glow"></div>
+
+      <!-- Center Logo & Branding -->
+      <div class="content">
+        <div class="logo-container">
+          <div class="logo-squircle">
+            <!-- Wallet Icon identical to Auth/Register screen -->
+            <svg class="logo-icon" viewBox="0 0 24 24">
+              <path d="M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1"></path>
+              <path d="M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4"></path>
+            </svg>
+          </div>
+        </div>
+
+        <h1 class="app-title">FairShare</h1>
+
+        <!-- Dòng duy nhất được giữ lại theo yêu cầu -->
+        <p class="app-subtext">Chia tiền minh bạch &amp; nhắc nợ thông minh</p>
+      </div>
+
+      <!-- Tinh giản: Thanh loading tối giản ở cạnh đáy -->
+      <div class="bottom-loader">
+        <div class="progress-fill"></div>
+      </div>
+
+      <!-- Home Indicator -->
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+</body>
+</html>

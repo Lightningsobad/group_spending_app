@@ -1,0 +1,482 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
+import '../../../../core/constants/app_colors.dart';
+import '../../../../core/theme/app_text_style.dart';
+import '../../../../l10n/l10n.dart';
+import '../../../../shared/widgets/app_shimmer.dart';
+import '../../../../shared/widgets/app_snack_bar.dart';
+import '../../../groups/data/models/group_model.dart';
+import '../cubit/funds_cubit.dart';
+import '../cubit/funds_state.dart';
+import 'fund_card_widget.dart';
+import 'fund_filter_bar.dart';
+import 'fund_overview_card.dart';
+
+class GroupFundsTabView extends StatefulWidget {
+  final GroupModel group;
+  final VoidCallback? onCreateFund;
+
+  const GroupFundsTabView({
+    super.key,
+    required this.group,
+    this.onCreateFund,
+  });
+
+  @override
+  State<GroupFundsTabView> createState() => _GroupFundsTabViewState();
+}
+
+class _GroupFundsTabViewState extends State<GroupFundsTabView> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    final cubit = context.read<FundsCubit>();
+    if (cubit.state.currentGroupId != widget.group.id) {
+      cubit.loadGroupFunds(widget.group.id);
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          context.read<FundsCubit>().loadGroupFunds(widget.group.id, silent: true);
+        }
+      });
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant GroupFundsTabView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.group.id != widget.group.id) {
+      _searchController.clear();
+      context.read<FundsCubit>().loadGroupFunds(widget.group.id);
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _openCreateFund() async {
+    if (widget.group.isArchived) return;
+    if (widget.onCreateFund != null) {
+      widget.onCreateFund!();
+    } else {
+      final result = await context.push(
+        '/groups/${widget.group.id}/funds/create',
+        extra: widget.group,
+      );
+      if (result == true && mounted) {
+        context.read<FundsCubit>().loadGroupFunds(widget.group.id);
+      }
+    }
+  }
+
+  Future<void> _openFundDetails(int fundId) async {
+    await context.push(
+      '/groups/${widget.group.id}/funds/$fundId',
+      extra: widget.group,
+    );
+    if (mounted) {
+      context.read<FundsCubit>().loadGroupFunds(widget.group.id);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final tr = context.l10n;
+
+    return BlocConsumer<FundsCubit, FundsState>(
+      listenWhen: (prev, curr) =>
+          curr.status == FundsStatus.failure &&
+          curr.errorMessage != null &&
+          curr.overview != null &&
+          curr.errorMessage != prev.errorMessage,
+      listener: (context, state) {
+        if (state.errorMessage != null) {
+          AppSnackBar.showError(context, state.errorMessage!);
+        }
+      },
+      builder: (context, state) {
+        final isDifferentGroup = state.currentGroupId != widget.group.id;
+        final hasError = state.status == FundsStatus.failure;
+        final overview = isDifferentGroup ? null : state.overview;
+        final filteredFunds = isDifferentGroup ? const [] : state.filteredFunds;
+        final isInitialError = hasError && overview == null && !isDifferentGroup;
+        final isLoading = (state.isLoading || isDifferentGroup || (overview == null)) && !isInitialError;
+
+        return SafeArea(
+          top: false,
+          bottom: true,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // 1. Overview Card ("TỔNG TIỀN QUỸ CHUNG")
+              FundOverviewCard(
+                overview: overview,
+                isAdmin: widget.group.isAdmin && !widget.group.isArchived,
+                onNewFundTap: _openCreateFund,
+                isLoading: isLoading,
+              ),
+              const SizedBox(height: 14),
+
+              // 2. Search Bar
+              if (isLoading)
+                _buildSearchSkeleton(colors)
+              else if (!isInitialError) ...[
+                _buildSearchBar(colors, tr),
+                const SizedBox(height: 14),
+              ],
+
+              // 3. Filter Bar (Status & Time)
+              if (isLoading)
+                _buildFilterSkeleton(colors)
+              else if (!isInitialError) ...[
+                FundFilterBar(
+                  selectedStatus: state.selectedStatusFilter,
+                  selectedTime: state.selectedTimeFilter,
+                  totalCount: state.totalFundsCount,
+                  collectingCount: state.collectingCount,
+                  completedCount: state.completedCount,
+                  filteredCount: filteredFunds.length,
+                  onStatusChanged: (status) =>
+                      context.read<FundsCubit>().setStatusFilter(status),
+                  onTimeChanged: (time) =>
+                      context.read<FundsCubit>().setTimeFilter(time),
+                ),
+                const SizedBox(height: 16),
+              ],
+
+              // 4. Fund Collection Items List
+              if (isInitialError) ...[
+                _buildErrorState(colors, tr, state.errorMessage),
+              ] else if (isLoading) ...[
+                _buildShimmerList(colors),
+              ] else if (filteredFunds.isEmpty) ...[
+                _buildEmptyState(colors, tr),
+              ] else ...[
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: filteredFunds.length,
+                  separatorBuilder: (_, _) => const SizedBox(height: 10),
+                  itemBuilder: (ctx, index) {
+                    final fund = filteredFunds[index];
+                    return FundCardWidget(
+                      fund: fund,
+                      onTap: () => _openFundDetails(fund.id),
+                    );
+                  },
+                ),
+              ],
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildErrorState(dynamic colors, dynamic tr, String? errorMessage) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 20),
+      decoration: BoxDecoration(
+        color: colors.cardBackground,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: colors.cardBorder),
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: colors.errorSurface,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              LucideIcons.alertCircle,
+              size: 36,
+              color: colors.errorAccent,
+            ),
+          ),
+          const SizedBox(height: 14),
+          Text(
+            errorMessage ?? 'Không thể tải danh sách quỹ nhóm',
+            style: AppTextStyle.bold(
+              fontSize: 16,
+              color: colors.textPrimary,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton.icon(
+            onPressed: () => context.read<FundsCubit>().loadGroupFunds(widget.group.id),
+            icon: const Icon(LucideIcons.refreshCw, size: 16),
+            label: const Text('Thử lại'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: colors.primaryButton,
+              foregroundColor: colors.onPrimaryButton,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSearchBar(dynamic colors, dynamic tr) {
+    return Container(
+      constraints: const BoxConstraints(minHeight: 48),
+      decoration: BoxDecoration(
+        color: colors.cardBackground,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: colors.cardBorder),
+      ),
+      child: TextField(
+        controller: _searchController,
+        onChanged: (val) => context.read<FundsCubit>().setSearchQuery(val),
+        style: AppTextStyle.medium(fontSize: 14, color: colors.textPrimary),
+        decoration: InputDecoration(
+          hintText: tr.searchFundPlaceholder,
+          hintStyle: AppTextStyle.regular(fontSize: 14, color: colors.textMuted),
+          prefixIcon: Icon(LucideIcons.search, size: 18, color: colors.textMuted),
+          suffixIcon: _searchController.text.isNotEmpty
+              ? IconButton(
+                  icon: Icon(LucideIcons.x, size: 16, color: colors.textMuted),
+                  constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+                  padding: const EdgeInsets.all(12),
+                  onPressed: () {
+                    _searchController.clear();
+                    context.read<FundsCubit>().setSearchQuery('');
+                  },
+                )
+              : null,
+          border: InputBorder.none,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSearchSkeleton(dynamic colors) {
+    return Container(
+      height: 48,
+      padding: const EdgeInsets.symmetric(horizontal: 14),
+      decoration: BoxDecoration(
+        color: colors.cardBackground,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: colors.cardBorder),
+      ),
+      child: AppShimmer(
+        child: Row(
+          children: [
+            Container(
+              width: 18,
+              height: 18,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Container(
+              width: 140,
+              height: 14,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFilterSkeleton(dynamic colors) {
+    return AppShimmer(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                width: 80,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                width: 100,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                width: 90,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Container(
+                width: 70,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                width: 90,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Container(
+                width: 85,
+                height: 36,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyState(dynamic colors, dynamic tr) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 36, horizontal: 20),
+      decoration: BoxDecoration(
+        color: colors.cardBackground,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: colors.cardBorder),
+      ),
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: colors.fundPiggyBg,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              LucideIcons.piggyBank,
+              size: 36,
+              color: colors.fundPiggyIcon,
+            ),
+          ),
+          const SizedBox(height: 14),
+          Text(
+            tr.fundEmptyList,
+            style: AppTextStyle.bold(
+              fontSize: 16,
+              color: colors.textPrimary,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 6),
+          Text(
+            tr.fundEmptySubtitle,
+            style: AppTextStyle.regular(
+              fontSize: 13,
+              color: colors.textSecondary,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildShimmerList(dynamic colors) {
+    return Column(
+      children: List.generate(3, (index) {
+        return Container(
+          margin: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+          decoration: BoxDecoration(
+            color: colors.cardBackground,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(color: colors.cardBorder),
+          ),
+          child: AppShimmer(
+            child: Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 140,
+                        height: 15,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Container(
+                        width: 100,
+                        height: 13,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Container(
+                  width: 60,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      }),
+    );
+  }
+}
