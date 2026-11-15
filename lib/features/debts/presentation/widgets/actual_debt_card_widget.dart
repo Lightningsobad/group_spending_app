@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
 import '../../../../core/theme/app_theme_colors.dart';
@@ -18,6 +17,7 @@ class ActualDebtCardWidget extends StatelessWidget {
   final void Function(ActualDebtorEntity debtor)? onDebtorRemind;
   final void Function(ActualDebtorEntity debtor)? onDebtorTap;
   final bool isSubmitting;
+  final EdgeInsetsGeometry margin;
 
   const ActualDebtCardWidget({
     super.key,
@@ -27,23 +27,8 @@ class ActualDebtCardWidget extends StatelessWidget {
     this.onDebtorRemind,
     this.onDebtorTap,
     this.isSubmitting = false,
+    this.margin = const EdgeInsets.only(bottom: 14),
   });
-
-  String _formatExpenseDateTime(String? expenseDate, String? createdAt) {
-    if (createdAt != null && createdAt.isNotEmpty) {
-      try {
-        final dt = DateTime.parse(createdAt);
-        return DateFormat('dd/MM/yyyy - HH:mm').format(dt);
-      } catch (_) {}
-    }
-    if (expenseDate != null && expenseDate.isNotEmpty) {
-      try {
-        final dt = DateTime.parse(expenseDate);
-        return DateFormat('dd/MM/yyyy').format(dt);
-      } catch (_) {}
-    }
-    return '---';
-  }
 
   String _formatCompactAmount(num amount, num amountVnd) {
     if (amount > 0) {
@@ -258,7 +243,7 @@ class ActualDebtCardWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Số tiền nợ:',
+                        tr.debtAmountLabel,
                         style: AppTextStyle.medium(
                           fontSize: AppFontSize.caption,
                           color: colors.textSecondary,
@@ -279,7 +264,7 @@ class ActualDebtCardWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Người nhận (Chủ nợ):',
+                      tr.debtCreditorLabel,
                       style: AppTextStyle.regular(
                         fontSize: AppFontSize.caption,
                         color: colors.textSecondary,
@@ -309,15 +294,13 @@ class ActualDebtCardWidget extends StatelessWidget {
     final tr = context.l10n;
     final colors = context.colors;
 
-    final formattedDate =
-        _formatExpenseDateTime(debt.expenseDate, debt.createdAt);
     final category =
         debt.categoryName.isNotEmpty ? debt.categoryName : 'Ăn uống';
     final debtorCount =
         debt.debtorCount > 0 ? debt.debtorCount : debt.debtors.length;
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 14),
+      margin: margin,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: colors.cardBackground,
@@ -334,43 +317,35 @@ class ActualDebtCardWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // 1. Top row: Category tag + Date/Time (Left) | "TỔNG CHI" + Amount (Right)
+          // 1. Top row: Category tag (Left) | "TỔNG CHI" + Amount (Right)
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Left: Category chip & date
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: colors.debtReceiveBg,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: colors.debtReceiveBorder),
-                    ),
-                    child: Text(
-                      category,
-                      style: AppTextStyle.bold(
-                        fontSize: AppFontSize.caption,
-                        color: colors.debtReceiveText,
-                      ),
-                    ),
+              // Left: Category chip
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
                   ),
-                  const SizedBox(width: 8),
-                  Text(
-                    formattedDate,
-                    style: AppTextStyle.regular(
+                  decoration: BoxDecoration(
+                    color: colors.debtReceiveBg,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: colors.debtReceiveBorder),
+                  ),
+                  child: Text(
+                    category,
+                    style: AppTextStyle.bold(
                       fontSize: AppFontSize.caption,
-                      color: colors.textSecondary,
+                      color: colors.debtReceiveText,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ],
+                ),
               ),
+              const SizedBox(width: 8),
 
               // Right: TỔNG CHI and amount
               Column(
@@ -383,6 +358,8 @@ class ActualDebtCardWidget extends StatelessWidget {
                       color: colors.textSecondary,
                       letterSpacing: 0.5,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 2),
                   FittedBox(
@@ -443,14 +420,19 @@ class ActualDebtCardWidget extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                tr.allocationByMember,
-                style: AppTextStyle.semiBold(
-                  fontSize: AppFontSize.caption,
-                  color: colors.textSecondary,
-                  letterSpacing: 0.3,
+              Flexible(
+                child: Text(
+                  tr.allocationByMember,
+                  style: AppTextStyle.semiBold(
+                    fontSize: AppFontSize.caption,
+                    color: colors.textSecondary,
+                    letterSpacing: 0.3,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
+              const SizedBox(width: 8),
               Text(
                 tr.debtorCountLabel(debtorCount),
                 style: AppTextStyle.regular(

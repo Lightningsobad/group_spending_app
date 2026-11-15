@@ -876,6 +876,42 @@ class AppLocalizationsVi extends AppLocalizations {
       'Chi tiết các khoản nợ phát sinh theo từng hóa đơn và mục chi tiêu.';
 
   @override
+  String get timelineToday => 'Hôm nay';
+
+  @override
+  String get timelineYesterday => 'Hôm qua';
+
+  @override
+  String get timelineOtherDate => 'Khác';
+
+  @override
+  String timelineBillsCount(int count) {
+    return '$count hóa đơn';
+  }
+
+  @override
+  String timelineDailyTotal(String amount) {
+    return 'Tổng: $amount';
+  }
+
+  @override
+  String timelineSettledProgress(int settled, int total) {
+    return '$settled/$total đã trả';
+  }
+
+  @override
+  String get timelineAllSettledBadge => 'Đã xong';
+
+  @override
+  String get timelineWaitingConfirmationBadge => 'Chờ xác nhận';
+
+  @override
+  String get debtAmountLabel => 'Số tiền nợ:';
+
+  @override
+  String get debtCreditorLabel => 'Người nhận (Chủ nợ):';
+
+  @override
   String debtsToHandleCount(int count) {
     return '$count KHOẢN NỢ';
   }

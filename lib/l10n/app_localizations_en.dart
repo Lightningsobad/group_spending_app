@@ -879,6 +879,42 @@ class AppLocalizationsEn extends AppLocalizations {
       'Detailed debts arising from each bill and spending item.';
 
   @override
+  String get timelineToday => 'Today';
+
+  @override
+  String get timelineYesterday => 'Yesterday';
+
+  @override
+  String get timelineOtherDate => 'Other';
+
+  @override
+  String timelineBillsCount(int count) {
+    return '$count bills';
+  }
+
+  @override
+  String timelineDailyTotal(String amount) {
+    return 'Total: $amount';
+  }
+
+  @override
+  String timelineSettledProgress(int settled, int total) {
+    return '$settled/$total settled';
+  }
+
+  @override
+  String get timelineAllSettledBadge => 'Settled';
+
+  @override
+  String get timelineWaitingConfirmationBadge => 'Waiting confirmation';
+
+  @override
+  String get debtAmountLabel => 'Debt amount:';
+
+  @override
+  String get debtCreditorLabel => 'Recipient (Creditor):';
+
+  @override
   String debtsToHandleCount(int count) {
     return '$count DEBTS';
   }
