@@ -1676,6 +1676,66 @@ abstract class AppLocalizations {
   /// **'Chi tiết các khoản nợ phát sinh theo từng hóa đơn và mục chi tiêu.'**
   String get actualDebtsBanner;
 
+  /// No description provided for @timelineToday.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm nay'**
+  String get timelineToday;
+
+  /// No description provided for @timelineYesterday.
+  ///
+  /// In vi, this message translates to:
+  /// **'Hôm qua'**
+  String get timelineYesterday;
+
+  /// No description provided for @timelineOtherDate.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khác'**
+  String get timelineOtherDate;
+
+  /// No description provided for @timelineBillsCount.
+  ///
+  /// In vi, this message translates to:
+  /// **'{count} hóa đơn'**
+  String timelineBillsCount(int count);
+
+  /// No description provided for @timelineDailyTotal.
+  ///
+  /// In vi, this message translates to:
+  /// **'Tổng: {amount}'**
+  String timelineDailyTotal(String amount);
+
+  /// No description provided for @timelineSettledProgress.
+  ///
+  /// In vi, this message translates to:
+  /// **'{settled}/{total} đã trả'**
+  String timelineSettledProgress(int settled, int total);
+
+  /// No description provided for @timelineAllSettledBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Đã xong'**
+  String get timelineAllSettledBadge;
+
+  /// No description provided for @timelineWaitingConfirmationBadge.
+  ///
+  /// In vi, this message translates to:
+  /// **'Chờ xác nhận'**
+  String get timelineWaitingConfirmationBadge;
+
+  /// No description provided for @debtAmountLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Số tiền nợ:'**
+  String get debtAmountLabel;
+
+  /// No description provided for @debtCreditorLabel.
+  ///
+  /// In vi, this message translates to:
+  /// **'Người nhận (Chủ nợ):'**
+  String get debtCreditorLabel;
+
   /// No description provided for @debtsToHandleCount.
   ///
   /// In vi, this message translates to:

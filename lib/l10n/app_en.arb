@@ -413,6 +413,40 @@
   "actualDebtsTab": "Actual Debts",
   "simplifiedDebtsBanner": "Optimize cash flow transactions for fastest settlement.",
   "actualDebtsBanner": "Detailed debts arising from each bill and spending item.",
+  "timelineToday": "Today",
+  "timelineYesterday": "Yesterday",
+  "timelineOtherDate": "Other",
+  "timelineBillsCount": "{count} bills",
+  "@timelineBillsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timelineDailyTotal": "Total: {amount}",
+  "@timelineDailyTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "timelineSettledProgress": "{settled}/{total} settled",
+  "@timelineSettledProgress": {
+    "placeholders": {
+      "settled": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "timelineAllSettledBadge": "Settled",
+  "timelineWaitingConfirmationBadge": "Waiting confirmation",
+  "debtAmountLabel": "Debt amount:",
+  "debtCreditorLabel": "Recipient (Creditor):",
   "debtsToHandleCount": "{count} DEBTS",
   "@debtsToHandleCount": {
     "placeholders": {

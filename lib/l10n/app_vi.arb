@@ -413,6 +413,40 @@
   "actualDebtsTab": "Nợ thực tế",
   "simplifiedDebtsBanner": "Tối ưu hóa số lượng giao dịch gộp thông minh để thanh toán nhanh gọn nhất.",
   "actualDebtsBanner": "Chi tiết các khoản nợ phát sinh theo từng hóa đơn và mục chi tiêu.",
+  "timelineToday": "Hôm nay",
+  "timelineYesterday": "Hôm qua",
+  "timelineOtherDate": "Khác",
+  "timelineBillsCount": "{count} hóa đơn",
+  "@timelineBillsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timelineDailyTotal": "Tổng: {amount}",
+  "@timelineDailyTotal": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "timelineSettledProgress": "{settled}/{total} đã trả",
+  "@timelineSettledProgress": {
+    "placeholders": {
+      "settled": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "timelineAllSettledBadge": "Đã xong",
+  "timelineWaitingConfirmationBadge": "Chờ xác nhận",
+  "debtAmountLabel": "Số tiền nợ:",
+  "debtCreditorLabel": "Người nhận (Chủ nợ):",
   "debtsToHandleCount": "{count} KHOẢN NỢ",
   "@debtsToHandleCount": {
     "placeholders": {

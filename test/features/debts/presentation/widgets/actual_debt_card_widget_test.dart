@@ -77,9 +77,9 @@ void main() {
       await tester.pumpWidget(createWidgetUnderTest());
       await tester.pumpAndSettle();
 
-      // Category chip & Date
+      // Category chip (date/time is removed from card in timeline design)
       expect(find.text('Ăn uống'), findsOneWidget);
-      expect(find.text('10/09/2026 - 19:30'), findsOneWidget);
+      expect(find.text('10/09/2026 - 19:30'), findsNothing);
 
       // Total expense
       expect(find.text('TỔNG CHI'), findsOneWidget);
