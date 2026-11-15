@@ -61,31 +61,37 @@ class _FinancialBalanceCardState extends State<FinancialBalanceCard> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: colors.financialCardIconBg,
-                      borderRadius: BorderRadius.circular(12),
+              Expanded(
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: colors.financialCardIconBg,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        LucideIcons.wallet,
+                        size: 18,
+                        color: colors.financialCardIcon,
+                      ),
                     ),
-                    child: Icon(
-                      LucideIcons.wallet,
-                      size: 18,
-                      color: colors.financialCardIcon,
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        tr.financialOverviewTitle,
+                        style: AppTextStyle.bold(
+                          fontSize: 12,
+                          color: colors.financialCardTitle,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    tr.financialOverviewTitle,
-                    style: AppTextStyle.bold(
-                      fontSize: 12,
-                      color: colors.financialCardTitle,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+              const SizedBox(width: 8),
               IconButton(
                 icon: Icon(
                   _isBalanceHidden ? LucideIcons.eyeOff : LucideIcons.eye,
