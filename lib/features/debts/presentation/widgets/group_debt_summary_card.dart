@@ -118,13 +118,18 @@ class GroupDebtSummaryCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                tr.yourBalanceInGroup,
-                style: AppTextStyle.medium(
-                  fontSize: AppFontSize.caption,
-                  color: colors.textSecondary,
+              Flexible(
+                child: Text(
+                  tr.yourBalanceInGroup,
+                  style: AppTextStyle.medium(
+                    fontSize: AppFontSize.caption,
+                    color: colors.textSecondary,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
+              const SizedBox(width: 8),
               Flexible(
                 child: FittedBox(
                   fit: BoxFit.scaleDown,

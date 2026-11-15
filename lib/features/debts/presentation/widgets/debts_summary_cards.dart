@@ -46,11 +46,15 @@ class DebtsSummaryCards extends StatelessWidget {
                       color: colors.debtOweText,
                     ),
                     const SizedBox(width: 6),
-                    Text(
-                      tr.debtsYouOwe,
-                      style: AppTextStyle.bold(
-                        fontSize: AppFontSize.caption,
-                        color: colors.debtOweText,
+                    Expanded(
+                      child: Text(
+                        tr.debtsYouOwe,
+                        style: AppTextStyle.bold(
+                          fontSize: AppFontSize.caption,
+                          color: colors.debtOweText,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
@@ -114,11 +118,15 @@ class DebtsSummaryCards extends StatelessWidget {
                       color: colors.debtReceiveText,
                     ),
                     const SizedBox(width: 6),
-                    Text(
-                      tr.debtsYouReceive,
-                      style: AppTextStyle.bold(
-                        fontSize: AppFontSize.caption,
-                        color: colors.debtReceiveText,
+                    Expanded(
+                      child: Text(
+                        tr.debtsYouReceive,
+                        style: AppTextStyle.bold(
+                          fontSize: AppFontSize.caption,
+                          color: colors.debtReceiveText,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],

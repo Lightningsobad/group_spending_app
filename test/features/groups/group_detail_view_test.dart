@@ -136,6 +136,7 @@ void main() {
       GroupModel group = testGroup,
       VoidCallback? onBack,
       VoidCallback? onNavigateToDebts,
+      Locale locale = const Locale('vi'),
     }) {
       return RepositoryProvider<FundsRepository>.value(
         value: fundsRepo,
@@ -147,7 +148,7 @@ void main() {
           ],
           child: MaterialApp(
             theme: AppTheme.lightTheme,
-            locale: const Locale('vi'),
+            locale: locale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             home: Scaffold(
@@ -161,6 +162,18 @@ void main() {
         ),
       );
     }
+
+    testWidgets('renders in English on 360dp phone without RenderFlex overflow', (tester) async {
+      tester.view.physicalSize = const Size(720, 1280);
+      tester.view.devicePixelRatio = 2.0;
+      addTearDown(() => tester.view.reset());
+
+      await tester.pumpWidget(createWidgetUnderTest(locale: const Locale('en')));
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      expect(find.text('GROUP FINANCIAL OVERVIEW'), findsOneWidget);
+    });
 
     testWidgets('renders header, tabs, group info, financial overview and quick actions', (tester) async {
       await tester.pumpWidget(createWidgetUnderTest());
