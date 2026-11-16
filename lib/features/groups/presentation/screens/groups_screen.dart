@@ -45,6 +45,7 @@ class GroupsScreenState extends State<GroupsScreen> {
   GroupModel? _selectedGroup;
   int _selectedGroupTab = 0;
   VoidCallback? _onBackFromJoin;
+  VoidCallback? _onBackFromDetail;
 
   bool get isDeepView => _selectedGroup != null || _isJoiningGroup;
 
@@ -110,23 +111,27 @@ class GroupsScreenState extends State<GroupsScreen> {
     widget.onDeepViewChanged?.call(isDeepView);
   }
 
-  void openGroupDetail(GroupModel group, [int tabIndex = 0]) {
+  void openGroupDetail(GroupModel group, [int tabIndex = 0, VoidCallback? onBack]) {
     setState(() {
       _selectedGroup = group;
       _selectedGroupTab = tabIndex;
       _isJoiningGroup = false;
+      _onBackFromDetail = onBack;
     });
     context.read<GroupsCubit>().selectGroup(group);
     _notifyDeepView();
   }
 
-  void closeGroupDetail() {
+  void closeGroupDetail([bool executeBackHandler = true]) {
+    final customBack = executeBackHandler ? _onBackFromDetail : null;
     setState(() {
       _selectedGroup = null;
       _selectedGroupTab = 0;
+      _onBackFromDetail = null;
     });
     context.read<GroupsCubit>().clearSelectedGroup();
     _notifyDeepView();
+    customBack?.call();
   }
 
   void openJoinGroup([VoidCallback? onBack]) {
