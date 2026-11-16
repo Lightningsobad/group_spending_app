@@ -279,5 +279,73 @@ void main() {
       expect(find.text('Danh sách nhóm của bạn'), findsOneWidget);
       expect(find.text('TỔNG QUAN SỐ DƯ TÀI CHÍNH'), findsNothing);
     });
+
+    testWidgets('tapping group card on dashboard navigates to group detail and tapping back returns to dashboard', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Initially on tab 0 (Dashboard / Overview)
+      expect(find.text('TỔNG QUAN SỐ DƯ TÀI CHÍNH'), findsOneWidget);
+
+      // Tap on group card "Chung cư Sunrise Room"
+      final groupCard = find.text('Chung cư Sunrise Room');
+      expect(groupCard, findsOneWidget);
+      await tester.tap(groupCard);
+      await tester.pumpAndSettle();
+
+      // GroupDetailView should be active with back button
+      final backBtn = find.byIcon(LucideIcons.arrowLeft);
+      expect(backBtn, findsAtLeastNWidgets(1));
+
+      // Tap back button
+      await tester.tap(backBtn.first);
+      await tester.pumpAndSettle();
+
+      // Must return to Dashboard (Overview), NOT stay on Groups screen list
+      expect(find.text('TỔNG QUAN SỐ DƯ TÀI CHÍNH'), findsOneWidget);
+      expect(find.text('Danh sách nhóm của bạn'), findsNothing);
+    });
+
+    testWidgets('system back navigation from group detail returns to dashboard when opened from dashboard', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Tap on group card "Chung cư Sunrise Room" from dashboard
+      await tester.tap(find.text('Chung cư Sunrise Room'));
+      await tester.pumpAndSettle();
+
+      // Trigger system back pop
+      final dynamic widgetsAppState = tester.state(find.byType(WidgetsApp));
+      await widgetsAppState.didPopRoute();
+      await tester.pumpAndSettle();
+
+      // Should return to Dashboard
+      expect(find.text('TỔNG QUAN SỐ DƯ TÀI CHÍNH'), findsOneWidget);
+      expect(find.text('Danh sách nhóm của bạn'), findsNothing);
+    });
+
+    testWidgets('tapping group card from groups tab returns to groups list on back, not dashboard', (tester) async {
+      await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpAndSettle();
+
+      // Switch to Groups tab directly
+      await tester.tap(find.text('Nhóm'));
+      await tester.pumpAndSettle();
+      expect(find.text('Danh sách nhóm của bạn'), findsOneWidget);
+
+      // Tap on group card "Chung cư Sunrise Room"
+      await tester.tap(find.text('Chung cư Sunrise Room'));
+      await tester.pumpAndSettle();
+
+      // Tap back button
+      final backBtn = find.byIcon(LucideIcons.arrowLeft);
+      expect(backBtn, findsAtLeastNWidgets(1));
+      await tester.tap(backBtn.first);
+      await tester.pumpAndSettle();
+
+      // Should return to Groups list
+      expect(find.text('Danh sách nhóm của bạn'), findsOneWidget);
+      expect(find.text('TỔNG QUAN SỐ DƯ TÀI CHÍNH'), findsNothing);
+    });
   });
 }
