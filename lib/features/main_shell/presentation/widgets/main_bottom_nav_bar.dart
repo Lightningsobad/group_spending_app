@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/theme/app_text_style.dart';
@@ -27,10 +28,9 @@ class MainBottomNavBar extends StatelessWidget {
       ),
       child: SafeArea(
         top: false,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 6),
+        child: SizedBox(
+          height: 60,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _NavBarItem(
                 icon: LucideIcons.layoutGrid,
@@ -60,7 +60,6 @@ class MainBottomNavBar extends StatelessWidget {
                 icon: LucideIcons.settings,
                 label: tr.tabSettings,
                 isSelected: currentIndex == 4,
-                hasBadgeDot: true,
                 onTap: () => onTap(4),
               ),
             ],
@@ -75,54 +74,49 @@ class _NavBarItem extends StatelessWidget {
   final IconData icon;
   final String label;
   final bool isSelected;
-  final bool hasBadgeDot;
   final VoidCallback onTap;
 
   const _NavBarItem({
     required this.icon,
     required this.label,
     required this.isSelected,
-    this.hasBadgeDot = false,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    final activeColor = AppColors.emeraldForest;
-    final inactiveColor = context.colors.bottomNavInactive;
-
+    final colors = context.colors;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final activeColor = colors.brandEmerald;
+    final inactiveColor = colors.bottomNavInactive;
     final color = isSelected ? activeColor : inactiveColor;
 
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          HapticFeedback.selectionClick();
+          onTap();
+        },
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Icon(icon, size: 22, color: color),
-                if (hasBadgeDot)
-                  Positioned(
-                    top: -2,
-                    right: -4,
-                    child: Container(
-                      width: 7,
-                      height: 7,
-                      decoration: const BoxDecoration(
-                        color: AppColors.badgeDotOrange,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-              ],
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeInOut,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? activeColor.withValues(alpha: isDark ? 0.20 : 0.12)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(icon, size: 22, color: color),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             Text(
               label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: isSelected
                   ? AppTextStyle.bold(fontSize: 11, color: activeColor)
                   : AppTextStyle.medium(fontSize: 11, color: inactiveColor),

@@ -721,30 +721,37 @@ class _GroupDetailViewState extends State<GroupDetailView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: colors.primaryContainer,
-                          borderRadius: BorderRadius.circular(8),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            color: colors.primaryContainer,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Icon(
+                            LucideIcons.wallet,
+                            size: 16,
+                            color: colors.onPrimaryContainer,
+                          ),
                         ),
-                        child: Icon(
-                          LucideIcons.wallet,
-                          size: 16,
-                          color: colors.onPrimaryContainer,
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            tr.groupFinancialOverviewTitle,
+                            style: AppTextStyle.bold(
+                              fontSize: AppFontSize.secondary,
+                              color: colors.textPrimary,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        tr.groupFinancialOverviewTitle,
-                        style: AppTextStyle.bold(
-                          fontSize: AppFontSize.secondary,
-                          color: colors.textPrimary,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                  const SizedBox(width: 8),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(

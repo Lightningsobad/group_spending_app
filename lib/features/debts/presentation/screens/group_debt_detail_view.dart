@@ -14,7 +14,7 @@ import '../../domain/entities/debt_settlement_entity.dart';
 import '../../domain/entities/group_debt_entity.dart';
 import '../cubit/debts_cubit.dart';
 import '../cubit/debts_state.dart';
-import '../widgets/actual_debt_card_widget.dart';
+import '../widgets/actual_debt_timeline_widget.dart';
 import '../widgets/group_debt_card_skeleton.dart';
 import '../widgets/group_debt_detail_skeleton.dart';
 import '../widgets/group_debt_segmented_tab.dart';
@@ -218,7 +218,7 @@ class GroupDebtDetailView extends StatelessWidget {
                       ),
                       const SizedBox(height: 12),
 
-                      // 4. Info Banner Box (chỉ hiện ở tab Nợ tối giản)
+                      // 4. Info Banner Box (tab Nợ tối giản hoặc tab Nợ thực tế)
                       if (activeTab == 0) ...[
                         Container(
                           padding: const EdgeInsets.all(12),
@@ -241,6 +241,38 @@ class GroupDebtDetailView extends StatelessWidget {
                               Expanded(
                                 child: Text(
                                   tr.simplifiedDebtsBanner,
+                                  style: AppTextStyle.medium(
+                                    fontSize: AppFontSize.caption,
+                                    color: colors.debtReceiveText,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                      ] else ...[
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: colors.debtReceiveBg,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(
+                              color: colors.debtReceiveBorder,
+                            ),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                LucideIcons.history,
+                                size: 16,
+                                color: colors.debtReceiveText,
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  tr.actualDebtsBanner,
                                   style: AppTextStyle.medium(
                                     fontSize: AppFontSize.caption,
                                     color: colors.debtReceiveText,
@@ -361,26 +393,24 @@ class GroupDebtDetailView extends StatelessWidget {
                         if (actualList.isEmpty)
                           _buildEmptyDebtView(context, tr, colors)
                         else
-                          ...actualList.map(
-                            (debt) => ActualDebtCardWidget(
-                              debt: debt,
-                              isSubmitting: state.isActionSubmitting,
-                              onDebtorPay: (debtor) {
-                                if (state.isActionSubmitting) return;
-                                cubit.markDebtAsPaid(debtor.splitId);
-                              },
-                              onDebtorConfirm: (debtor, confirmed) {
-                                if (state.isActionSubmitting) return;
-                                cubit.confirmDebtSettled(
-                                  debtor.splitId,
-                                  confirmed: confirmed,
-                                );
-                              },
-                              onDebtorRemind: (debtor) {
-                                if (state.isActionSubmitting) return;
-                                cubit.sendDebtReminder(debtor.splitId);
-                              },
-                            ),
+                          ActualDebtTimelineWidget(
+                            debts: actualList,
+                            isSubmitting: state.isActionSubmitting,
+                            onDebtorPay: (debtor) {
+                              if (state.isActionSubmitting) return;
+                              cubit.markDebtAsPaid(debtor.splitId);
+                            },
+                            onDebtorConfirm: (debtor, confirmed) {
+                              if (state.isActionSubmitting) return;
+                              cubit.confirmDebtSettled(
+                                debtor.splitId,
+                                confirmed: confirmed,
+                              );
+                            },
+                            onDebtorRemind: (debtor) {
+                              if (state.isActionSubmitting) return;
+                              cubit.sendDebtReminder(debtor.splitId);
+                            },
                           ),
                       ],
                     ],

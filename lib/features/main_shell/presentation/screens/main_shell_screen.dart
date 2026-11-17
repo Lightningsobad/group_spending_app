@@ -117,7 +117,17 @@ class _MainShellScreenState extends State<MainShellScreen> {
                 setState(() {
                   _currentIndex = 1;
                 });
-                _groupsKey.currentState?.openGroupDetail(group);
+                _groupsKey.currentState?.openGroupDetail(
+                  group,
+                  0,
+                  () {
+                    if (mounted) {
+                      setState(() {
+                        _currentIndex = 0;
+                      });
+                    }
+                  },
+                );
               },
               onNavigateToSettings: () {
                 setState(() {
@@ -147,7 +157,7 @@ class _MainShellScreenState extends State<MainShellScreen> {
           currentIndex: _currentIndex,
           onTap: (index) {
             if (_currentIndex == index && index == 1) {
-              _groupsKey.currentState?.closeGroupDetail();
+              _groupsKey.currentState?.closeGroupDetail(false);
               _groupsKey.currentState?.closeJoinGroup(false);
             }
             setState(() {
