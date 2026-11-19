@@ -355,5 +355,55 @@ void main() {
       final tabSize = tester.getSize(tabGesture);
       expect(tabSize.height, greaterThanOrEqualTo(48.0));
     });
+
+    testWidgets('archived group: ADMIN sees restore button and can unarchive to ACTIVE in-place', (tester) async {
+      const archivedAdminGroup = GroupModel(
+        id: 3,
+        name: 'Đi phượt Đà Lạt 2024',
+        category: 'Travel & Trip',
+        status: 'ARCHIVED',
+        role: 'ADMIN',
+        ownerId: 1,
+        memberCount: 4,
+      );
+      groupsRepo.groups = [archivedAdminGroup];
+
+      await tester.pumpWidget(createWidgetUnderTest(group: archivedAdminGroup));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Khôi phục nhóm'), findsOneWidget);
+      expect(find.text('Sửa thông tin'), findsNothing);
+      expect(find.text('Lưu trữ nhóm'), findsNothing);
+
+      await tester.ensureVisible(find.text('Khôi phục nhóm'));
+      await tester.tap(find.text('Khôi phục nhóm'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Xác nhận khôi phục nhóm?'), findsOneWidget);
+      await tester.tap(find.text('Khôi phục'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Khôi phục nhóm'), findsNothing);
+      expect(find.text('Sửa thông tin'), findsOneWidget);
+      expect(find.text('Lưu trữ nhóm'), findsOneWidget);
+    });
+
+    testWidgets('archived group: MEMBER does not see restore button', (tester) async {
+      const archivedMemberGroup = GroupModel(
+        id: 4,
+        name: 'Nhóm lưu trữ Member',
+        category: 'Other',
+        status: 'ARCHIVED',
+        role: 'MEMBER',
+        ownerId: 99,
+        memberCount: 3,
+      );
+      groupsRepo.groups = [archivedMemberGroup];
+
+      await tester.pumpWidget(createWidgetUnderTest(group: archivedMemberGroup));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Khôi phục nhóm'), findsNothing);
+    });
   });
 }

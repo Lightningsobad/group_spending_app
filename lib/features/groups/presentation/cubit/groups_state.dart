@@ -4,6 +4,8 @@ import '../widgets/group_category_helper.dart';
 
 enum GroupsStatus { initial, loading, success, failure }
 
+enum GroupsSuccessType { created, updated, archived, unarchived, deleted, joined }
+
 class GroupsState {
   final GroupsStatus status;
   final List<GroupModel> groups;
@@ -14,6 +16,7 @@ class GroupsState {
   final bool isActionLoading;
   final String? errorMessage;
   final String? successMessage;
+  final GroupsSuccessType? successType;
 
   const GroupsState({
     this.status = GroupsStatus.initial,
@@ -25,6 +28,7 @@ class GroupsState {
     this.isActionLoading = false,
     this.errorMessage,
     this.successMessage,
+    this.successType,
   });
 
   bool get isLoading => status == GroupsStatus.loading;
@@ -86,6 +90,7 @@ class GroupsState {
     bool? isActionLoading,
     String? errorMessage,
     String? successMessage,
+    GroupsSuccessType? successType,
     bool clearSelectedGroup = false,
     bool clearMessages = false,
   }) {
@@ -99,6 +104,7 @@ class GroupsState {
       isActionLoading: isActionLoading ?? this.isActionLoading,
       errorMessage: clearMessages ? null : (errorMessage ?? this.errorMessage),
       successMessage: clearMessages ? null : (successMessage ?? this.successMessage),
+      successType: clearMessages ? null : (successType ?? this.successType),
     );
   }
 }

@@ -30,6 +30,7 @@ abstract class GroupsRemoteDataSource {
     String? defaultCurrency,
   });
   Future<void> archiveGroup(int groupId);
+  Future<void> unarchiveGroup(int groupId);
   Future<void> deleteGroup(int groupId);
   Future<void> joinGroup(String inviteCode);
 
@@ -198,6 +199,11 @@ class GroupsRemoteDataSourceImpl implements GroupsRemoteDataSource {
   @override
   Future<void> archiveGroup(int groupId) async {
     await _apiClient.post<Map<String, dynamic>>('/groups/$groupId/archive');
+  }
+
+  @override
+  Future<void> unarchiveGroup(int groupId) async {
+    await _apiClient.post<Map<String, dynamic>>('/groups/$groupId/unarchive');
   }
 
   @override

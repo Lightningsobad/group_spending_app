@@ -70,29 +70,37 @@ class _GroupDetailSheetState extends State<GroupDetailSheet> {
     );
   }
 
-  Future<void> _confirmArchive() async {
+  Future<void> _confirmArchiveStatusChange({required bool archive}) async {
     final tr = context.l10n;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(tr.archiveGroupConfirmTitle),
-        content: Text(tr.archiveGroupConfirmMessage),
+        title: Text(archive ? tr.archiveGroupConfirmTitle : tr.unarchiveGroupConfirmTitle),
+        content: Text(archive ? tr.archiveGroupConfirmMessage : tr.unarchiveGroupConfirmMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
             child: Text(tr.cancel),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.amber[800]),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: archive ? Colors.amber[800] : AppColors.emerald,
+            ),
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(tr.archiveConfirmButton, style: const TextStyle(color: Colors.white)),
+            child: Text(
+              archive ? tr.archiveConfirmButton : tr.unarchiveConfirmButton,
+              style: const TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
     );
 
     if (confirmed == true && mounted) {
-      final success = await context.read<GroupsCubit>().archiveGroup(_group.id);
+      final cubit = context.read<GroupsCubit>();
+      final success = archive
+          ? await cubit.archiveGroup(_group.id)
+          : await cubit.unarchiveGroup(_group.id);
       if (success && mounted) {
         Navigator.of(context).pop();
       }
@@ -530,7 +538,7 @@ class _GroupDetailSheetState extends State<GroupDetailSheet> {
                             ),
                             side: BorderSide(color: Colors.amber.shade400),
                           ),
-                          onPressed: _confirmArchive,
+                          onPressed: () => _confirmArchiveStatusChange(archive: true),
                           icon: Icon(LucideIcons.archive, size: 16, color: Colors.amber.shade800),
                           label: Text(
                             tr.archiveConfirmButton,
@@ -539,6 +547,23 @@ class _GroupDetailSheetState extends State<GroupDetailSheet> {
                         ),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 12),
+                ] else if (_group.isAdmin && _group.isArchived) ...[
+                  OutlinedButton.icon(
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      side: const BorderSide(color: AppColors.emerald),
+                    ),
+                    onPressed: () => _confirmArchiveStatusChange(archive: false),
+                    icon: const Icon(LucideIcons.archiveRestore, size: 16, color: AppColors.emerald),
+                    label: Text(
+                      tr.unarchiveGroupAction,
+                      style: const TextStyle(color: AppColors.emerald),
+                    ),
                   ),
                   const SizedBox(height: 12),
                 ],
