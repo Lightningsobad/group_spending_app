@@ -145,6 +145,13 @@ class FakeGroupsRepo implements GroupsRepository {
   }
 
   @override
+  Future<void> unarchiveGroup(int groupId) async {
+    if (exception != null) throw exception!;
+    final index = groups.indexWhere((g) => g.id == groupId);
+    groups[index] = groups[index].copyWith(status: 'ACTIVE');
+  }
+
+  @override
   Future<void> deleteGroup(int groupId) async {
     if (exception != null) throw exception!;
     groups.removeWhere((g) => g.id == groupId);
@@ -333,7 +340,7 @@ void main() {
 
       expect(success, isTrue);
       expect(cubit.state.groups.any((g) => g.name == 'Nhóm Mới Tạo'), isTrue);
-      expect(cubit.state.successMessage, contains('thành công'));
+      expect(cubit.state.successType, GroupsSuccessType.created);
     });
 
     test('updateGroup modifies group in state', () async {
@@ -354,6 +361,32 @@ void main() {
       expect(cubit.state.groups.firstWhere((g) => g.id == 1).isArchived, isTrue);
     });
 
+    test('unarchiveGroup marks group as ACTIVE and updates counts and selectedGroup', () async {
+      await cubit.loadGroups();
+      final archivedGroup = cubit.state.groups.firstWhere((g) => g.id == 3);
+      cubit.selectGroup(archivedGroup);
+
+      final success = await cubit.unarchiveGroup(3);
+
+      expect(success, isTrue);
+      expect(cubit.state.groups.firstWhere((g) => g.id == 3).isActive, isTrue);
+      expect(cubit.state.selectedGroup?.isActive, isTrue);
+      expect(cubit.state.archivedCount, 0);
+      expect(cubit.state.activeCount, 3);
+      expect(cubit.state.successType, GroupsSuccessType.unarchived);
+    });
+
+    test('unarchiveGroup emits error and preserves ARCHIVED status on failure', () async {
+      await cubit.loadGroups();
+      repo.exception = const AppException(message: 'Chỉ quản trị viên mới có quyền thực hiện');
+
+      final success = await cubit.unarchiveGroup(3);
+
+      expect(success, isFalse);
+      expect(cubit.state.groups.firstWhere((g) => g.id == 3).isArchived, isTrue);
+      expect(cubit.state.errorMessage, 'Chỉ quản trị viên mới có quyền thực hiện');
+    });
+
     test('deleteGroup removes group from state', () async {
       await cubit.loadGroups();
 
@@ -369,7 +402,7 @@ void main() {
       final success = await cubit.joinGroup('VALIDCODE');
 
       expect(success, isTrue);
-      expect(cubit.state.successMessage, contains('thành công'));
+      expect(cubit.state.successType, GroupsSuccessType.joined);
     });
 
     test('joinGroup with invalid code emits error', () async {
@@ -434,8 +467,11 @@ void main() {
       await syncCubit.archiveGroup(1);
       expect(syncNotificationsCount, 3);
 
-      await syncCubit.deleteGroup(1);
+      await syncCubit.unarchiveGroup(1);
       expect(syncNotificationsCount, 4);
+
+      await syncCubit.deleteGroup(1);
+      expect(syncNotificationsCount, 5);
 
       await syncCubit.close();
     });
@@ -531,6 +567,24 @@ void main() {
         await fLoad;
 
         expect(cubit.state.groups.firstWhere((g) => g.id == 1).isArchived, isTrue);
+      });
+
+      test('R04b: older load response arriving after unarchiveGroup preserves ACTIVE status', () async {
+        cubit.emit(GroupsState(status: GroupsStatus.success, groups: List.from(repo.groups)));
+        final cLoad = Completer<List<GroupModel>>();
+        repo.customGetMyGroups = () => cLoad.future;
+
+        final fLoad = cubit.loadGroups();
+
+        await cubit.unarchiveGroup(3);
+        expect(cubit.state.groups.firstWhere((g) => g.id == 3).isActive, isTrue);
+
+        cLoad.complete([
+          const GroupModel(id: 3, name: 'Đi phượt Đà Lạt 2024', status: 'ARCHIVED', ownerId: 1),
+        ]);
+        await fLoad;
+
+        expect(cubit.state.groups.firstWhere((g) => g.id == 3).isActive, isTrue);
       });
 
       test('R05: older load response arriving after deleteGroup does not restore deleted group', () async {

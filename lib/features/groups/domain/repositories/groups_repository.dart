@@ -29,6 +29,7 @@ abstract class GroupsRepository {
     String? defaultCurrency,
   });
   Future<void> archiveGroup(int groupId);
+  Future<void> unarchiveGroup(int groupId);
   Future<void> deleteGroup(int groupId);
   Future<void> joinGroup(String inviteCode);
 

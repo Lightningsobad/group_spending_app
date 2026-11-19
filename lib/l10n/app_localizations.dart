@@ -1094,6 +1094,30 @@ abstract class AppLocalizations {
   /// **'Lưu trữ'**
   String get archiveConfirmButton;
 
+  /// No description provided for @unarchiveGroupAction.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khôi phục nhóm'**
+  String get unarchiveGroupAction;
+
+  /// No description provided for @unarchiveGroupConfirmTitle.
+  ///
+  /// In vi, this message translates to:
+  /// **'Xác nhận khôi phục nhóm?'**
+  String get unarchiveGroupConfirmTitle;
+
+  /// No description provided for @unarchiveGroupConfirmMessage.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhóm sẽ hoạt động bình thường trở lại và cho phép chỉnh sửa, thêm chi tiêu, tạo quỹ.'**
+  String get unarchiveGroupConfirmMessage;
+
+  /// No description provided for @unarchiveConfirmButton.
+  ///
+  /// In vi, this message translates to:
+  /// **'Khôi phục'**
+  String get unarchiveConfirmButton;
+
   /// No description provided for @deleteGroupAction.
   ///
   /// In vi, this message translates to:
@@ -1165,6 +1189,12 @@ abstract class AppLocalizations {
   /// In vi, this message translates to:
   /// **'Nhóm đã được chuyển sang chế độ lưu trữ.'**
   String get archiveGroupSuccess;
+
+  /// No description provided for @unarchiveGroupSuccess.
+  ///
+  /// In vi, this message translates to:
+  /// **'Nhóm đã được khôi phục về trạng thái hoạt động.'**
+  String get unarchiveGroupSuccess;
 
   /// No description provided for @deleteGroupSuccess.
   ///

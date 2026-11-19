@@ -166,14 +166,25 @@ class GroupsScreenState extends State<GroupsScreen> {
     return BlocConsumer<GroupsCubit, GroupsState>(
       listenWhen: (previous, current) =>
           previous.errorMessage != current.errorMessage ||
-          previous.successMessage != current.successMessage,
+          previous.successMessage != current.successMessage ||
+          previous.successType != current.successType,
       listener: (context, state) {
         if (state.errorMessage != null) {
           AppSnackBar.showError(context, state.errorMessage!);
           context.read<GroupsCubit>().clearMessages();
         }
-        if (state.successMessage != null) {
-          AppSnackBar.showSuccess(context, state.successMessage!);
+        final successMsg = state.successType != null
+            ? switch (state.successType!) {
+                GroupsSuccessType.created => tr.createGroupSuccess,
+                GroupsSuccessType.updated => tr.updateGroupSuccess,
+                GroupsSuccessType.archived => tr.archiveGroupSuccess,
+                GroupsSuccessType.unarchived => tr.unarchiveGroupSuccess,
+                GroupsSuccessType.deleted => tr.deleteGroupSuccess,
+                GroupsSuccessType.joined => tr.joinGroupSuccess,
+              }
+            : state.successMessage;
+        if (successMsg != null) {
+          AppSnackBar.showSuccess(context, successMsg);
           context.read<GroupsCubit>().clearMessages();
         }
       },
