@@ -75,6 +75,8 @@ class _GroupDetailViewState extends State<GroupDetailView> {
       _groupMembersCubit?.close();
       _groupMembersCubit = null;
       _fetchLatestDetail();
+    } else if (oldWidget.initialGroup.status != widget.initialGroup.status) {
+      _group = widget.initialGroup;
     }
   }
 
@@ -160,32 +162,45 @@ class _GroupDetailViewState extends State<GroupDetailView> {
     );
   }
 
-  Future<void> _confirmArchive() async {
+  Future<void> _confirmArchiveStatusChange({required bool archive}) async {
     final tr = context.l10n;
     final colors = context.colors;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text(tr.archiveGroupConfirmTitle),
-        content: Text(tr.archiveGroupConfirmMessage),
+        title: Text(archive ? tr.archiveGroupConfirmTitle : tr.unarchiveGroupConfirmTitle),
+        content: Text(archive ? tr.archiveGroupConfirmMessage : tr.unarchiveGroupConfirmMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
             child: Text(tr.cancel),
           ),
           ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: colors.warningAccent),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: archive ? colors.warningAccent : colors.primaryButton,
+            ),
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(tr.archiveConfirmButton, style: const TextStyle(color: Colors.white)),
+            child: Text(
+              archive ? tr.archiveConfirmButton : tr.unarchiveConfirmButton,
+              style: const TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
     );
 
     if (confirmed == true && mounted) {
-      final success = await context.read<GroupsCubit>().archiveGroup(_group.id);
+      final cubit = context.read<GroupsCubit>();
+      final success = archive
+          ? await cubit.archiveGroup(_group.id)
+          : await cubit.unarchiveGroup(_group.id);
       if (success && mounted) {
-        widget.onBack();
+        if (archive) {
+          widget.onBack();
+        } else {
+          setState(() => _group = _group.copyWith(status: 'ACTIVE'));
+          _fetchLatestDetail();
+        }
       }
     }
   }
@@ -287,7 +302,16 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                   title: Text(tr.archiveGroupAction, style: TextStyle(color: colors.warningAccent)),
                   onTap: () {
                     Navigator.of(ctx).pop();
-                    _confirmArchive();
+                    _confirmArchiveStatusChange(archive: true);
+                  },
+                ),
+              if (_group.isAdmin && _group.isArchived)
+                ListTile(
+                  leading: Icon(LucideIcons.archiveRestore, color: colors.primaryButton),
+                  title: Text(tr.unarchiveGroupAction, style: TextStyle(color: colors.primaryButton)),
+                  onTap: () {
+                    Navigator.of(ctx).pop();
+                    _confirmArchiveStatusChange(archive: false);
                   },
                 ),
               if (isOwner)
@@ -1120,7 +1144,7 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                       ),
                       side: BorderSide(color: colors.warningAccentBorder),
                     ),
-                    onPressed: _confirmArchive,
+                    onPressed: () => _confirmArchiveStatusChange(archive: true),
                     icon: Icon(LucideIcons.archive, size: 16, color: colors.warningAccent),
                     label: Text(
                       tr.archiveGroupAction,
@@ -1131,6 +1155,25 @@ class _GroupDetailViewState extends State<GroupDetailView> {
                   ),
                 ),
               ],
+            ),
+          if (_group.isAdmin && _group.isArchived)
+            OutlinedButton.icon(
+              style: OutlinedButton.styleFrom(
+                minimumSize: const Size(0, 48),
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                side: BorderSide(color: colors.primaryButton),
+              ),
+              onPressed: () => _confirmArchiveStatusChange(archive: false),
+              icon: Icon(LucideIcons.archiveRestore, size: 16, color: colors.primaryButton),
+              label: Text(
+                tr.unarchiveGroupAction,
+                style: AppTextStyle.bold(fontSize: AppFontSize.secondary, color: colors.primaryButton),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           if (isOwner) ...[
             const SizedBox(height: 10),

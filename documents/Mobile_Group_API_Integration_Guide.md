@@ -19,6 +19,7 @@
    - [2.3. Thêm nhóm mới (Create Group)](#23-thêm-nhóm-mới-create-group)
    - [2.4. Sửa thông tin nhóm (Update Group)](#24-sửa-thông-tin-nhóm-update-group)
    - [2.5. Lưu trữ nhóm (Archive Group)](#25-lưu-trữ-nhóm-archive-group)
+     - [2.5.1. Khôi phục nhóm từ lưu trữ (Unarchive Group)](#251-khôi-phục-nhóm-từ-lưu-trữ-unarchive-group)
    - [2.6. Xóa nhóm chi tiêu (Delete Group)](#26-xóa-nhóm-chi-tiêu-delete-group)
    - [2.7. Lấy danh sách thành viên trong nhóm (Get Group Members)](#27-lấy-danh-sách-thành-viên-trong-nhóm-get-group-members)
    - [2.8. Lấy danh sách và số lượng yêu cầu gia nhập nhóm (Get Pending Join Requests)](#28-lấy-danh-sách-và-số-lượng-yêu-cầu-gia-nhập-nhóm-get-pending-join-requests)
@@ -425,6 +426,42 @@ Chuyển trạng thái hoạt động của nhóm từ `ACTIVE` sang `ARCHIVED`.
 
 ---
 
+#### 2.5.1. Khôi phục nhóm từ lưu trữ (Unarchive Group)
+
+Chuyển trạng thái hoạt động của nhóm từ `ARCHIVED` về lại `ACTIVE`. Sau khi khôi phục, nhóm hoạt động bình thường trở lại (có thể tạo/sửa/xóa khoản chi tiêu, đợt thu quỹ, cập nhật thông tin nhóm). Chỉ `ADMIN` của nhóm mới có quyền thực hiện.
+
+- **Method:** `POST`
+- **Path:** `/groups/{groupId}/unarchive`
+- **Full URL:** `/api/v1/groups/{groupId}/unarchive`
+- **Path Variables:**
+
+| Tên biến | Kiểu dữ liệu | Bắt buộc | Mô tả |
+| :--- | :--- | :--- | :--- |
+| `groupId` | Long | Có | ID của nhóm cần khôi phục về trạng thái hoạt động |
+
+- **Header:**
+  ```http
+  Authorization: Bearer <accessToken>
+  ```
+- **Request Body:** Không có.
+
+- **Mã phản hồi thành công:** `200 OK`
+- **Response Body mẫu:**
+```json
+{
+  "success": true,
+  "message": "Nhóm đã được khôi phục về trạng thái hoạt động",
+  "data": null,
+  "timestamp": "2026-11-20T00:00:00Z"
+}
+```
+
+- **Mã lỗi thường gặp:**
+  - `403 Forbidden`: `NOT_GROUP_ADMIN` - Chỉ quản trị viên mới có quyền thực hiện.
+  - `404 Not Found`: `GROUP_NOT_FOUND` - Không tìm thấy nhóm.
+
+---
+
 ### 2.6. Xóa nhóm chi tiêu (Delete Group)
 
 Xóa vĩnh viễn nhóm chi tiêu. Hệ thống sẽ tự động dọn dẹp và cascade xóa toàn bộ:
@@ -769,7 +806,7 @@ Lấy danh sách tóm tắt rút gọn các nhóm chi tiêu của người dùng
 - **Mô tả các trường dữ liệu (`GroupSummaryResponse`):**
   - `id` (Number): Mã định danh của nhóm.
   - `name` (String): Tên nhóm.
-  - `category` (String): Chủ đề/Thể loại nhóm (`Apartment`, `Travel & Trip`, `Sport & Clubs`, `Friends & Dining`, `Works & Project`, `Other`).
+  - `category` (String): Thể loại/chủ đề nhóm (`Apartment`, `Travel & Trip`, `Sport & Clubs`, `Friends & Dining`, `Works & Project`, `Other`).
   - `totalSpending` (Number): Tổng số tiền đã chi tiêu của cả nhóm (đơn vị: Nghìn VNĐ - k).
   - `totalSpendingVnd` (Number): Tổng số tiền đã chi tiêu của cả nhóm (đơn vị: VNĐ đầy đủ).
   - `memberCount` (Number): Số lượng thành viên của nhóm.

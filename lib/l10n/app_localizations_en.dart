@@ -555,6 +555,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get archiveConfirmButton => 'Archive';
 
   @override
+  String get unarchiveGroupAction => 'Restore group';
+
+  @override
+  String get unarchiveGroupConfirmTitle => 'Confirm restoring group?';
+
+  @override
+  String get unarchiveGroupConfirmMessage =>
+      'Group will return to active status and allow editing, adding expenses, and collecting funds.';
+
+  @override
+  String get unarchiveConfirmButton => 'Restore';
+
+  @override
   String get deleteGroupAction => 'Delete group';
 
   @override
@@ -590,6 +603,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get archiveGroupSuccess => 'Group has been moved to archives.';
+
+  @override
+  String get unarchiveGroupSuccess =>
+      'Group has been restored to active status.';
 
   @override
   String get deleteGroupSuccess => 'Group deleted successfully.';

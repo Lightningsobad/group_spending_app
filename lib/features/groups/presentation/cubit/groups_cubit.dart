@@ -182,7 +182,7 @@ class GroupsCubit extends Cubit<GroupsState> {
         state.copyWith(
           isActionLoading: false,
           groups: updatedList,
-          successMessage: 'Tạo nhóm "${newGroup.name}" thành công!',
+          successType: GroupsSuccessType.created,
         ),
       );
       dataSyncCoordinator?.notifyDataChanged(DataSyncScope.groups);
@@ -252,7 +252,7 @@ class GroupsCubit extends Cubit<GroupsState> {
           isActionLoading: false,
           groups: updatedList,
           selectedGroup: shouldUpdateSelected ? updatedGroup : state.selectedGroup,
-          successMessage: 'Cập nhật nhóm thành công!',
+          successType: GroupsSuccessType.updated,
         ),
       );
       dataSyncCoordinator?.notifyDataChanged(DataSyncScope.groups);
@@ -286,11 +286,34 @@ class GroupsCubit extends Cubit<GroupsState> {
     }
   }
 
-  Future<bool> archiveGroup(int groupId) async {
+  Future<bool> archiveGroup(int groupId) {
+    return _setGroupStatus(
+      groupId,
+      targetStatus: 'ARCHIVED',
+      action: () => _repository.archiveGroup(groupId),
+      successType: GroupsSuccessType.archived,
+    );
+  }
+
+  Future<bool> unarchiveGroup(int groupId) {
+    return _setGroupStatus(
+      groupId,
+      targetStatus: 'ACTIVE',
+      action: () => _repository.unarchiveGroup(groupId),
+      successType: GroupsSuccessType.unarchived,
+    );
+  }
+
+  Future<bool> _setGroupStatus(
+    int groupId, {
+    required String targetStatus,
+    required Future<void> Function() action,
+    required GroupsSuccessType successType,
+  }) async {
     final requestEpoch = sessionCoordinator?.sessionEpoch ?? 0;
     emit(state.copyWith(isActionLoading: true, clearMessages: true));
     try {
-      await _repository.archiveGroup(groupId);
+      await action();
       _mutationEpoch++;
       if (isClosed ||
           (sessionCoordinator != null &&
@@ -298,11 +321,11 @@ class GroupsCubit extends Cubit<GroupsState> {
         return false;
       }
       final updatedList = state.groups.map((g) {
-        return g.id == groupId ? g.copyWith(status: 'ARCHIVED') : g;
+        return g.id == groupId ? g.copyWith(status: targetStatus) : g;
       }).toList();
 
       final updatedSelectedGroup = state.selectedGroup?.id == groupId
-          ? state.selectedGroup!.copyWith(status: 'ARCHIVED')
+          ? state.selectedGroup!.copyWith(status: targetStatus)
           : state.selectedGroup;
 
       emit(
@@ -310,7 +333,7 @@ class GroupsCubit extends Cubit<GroupsState> {
           isActionLoading: false,
           groups: updatedList,
           selectedGroup: updatedSelectedGroup,
-          successMessage: 'Nhóm đã được chuyển sang chế độ lưu trữ.',
+          successType: successType,
         ),
       );
       dataSyncCoordinator?.notifyDataChanged(DataSyncScope.groups);
@@ -363,7 +386,7 @@ class GroupsCubit extends Cubit<GroupsState> {
           isActionLoading: false,
           groups: updatedList,
           clearSelectedGroup: shouldClearSelected,
-          successMessage: 'Xóa nhóm thành công.',
+          successType: GroupsSuccessType.deleted,
         ),
       );
       dataSyncCoordinator?.notifyDataChanged(DataSyncScope.groups);
@@ -411,7 +434,7 @@ class GroupsCubit extends Cubit<GroupsState> {
       emit(
         state.copyWith(
           isActionLoading: false,
-          successMessage: 'Tham gia nhóm thành công!',
+          successType: GroupsSuccessType.joined,
         ),
       );
       dataSyncCoordinator?.notifyDataChanged(DataSyncScope.groups);

@@ -97,6 +97,11 @@ class GroupsRepositoryImpl implements GroupsRepository {
   }
 
   @override
+  Future<void> unarchiveGroup(int groupId) {
+    return remoteDataSource.unarchiveGroup(groupId);
+  }
+
+  @override
   Future<void> deleteGroup(int groupId) {
     return remoteDataSource.deleteGroup(groupId);
   }

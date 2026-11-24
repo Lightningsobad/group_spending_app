@@ -116,4 +116,15 @@ void main() {
       expect(payload.containsKey('description'), isFalse);
     });
   });
+
+  group('GroupsRemoteDataSourceImpl.unarchiveGroup tests', () {
+    test('sends POST /groups/{groupId}/unarchive with no body', () async {
+      await dataSource.unarchiveGroup(10);
+
+      expect(lastRequestOptions, isNotNull);
+      expect(lastRequestOptions!.method, 'POST');
+      expect(lastRequestOptions!.path, '/groups/10/unarchive');
+      expect(lastRequestOptions!.data, isNull);
+    });
+  });
 }

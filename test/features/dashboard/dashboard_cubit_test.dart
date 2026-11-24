@@ -106,6 +106,9 @@ class FakeGroupsRepository implements GroupsRepository {
   Future<void> archiveGroup(int groupId) async {}
 
   @override
+  Future<void> unarchiveGroup(int groupId) async {}
+
+  @override
   Future<void> deleteGroup(int groupId) async {}
 
   @override

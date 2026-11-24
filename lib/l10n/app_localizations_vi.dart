@@ -552,6 +552,19 @@ class AppLocalizationsVi extends AppLocalizations {
   String get archiveConfirmButton => 'Lưu trữ';
 
   @override
+  String get unarchiveGroupAction => 'Khôi phục nhóm';
+
+  @override
+  String get unarchiveGroupConfirmTitle => 'Xác nhận khôi phục nhóm?';
+
+  @override
+  String get unarchiveGroupConfirmMessage =>
+      'Nhóm sẽ hoạt động bình thường trở lại và cho phép chỉnh sửa, thêm chi tiêu, tạo quỹ.';
+
+  @override
+  String get unarchiveConfirmButton => 'Khôi phục';
+
+  @override
   String get deleteGroupAction => 'Xóa nhóm';
 
   @override
@@ -587,6 +600,10 @@ class AppLocalizationsVi extends AppLocalizations {
 
   @override
   String get archiveGroupSuccess => 'Nhóm đã được chuyển sang chế độ lưu trữ.';
+
+  @override
+  String get unarchiveGroupSuccess =>
+      'Nhóm đã được khôi phục về trạng thái hoạt động.';
 
   @override
   String get deleteGroupSuccess => 'Xóa nhóm thành công.';
